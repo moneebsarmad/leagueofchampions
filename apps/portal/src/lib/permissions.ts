@@ -117,8 +117,9 @@ export async function getUserProfile(supabase: SupabaseClient): Promise<UserProf
       email: user.email ?? '',
       role: (user.user_metadata?.role as Role) ?? null,
       full_name: user.user_metadata?.full_name ?? null,
-      house: user.user_metadata?.house ?? null,
-    } as UserProfile
+      student_name: user.user_metadata?.student_name ?? null,
+      assigned_house: user.user_metadata?.house ?? null,
+    }
   } catch (error) {
     console.error('Error fetching user profile:', error)
     return null
