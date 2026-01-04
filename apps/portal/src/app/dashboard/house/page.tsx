@@ -74,7 +74,7 @@ export default function MyHousePage() {
       const section = String(user.user_metadata?.section ?? '')
       const house = String(user.user_metadata?.house ?? '')
 
-      if (error || !name || !house) {
+      if (!name || !house) {
         setProfile(null)
       } else {
         setProfile({ name, grade, section, house })
