@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Champions of Service | League of Champions</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #2c2c2c;
+      --ink-soft: #5a5a5a;
+      --ink-muted: #8a8a8a;
+      --cream: #faf9f7;
+      --warm: #f3f1ed;
+      --warm-dark: #e8e4dc;
+      --gold: #a08050;
+      --border: #e0ddd6;
+
+      --green: #4a6b56;
+      --green-light: #f2f4f0;
+      --green-border: #c8d0c4;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      color: var(--ink);
+      background: var(--cream);
+      line-height: 1.7;
+      font-size: 16px;
+    }
+
+    h1, h2, h3 {
+      font-family: 'Libre Baskerville', Georgia, serif;
+      font-weight: 400;
+      line-height: 1.3;
+    }
+
+    p {
+      color: var(--ink-soft);
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .eyebrow {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 16px;
+    }
+
+    .lead {
+      font-size: 1.15rem;
+      color: var(--ink-soft);
+      max-width: 540px;
+    }
+
+    /* Back Link */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 16px 0;
+      text-decoration: none;
+      color: var(--ink-soft);
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: all 0.25s ease;
+    }
+
+    .back-link:hover {
+      color: var(--ink);
+      gap: 12px;
+    }
+
+    .back-link span {
+      transition: transform 0.25s ease;
+    }
+
+    .back-link:hover span {
+      transform: translateX(-4px);
+    }
+
+    /* Hero */
+    .hero {
+      background: linear-gradient(180deg, var(--green-light) 0%, var(--cream) 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 40px 0 100px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      margin-bottom: 12px;
+    }
+
+    .hero .tagline {
+      font-family: 'Libre Baskerville', serif;
+      font-style: italic;
+      font-size: 1.2rem;
+      color: var(--green);
+      margin-bottom: 24px;
+    }
+
+    /* League Overview */
+    .overview {
+      padding: 80px 0;
+      background: var(--cream);
+    }
+
+    .overview-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .overview h2 {
+      font-size: 1.6rem;
+      margin-bottom: 20px;
+    }
+
+    .overview-content p {
+      margin-bottom: 16px;
+    }
+
+    .overview-meta {
+      background: white;
+      border-radius: 12px;
+      padding: 32px;
+      border: 1px solid var(--border);
+    }
+
+    .meta-item {
+      padding: 16px 0;
+      border-bottom: 1px dashed var(--border);
+    }
+
+    .meta-item:last-child {
+      border-bottom: none;
+    }
+
+    .meta-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--ink-muted);
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .meta-value {
+      font-size: 1rem;
+      color: var(--ink);
+    }
+
+    .meta-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .meta-pill {
+      padding: 6px 14px;
+      border-radius: 100px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      background: rgba(74, 107, 86, 0.1);
+      color: var(--green);
+    }
+
+    /* Houses Section */
+    .houses {
+      padding: 80px 0;
+      background: var(--green-light);
+    }
+
+    .houses-header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    .houses-header h2 {
+      font-size: 1.8rem;
+      margin-bottom: 12px;
+    }
+
+    .houses-header .lead {
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .houses-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .house-card {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      transition: all 0.3s ease;
+    }
+
+    .house-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 32px rgba(74, 107, 86, 0.12);
+      border-color: var(--green);
+    }
+
+    .house-card:hover .house-header {
+      border-left-width: 6px;
+    }
+
+    .house-header {
+      padding: 24px 28px;
+      border-bottom: 1px solid var(--border);
+      border-left: 4px solid var(--green);
+      transition: border-left-width 0.3s ease;
+    }
+
+    .house-header h3 {
+      font-size: 1.2rem;
+      margin-bottom: 6px;
+    }
+
+    .house-virtue {
+      font-size: 0.95rem;
+      color: var(--ink-soft);
+      margin: 0;
+    }
+
+    .house-virtue .arabic {
+      font-style: italic;
+      color: var(--green);
+    }
+
+    .house-body {
+      padding: 24px 28px;
+    }
+
+    .house-section {
+      margin-bottom: 20px;
+    }
+
+    .house-section:last-child {
+      margin-bottom: 0;
+    }
+
+    .house-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--ink-muted);
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .house-section p {
+      font-size: 0.9rem;
+      margin: 0;
+    }
+
+    .house-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .house-list li {
+      font-size: 0.9rem;
+      color: var(--ink-soft);
+      padding: 5px 0;
+      padding-left: 18px;
+      position: relative;
+    }
+
+    .house-list li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 12px;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+      opacity: 0.5;
+    }
+
+    /* CTA Section */
+    .cta {
+      padding: 80px 0;
+      background: var(--ink);
+      text-align: center;
+    }
+
+    .cta h2 {
+      color: white;
+      font-size: 1.6rem;
+      margin-bottom: 16px;
+    }
+
+    .cta p {
+      color: rgba(255,255,255,0.7);
+      max-width: 480px;
+      margin: 0 auto 32px;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 14px 28px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: all 0.2s ease;
+    }
+
+    .btn--primary {
+      background: white;
+      color: var(--ink);
+    }
+
+    .btn--primary:hover {
+      background: var(--cream);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+    }
+
+    .btn--secondary {
+      background: transparent;
+      color: white;
+      border: 1px solid rgba(255,255,255,0.3);
+    }
+
+    .btn--secondary:hover {
+      border-color: rgba(255,255,255,0.5);
+      transform: translateY(-2px);
+      background: rgba(255,255,255,0.05);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .overview-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .houses-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <a href="landing-v3.html" class="back-link">
+        <span>&larr;</span> Back to Overview
+      </a>
+      <p class="eyebrow">Champions of Service</p>
+      <h1>Constructing What Others Can Stand On</h1>
+      <p class="tagline">Leadership, contribution, and legacy</p>
+      <p class="lead">
+        This house structure is for schools developing students who take initiative, serve their communities, and build things that outlast them.
+      </p>
+    </div>
+  </section>
+
+  <!-- Overview -->
+  <section class="overview">
+    <div class="container">
+      <div class="overview-grid">
+        <div class="overview-content">
+          <h2>About This House Structure</h2>
+          <p>
+            Champions of Service is designed for schools that emphasize leadership, service, and contribution over competition.
+          </p>
+          <p>
+            Each House represents a different dimension of building — courage to begin, selflessness in service, initiative in exploration, and endurance through difficulty.
+          </p>
+          <p>
+            Students don't earn their House — they grow within it. The House becomes a lens for understanding how to develop that particular strength over time.
+          </p>
+        </div>
+        <div class="overview-meta">
+          <div class="meta-item">
+            <p class="meta-label">Guiding Question</p>
+            <p class="meta-value" style="font-family: 'Libre Baskerville', serif; font-style: italic;">
+              What do students build that others can rely on?
+            </p>
+          </div>
+          <div class="meta-item">
+            <p class="meta-label">Core Focus Areas</p>
+            <div class="meta-pills">
+              <span class="meta-pill">Preparing the way</span>
+              <span class="meta-pill">Service</span>
+              <span class="meta-pill">Courage</span>
+              <span class="meta-pill">Reliability</span>
+            </div>
+          </div>
+          <div class="meta-item">
+            <p class="meta-label">Best For Schools That</p>
+            <p class="meta-value">Develop leadership, service-mindedness, and students who take initiative to strengthen their community.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Houses -->
+  <section class="houses">
+    <div class="container">
+      <div class="houses-header">
+        <p class="eyebrow">The Four Houses</p>
+        <h2>Training Grounds for Leadership</h2>
+        <p class="lead">Each House represents a different dimension of building something lasting.</p>
+      </div>
+
+      <div class="houses-grid">
+        <!-- House of Salman al-Farisi -->
+        <div class="house-card">
+          <div class="house-header">
+            <h3>House of Salmān al-Fārisī</h3>
+            <p class="house-virtue">Preparing the way with courage and purpose <span class="arabic">(Musābaqah)</span></p>
+          </div>
+          <div class="house-body">
+            <div class="house-section">
+              <p class="house-label">Failure It Addresses</p>
+              <p>Waiting for others to lead, avoiding responsibility, or expecting success without stepping forward first.</p>
+            </div>
+            <div class="house-section">
+              <p class="house-label">Looks Like</p>
+              <ul class="house-list">
+                <li>Stepping forward when others hesitate</li>
+                <li>Taking initiative to create positive change</li>
+                <li>Building strong foundations others can rely on</li>
+                <li>Giving time, effort, and comfort for something greater</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- House of Abu Ayyub al-Ansari -->
+        <div class="house-card">
+          <div class="house-header">
+            <h3>House of Abū Ayyūb al-Anṣārī</h3>
+            <p class="house-virtue">Service that builds strong communities <span class="arabic">(Khidmah)</span></p>
+          </div>
+          <div class="house-body">
+            <div class="house-section">
+              <p class="house-label">Failure It Addresses</p>
+              <p>Only helping when it's easy, visible, or personally beneficial.</p>
+            </div>
+            <div class="house-section">
+              <p class="house-label">Looks Like</p>
+              <ul class="house-list">
+                <li>Helping without being asked</li>
+                <li>Putting group needs before personal comfort</li>
+                <li>Supporting classmates, teachers, and systems</li>
+                <li>Being dependable and present</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- House of Nusaybah bint Ka'b -->
+        <div class="house-card">
+          <div class="house-header">
+            <h3>House of Nusaybah bint Kaʿb</h3>
+            <p class="house-virtue">Courage that protects values and people <span class="arabic">(Shajāʿah)</span></p>
+          </div>
+          <div class="house-body">
+            <div class="house-section">
+              <p class="house-label">Failure It Addresses</p>
+              <p>Staying silent when something wrong is happening or backing away under pressure.</p>
+            </div>
+            <div class="house-section">
+              <p class="house-label">Looks Like</p>
+              <ul class="house-list">
+                <li>Standing up for what is right</li>
+                <li>Protecting others from harm or injustice</li>
+                <li>Speaking and acting when it's uncomfortable</li>
+                <li>Showing bravery through action</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- House of Asma bint Abi Bakr -->
+        <div class="house-card">
+          <div class="house-header">
+            <h3>House of Asmāʾ bint Abī Bakr</h3>
+            <p class="house-virtue">Reliability and endurance under pressure <span class="arabic">(Thabāt)</span></p>
+          </div>
+          <div class="house-body">
+            <div class="house-section">
+              <p class="house-label">Failure It Addresses</p>
+              <p>Giving up, folding under pressure, or dropping responsibility when things get hard.</p>
+            </div>
+            <div class="house-section">
+              <p class="house-label">Looks Like</p>
+              <ul class="house-list">
+                <li>Staying committed even when no one is watching</li>
+                <li>Carrying responsibility without complaining</li>
+                <li>Remaining calm and steady during difficulty</li>
+                <li>Being trustworthy in stressful situations</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta">
+    <div class="container">
+      <h2>Ready to Build This Culture?</h2>
+      <p>
+        Champions of Service gives your school a shared language for leadership and service.
+      </p>
+      <div class="btn-group">
+        <a href="mailto:contact@leagueofchampions.com" class="btn btn--primary">Start a Conversation</a>
+        <a href="truth-houses.html" class="btn btn--secondary">View Champions of Truth</a>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

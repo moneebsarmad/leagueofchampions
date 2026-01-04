@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Champions of Truth | League of Champions</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #2c2c2c;
+      --ink-soft: #5a5a5a;
+      --ink-muted: #8a8a8a;
+      --cream: #faf9f7;
+      --warm: #f3f1ed;
+      --warm-dark: #e8e4dc;
+      --gold: #a08050;
+      --border: #e0ddd6;
+
+      --purple: #5a4a70;
+      --purple-light: #f4f2f6;
+      --purple-border: #d0c8d8;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      color: var(--ink);
+      background: var(--cream);
+      line-height: 1.7;
+      font-size: 16px;
+    }
+
+    h1, h2, h3 {
+      font-family: 'Libre Baskerville', Georgia, serif;
+      font-weight: 400;
+      line-height: 1.3;
+    }
+
+    p {
+      color: var(--ink-soft);
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .eyebrow {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--purple);
+      margin-bottom: 16px;
+    }
+
+    .lead {
+      font-size: 1.15rem;
+      color: var(--ink-soft);
+      max-width: 540px;
+    }
+
+    /* Back Link */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 16px 0;
+      text-decoration: none;
+      color: var(--ink-soft);
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: all 0.25s ease;
+    }
+
+    .back-link:hover {
+      color: var(--ink);
+      gap: 12px;
+    }
+
+    .back-link span {
+      transition: transform 0.25s ease;
+    }
+
+    .back-link:hover span {
+      transform: translateX(-4px);
+    }
+
+    /* Hero */
+    .hero {
+      background: linear-gradient(180deg, var(--purple-light) 0%, var(--cream) 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 40px 0 100px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      margin-bottom: 12px;
+    }
+
+    .hero .tagline {
+      font-family: 'Libre Baskerville', serif;
+      font-style: italic;
+      font-size: 1.2rem;
+      color: var(--purple);
+      margin-bottom: 24px;
+    }
+
+    /* League Overview */
+    .overview {
+      padding: 80px 0;
+      background: var(--cream);
+    }
+
+    .overview-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .overview h2 {
+      font-size: 1.6rem;
+      margin-bottom: 20px;
+    }
+
+    .overview-content p {
+      margin-bottom: 16px;
+    }
+
+    .overview-meta {
+      background: white;
+      border-radius: 12px;
+      padding: 32px;
+      border: 1px solid var(--border);
+    }
+
+    .meta-item {
+      padding: 16px 0;
+      border-bottom: 1px dashed var(--border);
+    }
+
+    .meta-item:last-child {
+      border-bottom: none;
+    }
+
+    .meta-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--ink-muted);
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .meta-value {
+      font-size: 1rem;
+      color: var(--ink);
+    }
+
+    .meta-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .meta-pill {
+      padding: 6px 14px;
+      border-radius: 100px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      background: rgba(90, 74, 112, 0.1);
+      color: var(--purple);
+    }
+
+    /* Houses Section */
+    .houses {
+      padding: 80px 0;
+      background: var(--purple-light);
+    }
+
+    .houses-header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    .houses-header h2 {
+      font-size: 1.8rem;
+      margin-bottom: 12px;
+    }
+
+    .houses-header .lead {
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .houses-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .house-card {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      transition: all 0.3s ease;
+    }
+
+    .house-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 32px rgba(90, 74, 112, 0.12);
+      border-color: var(--purple);
+    }
+
+    .house-card:hover .house-header {
+      border-left-width: 6px;
+    }
+
+    .house-header {
+      padding: 24px 28px;
+      border-bottom: 1px solid var(--border);
+      border-left: 4px solid var(--purple);
+      transition: border-left-width 0.3s ease;
+    }
+
+    .house-header h3 {
+      font-size: 1.2rem;
+      margin-bottom: 6px;
+    }
+
+    .house-virtue {
+      font-size: 0.95rem;
+      color: var(--ink-soft);
+      margin: 0;
+    }
+
+    .house-virtue .arabic {
+      font-style: italic;
+      color: var(--purple);
+    }
+
+    .house-body {
+      padding: 24px 28px;
+    }
+
+    .house-section {
+      margin-bottom: 20px;
+    }
+
+    .house-section:last-child {
+      margin-bottom: 0;
+    }
+
+    .house-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--ink-muted);
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .house-section p {
+      font-size: 0.9rem;
+      margin: 0;
+    }
+
+    .house-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .house-list li {
+      font-size: 0.9rem;
+      color: var(--ink-soft);
+      padding: 5px 0;
+      padding-left: 18px;
+      position: relative;
+    }
+
+    .house-list li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 12px;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--purple);
+      opacity: 0.5;
+    }
+
+    /* CTA Section */
+    .cta {
+      padding: 80px 0;
+      background: var(--ink);
+      text-align: center;
+    }
+
+    .cta h2 {
+      color: white;
+      font-size: 1.6rem;
+      margin-bottom: 16px;
+    }
+
+    .cta p {
+      color: rgba(255,255,255,0.7);
+      max-width: 480px;
+      margin: 0 auto 32px;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 14px 28px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: all 0.2s ease;
+    }
+
+    .btn--primary {
+      background: white;
+      color: var(--ink);
+    }
+
+    .btn--primary:hover {
+      background: var(--cream);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+    }
+
+    .btn--secondary {
+      background: transparent;
+      color: white;
+      border: 1px solid rgba(255,255,255,0.3);
+    }
+
+    .btn--secondary:hover {
+      border-color: rgba(255,255,255,0.5);
+      transform: translateY(-2px);
+      background: rgba(255,255,255,0.05);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .overview-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .houses-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <a href="landing-v3.html" class="back-link">
+        <span>&larr;</span> Back to Overview
+      </a>
+      <p class="eyebrow">Champions of Truth</p>
+      <h1>Standing for Truth When It Costs Something</h1>
+      <p class="tagline">Moral courage and principled identity</p>
+      <p class="lead">
+        This house structure is for schools that want students to develop moral clarity, stand firm in their beliefs, and speak truth with courage.
+      </p>
+    </div>
+  </section>
+
+  <!-- Overview -->
+  <section class="overview">
+    <div class="container">
+      <div class="overview-grid">
+        <div class="overview-content">
+          <h2>About This House Structure</h2>
+          <p>
+            Champions of Truth is designed for schools helping students navigate social pressure, develop intellectual honesty, and build the courage to stand for what's right.
+          </p>
+          <p>
+            Each House represents a different dimension of moral courage, named after exemplars from Islamic history whose lives embodied these virtues.
+          </p>
+          <p>
+            Students don't earn their House — they grow within it. The House becomes a lens for understanding how to develop that particular virtue over time.
+          </p>
+        </div>
+        <div class="overview-meta">
+          <div class="meta-item">
+            <p class="meta-label">Guiding Question</p>
+            <p class="meta-value" style="font-family: 'Libre Baskerville', serif; font-style: italic;">
+              What do students stand for, even when it costs them?
+            </p>
+          </div>
+          <div class="meta-item">
+            <p class="meta-label">Core Focus Areas</p>
+            <div class="meta-pills">
+              <span class="meta-pill">Truthfulness</span>
+              <span class="meta-pill">Unwavering loyalty</span>
+              <span class="meta-pill">Justice</span>
+              <span class="meta-pill">Integrity of knowledge</span>
+            </div>
+          </div>
+          <div class="meta-item">
+            <p class="meta-label">Best For Schools That</p>
+            <p class="meta-value">Help students navigate social pressure, stand firm in belief, and speak truth with courage.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Houses -->
+  <section class="houses">
+    <div class="container">
+      <div class="houses-header">
+        <p class="eyebrow">The Four Houses</p>
+        <h2>Training Grounds for Moral Courage</h2>
+        <p class="lead">Each House represents a different dimension of standing for truth.</p>
+      </div>
+
+      <div class="houses-grid">
+        <!-- House of Abu Bakr -->
+        <div class="house-card">
+          <div class="house-header">
+            <h3>House of Abū Bakr</h3>
+            <p class="house-virtue">Truthfulness under pressure <span class="arabic">(Ṣidq)</span></p>
+          </div>
+          <div class="house-body">
+            <div class="house-section">
+              <p class="house-label">Failure It Addresses</p>
+              <p>Compromising truth to avoid ridicule, isolation, or social pressure.</p>
+            </div>
+            <div class="house-section">
+              <p class="house-label">Looks Like</p>
+              <ul class="house-list">
+                <li>Speaking truth even when mocked or doubted</li>
+                <li>Standing by what is right when others hesitate</li>
+                <li>Refusing to soften or distort truth to fit in</li>
+                <li>Remaining consistent when belief is challenged</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- House of Khadijah -->
+        <div class="house-card">
+          <div class="house-header">
+            <h3>House of Khadījah</h3>
+            <p class="house-virtue">Unwavering loyalty <span class="arabic">(Wafāʾ)</span></p>
+          </div>
+          <div class="house-body">
+            <div class="house-section">
+              <p class="house-label">Failure It Addresses</p>
+              <p>Backing away from people, responsibilities, or values when staying committed becomes difficult, unpopular, or inconvenient.</p>
+            </div>
+            <div class="house-section">
+              <p class="house-label">Looks Like</p>
+              <ul class="house-list">
+                <li>Staying consistent with friends, teams, and teachers — even when it’s not easy</li>
+                <li>Standing by what is right, not just what is popular</li>
+                <li>Following through on commitments instead of quitting halfway</li>
+                <li>Being dependable when others lose interest or walk away</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- House of Umar -->
+        <div class="house-card">
+          <div class="house-header">
+            <h3>House of ʿUmar</h3>
+            <p class="house-virtue">Justice with strength <span class="arabic">(ʿAdl)</span></p>
+          </div>
+          <div class="house-body">
+            <div class="house-section">
+              <p class="house-label">Failure It Addresses</p>
+              <p>Avoiding responsibility once authority is in your hands — staying silent, delaying action, or lowering standards to stay comfortable.</p>
+            </div>
+            <div class="house-section">
+              <p class="house-label">Looks Like</p>
+              <ul class="house-list">
+                <li>Correcting wrongs even when unpopular</li>
+                <li>Holding oneself to a higher standard than others</li>
+                <li>Making fair decisions despite personal cost</li>
+                <li>Using authority to protect what is right, not oneself</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- House of Aishah -->
+        <div class="house-card">
+          <div class="house-header">
+            <h3>House of ʿĀʾishah</h3>
+            <p class="house-virtue">Purposeful Curiosity <span class="arabic">(Tasāʾul)</span></p>
+          </div>
+          <div class="house-body">
+            <div class="house-section">
+              <p class="house-label">Failure It Addresses</p>
+              <p>Accepting information passively, avoiding questions, or seeking answers for attention rather than understanding.</p>
+            </div>
+            <div class="house-section">
+              <p class="house-label">Looks Like</p>
+              <ul class="house-list">
+                <li>Asking thoughtful questions to understand, not to challenge or show off</li>
+                <li>Wanting to know why something is true, not just what to say</li>
+                <li>Engaging in discussion with respect and humility</li>
+                <li>Seeking clarity before forming opinions or repeating information</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta">
+    <div class="container">
+      <h2>Ready to Build This Culture?</h2>
+      <p>
+        Champions of Truth gives your school a shared language for moral courage.
+      </p>
+      <div class="btn-group">
+        <a href="mailto:contact@leagueofchampions.com" class="btn btn--primary">Start a Conversation</a>
+        <a href="service-houses.html" class="btn btn--secondary">View Champions of Service</a>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

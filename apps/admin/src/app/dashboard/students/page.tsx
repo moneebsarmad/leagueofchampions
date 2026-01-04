@@ -1,0 +1,346 @@
+'use client'
+
+import { useEffect, useState } from 'react'
+import Link from 'next/link'
+import { supabase } from '@/lib/supabase'
+import { VIEWS } from '@/lib/views'
+import CrestLoader from '@/components/CrestLoader'
+
+interface Student {
+  id: string
+  name: string
+  grade: number
+  section: string
+  house: string
+  gender: string
+  points: number
+}
+
+const houseColors: Record<string, string> = {
+  'House of Abū Bakr': '#2f0a61',
+  'House of Khadījah': '#055437',
+  'House of ʿUmar': '#000068',
+  'House of ʿĀʾishah': '#910000',
+}
+
+export default function StudentsPage() {
+  const [students, setStudents] = useState<Student[]>([])
+  const [categoryTotals, setCategoryTotals] = useState<
+    { studentKey: string; category: string; points: number }[]
+  >([])
+  const [searchText, setSearchText] = useState('')
+  const [selectedGrade, setSelectedGrade] = useState<string | null>(null)
+  const [selectedHouse, setSelectedHouse] = useState<string | null>(null)
+  const [selectedStudent, setSelectedStudent] = useState<Student | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    fetchData()
+  }, [])
+
+  const fetchData = async () => {
+    setIsLoading(true)
+    try {
+      const { data: studentData, error: studentError } = await supabase
+        .from(VIEWS.STUDENT_POINTS)
+        .select('*')
+      if (studentError) {
+        console.error('Supabase error:', studentError)
+        setStudents([])
+        return
+      }
+
+      const allStudents: Student[] = (studentData || []).map((s, index) => ({
+        id: s.id || `${index}`,
+        name: s.student_name || s.name || '',
+        grade: s.grade || 0,
+        section: s.section || '',
+        house: s.house || s.house_name || '',
+        gender: s.gender || '',
+        points: Number(s.total_points ?? s.points ?? 0),
+      }))
+
+      const { data: categoryData, error: categoryError } = await supabase
+        .from(VIEWS.STUDENT_POINTS_BY_R)
+        .select('*')
+      if (categoryError) {
+        console.error('Supabase error:', categoryError)
+        setCategoryTotals([])
+      } else {
+        const totals = (categoryData || []).map((row) => {
+          const studentName = String(row.student_name ?? row.student ?? row.name ?? '')
+          const grade = Number(row.grade ?? 0)
+          const section = String(row.section ?? '')
+          const studentKey = `${studentName.toLowerCase()}|${grade}|${section.toLowerCase()}`
+          return {
+            studentKey,
+            category: String(row.category ?? row.r ?? ''),
+            points: Number(row.total_points ?? row.points ?? 0),
+          }
+        })
+        setCategoryTotals(totals)
+      }
+
+      setStudents(allStudents)
+    } catch (error) {
+      console.error('Error fetching data:', error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  // Get unique grades
+  const grades = [...new Set(students.map((s) => s.grade))].sort((a, b) => a - b)
+
+  // Filter students
+  const filteredStudents = students
+    .filter((s) => {
+      if (searchText && !s.name.toLowerCase().includes(searchText.toLowerCase())) return false
+      if (selectedGrade && s.grade !== parseInt(selectedGrade)) return false
+      if (selectedHouse && s.house !== selectedHouse) return false
+      return true
+    })
+    .sort((a, b) => {
+      if (a.grade !== b.grade) return a.grade - b.grade
+      if (a.section !== b.section) return a.section.localeCompare(b.section)
+      return a.name.localeCompare(b.name)
+    })
+
+  // Group students by class
+  const groupedStudents: Record<string, Student[]> = {}
+  filteredStudents.forEach((s) => {
+    const key = `${s.grade}${s.section}`
+    if (!groupedStudents[key]) groupedStudents[key] = []
+    groupedStudents[key].push(s)
+  })
+
+  // Get student merit entries
+  const studentKey = selectedStudent
+    ? `${selectedStudent.name.toLowerCase()}|${selectedStudent.grade}|${selectedStudent.section.toLowerCase()}`
+    : ''
+
+  const getCategoryPoints = (category: string) => {
+    if (!studentKey) return 0
+    const match = categoryTotals.find(
+      (entry) =>
+        entry.studentKey === studentKey &&
+        entry.category.toLowerCase().includes(category.toLowerCase())
+    )
+    return match?.points ?? 0
+  }
+
+  // Get initials
+  const getInitials = (name: string) => {
+    const parts = name.split(' ')
+    if (parts.length >= 2) {
+      return (parts[0][0] + parts[1][0]).toUpperCase()
+    }
+    return name.slice(0, 2).toUpperCase()
+  }
+
+  if (isLoading) {
+    return <CrestLoader label="Loading students..." />
+  }
+
+  return (
+    <div className="flex gap-6">
+      {/* Student List */}
+      <div className={`${selectedStudent ? 'w-1/2' : 'w-full'} transition-all`}>
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="text-2xl font-bold text-gray-900">Students ({students.length})</h1>
+        </div>
+
+        {/* Search and Filters */}
+        <div className="bg-white rounded-xl p-4 shadow-sm mb-6">
+          <div className="flex flex-wrap gap-4">
+            {/* Search */}
+            <div className="flex-1 min-w-64">
+              <input
+                type="text"
+                placeholder="Search students..."
+                value={searchText}
+                onChange={(e) => setSearchText(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none"
+              />
+            </div>
+
+            {/* Grade Filter */}
+            <select
+              value={selectedGrade || ''}
+              onChange={(e) => setSelectedGrade(e.target.value || null)}
+              className="px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none"
+            >
+              <option value="">All Grades</option>
+              {grades.map((g) => (
+                <option key={g} value={g}>Grade {g}</option>
+              ))}
+            </select>
+
+            {/* House Filter */}
+            <select
+              value={selectedHouse || ''}
+              onChange={(e) => setSelectedHouse(e.target.value || null)}
+              className="px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none"
+            >
+              <option value="">All Houses</option>
+              {Object.keys(houseColors).map((h) => (
+                <option key={h} value={h}>{h}</option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        {/* Student List */}
+        <div className="space-y-6">
+          {Object.entries(groupedStudents).map(([classLabel, classStudents]) => (
+            <div key={classLabel}>
+              <div className="flex items-center justify-between mb-3">
+                <h2 className="text-lg font-semibold text-gray-900">Class {classLabel}</h2>
+                <span className="text-sm text-gray-500">{classStudents.length} students</span>
+              </div>
+              <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+                {classStudents.map((student, index) => (
+                  <div
+                    key={student.id}
+                    onClick={() => setSelectedStudent(student)}
+                    className={`flex items-center gap-4 p-4 cursor-pointer transition-colors ${
+                      index !== classStudents.length - 1 ? 'border-b border-gray-50' : ''
+                    } ${selectedStudent?.id === student.id ? 'bg-purple-50' : 'hover:bg-gray-50'}`}
+                  >
+                    <div
+                      className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold"
+                      style={{
+                        backgroundColor: '#eef2f0',
+                        color: '#0f5b3a',
+                      }}
+                    >
+                      {getInitials(student.name)}
+                    </div>
+                    <div className="flex-1">
+                      <p
+                        className="font-semibold text-gray-900"
+                        style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}
+                      >
+                        {student.name}
+                      </p>
+                      <div className="flex items-center gap-2 text-sm text-gray-500">
+                        <span>Grade {student.grade}{student.section}</span>
+                        <span>•</span>
+                        <div
+                          className="w-2 h-2 rounded-full"
+                          style={{ backgroundColor: houseColors[student.house] }}
+                        />
+                        <span>{student.house?.replace('House of ', '')}</span>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <p
+                        className="font-bold text-gray-900"
+                        style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}
+                      >
+                        {student.points}
+                      </p>
+                      <p className="text-xs text-gray-500">points</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Student Detail Panel */}
+      {selectedStudent && (
+        <div className="w-1/2 sticky top-24 h-fit">
+          <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+            {/* Header */}
+            <div className="p-6 border-b border-gray-100">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-lg font-semibold text-gray-900">Student Details</h2>
+                <button
+                  onClick={() => setSelectedStudent(null)}
+                  className="text-gray-400 hover:text-gray-600"
+                >
+                  ✕
+                </button>
+              </div>
+
+              <div className="flex items-center gap-4">
+                <div
+                  className="w-16 h-16 rounded-full flex items-center justify-center text-xl font-bold"
+                  style={{
+                    backgroundColor: `${houseColors[selectedStudent.house] || '#666'}20`,
+                    color: houseColors[selectedStudent.house] || '#666',
+                  }}
+                >
+                  {getInitials(selectedStudent.name)}
+                </div>
+                <div>
+                  <p
+                    className="text-xl font-bold text-gray-900"
+                    style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}
+                  >
+                    {selectedStudent.name}
+                  </p>
+                  <p className="text-gray-500">
+                    <Link
+                      href={`/dashboard/analytics?grade=${encodeURIComponent(String(selectedStudent.grade))}&section=${encodeURIComponent(selectedStudent.section)}`}
+                      className="hover:text-[#2f0a61] transition-colors"
+                    >
+                      Grade {selectedStudent.grade}{selectedStudent.section}
+                    </Link>
+                    <span className="text-gray-400"> • </span>
+                    <Link
+                      href={`/dashboard/analytics?house=${encodeURIComponent(selectedStudent.house)}`}
+                      className="hover:text-[#2f0a61] transition-colors"
+                    >
+                      {selectedStudent.house}
+                    </Link>
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Total Points */}
+            <div className="p-6 border-b border-gray-100 text-center">
+              <p className="text-sm text-gray-500 mb-1">Total Points</p>
+              <p
+                className="text-4xl font-bold"
+                style={{
+                  color: houseColors[selectedStudent.house] || '#1a1a2e',
+                  fontFamily: 'var(--font-playfair), Georgia, serif',
+                }}
+              >
+                {selectedStudent.points}
+              </p>
+            </div>
+
+            {/* Points by Category */}
+            <div className="p-6 border-b border-gray-100">
+              <h3 className="text-sm font-semibold text-gray-500 mb-3">Points by Category</h3>
+              {['Respect', 'Responsibility', 'Righteousness'].map((category) => {
+                const categoryPoints = getCategoryPoints(category)
+                const color = category === 'Respect'
+                  ? '#1f4e79'
+                  : category === 'Responsibility'
+                    ? '#8a6a1e'
+                    : '#6b2f8a'
+                return (
+                  <div key={category} className="flex items-center justify-between py-2">
+                    <div className="flex items-center gap-2">
+                      <div className="w-3 h-3 rounded-full" style={{ backgroundColor: color }} />
+                      <span className="text-sm text-gray-700">{category}</span>
+                    </div>
+                    <span className="font-semibold" style={{ color }}>{categoryPoints}</span>
+                  </div>
+                )
+              })}
+            </div>
+
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
