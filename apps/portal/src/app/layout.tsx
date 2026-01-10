@@ -1,23 +1,23 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Playfair_Display } from "next/font/google";
+import { Crimson_Text, Inter } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "./providers";
 
-const cormorant = Cormorant_Garamond({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-body",
-});
-
-const playfair = Playfair_Display({
+const crimson = Crimson_Text({
   subsets: ["latin"],
   weight: ["400", "600", "700"],
-  variable: "--font-playfair",
+  variable: "--font-crimson",
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-inter",
 });
 
 export const metadata: Metadata = {
-  title: "League of Stars",
-  description: "League of Stars web experience for Brighter Horizon Academy",
+  title: "League of Champions",
+  description: "League of Champions for Dar Al-Arqam Islamic School",
 };
 
 export default function RootLayout({
@@ -25,7 +25,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body className={`${cormorant.variable} ${playfair.variable} ${cormorant.className} antialiased`}>
+      <body className={`${crimson.variable} ${inter.variable} ${inter.className} antialiased`}>
         <AuthProvider>{children}</AuthProvider>
       </body>
     </html>

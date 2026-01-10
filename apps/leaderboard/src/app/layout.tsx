@@ -1,24 +1,23 @@
 import type { Metadata } from "next";
-import { Cinzel, Playfair_Display } from "next/font/google";
+import { Crimson_Text, Inter } from "next/font/google";
 import "./globals.css";
 import AutoRotate from "@/components/AutoRotate";
 
-const cinzel = Cinzel({
-  variable: "--font-cinzel",
+const crimson = Crimson_Text({
   subsets: ["latin"],
-  weight: ["400", "700"],
+  weight: ["400", "600", "700"],
+  variable: "--font-crimson",
 });
 
-const playfair = Playfair_Display({
-  variable: "--font-playfair",
+const inter = Inter({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
-  style: ["normal", "italic"],
+  variable: "--font-inter",
 });
 
 export const metadata: Metadata = {
-  title: "League of Stars Leaderboard",
-  description: "Where Stars Are Made",
+  title: "League of Champions Leaderboard",
+  description: "Where Champions Are Made",
 };
 
 export default function RootLayout({
@@ -28,7 +27,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${cinzel.variable} ${playfair.variable} antialiased`}>
+      <body className={`${crimson.variable} ${inter.variable} ${inter.className} antialiased`}>
         <AutoRotate />
         {children}
       </body>
