@@ -23,22 +23,22 @@ interface HouseStanding {
 const houseConfig: Record<string, { color: string; gradient: string; logo: string }> = {
   'House of Abu Bakr': {
     color: 'var(--house-abu-bakr)',
-    gradient: 'linear-gradient(135deg, #2d3748 0%, #1e2a3a 50%, #0f1720 100%)',
+    gradient: 'linear-gradient(135deg, #3d7a4d 0%, #2d5a27 50%, #1a4016 100%)',
     logo: '/House%20of%20Ab%C5%AB%20Bakr.png',
   },
   'House of Khadijah': {
     color: 'var(--house-khadijah)',
-    gradient: 'linear-gradient(135deg, #3d7a3d 0%, #2d5a27 50%, #1a3a16 100%)',
+    gradient: 'linear-gradient(135deg, #7b5433 0%, #6b4423 50%, #5a3413 100%)',
     logo: '/House%20of%20Khad%C4%ABjah.png',
   },
   'House of Umar': {
     color: 'var(--house-umar)',
-    gradient: 'linear-gradient(135deg, #5a6778 0%, #4a5568 50%, #3a4550 100%)',
+    gradient: 'linear-gradient(135deg, #5a6578 0%, #4a5568 50%, #3a4558 100%)',
     logo: '/House%20of%20%CA%BFUmar.png',
   },
   'House of Aishah': {
     color: 'var(--house-aishah)',
-    gradient: 'linear-gradient(135deg, #8a5a1a 0%, #744210 50%, #5a320a 100%)',
+    gradient: 'linear-gradient(135deg, #9b5523 0%, #8b4513 50%, #7b3503 100%)',
     logo: '/House%20of%20%CA%BF%C4%80%CA%BEishah.png',
   },
 }
@@ -112,9 +112,9 @@ export default function MyHousePage() {
 
   if (!profile || !houseInfo) {
     return (
-      <div className="bg-white rounded-2xl p-8 shadow-sm border border-[var(--stone-alt)] text-center">
-        <p className="text-[var(--navy)]/70 font-medium">We couldn't find your house yet.</p>
-        <p className="text-sm text-[var(--navy)]/45 mt-2">Please contact the office to link your account.</p>
+      <div className="bg-white rounded-2xl p-8 shadow-sm border border-[var(--cream-alt)] text-center">
+        <p className="text-[var(--charcoal)]/70 font-medium">We couldn't find your house yet.</p>
+        <p className="text-sm text-[var(--charcoal)]/45 mt-2">Please contact the office to link your account.</p>
       </div>
     )
   }
@@ -122,12 +122,12 @@ export default function MyHousePage() {
   return (
     <div className="max-w-4xl mx-auto">
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-[var(--navy)] mb-2" style={{ fontFamily: 'var(--font-crimson), Georgia, serif' }}>
+        <h1 className="text-3xl font-bold text-[var(--charcoal)] mb-2">
           My House
         </h1>
         <div className="flex items-center gap-3">
-          <div className="h-1 w-16 bg-gradient-to-r from-[var(--brass)] to-[var(--brass-light)] rounded-full"></div>
-          <p className="text-[var(--navy)]/50 text-sm font-medium">House standing and contribution snapshot.</p>
+          <div className="h-1 w-16 bg-gradient-to-r from-[var(--sage-primary)] to-[var(--sage-light)] rounded-full"></div>
+          <p className="text-[var(--charcoal)]/50 text-sm font-medium">House standing and contribution snapshot.</p>
         </div>
       </div>
 
@@ -146,7 +146,7 @@ export default function MyHousePage() {
               </div>
               <div>
                 <p className="text-white/70 text-xs uppercase tracking-[0.2em]">My House</p>
-                <h2 className="text-2xl font-bold text-white" style={{ fontFamily: 'var(--font-crimson), Georgia, serif' }}>
+                <h2 className="text-2xl font-bold text-white">
                   {canonical}
                 </h2>
               </div>

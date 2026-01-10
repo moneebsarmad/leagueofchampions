@@ -189,29 +189,21 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="h-screen py-4 px-4 sm:px-6 lg:px-8 flex flex-col" style={{ background: "var(--navy)" }}>
+    <div className="h-screen py-4 px-4 sm:px-6 lg:px-8 flex flex-col geometric-dark">
       {/* School Branding */}
-      <div
-        className="absolute top-4 left-6 text-sm tracking-wide font-medium"
-        style={{
-          color: "var(--brass)",
-          fontFamily: "var(--font-inter), sans-serif"
-        }}
-      >
+      <div className="absolute top-4 left-6 text-sm tracking-wide font-medium text-[var(--sage-light)]">
         Dar Al-Arqam Islamic School
       </div>
       <div className="absolute top-4 right-6 flex items-center gap-2">
         <Link
           href="/house-mvps"
-          className="inline-flex items-center gap-2 rounded-full border border-[var(--brass)] px-4 py-2 text-xs uppercase tracking-[0.15em] text-[var(--brass)] transition hover:bg-[var(--brass)] hover:text-white"
-          style={{ fontFamily: "var(--font-inter), sans-serif" }}
+          className="inline-flex items-center gap-2 rounded-full border border-[var(--sage-light)] px-4 py-2 text-xs uppercase tracking-[0.15em] text-[var(--sage-light)] transition hover:bg-[var(--sage-light)] hover:text-white"
         >
           House MVPs
         </Link>
         <Link
           href="/hall-of-fame"
-          className="inline-flex items-center gap-2 rounded-full border border-[var(--brass)] px-4 py-2 text-xs uppercase tracking-[0.15em] text-[var(--brass)] transition hover:bg-[var(--brass)] hover:text-white"
-          style={{ fontFamily: "var(--font-inter), sans-serif" }}
+          className="inline-flex items-center gap-2 rounded-full border border-[var(--sage-light)] px-4 py-2 text-xs uppercase tracking-[0.15em] text-[var(--sage-light)] transition hover:bg-[var(--sage-light)] hover:text-white"
         >
           Hall of Fame
         </Link>
@@ -233,21 +225,12 @@ export default function Home() {
           </div>
 
           {/* Title */}
-          <h1
-            className="text-3xl sm:text-4xl md:text-5xl text-white mb-2 pb-1"
-            style={{ fontFamily: "var(--font-crimson), Georgia, serif" }}
-          >
+          <h1 className="text-3xl sm:text-4xl md:text-5xl text-white mb-2 pb-1">
             League of Champions
           </h1>
 
           {/* Tagline */}
-          <p
-            className="text-lg sm:text-xl mt-3"
-            style={{
-              color: "var(--brass)",
-              fontFamily: "var(--font-crimson), Georgia, serif"
-            }}
-          >
+          <p className="text-lg sm:text-xl mt-3 text-[var(--sage-light)]">
             Where Champions Are Made
           </p>
 

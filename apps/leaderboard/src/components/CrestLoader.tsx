@@ -20,13 +20,10 @@ export default function CrestLoader({ label = 'Loading...' }: CrestLoaderProps) 
             priority
           />
         </div>
-        <div
-          className="text-xl font-semibold text-white mb-2"
-          style={{ fontFamily: "var(--font-crimson), Georgia, serif" }}
-        >
+        <div className="text-xl font-semibold text-white mb-2">
           League of Champions
         </div>
-        <p className="text-[var(--brass)] text-sm font-medium">{label}</p>
+        <p className="text-[var(--sage-light)] text-sm font-medium">{label}</p>
       </div>
     </div>
   )

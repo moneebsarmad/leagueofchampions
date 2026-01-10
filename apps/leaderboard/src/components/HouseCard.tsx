@@ -33,10 +33,7 @@ export default function HouseCard({ house }: HouseCardProps) {
         {/* House Name */}
         <h2
           className="text-2xl font-bold mb-1"
-          style={{
-            color: house.color,
-            fontFamily: "var(--font-crimson), Georgia, serif"
-          }}
+          style={{ color: house.color }}
         >
           {house.name}
         </h2>
@@ -44,33 +41,18 @@ export default function HouseCard({ house }: HouseCardProps) {
         {/* Virtue */}
         <p
           className="italic text-lg mb-1"
-          style={{
-            color: house.color,
-            fontFamily: "var(--font-crimson), Georgia, serif"
-          }}
+          style={{ color: house.color }}
         >
           {house.virtue}
         </p>
 
         {/* Description */}
-        <p
-          className="text-sm mb-2"
-          style={{
-            color: "var(--navy)",
-            fontFamily: "var(--font-inter), sans-serif"
-          }}
-        >
+        <p className="text-sm mb-2 text-white/80">
           {house.description}
         </p>
 
         {/* Points */}
-        <p
-          className="text-4xl font-bold"
-          style={{
-            color: "var(--navy)",
-            fontFamily: "var(--font-crimson), Georgia, serif"
-          }}
-        >
+        <p className="text-4xl font-bold text-white">
           {house.points.toLocaleString()}
         </p>
       </div>
