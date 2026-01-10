@@ -234,7 +234,7 @@ export default function HouseMvpsPage() {
   );
 
   return (
-    <div className="min-h-screen py-6 px-4 sm:px-6 lg:px-8 leaderboard-shell flex flex-col">
+    <div className="min-h-screen py-6 px-4 sm:px-6 lg:px-8 app-shell flex flex-col">
       <div className="max-w-6xl mx-auto w-full flex-1">
         <div className="absolute top-4 right-6">
           <Link
@@ -246,7 +246,7 @@ export default function HouseMvpsPage() {
         </div>
         <header className="text-center mb-6">
           <div className="flex justify-center mb-3">
-            <div className="w-12 h-12 rounded-2xl bg-[var(--accent-soft)] text-[var(--accent)] flex items-center justify-center text-sm font-semibold">
+            <div className="w-12 h-12 rounded-2xl bg-[var(--surface-2)] text-[var(--text)] border border-[var(--border)] flex items-center justify-center text-sm font-semibold">
               DA
             </div>
           </div>

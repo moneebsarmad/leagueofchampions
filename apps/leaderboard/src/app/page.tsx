@@ -47,28 +47,28 @@ const houseConfig: Record<string, Omit<House, "rank" | "points" | "name">> = {
       virtue: "Loyalty",
       description: "Rooted in honesty, unwavering in loyalty to faith and community.",
       color: "var(--house-abu)",
-      bgColor: "var(--bg-muted)",
+      bgColor: "var(--surface-2)",
       logo: "/house_of_abubakr.png",
     },
     "House of 'Umar": {
       virtue: "Moral Courage",
       description: "Living with fairness, speaking truth, and acting with courage.",
       color: "var(--house-umar)",
-      bgColor: "var(--bg-muted)",
+      bgColor: "var(--surface-2)",
       logo: "/house_of_umar.png",
     },
     "House of 'A'ishah": {
       virtue: "Creativity",
       description: "Igniting creativity that inspires hearts and serves Allah.",
       color: "var(--house-aish)",
-      bgColor: "var(--bg-muted)",
+      bgColor: "var(--surface-2)",
       logo: "/house_of_aishah.png",
     },
     "House of Khadijah": {
       virtue: "Wisdom",
       description: "Guided by wisdom, leading with grace and strength.",
       color: "var(--house-khad)",
-      bgColor: "var(--bg-muted)",
+      bgColor: "var(--surface-2)",
       logo: "/house_of_khadijah.png",
     },
   };
@@ -188,43 +188,41 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="h-screen py-4 px-4 sm:px-6 lg:px-8 flex flex-col leaderboard-shell">
-      <div className="absolute top-4 left-6 text-sm font-medium text-[var(--text-muted)]">
-        Dār al-Arqam Islamic School
-      </div>
-      <div className="absolute top-4 right-6 flex items-center gap-2">
-        <Link href="/house-mvps" className="btn-secondary text-xs">
-          House MVPs
-        </Link>
-        <Link href="/hall-of-fame" className="btn-secondary text-xs">
-          Hall of Fame
-        </Link>
+    <div className="min-h-screen app-shell flex flex-col">
+      <div className="broadcast">
+        <div className="broadcast-inner">
+          <div>
+            <div className="broadcast-title">League of Champions</div>
+            <div className="broadcast-sub">Dār al-Arqam Islamic School · Weekly Standings</div>
+          </div>
+          <div className="broadcast-chip">
+            <span className="broadcast-dot"></span>
+            Live Rankings
+          </div>
+        </div>
       </div>
 
-      <div className="max-w-6xl mx-auto w-full flex flex-col flex-1">
-        <header className="text-center mb-4">
-          <div className="flex justify-center mb-2">
-            <div className="w-14 h-14 rounded-2xl bg-[var(--accent-soft)] text-[var(--accent)] flex items-center justify-center text-sm font-semibold">
-              DA
+      <div className="w-full flex-1 py-6 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-6xl mx-auto w-full flex flex-col flex-1">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-2xl bg-[var(--surface-2)] text-[var(--text)] border border-[var(--border)] flex items-center justify-center text-sm font-semibold">
+                DA
+              </div>
+              <div>
+                <h1 className="text-2xl sm:text-3xl font-semibold">Weekly Standings</h1>
+                <p className="text-sm text-[var(--text-muted)]">Where Champions Are Made</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <Link href="/house-mvps" className="btn-secondary text-xs">
+                House MVPs
+              </Link>
+              <Link href="/hall-of-fame" className="btn-secondary text-xs">
+                Hall of Fame
+              </Link>
             </div>
           </div>
-
-          <h1 className="text-3xl sm:text-4xl md:text-5xl mb-2">
-            League of Champions
-          </h1>
-          <p className="text-lg sm:text-xl mt-2 text-[var(--text-muted)]">
-            Where Champions Are Made
-          </p>
-
-        </header>
-
-        <div className="champ-banner text-sm text-[var(--text)] flex items-center justify-between gap-3">
-          <span className="font-medium">Weekly Standings · Dār al-Arqam</span>
-          <span className="medal medal--gold">
-            <span className="medal-dot" />
-            Leaderboard
-          </span>
-        </div>
 
         {/* Leaderboard Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">

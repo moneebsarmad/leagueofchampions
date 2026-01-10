@@ -267,7 +267,7 @@ export default function StudentsPage() {
                       onClick={() => setSelectedStudent(student)}
                       className={`flex items-center gap-4 p-4 cursor-pointer transition-all ${
                         index !== classStudents.length - 1 ? 'border-b border-[var(--border)]' : ''
-                      } ${selectedStudent?.id === student.id ? 'bg-[var(--accent-soft)]' : 'hover:bg-[var(--surface-2)]'}`}
+                      } ${selectedStudent?.id === student.id ? 'bg-[var(--surface-2)]' : 'hover:bg-[var(--surface-2)]'}`}
                     >
                       <div
                         className="w-11 h-11 rounded-xl flex items-center justify-center text-sm font-bold"
@@ -351,7 +351,7 @@ export default function StudentsPage() {
                         setSelectedGrade(String(selectedStudent.grade))
                         setSelectedSection(selectedStudent.section || null)
                       }}
-                      className="text-[var(--accent-2)] underline underline-offset-2 decoration-[var(--accent)] decoration-2 hover:text-[var(--text)] transition-colors"
+                      className="text-[var(--accent)] underline underline-offset-2 decoration-[var(--accent)] decoration-2 hover:text-[var(--text)] transition-colors"
                     >
                       Grade {selectedStudent.grade}{selectedStudent.section}
                     </button>
@@ -359,7 +359,7 @@ export default function StudentsPage() {
                     <button
                       type="button"
                       onClick={() => setSelectedHouse(canonicalHouse(selectedStudent.house))}
-                      className="text-[var(--accent-2)] underline underline-offset-2 decoration-[var(--accent)] decoration-2 hover:text-[var(--text)] transition-colors"
+                      className="text-[var(--accent)] underline underline-offset-2 decoration-[var(--accent)] decoration-2 hover:text-[var(--text)] transition-colors"
                     >
                       {canonicalHouse(selectedStudent.house)}
                     </button>
@@ -406,7 +406,7 @@ export default function StudentsPage() {
                   <button
                     type="button"
                     onClick={() => setSelectedStaff(null)}
-                    className="text-xs text-[var(--text-muted)] hover:text-[var(--accent-2)] transition-colors"
+                    className="text-xs text-[var(--text-muted)] hover:text-[var(--accent)] transition-colors"
                   >
                     Clear staff filter
                   </button>
@@ -425,7 +425,7 @@ export default function StudentsPage() {
                         <button
                           type="button"
                           onClick={() => setSelectedStaff(merit.staffName)}
-                          className="text-xs text-[var(--accent-2)] underline underline-offset-2 decoration-[var(--accent)] decoration-2 hover:text-[var(--text)] transition-colors"
+                          className="text-xs text-[var(--accent)] underline underline-offset-2 decoration-[var(--accent)] decoration-2 hover:text-[var(--text)] transition-colors"
                         >
                           {merit.staffName}
                         </button>

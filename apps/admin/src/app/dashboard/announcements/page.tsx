@@ -178,7 +178,7 @@ export default function AnnouncementsPage() {
                   onClick={() => toggleRole(role)}
                   className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition ${
                     roles.includes(role)
-                      ? 'bg-[var(--accent)]/20 border-[var(--border)] text-[var(--accent-2)]'
+                      ? 'bg-[var(--accent)]/20 border-[var(--border)] text-[var(--accent)]'
                       : 'border-[var(--border)] text-[var(--text-muted)] hover:border-[var(--border)]'
                   }`}
                 >
@@ -200,7 +200,7 @@ export default function AnnouncementsPage() {
                   onClick={() => toggleHouse(house)}
                   className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition ${
                     houses.includes(house)
-                      ? 'bg-[var(--accent-soft)] border-[var(--border)] text-[var(--accent-2)]'
+                      ? 'bg-[var(--surface-2)] border-[var(--border)] text-[var(--accent)]'
                       : 'border-[var(--border)] text-[var(--text-muted)] hover:border-[var(--border)]'
                   }`}
                 >
@@ -238,7 +238,7 @@ export default function AnnouncementsPage() {
               onClick={() => setPinned((prev) => !prev)}
               className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition ${
                 pinned
-                  ? 'bg-[var(--accent)]/20 border-[var(--border)] text-[var(--accent-2)]'
+                  ? 'bg-[var(--accent)]/20 border-[var(--border)] text-[var(--accent)]'
                   : 'border-[var(--border)] text-[var(--text-muted)] hover:border-[var(--border)]'
               }`}
             >
@@ -274,7 +274,7 @@ export default function AnnouncementsPage() {
                 </div>
                 <div className="flex items-center gap-2">
                   {announcement.pinned && (
-                    <span className="text-xs px-2 py-0.5 rounded-full bg-[var(--accent)]/20 text-[var(--accent-2)] font-semibold tracking-wider">
+                    <span className="text-xs px-2 py-0.5 rounded-full bg-[var(--accent)]/20 text-[var(--accent)] font-semibold tracking-wider">
                       Pinned
                     </span>
                   )}

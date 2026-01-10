@@ -18,7 +18,7 @@ interface HouseCardProps {
 export default function HouseCard({ house }: HouseCardProps) {
   const podiumClass =
     house.rank === 1
-      ? "podium podium--gold shimmer"
+      ? "podium podium--gold"
       : house.rank === 2
         ? "podium podium--silver"
         : house.rank === 3
@@ -33,6 +33,16 @@ export default function HouseCard({ house }: HouseCardProps) {
           ? "medal medal--bronze"
           : "medal";
   const isTopThree = house.rank <= 3;
+  const medalLabel =
+    house.rank === 1
+      ? "Champion"
+      : house.rank === 2
+        ? "Runner-up"
+        : house.rank === 3
+          ? "Third Place"
+          : `#${house.rank}`;
+  const scoreClass =
+    house.rank === 1 ? "score score--big" : "score text-2xl";
 
   return (
     <div
@@ -41,14 +51,10 @@ export default function HouseCard({ house }: HouseCardProps) {
         borderLeft: `4px solid ${house.color}`,
       }}
     >
-      {house.rank === 1 ? (
-        <div className="podium-flag">Champion</div>
-      ) : null}
-
       <div className="absolute top-3 right-3">
         <div className={medalClass}>
           <span className="medal-dot" />
-          #{house.rank}
+          {medalLabel}
         </div>
       </div>
 
@@ -72,7 +78,7 @@ export default function HouseCard({ house }: HouseCardProps) {
         </p>
 
         {/* Points */}
-        <p className={`font-bold text-[var(--text)] ${isTopThree ? "score score--big" : "score text-2xl"}`}>
+        <p className={`font-bold text-[var(--text)] ${scoreClass}`}>
           {house.points.toLocaleString()}
         </p>
         {isTopThree ? (

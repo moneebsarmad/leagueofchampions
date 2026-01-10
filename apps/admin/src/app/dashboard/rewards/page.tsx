@@ -580,7 +580,7 @@ export default function RewardsPage() {
                     ) : (
                       <div className="space-y-2">
                         {tier.males.slice(0, 5).map((s, i) => (
-                          <div key={s.name} className="flex items-center gap-3 p-3 rounded-xl bg-[var(--bg-muted)]">
+                          <div key={s.name} className="flex items-center gap-3 p-3 rounded-xl bg-[var(--surface-2)]">
                             <span className="w-6 h-6 rounded-full border border-[var(--border)] text-[var(--text-muted)] flex items-center justify-center text-xs font-bold">
                               {i + 1}
                             </span>
@@ -588,7 +588,7 @@ export default function RewardsPage() {
                               <p className="font-medium text-[var(--text)]">{s.name}</p>
                               <p className="text-xs text-[var(--text-muted)]">Grade {s.grade} • {s.section}</p>
                             </div>
-                            <span className="font-bold text-[var(--accent-2)]">{s.totalPoints} pts</span>
+                            <span className="font-bold text-[var(--accent)]">{s.totalPoints} pts</span>
                           </div>
                         ))}
                         {tier.males.length > 5 && (
@@ -605,7 +605,7 @@ export default function RewardsPage() {
                     ) : (
                       <div className="space-y-2">
                         {tier.females.slice(0, 5).map((s, i) => (
-                          <div key={s.name} className="flex items-center gap-3 p-3 rounded-xl bg-[var(--bg-muted)]">
+                          <div key={s.name} className="flex items-center gap-3 p-3 rounded-xl bg-[var(--surface-2)]">
                             <span className="w-6 h-6 rounded-full border border-[var(--border)] text-[var(--text-muted)] flex items-center justify-center text-xs font-bold">
                               {i + 1}
                             </span>
@@ -613,7 +613,7 @@ export default function RewardsPage() {
                               <p className="font-medium text-[var(--text)]">{s.name}</p>
                               <p className="text-xs text-[var(--text-muted)]">Grade {s.grade} • {s.section}</p>
                             </div>
-                            <span className="font-bold text-[var(--accent-2)]">{s.totalPoints} pts</span>
+                            <span className="font-bold text-[var(--accent)]">{s.totalPoints} pts</span>
                           </div>
                         ))}
                         {tier.females.length > 5 && (
@@ -658,14 +658,14 @@ export default function RewardsPage() {
                     {badge.name}
                   </h3>
                   <p className="text-sm text-[var(--text-muted)] mt-1">{badge.description}</p>
-                  <span className="inline-block mt-2 px-3 py-1 rounded-full text-xs font-semibold bg-[var(--accent)]/10 text-[var(--accent-2)]">
+                  <span className="inline-block mt-2 px-3 py-1 rounded-full text-xs font-semibold bg-[var(--accent)]/10 text-[var(--accent)]">
                     {badge.category}
                   </span>
                 </div>
                 <div className="space-y-4">
                   {/* Top Male */}
                   <div className="surface-muted p-4" style={{ borderLeft: '3px solid var(--accent)' }}>
-                    <p className="text-xs font-semibold text-[var(--accent-2)] tracking-wider mb-2">Top Male</p>
+                    <p className="text-xs font-semibold text-[var(--accent)] tracking-wider mb-2">Top Male</p>
                     {badge.topMale ? (
                       <div>
                         <p className="font-bold text-[var(--text)]">{badge.topMale.name}</p>
@@ -714,7 +714,7 @@ export default function RewardsPage() {
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                 {consistencyCrown.slice(0, 6).map((s) => (
-                  <div key={s.name} className="flex items-center gap-3 p-3 rounded-xl bg-[var(--bg-muted)]">
+                  <div key={s.name} className="flex items-center gap-3 p-3 rounded-xl bg-[var(--surface-2)]">
                     <span className="text-2xl">👑</span>
                     <div>
                       <p className="font-medium text-[var(--text)]">{s.name}</p>
@@ -742,10 +742,10 @@ export default function RewardsPage() {
             ) : (
               <div className="space-y-3">
                 {risingStars.slice(0, 5).map((s, i) => (
-                  <div key={s.name} className="flex items-center gap-4 p-4 rounded-xl bg-[var(--bg-muted)]">
+                  <div key={s.name} className="flex items-center gap-4 p-4 rounded-xl bg-[var(--surface-2)]">
                     <span className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${
                       i === 0
-                        ? 'bg-[var(--accent-soft)] text-[var(--accent-2)]'
+                        ? 'bg-[var(--surface-2)] text-[var(--accent)]'
                         : 'bg-[var(--surface)] text-[var(--text-muted)] border border-[var(--border)]'
                     }`}>
                       {i + 1}
@@ -777,7 +777,7 @@ export default function RewardsPage() {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               {houseMVPs.map((h) => (
-                <div key={h.house} className="p-4 rounded-xl bg-[var(--bg-muted)] text-center">
+                <div key={h.house} className="p-4 rounded-xl bg-[var(--surface-2)] text-center">
                   {houseLogos[h.house] && (
                     <img src={houseLogos[h.house]} alt={h.house} className="w-12 h-12 mx-auto mb-3 object-contain" />
                   )}
@@ -808,7 +808,7 @@ export default function RewardsPage() {
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3">
               {gradeChampions.map((g) => (
-                <div key={g.grade} className="p-4 rounded-xl bg-[var(--bg-muted)] text-center">
+                <div key={g.grade} className="p-4 rounded-xl bg-[var(--surface-2)] text-center">
                   <p className="text-xs font-semibold text-[var(--text-muted)] tracking-wider mb-2">Grade {g.grade}</p>
                   {g.champion ? (
                     <>
@@ -850,13 +850,13 @@ export default function RewardsPage() {
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   {tier.students.map((s) => (
-                    <div key={s.name} className="flex items-center gap-3 p-3 rounded-xl bg-[var(--bg-muted)]">
+                    <div key={s.name} className="flex items-center gap-3 p-3 rounded-xl bg-[var(--surface-2)]">
                       <div className="flex-1">
                         <p className="font-medium text-[var(--text)]">{s.name}</p>
                         <p className="text-xs text-[var(--text-muted)]">Grade {s.grade} • {s.house}</p>
                       </div>
                       <div className="text-right">
-                        <p className="font-bold text-[var(--accent-2)]">{s.totalPoints} pts</p>
+                        <p className="font-bold text-[var(--accent)]">{s.totalPoints} pts</p>
                         <p className="text-xs text-[var(--accent)] font-semibold">{s.pointsNeeded} to go!</p>
                       </div>
                     </div>

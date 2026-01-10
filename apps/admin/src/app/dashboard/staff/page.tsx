@@ -22,8 +22,8 @@ interface StaffMember {
 
 const tierColors = {
   High: {
-    bg: 'bg-[var(--accent-soft)]',
-    text: 'text-[var(--accent-2)]',
+    bg: 'bg-[var(--surface-2)]',
+    text: 'text-[var(--accent)]',
     border: 'border-[var(--accent)]',
     dot: 'var(--accent)',
   },
@@ -556,7 +556,7 @@ export default function StaffPage() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          <div className="p-5 rounded-xl bg-[var(--bg-muted)] border border-[var(--border)]">
+          <div className="p-5 rounded-xl bg-[var(--surface-2)] border border-[var(--border)]">
             <p className="text-xs font-semibold text-[var(--text-muted)] tracking-widest">House Spirit Award</p>
             <p className="text-sm text-[var(--text-muted)] mt-1">House with the highest collective staff participation</p>
             <div className="mt-4">
@@ -569,7 +569,7 @@ export default function StaffPage() {
             </div>
           </div>
 
-          <div className="p-5 rounded-xl bg-[var(--bg-muted)] border border-[var(--border)]">
+          <div className="p-5 rounded-xl bg-[var(--surface-2)] border border-[var(--border)]">
             <p className="text-xs font-semibold text-[var(--text-muted)] tracking-widest">3R All-Star</p>
             <p className="text-sm text-[var(--text-muted)] mt-1">Most diverse merit categories</p>
             <div className="mt-4">
@@ -582,7 +582,7 @@ export default function StaffPage() {
             </div>
           </div>
 
-          <div className="p-5 rounded-xl bg-[var(--bg-muted)] border border-[var(--border)]">
+          <div className="p-5 rounded-xl bg-[var(--surface-2)] border border-[var(--border)]">
             <p className="text-xs font-semibold text-[var(--text-muted)] tracking-widest">The Steady Hand</p>
             <p className="text-sm text-[var(--text-muted)] mt-1">Most days with point submissions</p>
             <div className="mt-4">
@@ -595,7 +595,7 @@ export default function StaffPage() {
             </div>
           </div>
 
-          <div className="p-5 rounded-xl bg-[var(--bg-muted)] border border-[var(--border)]">
+          <div className="p-5 rounded-xl bg-[var(--surface-2)] border border-[var(--border)]">
             <p className="text-xs font-semibold text-[var(--text-muted)] tracking-widest">The Diamond Finder</p>
             <p className="text-sm text-[var(--text-muted)] mt-1">Most unique students recognized</p>
             <div className="mt-4">
@@ -619,7 +619,7 @@ export default function StaffPage() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
             {monthlyAwards.houseChampions.map((entry) => (
-              <div key={entry.house} className="rounded-xl bg-[var(--bg-muted)] px-4 py-3">
+              <div key={entry.house} className="rounded-xl bg-[var(--surface-2)] px-4 py-3">
                 <p className="text-xs font-semibold text-[var(--text-muted)] tracking-wider">
                   {entry.house.replace('House of ', '')}
                 </p>
@@ -647,7 +647,7 @@ export default function StaffPage() {
               </h3>
               <p className="text-xs text-[var(--text-muted)] mt-1">Complete performance breakdown for all staff members</p>
             </div>
-            <span className="text-xs font-semibold tracking-wider bg-[var(--accent)]/15 text-[var(--accent-2)] px-3 py-1 rounded-full">
+            <span className="text-xs font-semibold tracking-wider bg-[var(--accent)]/15 text-[var(--accent)] px-3 py-1 rounded-full">
               {selectedMonthLabel}
             </span>
           </div>
@@ -682,8 +682,8 @@ export default function StaffPage() {
                       <span className={`inline-flex items-center justify-center w-9 h-9 rounded-xl font-bold text-sm shadow-sm ${
                         member.rank === 1 ? 'bg-[var(--accent)] text-white' :
                         member.rank === 2 ? 'bg-[var(--surface-2)] text-[var(--text)] border border-[var(--border)]' :
-                        member.rank === 3 ? 'bg-[var(--accent-soft)] text-[var(--text)]' :
-                        'bg-[var(--bg-muted)] text-[var(--text-muted)]'
+                        member.rank === 3 ? 'bg-[var(--surface-2)] text-[var(--text)]' :
+                        'bg-[var(--surface-2)] text-[var(--text-muted)]'
                       }`}>
                         {member.rank}
                       </span>
@@ -729,7 +729,7 @@ export default function StaffPage() {
                       )}
                     </td>
                     <td className="py-4 px-4">
-                      <span className="font-bold text-[var(--accent-2)]">
+                      <span className="font-bold text-[var(--accent)]">
                         {member.points.toLocaleString()}
                       </span>
                     </td>

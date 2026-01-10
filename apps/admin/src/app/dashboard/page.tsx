@@ -235,11 +235,11 @@ export default function DashboardPage() {
                   {house.topStudents.map((student, i) => (
                     <div
                       key={student.name}
-                      className="surface-muted rounded-xl px-4 py-3 min-w-[150px] border border-[var(--border)] hover:bg-[var(--surface)] transition-colors"
+                      className={`surface-muted rounded-xl px-4 py-3 min-w-[150px] border border-[var(--border)] hover:bg-[var(--surface)] transition-colors ${i === 0 ? 'bg-[var(--champ-soft)] border-l-[3px] border-[var(--champ)]' : ''}`}
                     >
                       <div className="flex items-center gap-2 mb-2">
                         <span className={`w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold ${
-                          i === 0 ? 'bg-[var(--accent)] text-white' :
+                          i === 0 ? 'bg-[var(--champ)] text-white' :
                           i === 1 ? 'bg-[var(--surface)] text-[var(--text)] border border-[var(--border)]' :
                           'bg-[var(--surface-2)] text-[var(--text-muted)]'
                         }`}>

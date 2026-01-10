@@ -43,7 +43,7 @@ const categoryColors = [
   'var(--house-umar)',
   'var(--house-aish)',
   'var(--accent)',
-  'var(--accent-2)',
+  'var(--accent)',
   'var(--success)',
   'var(--warning)',
 ]
@@ -315,12 +315,12 @@ export default function AnalyticsPage() {
         <head>
           <title>${title}</title>
           <style>
-            body { font-family: Inter, Arial, sans-serif; color: #14161a; padding: 24px; background: #fbfaf7; }
+            body { font-family: Inter, Arial, sans-serif; color: #0b0f14; padding: 24px; background: #fbfbfa; }
             h1 { font-size: 20px; margin: 0 0 12px; }
-            p { font-size: 12px; margin: 0 0 16px; color: #5a616b; }
+            p { font-size: 12px; margin: 0 0 16px; color: #5b6472; }
             table { width: 100%; border-collapse: collapse; font-size: 11px; }
-            th, td { border: 1px solid #e6e1d7; padding: 6px 8px; text-align: left; }
-            th { background: #fbfaf7; color: #5a616b; }
+            th, td { border: 1px solid rgba(15, 23, 42, 0.1); padding: 6px 8px; text-align: left; }
+            th { background: #f4f5f7; color: #5b6472; }
           </style>
         </head>
         <body>
@@ -543,7 +543,7 @@ export default function AnalyticsPage() {
         <div className="flex gap-3 pt-2 border-t border-[var(--border)]">
           <button
             onClick={clearFilters}
-            className="px-5 py-2.5 text-sm text-[var(--text-muted)] hover:text-[var(--text)] font-medium rounded-xl hover:bg-[var(--bg-muted)] transition"
+            className="px-5 py-2.5 text-sm text-[var(--text-muted)] hover:text-[var(--text)] font-medium rounded-xl hover:bg-[var(--surface-2)] transition"
           >
             Clear All
           </button>
@@ -613,7 +613,7 @@ export default function AnalyticsPage() {
               setFilters({ house: '', grade: '', section: '', staff: '', category: '', subcategory: '', startDate: '', endDate: '' })
               setAppliedFilters({ house: '', grade: '', section: '', staff: '', category: '', subcategory: '', startDate: '', endDate: '' })
             }}
-            className="mt-6 px-6 py-2 bg-[var(--accent)] text-white rounded-lg font-medium hover:bg-[var(--accent-2)] transition-colors"
+            className="mt-6 px-6 py-2 bg-[var(--accent)] text-white rounded-lg font-medium hover:bg-[var(--accent)] transition-colors"
           >
             Clear All Filters
           </button>

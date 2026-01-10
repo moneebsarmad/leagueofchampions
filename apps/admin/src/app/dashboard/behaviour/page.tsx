@@ -123,7 +123,7 @@ export default function BehaviourIntelligencePage() {
                   type="file"
                   accept=".csv,.pdf"
                   onChange={(event) => setFile(event.target.files?.[0] || null)}
-                  className="text-sm text-[var(--text-muted)] file:mr-4 file:rounded-xl file:border-0 file:bg-[var(--accent)] file:px-4 file:py-2 file:text-white file:shadow-sm hover:file:bg-[var(--accent-2)]"
+                  className="text-sm text-[var(--text-muted)] file:mr-4 file:rounded-xl file:border-0 file:bg-[var(--accent)] file:px-4 file:py-2 file:text-white file:shadow-sm hover:file:bg-[var(--accent)]"
                 />
                 <div className="text-xs text-[var(--text-muted)]">
                   CSV and PDF reports are supported. PDFs are parsed from the Discipline Event Summary format.
@@ -131,7 +131,7 @@ export default function BehaviourIntelligencePage() {
                 <a
                   href={sampleCsvHref}
                   download="behaviour_events_sample.csv"
-                  className="text-xs text-[var(--accent-2)] font-semibold underline underline-offset-4"
+                  className="text-xs text-[var(--accent)] font-semibold underline underline-offset-4"
                 >
                   Download sample CSV
                 </a>
@@ -207,7 +207,7 @@ export default function BehaviourIntelligencePage() {
               </h3>
               <button
                 onClick={loadUploads}
-                className="text-xs font-semibold text-[var(--accent-2)] underline underline-offset-4"
+                className="text-xs font-semibold text-[var(--accent)] underline underline-offset-4"
                 disabled={refreshingUploads}
               >
                 {refreshingUploads ? 'Refreshing...' : 'Refresh'}

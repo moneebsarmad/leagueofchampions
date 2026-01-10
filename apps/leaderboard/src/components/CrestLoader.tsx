@@ -9,7 +9,7 @@ export default function CrestLoader({ label = 'Loading...' }: CrestLoaderProps) 
     <div className="flex items-center justify-center h-64">
       <div className="text-center">
         <div className="flex items-center justify-center mx-auto mb-4">
-          <div className="w-16 h-16 rounded-2xl bg-[var(--accent-soft)] text-[var(--accent)] flex items-center justify-center text-lg font-semibold animate-pulse">
+          <div className="w-16 h-16 rounded-2xl bg-[var(--surface-2)] text-[var(--text)] border border-[var(--border)] flex items-center justify-center text-lg font-semibold animate-pulse">
             DA
           </div>
         </div>

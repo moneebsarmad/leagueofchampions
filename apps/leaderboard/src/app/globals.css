@@ -1,57 +1,54 @@
 @import "tailwindcss";
 
 :root {
-  --bg: #fbfaf7;
-  --bg-muted: #f4f2ec;
+  --bg: #fbfbfa;
   --surface: #ffffff;
-  --surface-2: #fbfaf7;
-  --text: #14161a;
-  --text-muted: #5a616b;
-  --border: #e6e1d7;
-  --shadow: 0 8px 24px rgba(20, 22, 26, 0.06);
+  --surface-2: #f4f5f7;
+  --text: #0b0f14;
+  --text-muted: #5b6472;
+  --border: rgba(15, 23, 42, 0.1);
+  --shadow: 0 10px 30px rgba(11, 15, 20, 0.08);
 
-  --accent: #0f766e;
-  --accent-2: #115e59;
-  --accent-soft: rgba(15, 118, 110, 0.1);
+  /* interaction color (NOT champion) */
+  --accent: #111827;
+  --accent-contrast: #ffffff;
+
+  /* champion token (restricted usage) */
+  --champ: #c7a247;
+  --champ-soft: rgba(199, 162, 71, 0.14);
+  --champ-ring: rgba(199, 162, 71, 0.28);
+
+  /* optional silver/bronze ONLY for Top 3 labels */
+  --silver: #8b949e;
+  --bronze: #8a5a44;
 
   --danger: #b42318;
-  --warning: #b54708;
   --success: #067647;
+  --warning: #b54708;
 
+  /* House tones (muted inks) */
   --house-abu: #2b3a67;
   --house-khad: #1f6f4a;
   --house-umar: #1f3a5f;
   --house-aish: #7a2e2e;
-
-  --champ-1: #b08900;
-  --champ-2: #8b949e;
-  --champ-3: #8a5a44;
-  --champ-soft: rgba(176, 137, 0, 0.12);
-  --champ-ring: rgba(176, 137, 0, 0.3);
-  --champ-gradient: linear-gradient(90deg, rgba(176, 137, 0, 0.1), rgba(15, 118, 110, 0.1));
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #0c0f14;
-    --bg-muted: #121722;
-    --surface: #0f141c;
-    --surface-2: #121722;
+    --bg: #070a0f;
+    --surface: #0b0f16;
+    --surface-2: #111827;
     --text: #eef2f7;
-    --text-muted: #a8b3c2;
-    --border: rgba(255, 255, 255, 0.1);
-    --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    --text-muted: #a7b0be;
+    --border: rgba(255, 255, 255, 0.12);
+    --shadow: 0 14px 40px rgba(0, 0, 0, 0.45);
 
-    --accent: #2dd4bf;
-    --accent-2: #14b8a6;
-    --accent-soft: rgba(45, 212, 191, 0.14);
+    --accent: #f8fafc;
+    --accent-contrast: #0b0f14;
 
-    --champ-1: #f5c542;
-    --champ-2: #c7cdd6;
-    --champ-3: #d9a185;
-    --champ-soft: rgba(245, 197, 66, 0.14);
-    --champ-ring: rgba(245, 197, 66, 0.28);
-    --champ-gradient: linear-gradient(90deg, rgba(245, 197, 66, 0.1), rgba(45, 212, 191, 0.1));
+    --champ: #f0c75e;
+    --champ-soft: rgba(240, 199, 94, 0.16);
+    --champ-ring: rgba(240, 199, 94, 0.3);
   }
 }
 
@@ -67,24 +64,24 @@ body {
   font-family: var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   color: var(--text);
   font-weight: 600;
 }
 
-/* Page background */
+/* Shell */
 .app-shell {
   background: var(--bg);
   color: var(--text);
+  min-height: 100vh;
 }
 
-.leaderboard-shell {
-  background: var(--bg);
-  color: var(--text);
-  background-image: radial-gradient(circle at top, var(--accent-soft), transparent 60%);
-}
-
-/* Cards */
+/* Card */
 .card {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -94,46 +91,45 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Muted surface blocks */
 .surface-muted {
-  background: var(--bg-muted);
+  background: var(--surface-2);
   border: 1px solid var(--border);
   border-radius: 16px;
 }
 
-/* Buttons */
+/* Sections */
+.section-title {
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.section-subtitle {
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+/* Buttons (NO gold) */
 .btn-primary {
   background: var(--accent);
-  color: white;
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  color: var(--accent-contrast);
   border-radius: 12px;
   padding: 10px 14px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
 }
 
 .btn-primary:hover {
-  background: var(--accent-2);
+  filter: brightness(0.95);
 }
 
 .btn-secondary {
   background: var(--surface);
   color: var(--text);
-  border: 1px solid var(--border);
   border-radius: 12px;
   padding: 10px 14px;
+  border: 1px solid var(--border);
 }
 
 .btn-secondary:hover {
   background: var(--surface-2);
-}
-
-.chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 10px;
-  border-radius: 999px;
-  border: 1px solid var(--border);
-  background: var(--surface-2);
-  color: var(--text-muted);
-  font-size: 12px;
 }
 
 /* Inputs */
@@ -142,140 +138,54 @@ h1, h2, h3, h4, h5, h6 {
   border: 1px solid var(--border);
   border-radius: 12px;
   padding: 10px 12px;
-  outline: none;
 }
 
 .input:focus {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 4px var(--accent-soft);
+  border-color: rgba(199, 162, 71, 0.55);
+  box-shadow: 0 0 0 4px var(--champ-soft);
+  outline: none;
 }
 
-/* Tables */
+/* Table */
 .table {
   width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-  overflow: hidden;
   border: 1px solid var(--border);
   border-radius: 16px;
+  overflow: hidden;
+  border-collapse: separate;
+  border-spacing: 0;
 }
 
 .table th {
   background: var(--surface-2);
   color: var(--text-muted);
-  font-weight: 600;
   font-size: 12px;
-  letter-spacing: 0.04em;
   text-transform: uppercase;
-}
-
-.table td,
-.table th {
+  letter-spacing: 0.06em;
   padding: 12px 14px;
-  border-bottom: 1px solid var(--border);
 }
 
-.table tr:last-child td {
-  border-bottom: none;
+.table td {
+  padding: 12px 14px;
+  border-top: 1px solid var(--border);
 }
 
-/* Section headings */
-.section-title {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-weight: 700;
-}
-
-.section-title::before {
-  content: "";
-  width: 10px;
-  height: 18px;
-  border-radius: 6px;
-  background: var(--accent);
-}
-
-.champ-banner {
-  background: var(--champ-gradient);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 14px 16px;
-}
-
-.medal {
+/* Chips */
+.chip {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   padding: 6px 10px;
   border-radius: 999px;
   border: 1px solid var(--border);
-  background: var(--surface);
-  font-size: 12px;
-  color: var(--text);
-}
-
-.medal-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 999px;
-  background: var(--champ-1);
-}
-
-.medal--gold .medal-dot { background: var(--champ-1); }
-.medal--silver .medal-dot { background: var(--champ-2); }
-.medal--bronze .medal-dot { background: var(--champ-3); }
-
-.podium {
-  position: relative;
-  border: 1px solid var(--border);
-  border-radius: 18px;
-  background: var(--surface);
-  box-shadow: var(--shadow);
-}
-
-.podium--gold { box-shadow: 0 10px 28px rgba(176, 137, 0, 0.12); border-color: rgba(176, 137, 0, 0.3); }
-.podium--silver { box-shadow: 0 10px 28px rgba(139, 148, 158, 0.1); border-color: rgba(139, 148, 158, 0.28); }
-.podium--bronze { box-shadow: 0 10px 28px rgba(138, 90, 68, 0.1); border-color: rgba(138, 90, 68, 0.26); }
-
-.podium-flag {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  font-size: 11px;
-  padding: 4px 8px;
-  border-radius: 999px;
-  border: 1px solid var(--border);
   background: var(--surface-2);
   color: var(--text-muted);
+  font-size: 12px;
 }
 
-@keyframes champShimmer {
-  0% { transform: translateX(-30%); opacity: 0; }
-  30% { opacity: 1; }
-  100% { transform: translateX(130%); opacity: 0; }
-}
-
-.shimmer {
-  position: relative;
-  overflow: hidden;
-}
-
-.shimmer::after {
-  content: "";
-  position: absolute;
-  top: -30%;
-  left: -40%;
-  width: 40%;
-  height: 160%;
-  background: linear-gradient(90deg, transparent, rgba(176, 137, 0, 0.14), transparent);
-  transform: skewX(-18deg);
-  animation: champShimmer 2.8s ease-in-out infinite;
-  pointer-events: none;
-}
-
+/* Numeric */
 .score {
   font-variant-numeric: tabular-nums;
-  letter-spacing: 0.02em;
 }
 
 .score--big {
@@ -289,4 +199,115 @@ h1, h2, h3, h4, h5, h6 {
 
 .house-tint {
   background: var(--house-tint, rgba(43, 58, 103, 0.08));
+}
+
+/* Broadcast header */
+.broadcast {
+  background: #0b0f14;
+  color: #ffffff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.broadcast-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 18px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.broadcast-title {
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  font-size: 18px;
+}
+
+.broadcast-sub {
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 13px;
+}
+
+.broadcast-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.06);
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.broadcast-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--champ);
+}
+
+/* Podium */
+.podium {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+  position: relative;
+}
+
+.podium--gold {
+  border-color: rgba(199, 162, 71, 0.45);
+  box-shadow: 0 0 0 4px var(--champ-soft), var(--shadow);
+}
+
+.podium--silver {
+  border-color: rgba(139, 148, 158, 0.35);
+}
+
+.podium--bronze {
+  border-color: rgba(138, 90, 68, 0.35);
+}
+
+.medal {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--text);
+  font-size: 12px;
+}
+
+.medal-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+}
+
+.medal--gold .medal-dot {
+  background: var(--champ);
+}
+
+.medal--silver .medal-dot {
+  background: var(--silver);
+}
+
+.medal--bronze .medal-dot {
+  background: var(--bronze);
+}
+
+.podium-flag {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-size: 11px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--text-muted);
 }

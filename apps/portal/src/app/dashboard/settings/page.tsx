@@ -33,7 +33,7 @@ type SettingsSection = {
 function RoleBadge({ role }: { role: Role }) {
   const label = role === 'staff' ? 'Staff Portal' : role === 'parent' ? 'Parent Portal' : 'Student Portal'
   return (
-    <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-[var(--accent)]/15 text-[var(--accent-2)]">
+    <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-[var(--accent)]/15 text-[var(--accent)]">
       {label}
     </span>
   )
@@ -60,7 +60,7 @@ function ToggleRow({
       <button
         type="button"
         onClick={onToggle}
-        className={`w-12 h-7 rounded-full transition-colors ${enabled ? 'bg-[var(--accent)]' : 'bg-[var(--bg-muted)]'}`}
+        className={`w-12 h-7 rounded-full transition-colors ${enabled ? 'bg-[var(--accent)]' : 'bg-[var(--surface-2)]'}`}
         aria-pressed={enabled}
       >
         <span

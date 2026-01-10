@@ -221,7 +221,7 @@ export default function AddPointsPage() {
             </div>
             <button
               onClick={() => setSelectedStudent(null)}
-              className="text-[var(--accent)] hover:text-[var(--accent-2)] font-medium text-sm transition-colors"
+              className="text-[var(--accent)] hover:text-[var(--accent)] font-medium text-sm transition-colors"
             >
               Change
             </button>
@@ -276,7 +276,7 @@ export default function AddPointsPage() {
           <span className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${
             selectedStudent
               ? 'bg-[var(--accent)] text-white'
-              : 'bg-[var(--bg-muted)] text-[var(--text-muted)]'
+              : 'bg-[var(--surface-2)] text-[var(--text-muted)]'
           }`}>2</span>
           <h2 className={`text-lg font-semibold ${selectedStudent ? 'text-[var(--text)]' : 'text-[var(--text-muted)]'}`}>
             Select Category

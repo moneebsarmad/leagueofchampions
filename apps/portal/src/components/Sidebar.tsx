@@ -48,13 +48,12 @@ export default function Sidebar({ role, portalLabel }: SidebarProps) {
     <aside className="fixed left-0 top-0 h-screen w-72 bg-[var(--surface)] text-[var(--text)] border-r border-[var(--border)] flex flex-col z-50">
       <div className="p-6 border-b border-[var(--border)]">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-[var(--accent-soft)] text-[var(--accent)] flex items-center justify-center text-xs font-semibold">
+          <div className="w-9 h-9 rounded-xl bg-[var(--surface-2)] text-[var(--text)] border border-[var(--border)] flex items-center justify-center text-xs font-semibold">
             DA
           </div>
           <div>
             <p className="text-base font-semibold">Dār al-Arqam</p>
             <p className="text-xs text-[var(--text-muted)]">League of Champions</p>
-            <span className="chip mt-2 text-[var(--text-muted)]">Champions League</span>
           </div>
         </div>
       </div>
@@ -73,13 +72,13 @@ export default function Sidebar({ role, portalLabel }: SidebarProps) {
                   href={item.href}
                   className={`group flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all duration-200 ${
                     isActive
-                      ? 'bg-[var(--accent-soft)] text-[var(--text)] border-l-[3px] border-[var(--accent)]'
+                      ? 'bg-[var(--champ-soft)] text-[var(--text)] border-l-[3px] border-[var(--champ)]'
                       : 'text-[var(--text-muted)] hover:text-[var(--text)] hover:bg-[var(--surface-2)]'
                   }`}
                 >
                   <div className={`p-2 rounded-lg transition-all ${
                     isActive
-                      ? 'bg-[var(--accent-soft)] text-[var(--accent)]'
+                      ? 'bg-[var(--champ-soft)] text-[var(--champ)]'
                       : 'bg-[var(--surface-2)] text-[var(--text-muted)] group-hover:text-[var(--text)]'
                   }`}>
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

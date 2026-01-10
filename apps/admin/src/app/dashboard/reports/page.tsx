@@ -143,7 +143,7 @@ export default function ReportsPage() {
 
     const crestSvg = `
       <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80">
-        <rect width="80" height="80" rx="18" fill="#0f766e" />
+        <rect width="80" height="80" rx="18" fill="#111827" />
         <text x="40" y="46" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="20" fill="#ffffff" font-weight="600">DA</text>
       </svg>
     `
@@ -156,25 +156,25 @@ export default function ReportsPage() {
         <head>
           <title>${title}</title>
           <style>
-            body { font-family: Inter, Arial, sans-serif; color: #14161a; padding: 24px; background: #fbfaf7; }
-            .report { background: #ffffff; border: 1px solid #e6e1d7; border-radius: 16px; padding: 24px; box-shadow: 0 10px 30px rgba(20, 22, 26, 0.08); }
+            body { font-family: Inter, Arial, sans-serif; color: #0b0f14; padding: 24px; background: #fbfbfa; }
+            .report { background: #ffffff; border: 1px solid rgba(15, 23, 42, 0.1); border-radius: 16px; padding: 24px; box-shadow: 0 10px 30px rgba(11, 15, 20, 0.08); }
             .header { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
             .crest { width: 64px; height: 64px; object-fit: contain; }
-            .brand { font-size: 12px; letter-spacing: 0.12em; color: #5a616b; }
+            .brand { font-size: 12px; letter-spacing: 0.12em; color: #5b6472; }
             .title { font-size: 20px; margin: 4px 0 0; }
-            .subtitle { font-size: 12px; color: #5a616b; margin: 6px 0 16px; }
+            .subtitle { font-size: 12px; color: #5b6472; margin: 6px 0 16px; }
             .summary-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-bottom: 18px; }
-            .summary-card { border: 1px solid #e6e1d7; background: #fbfaf7; border-radius: 12px; padding: 10px 12px; }
-            .summary-label { font-size: 10px; letter-spacing: 0.12em; color: #5a616b; margin-bottom: 4px; }
-            .summary-value { font-size: 16px; font-weight: 700; color: #14161a; }
-            .divider { height: 1px; background: #e6e1d7; margin: 14px 0; }
+            .summary-card { border: 1px solid rgba(15, 23, 42, 0.1); background: #f4f5f7; border-radius: 12px; padding: 10px 12px; }
+            .summary-label { font-size: 10px; letter-spacing: 0.12em; color: #5b6472; margin-bottom: 4px; }
+            .summary-value { font-size: 16px; font-weight: 700; color: #0b0f14; }
+            .divider { height: 1px; background: rgba(15, 23, 42, 0.1); margin: 14px 0; }
             .charts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin: 16px 0; }
-            .chart-card { border: 1px solid #e6e1d7; border-radius: 12px; padding: 12px; background: #fbfaf7; }
-            .chart-title { font-size: 11px; letter-spacing: 0.12em; color: #5a616b; margin-bottom: 8px; }
+            .chart-card { border: 1px solid rgba(15, 23, 42, 0.1); border-radius: 12px; padding: 12px; background: #f4f5f7; }
+            .chart-title { font-size: 11px; letter-spacing: 0.12em; color: #5b6472; margin-bottom: 8px; }
             table { width: 100%; border-collapse: collapse; font-size: 11px; }
-            th, td { border: 1px solid #e6e1d7; padding: 7px 8px; text-align: left; }
-            th { background: #fbfaf7; color: #5a616b; letter-spacing: 0.08em; font-size: 10px; }
-            tr:nth-child(even) td { background: #fbfaf7; }
+            th, td { border: 1px solid rgba(15, 23, 42, 0.1); padding: 7px 8px; text-align: left; }
+            th { background: #f4f5f7; color: #5b6472; letter-spacing: 0.08em; font-size: 10px; }
+            tr:nth-child(even) td { background: #f4f5f7; }
             .report-card .title { font-size: 22px; }
             .report-card .crest { width: 72px; height: 72px; }
           </style>
@@ -505,7 +505,7 @@ export default function ReportsPage() {
             <h3 className="text-sm font-semibold text-[var(--text)] tracking-wider">
               Report Date Range
             </h3>
-            <span className="text-xs px-2.5 py-1 rounded-full bg-[var(--bg-muted)] text-[var(--text-muted)] border border-[var(--border)]">
+            <span className="text-xs px-2.5 py-1 rounded-full bg-[var(--surface-2)] text-[var(--text-muted)] border border-[var(--border)]">
               {rangeBadgeLabel}
             </span>
           </div>
@@ -542,7 +542,7 @@ export default function ReportsPage() {
               Generate a detailed report for a single student.
             </p>
           </div>
-          <div className="text-xs px-2.5 py-1 rounded-full bg-[var(--bg-muted)] text-[var(--text-muted)] border border-[var(--border)]">
+          <div className="text-xs px-2.5 py-1 rounded-full bg-[var(--surface-2)] text-[var(--text-muted)] border border-[var(--border)]">
             PDF / CSV
           </div>
         </div>
@@ -572,7 +572,7 @@ export default function ReportsPage() {
                       <button
                         key={`${student.name}-${student.grade}-${student.section}`}
                         type="button"
-                        className="w-full text-left px-4 py-2 hover:bg-[var(--bg-muted)] text-sm"
+                        className="w-full text-left px-4 py-2 hover:bg-[var(--surface-2)] text-sm"
                         onClick={() => {
                           setSelectedStudent(student)
                           setStudentSearch(`${student.name} (Grade ${student.grade}${student.section})`)
@@ -616,7 +616,7 @@ export default function ReportsPage() {
               </h3>
               <p className="text-xs text-[var(--text-muted)] mt-1">Totals and entries for a single house.</p>
             </div>
-            <span className="text-xs px-2.5 py-1 rounded-full bg-[var(--bg-muted)] text-[var(--text-muted)] border border-[var(--border)]">
+            <span className="text-xs px-2.5 py-1 rounded-full bg-[var(--surface-2)] text-[var(--text-muted)] border border-[var(--border)]">
               PDF / CSV
             </span>
           </div>
@@ -669,7 +669,7 @@ export default function ReportsPage() {
               </h3>
               <p className="text-xs text-[var(--text-muted)] mt-1">Totals and entries for a grade.</p>
             </div>
-            <span className="text-xs px-2.5 py-1 rounded-full bg-[var(--bg-muted)] text-[var(--text-muted)] border border-[var(--border)]">
+            <span className="text-xs px-2.5 py-1 rounded-full bg-[var(--surface-2)] text-[var(--text-muted)] border border-[var(--border)]">
               PDF / CSV
             </span>
           </div>
@@ -715,7 +715,7 @@ export default function ReportsPage() {
               </h3>
               <p className="text-xs text-[var(--text-muted)] mt-1">Totals and entries for one section.</p>
             </div>
-            <span className="text-xs px-2.5 py-1 rounded-full bg-[var(--bg-muted)] text-[var(--text-muted)] border border-[var(--border)]">
+            <span className="text-xs px-2.5 py-1 rounded-full bg-[var(--surface-2)] text-[var(--text-muted)] border border-[var(--border)]">
               PDF / CSV
             </span>
           </div>
@@ -783,7 +783,7 @@ export default function ReportsPage() {
                 </h3>
                 <p className="text-xs text-[var(--text-muted)] mt-1">{template.description}</p>
               </div>
-              <span className="text-xs px-2.5 py-1 rounded-full bg-[var(--bg-muted)] text-[var(--text-muted)] border border-[var(--border)]">
+              <span className="text-xs px-2.5 py-1 rounded-full bg-[var(--surface-2)] text-[var(--text-muted)] border border-[var(--border)]">
                 {template.scope}
               </span>
             </div>

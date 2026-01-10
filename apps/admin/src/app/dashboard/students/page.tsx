@@ -208,13 +208,13 @@ export default function StudentsPage() {
                     onClick={() => setSelectedStudent(student)}
                     className={`flex items-center gap-4 p-4 cursor-pointer transition-colors ${
                       index !== classStudents.length - 1 ? 'border-b border-[var(--border)]' : ''
-                    } ${selectedStudent?.id === student.id ? 'bg-[var(--accent-soft)]' : 'hover:bg-[var(--surface-2)]'}`}
+                    } ${selectedStudent?.id === student.id ? 'bg-[var(--surface-2)]' : 'hover:bg-[var(--surface-2)]'}`}
                   >
                     <div
                       className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold"
                       style={{
-                        backgroundColor: 'var(--accent-soft)',
-                        color: 'var(--accent-2)'}}
+                        backgroundColor: 'var(--surface-2)',
+                        color: 'var(--accent)'}}
                     >
                       {getInitials(student.name)}
                     </div>
@@ -285,14 +285,14 @@ export default function StudentsPage() {
                   <p className="text-[var(--text-muted)]">
                     <Link
                       href={`/dashboard/analytics?grade=${encodeURIComponent(String(selectedStudent.grade))}&section=${encodeURIComponent(selectedStudent.section)}`}
-                      className="hover:text-[var(--accent-2)] transition-colors"
+                      className="hover:text-[var(--accent)] transition-colors"
                     >
                       Grade {selectedStudent.grade}{selectedStudent.section}
                     </Link>
                     <span className="text-[var(--text-muted)]"> • </span>
                     <Link
                       href={`/dashboard/analytics?house=${encodeURIComponent(selectedStudent.house)}`}
-                      className="hover:text-[var(--accent-2)] transition-colors"
+                      className="hover:text-[var(--accent)] transition-colors"
                     >
                       {selectedStudent.house}
                     </Link>

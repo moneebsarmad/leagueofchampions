@@ -220,12 +220,12 @@ export default function SearchPage() {
               ) : (
                 <div className="space-y-2">
                   {studentHistory.map((entry, index) => (
-                    <div key={`${entry.timestamp}-${index}`} className="rounded-xl bg-[var(--bg-muted)] px-4 py-3">
+                    <div key={`${entry.timestamp}-${index}`} className="rounded-xl bg-[var(--surface-2)] px-4 py-3">
                       <div className="flex items-center justify-between">
                         <p className="text-sm font-semibold text-[var(--text)]">
                           {entry.subcategory || entry.category}
                         </p>
-                        <span className="text-sm font-semibold text-[var(--accent-2)]">{entry.points} pts</span>
+                        <span className="text-sm font-semibold text-[var(--accent)]">{entry.points} pts</span>
                       </div>
                       <p className="text-xs text-[var(--text-muted)]">
                         {entry.staffName} • {entry.timestamp ? new Date(entry.timestamp).toLocaleDateString() : '—'}
@@ -262,15 +262,15 @@ export default function SearchPage() {
 
           {selectedStaffName && staffStats && (
             <div className="mt-6 grid grid-cols-3 gap-3">
-              <div className="rounded-xl bg-[var(--bg-muted)] px-4 py-3 text-center">
+              <div className="rounded-xl bg-[var(--surface-2)] px-4 py-3 text-center">
                 <p className="text-xs text-[var(--text-muted)] tracking-wider">Points</p>
                 <p className="text-lg font-semibold text-[var(--text)]">{staffStats.points.toLocaleString()}</p>
               </div>
-              <div className="rounded-xl bg-[var(--bg-muted)] px-4 py-3 text-center">
+              <div className="rounded-xl bg-[var(--surface-2)] px-4 py-3 text-center">
                 <p className="text-xs text-[var(--text-muted)] tracking-wider">Awards</p>
                 <p className="text-lg font-semibold text-[var(--text)]">{staffStats.awards.toLocaleString()}</p>
               </div>
-              <div className="rounded-xl bg-[var(--bg-muted)] px-4 py-3 text-center">
+              <div className="rounded-xl bg-[var(--surface-2)] px-4 py-3 text-center">
                 <p className="text-xs text-[var(--text-muted)] tracking-wider">Students</p>
                 <p className="text-lg font-semibold text-[var(--text)]">{staffStats.students.toLocaleString()}</p>
               </div>

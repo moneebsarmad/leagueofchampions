@@ -58,7 +58,7 @@ export default function HomeClient() {
     <div className="min-h-screen app-shell flex items-center justify-center px-4 py-12">
       <div className="card w-full max-w-md p-8">
         <div className="text-center mb-6">
-          <div className="mx-auto mb-4 h-12 w-12 rounded-2xl bg-[var(--accent-soft)] text-[var(--accent)] flex items-center justify-center text-sm font-semibold">
+          <div className="mx-auto mb-4 h-12 w-12 rounded-2xl bg-[var(--surface-2)] text-[var(--text)] border border-[var(--border)] flex items-center justify-center text-sm font-semibold">
             DA
           </div>
           <h1 className="text-2xl font-semibold">League of Champions</h1>

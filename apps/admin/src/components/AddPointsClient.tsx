@@ -353,7 +353,7 @@ export default function AddPointsClient() {
             </div>
             <button
               onClick={() => setSelectedStudent(null)}
-              className="text-[var(--accent)] hover:text-[var(--accent-2)] font-medium text-sm transition-colors"
+              className="text-[var(--accent)] hover:text-[var(--accent)] font-medium text-sm transition-colors"
             >
               Change
             </button>

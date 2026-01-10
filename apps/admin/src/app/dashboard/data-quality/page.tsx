@@ -71,7 +71,7 @@ export default function DataQualityPage() {
               <p className="text-sm text-[var(--text-muted)]">No mismatches found.</p>
             ) : (
               stats.staffMissing.map((name, idx) => (
-                <div key={`${name}-${idx}`} className="px-3 py-2 rounded-xl bg-[var(--bg-muted)] text-sm text-[var(--text)]">
+                <div key={`${name}-${idx}`} className="px-3 py-2 rounded-xl bg-[var(--surface-2)] text-sm text-[var(--text)]">
                   {name}
                 </div>
               ))
@@ -89,7 +89,7 @@ export default function DataQualityPage() {
               <p className="text-sm text-[var(--text-muted)]">No mismatches found.</p>
             ) : (
               stats.studentMissing.map((name, idx) => (
-                <div key={`${name}-${idx}`} className="px-3 py-2 rounded-xl bg-[var(--bg-muted)] text-sm text-[var(--text)]">
+                <div key={`${name}-${idx}`} className="px-3 py-2 rounded-xl bg-[var(--surface-2)] text-sm text-[var(--text)]">
                   {name}
                 </div>
               ))

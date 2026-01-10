@@ -77,9 +77,13 @@ export default function AnnouncementsPopup() {
 
         <div className="space-y-3 max-h-80 overflow-y-auto pr-1">
           {unseenAnnouncements.map((item) => (
-            <div key={item.id} className="rounded-xl border border-[var(--border)] bg-white/90 px-4 py-3">
+            <div key={item.id} className="rounded-xl border border-[var(--border)] bg-[var(--surface)] px-4 py-3">
               <div className="flex items-center gap-2">
-                {item.pinned && <span className="text-xs px-2 py-0.5 rounded-full bg-[var(--accent)]/20 text-[var(--accent-2)] font-semibold tracking-wider">Pinned</span>}
+                {item.pinned && (
+                  <span className="text-xs px-2 py-0.5 rounded-full bg-[var(--surface-2)] text-[var(--text)] font-semibold tracking-wider">
+                    Pinned
+                  </span>
+                )}
                 <h4 className="text-sm font-semibold text-[var(--text)]">{item.title}</h4>
               </div>
               <p className="text-xs text-[var(--text-muted)] mt-1">
@@ -91,7 +95,7 @@ export default function AnnouncementsPopup() {
         </div>
 
         <div className="mt-4 flex items-center justify-between">
-          <Link href="/dashboard/announcements" className="text-sm font-semibold text-[var(--accent-2)] hover:text-[var(--accent)]">
+          <Link href="/dashboard/announcements" className="text-sm font-semibold text-[var(--accent)] hover:text-[var(--text)]">
             View all announcements →
           </Link>
           <button

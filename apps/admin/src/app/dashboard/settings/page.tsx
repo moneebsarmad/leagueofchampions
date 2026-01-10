@@ -18,7 +18,7 @@ type SettingsSection = {
 function RoleBadge({ role }: { role: string }) {
   const formatRole = (r: string) => r.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
   return (
-    <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-[var(--accent)]/15 text-[var(--accent-2)]">
+    <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-[var(--accent)]/15 text-[var(--accent)]">
       {formatRole(role)}
     </span>
   )
@@ -45,7 +45,7 @@ function ToggleRow({
       <button
         type="button"
         onClick={onToggle}
-        className={`w-12 h-7 rounded-full transition-colors ${enabled ? 'bg-[var(--accent)]' : 'bg-[var(--bg-muted)]'}`}
+        className={`w-12 h-7 rounded-full transition-colors ${enabled ? 'bg-[var(--accent)]' : 'bg-[var(--surface-2)]'}`}
         aria-pressed={enabled}
       >
         <span
