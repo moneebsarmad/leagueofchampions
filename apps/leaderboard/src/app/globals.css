@@ -1,66 +1,95 @@
 @import "tailwindcss";
 
 :root {
-  --background: #1e2a3a;
+  /* Dark theme for leaderboard display */
+  --background: #1a1a1a;
   --foreground: #ffffff;
 
-  /* Knowledge Sanctuary Color Palette */
-  --stone: #f4f1eb;
-  --stone-alt: #e8e2d4;
-  --navy: #1e2a3a;
-  --navy-light: #2d3748;
-  --brass: #b8860b;
-  --brass-light: #d4af37;
+  /* Scholarly Modern Color Palette */
+  --cream: #f7f6f0;
+  --cream-alt: #ede9e0;
+  --charcoal: #2c2c2c;
+  --charcoal-dark: #1a1a1a;
 
-  /* House Colors - Sophisticated variants */
-  --house-abu-bakr: #1e2a3a;
-  --house-khadijah: #2d5a27;
+  /* Sage Green Primary */
+  --sage-primary: #2d5a27;
+  --sage-secondary: #4a7c59;
+  --sage-light: #7ba05b;
+  --sage-muted: rgba(45, 90, 39, 0.1);
+
+  /* Warm Accent */
+  --accent-warm: #8b7355;
+  --accent-warm-light: #a08b6e;
+
+  /* House Colors - Earth Tones */
+  --house-abu-bakr: #2d5a27;
+  --house-khadijah: #6b4423;
   --house-umar: #4a5568;
-  --house-aishah: #744210;
+  --house-aishah: #8b4513;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-inter);
-  --font-display: var(--font-crimson);
+  --font-heading: system-ui, -apple-system, sans-serif;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-/* Scholarly headings */
+/* Clean Modern Headings */
 h1, h2, h3 {
-  font-family: var(--font-crimson), Georgia, serif;
-  letter-spacing: -0.01em;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.02em;
 }
 
-/* Sanctuary card styling */
-.sanctuary-card {
-  background: white;
-  border: 1px solid var(--stone-alt);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-  transition: box-shadow 0.2s ease;
+/* Dark Geometric Pattern */
+.geometric-dark {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 100%);
+  background-image:
+    linear-gradient(45deg, transparent 24%, rgba(45, 90, 39, 0.05) 25%, rgba(45, 90, 39, 0.05) 26%, transparent 27%, transparent 74%, rgba(45, 90, 39, 0.05) 75%, rgba(45, 90, 39, 0.05) 76%, transparent 77%, transparent);
+  background-size: 30px 30px;
 }
 
-.sanctuary-card:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+/* Elevated Card with subtle animation */
+.elevated-card {
+  transform: translateY(0);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.elevated-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
 }
 
 /* Legacy support */
+.sanctuary-card,
 .regal-card {
   background: white;
-  border: 1px solid var(--stone-alt);
+  border: 1px solid var(--cream-alt);
+  border-radius: 12px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
-/* Badge styling */
+/* Sage Badge */
+.badge-sage {
+  background: var(--sage-light);
+  color: white;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+/* Legacy badge support */
 .badge-brass,
 .badge-gold {
-  background: var(--brass);
+  background: var(--sage-light);
   color: white;
-  font-weight: 600;
+  font-weight: 500;
 }

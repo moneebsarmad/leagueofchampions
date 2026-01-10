@@ -1,13 +1,7 @@
 import type { Metadata } from "next";
-import { Crimson_Text, Inter } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import AutoRotate from "@/components/AutoRotate";
-
-const crimson = Crimson_Text({
-  subsets: ["latin"],
-  weight: ["400", "600", "700"],
-  variable: "--font-crimson",
-});
 
 const inter = Inter({
   subsets: ["latin"],
@@ -27,7 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${crimson.variable} ${inter.variable} ${inter.className} antialiased`}>
+      <body className={`${inter.variable} ${inter.className} antialiased`}>
         <AutoRotate />
         {children}
       </body>
