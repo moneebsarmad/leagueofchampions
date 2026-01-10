@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { Suspense, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "./providers";
 
@@ -22,7 +22,7 @@ const roles = [
   },
 ] as const;
 
-export default function Home() {
+function HomeContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { loading, signIn } = useAuth();
@@ -145,5 +145,13 @@ export default function Home() {
         <div className="auth-line"></div>
       </div>
     </div>
+  );
+}
+
+export default function Home() {
+  return (
+    <Suspense fallback={<div className="auth-page" />}>
+      <HomeContent />
+    </Suspense>
   );
 }
