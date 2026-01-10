@@ -224,17 +224,18 @@ export default function Home() {
             </div>
           </div>
 
-        {/* Leaderboard Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-          {loading ? (
-            <div className="col-span-2">
-              <CrestLoader label="Loading standings..." />
-            </div>
-          ) : (
-            houses.map((house) => (
-              <HouseCard key={house.name} house={house} />
-            ))
-          )}
+          {/* Leaderboard Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+            {loading ? (
+              <div className="col-span-2">
+                <CrestLoader label="Loading standings..." />
+              </div>
+            ) : (
+              houses.map((house) => (
+                <HouseCard key={house.name} house={house} />
+              ))
+            )}
+          </div>
         </div>
       </div>
     </div>
