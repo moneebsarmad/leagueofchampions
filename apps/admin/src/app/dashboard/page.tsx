@@ -19,26 +19,26 @@ interface HouseData {
 const houseConfig: Record<string, { color: string; gradient: string; accentGradient: string; logo: string }> = {
   'House of Abu Bakr': {
     color: 'var(--house-abu-bakr)',
-    gradient: 'linear-gradient(135deg, #2d3748 0%, #1e2a3a 50%, #0f1720 100%)',
-    accentGradient: 'linear-gradient(135deg, #3d4758 0%, #2d3748 100%)',
+    gradient: 'linear-gradient(135deg, #3d7a4d 0%, #2d5a27 50%, #1a4016 100%)',
+    accentGradient: 'linear-gradient(135deg, #4d8a5d 0%, #3d7a4d 100%)',
     logo: '/houses/abu-bakr.png',
   },
   'House of Khadijah': {
     color: 'var(--house-khadijah)',
-    gradient: 'linear-gradient(135deg, #3d7a3d 0%, #2d5a27 50%, #1a3a16 100%)',
-    accentGradient: 'linear-gradient(135deg, #4d8a4d 0%, #3d7a3d 100%)',
+    gradient: 'linear-gradient(135deg, #7b5433 0%, #6b4423 50%, #5a3413 100%)',
+    accentGradient: 'linear-gradient(135deg, #8b6443 0%, #7b5433 100%)',
     logo: '/houses/khadijah.png',
   },
   'House of Umar': {
     color: 'var(--house-umar)',
-    gradient: 'linear-gradient(135deg, #5a6778 0%, #4a5568 50%, #3a4550 100%)',
-    accentGradient: 'linear-gradient(135deg, #6a7788 0%, #5a6778 100%)',
+    gradient: 'linear-gradient(135deg, #5a6578 0%, #4a5568 50%, #3a4558 100%)',
+    accentGradient: 'linear-gradient(135deg, #6a7588 0%, #5a6578 100%)',
     logo: '/houses/umar.png',
   },
   'House of Aishah': {
     color: 'var(--house-aishah)',
-    gradient: 'linear-gradient(135deg, #8a5a1a 0%, #744210 50%, #5a320a 100%)',
-    accentGradient: 'linear-gradient(135deg, #9a6a2a 0%, #8a5a1a 100%)',
+    gradient: 'linear-gradient(135deg, #9b5523 0%, #8b4513 50%, #7b3503 100%)',
+    accentGradient: 'linear-gradient(135deg, #ab6533 0%, #9b5523 100%)',
     logo: '/houses/aishah.png',
   },
 }
@@ -185,18 +185,18 @@ export default function DashboardPage() {
       <div className="mb-8">
         <div className="flex items-start justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-[var(--navy)] mb-2" style={{ fontFamily: 'var(--font-crimson), Georgia, serif' }}>
+            <h1 className="text-3xl font-bold text-[var(--charcoal)] mb-2">
               House Standings
             </h1>
             <div className="flex items-center gap-3">
-              <div className="h-1 w-16 bg-gradient-to-r from-[var(--brass)] to-[var(--brass-light)] rounded-full"></div>
-              <p className="text-[var(--navy)]/50 text-sm font-medium">Current academic year rankings</p>
+              <div className="h-1 w-16 bg-gradient-to-r from-[var(--sage-primary)] to-[var(--sage-light)] rounded-full"></div>
+              <p className="text-[var(--charcoal)]/50 text-sm font-medium">Current academic year rankings</p>
             </div>
           </div>
           {lastUpdated && (
             <div className="text-right">
-              <p className="text-xs text-[var(--navy)]/40 font-medium">Last updated</p>
-              <p className="text-sm text-[var(--navy)]/70 font-semibold">{formatLastUpdated(lastUpdated)}</p>
+              <p className="text-xs text-[var(--charcoal)]/40 font-medium">Last updated</p>
+              <p className="text-sm text-[var(--charcoal)]/70 font-semibold">{formatLastUpdated(lastUpdated)}</p>
             </div>
           )}
         </div>
@@ -233,7 +233,7 @@ export default function DashboardPage() {
                         className="w-full h-full object-contain drop-shadow-md"
                       />
                     </div>
-                    <h2 className="text-2xl font-bold text-white" style={{ fontFamily: 'var(--font-crimson), Georgia, serif' }}>
+                    <h2 className="text-2xl font-bold text-white">
                       {house.name}
                     </h2>
                   </div>
@@ -243,14 +243,14 @@ export default function DashboardPage() {
                       className="h-full rounded-full transition-all duration-700 ease-out"
                       style={{
                         width: `${house.percentage}%`,
-                        background: 'linear-gradient(90deg, var(--brass) 0%, var(--brass-light) 50%, var(--brass) 100%)',
+                        background: 'linear-gradient(90deg, var(--accent-warm) 0%, var(--accent-warm-light) 50%, var(--accent-warm) 100%)',
                       }}
                     />
                   </div>
                   <p className="text-white/60 text-base font-medium">{house.percentage.toFixed(1)}% of total points</p>
                 </div>
                 <div className="text-right flex flex-col items-end gap-2 min-w-[150px] pt-4">
-                  <p className="text-4xl font-bold text-white leading-none" style={{ fontFamily: 'var(--font-crimson), Georgia, serif' }}>
+                  <p className="text-4xl font-bold text-white leading-none">
                     {house.points.toLocaleString()}
                   </p>
                   <p className="text-white/50 text-lg font-medium">Total Points</p>
@@ -268,7 +268,7 @@ export default function DashboardPage() {
                     >
                       <div className="flex items-center gap-2 mb-2">
                         <span className={`w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold ${
-                          i === 0 ? 'bg-[var(--brass)] text-white' :
+                          i === 0 ? 'bg-[var(--accent-warm)] text-white' :
                           i === 1 ? 'bg-white/30 text-white' :
                           'bg-white/20 text-white/80'
                         }`}>
@@ -276,7 +276,7 @@ export default function DashboardPage() {
                         </span>
                         <p className="text-white font-semibold text-base truncate flex-1">{student.name}</p>
                       </div>
-                      <p className="text-[var(--brass-light)] text-lg font-bold">{student.points} <span className="text-sm text-white/50 font-normal">pts</span></p>
+                      <p className="text-[var(--accent-warm-light)] text-lg font-bold">{student.points} <span className="text-sm text-white/50 font-normal">pts</span></p>
                     </div>
                   ))}
                 </div>
@@ -284,7 +284,7 @@ export default function DashboardPage() {
             </div>
 
             {/* Bottom accent line */}
-            <div className="h-1 bg-gradient-to-r from-transparent via-[var(--brass)]/50 to-transparent"></div>
+            <div className="h-1 bg-gradient-to-r from-transparent via-[var(--accent-warm)]/50 to-transparent"></div>
           </div>
         ))}
       </div>

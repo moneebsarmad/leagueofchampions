@@ -25,22 +25,22 @@ interface HouseData {
 const houseConfig: Record<string, { color: string; gradient: string; logo: string }> = {
   'House of Abu Bakr': {
     color: 'var(--house-abu-bakr)',
-    gradient: 'linear-gradient(135deg, #2d3748 0%, #1e2a3a 50%, #0f1720 100%)',
+    gradient: 'linear-gradient(135deg, #3d7a4d 0%, #2d5a27 50%, #1a4016 100%)',
     logo: '/House%20of%20Ab%C5%AB%20Bakr.png',
   },
   'House of Khadijah': {
     color: 'var(--house-khadijah)',
-    gradient: 'linear-gradient(135deg, #3d7a3d 0%, #2d5a27 50%, #1a3a16 100%)',
+    gradient: 'linear-gradient(135deg, #7b5433 0%, #6b4423 50%, #5a3413 100%)',
     logo: '/House%20of%20Khad%C4%ABjah.png',
   },
   'House of Umar': {
     color: 'var(--house-umar)',
-    gradient: 'linear-gradient(135deg, #5a6778 0%, #4a5568 50%, #3a4550 100%)',
+    gradient: 'linear-gradient(135deg, #5a6578 0%, #4a5568 50%, #3a4558 100%)',
     logo: '/House%20of%20%CA%BFUmar.png',
   },
   'House of Aishah': {
     color: 'var(--house-aishah)',
-    gradient: 'linear-gradient(135deg, #8a5a1a 0%, #744210 50%, #5a320a 100%)',
+    gradient: 'linear-gradient(135deg, #9b5523 0%, #8b4513 50%, #7b3503 100%)',
     logo: '/House%20of%20%CA%BF%C4%80%CA%BEishah.png',
   },
 }
@@ -100,8 +100,8 @@ export default function DashboardPage() {
     return leaderboard.map((entry) => {
       const canonicalName = canonicalHouse(entry.house)
       const config = houseConfig[canonicalName] ?? {
-        color: 'var(--navy)',
-        gradient: 'linear-gradient(135deg, #2d3748 0%, #1e2a3a 100%)',
+        color: 'var(--charcoal)',
+        gradient: 'linear-gradient(135deg, #3c3c3c 0%, #2c2c2c 100%)',
         logo: '/crest.png',
       }
 
@@ -142,19 +142,19 @@ export default function DashboardPage() {
     <div>
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-[var(--navy)] mb-2" style={{ fontFamily: 'var(--font-crimson), Georgia, serif' }}>
+        <h1 className="text-3xl font-bold text-[var(--charcoal)] mb-2">
           House Standings
         </h1>
         <div className="flex items-center gap-3">
-          <div className="h-1 w-16 bg-gradient-to-r from-[var(--brass)] to-[var(--brass-light)] rounded-full"></div>
-          <p className="text-[var(--navy)]/50 text-sm font-medium">Current academic year rankings</p>
+          <div className="h-1 w-16 bg-gradient-to-r from-[var(--sage-primary)] to-[var(--sage-light)] rounded-full"></div>
+          <p className="text-[var(--charcoal)]/50 text-sm font-medium">Current academic year rankings</p>
         </div>
       </div>
 
       {/* House Podium */}
       {houses.length === 0 ? (
-        <div className="sanctuary-card rounded-2xl p-8 text-center">
-          <p className="text-[var(--navy)]/50">No points logged yet.</p>
+        <div className="modern-card rounded-2xl p-8 text-center">
+          <p className="text-[var(--charcoal)]/50">No points logged yet.</p>
         </div>
       ) : (
         <div className="space-y-6">
@@ -180,14 +180,14 @@ export default function DashboardPage() {
                       <div className="inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.2em] font-semibold text-white/70 bg-white/10 border border-white/15 px-3 py-1 rounded-full mb-3">
                         <span className="text-white/50">Top House</span>
                       </div>
-                      <h2 className="text-3xl font-bold text-white" style={{ fontFamily: 'var(--font-crimson), Georgia, serif' }}>
+                      <h2 className="text-3xl font-bold text-white">
                         {topHouse.name}
                       </h2>
                       <p className="text-white/60 text-sm font-medium">{topHouse.percentage.toFixed(1)}% of total points</p>
                     </div>
                   </div>
                   <div className="text-right flex flex-col items-end gap-2">
-                    <p className="text-5xl font-bold text-white leading-none" style={{ fontFamily: 'var(--font-crimson), Georgia, serif' }}>
+                    <p className="text-5xl font-bold text-white leading-none">
                       {topHouse.points.toLocaleString()}
                     </p>
                     <p className="text-white/50 text-sm font-medium">Total Points</p>
@@ -198,12 +198,12 @@ export default function DashboardPage() {
                     className="h-full rounded-full transition-all duration-700 ease-out"
                     style={{
                       width: `${topHouse.percentage}%`,
-                      background: 'linear-gradient(90deg, var(--brass) 0%, var(--brass-light) 50%, var(--brass) 100%)',
+                      background: 'linear-gradient(90deg, var(--accent-warm) 0%, var(--accent-warm-light) 50%, var(--accent-warm) 100%)',
                     }}
                   />
                 </div>
               </div>
-              <div className="h-1 bg-gradient-to-r from-transparent via-[var(--brass)]/60 to-transparent"></div>
+              <div className="h-1 bg-gradient-to-r from-transparent via-[var(--accent-warm)]/60 to-transparent"></div>
             </div>
           ) : null}
 
@@ -227,14 +227,14 @@ export default function DashboardPage() {
                       />
                     </div>
                     <div>
-                      <h3 className="text-lg font-bold text-white" style={{ fontFamily: 'var(--font-crimson), Georgia, serif' }}>
+                      <h3 className="text-lg font-bold text-white">
                         {house.name}
                       </h3>
                       <p className="text-white/60 text-xs font-medium">{house.percentage.toFixed(1)}% of total points</p>
                     </div>
                   </div>
                   <div className="flex items-baseline justify-between">
-                    <p className="text-3xl font-bold text-white leading-none" style={{ fontFamily: 'var(--font-crimson), Georgia, serif' }}>
+                    <p className="text-3xl font-bold text-white leading-none">
                       {house.points.toLocaleString()}
                     </p>
                     <p className="text-white/50 text-xs font-medium">Points</p>
@@ -244,7 +244,7 @@ export default function DashboardPage() {
                       className="h-full rounded-full transition-all duration-700 ease-out"
                       style={{
                         width: `${house.percentage}%`,
-                        background: 'linear-gradient(90deg, var(--brass) 0%, var(--brass-light) 50%, var(--brass) 100%)',
+                        background: 'linear-gradient(90deg, var(--accent-warm) 0%, var(--accent-warm-light) 50%, var(--accent-warm) 100%)',
                       }}
                     />
                   </div>
@@ -253,10 +253,10 @@ export default function DashboardPage() {
             ))}
           </div>
 
-          <div className="bg-gradient-to-r from-[var(--navy)] to-[var(--navy-light)] px-5 py-4 rounded-2xl">
+          <div className="bg-gradient-to-r from-[var(--charcoal)] to-[var(--charcoal-light)] px-5 py-4 rounded-2xl">
             <div className="flex items-center justify-between text-white">
               <span className="text-sm font-medium text-white/60">Total Points Awarded</span>
-              <span className="text-xl font-bold" style={{ fontFamily: 'var(--font-crimson), Georgia, serif' }}>
+              <span className="text-xl font-bold">
                 {(leaderboard[0]?.overallTotal ?? 0).toLocaleString()}
               </span>
             </div>
