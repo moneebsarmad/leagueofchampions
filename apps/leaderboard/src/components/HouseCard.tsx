@@ -16,17 +16,40 @@ interface HouseCardProps {
 }
 
 export default function HouseCard({ house }: HouseCardProps) {
+  const podiumClass =
+    house.rank === 1
+      ? "podium podium--gold shimmer"
+      : house.rank === 2
+        ? "podium podium--silver"
+        : house.rank === 3
+          ? "podium podium--bronze"
+          : "card";
+  const medalClass =
+    house.rank === 1
+      ? "medal medal--gold"
+      : house.rank === 2
+        ? "medal medal--silver"
+        : house.rank === 3
+          ? "medal medal--bronze"
+          : "medal";
+  const isTopThree = house.rank <= 3;
+
   return (
     <div
-      className="relative rounded-lg overflow-hidden shadow-lg transition-transform hover:scale-[1.02]"
+      className={`relative overflow-hidden transition-transform hover:scale-[1.02] ${podiumClass}`}
       style={{
-        borderLeft: `5px solid ${house.color}`,
-        background: house.bgColor,
+        borderLeft: `4px solid ${house.color}`,
       }}
     >
-      {/* Rank Badge */}
-      <div className="absolute top-3 right-3 w-7 h-7 rounded-full flex items-center justify-center text-sm badge-brass">
-        {house.rank}
+      {house.rank === 1 ? (
+        <div className="podium-flag">Champion</div>
+      ) : null}
+
+      <div className="absolute top-3 right-3">
+        <div className={medalClass}>
+          <span className="medal-dot" />
+          #{house.rank}
+        </div>
       </div>
 
       <div className="p-4 pr-32">
@@ -39,22 +62,38 @@ export default function HouseCard({ house }: HouseCardProps) {
         </h2>
 
         {/* Virtue */}
-        <p
-          className="italic text-lg mb-1"
-          style={{ color: house.color }}
-        >
+        <p className="italic text-lg mb-1 text-[var(--text-muted)]">
           {house.virtue}
         </p>
 
         {/* Description */}
-        <p className="text-sm mb-2 text-white/80">
+        <p className="text-sm mb-2 text-[var(--text-muted)]">
           {house.description}
         </p>
 
         {/* Points */}
-        <p className="text-4xl font-bold text-white">
+        <p className={`font-bold text-[var(--text)] ${isTopThree ? "score score--big" : "score text-2xl"}`}>
           {house.points.toLocaleString()}
         </p>
+        {isTopThree ? (
+          <div className="mt-3 flex items-center gap-2 text-xs text-[var(--text-muted)]">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="text-[var(--text-muted)]"
+              aria-hidden="true"
+            >
+              <path d="M8 21h8M12 17v4M7 4h10l1 3a6 6 0 0 1-5 7 6 6 0 0 1-5-7l1-3z" />
+            </svg>
+            Top performer
+          </div>
+        ) : null}
       </div>
 
       {/* House Logo - Vertically Centered */}

@@ -22,6 +22,13 @@
   --house-khad: #1f6f4a;
   --house-umar: #1f3a5f;
   --house-aish: #7a2e2e;
+
+  --champ-1: #b08900;
+  --champ-2: #8b949e;
+  --champ-3: #8a5a44;
+  --champ-soft: rgba(176, 137, 0, 0.12);
+  --champ-ring: rgba(176, 137, 0, 0.3);
+  --champ-gradient: linear-gradient(90deg, rgba(176, 137, 0, 0.1), rgba(15, 118, 110, 0.1));
 }
 
 @media (prefers-color-scheme: dark) {
@@ -38,6 +45,13 @@
     --accent: #2dd4bf;
     --accent-2: #14b8a6;
     --accent-soft: rgba(45, 212, 191, 0.14);
+
+    --champ-1: #f5c542;
+    --champ-2: #c7cdd6;
+    --champ-3: #d9a185;
+    --champ-soft: rgba(245, 197, 66, 0.14);
+    --champ-ring: rgba(245, 197, 66, 0.28);
+    --champ-gradient: linear-gradient(90deg, rgba(245, 197, 66, 0.1), rgba(45, 212, 191, 0.1));
   }
 }
 
@@ -173,4 +187,100 @@ h1, h2, h3, h4, h5, h6 {
   height: 18px;
   border-radius: 6px;
   background: var(--accent);
+}
+
+.champ-banner {
+  background: var(--champ-gradient);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 14px 16px;
+}
+
+.medal {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  font-size: 12px;
+  color: var(--text);
+}
+
+.medal-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--champ-1);
+}
+
+.medal--gold .medal-dot { background: var(--champ-1); }
+.medal--silver .medal-dot { background: var(--champ-2); }
+.medal--bronze .medal-dot { background: var(--champ-3); }
+
+.podium {
+  position: relative;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.podium--gold { box-shadow: 0 10px 28px rgba(176, 137, 0, 0.12); border-color: rgba(176, 137, 0, 0.3); }
+.podium--silver { box-shadow: 0 10px 28px rgba(139, 148, 158, 0.1); border-color: rgba(139, 148, 158, 0.28); }
+.podium--bronze { box-shadow: 0 10px 28px rgba(138, 90, 68, 0.1); border-color: rgba(138, 90, 68, 0.26); }
+
+.podium-flag {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-size: 11px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--text-muted);
+}
+
+@keyframes champShimmer {
+  0% { transform: translateX(-30%); opacity: 0; }
+  30% { opacity: 1; }
+  100% { transform: translateX(130%); opacity: 0; }
+}
+
+.shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer::after {
+  content: "";
+  position: absolute;
+  top: -30%;
+  left: -40%;
+  width: 40%;
+  height: 160%;
+  background: linear-gradient(90deg, transparent, rgba(176, 137, 0, 0.14), transparent);
+  transform: skewX(-18deg);
+  animation: champShimmer 2.8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.score {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
+
+.score--big {
+  font-size: 28px;
+  font-weight: 800;
+}
+
+.house-accent {
+  border-left: 4px solid var(--house-abu);
+}
+
+.house-tint {
+  background: var(--house-tint, rgba(43, 58, 103, 0.08));
 }

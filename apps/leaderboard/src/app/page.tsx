@@ -218,6 +218,14 @@ export default function Home() {
 
         </header>
 
+        <div className="champ-banner text-sm text-[var(--text)] flex items-center justify-between gap-3">
+          <span className="font-medium">Weekly Standings · Dār al-Arqam</span>
+          <span className="medal medal--gold">
+            <span className="medal-dot" />
+            Leaderboard
+          </span>
+        </div>
+
         {/* Leaderboard Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
           {loading ? (

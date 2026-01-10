@@ -148,6 +148,7 @@ export default function Sidebar() {
           <div>
             <p className="text-base font-semibold">Dār al-Arqam</p>
             <p className="text-xs text-[var(--text-muted)]">League of Champions</p>
+            <span className="chip mt-2 text-[var(--text-muted)]">Champions League</span>
           </div>
         </div>
       </div>
