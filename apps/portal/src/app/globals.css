@@ -1,107 +1,101 @@
 @import "tailwindcss";
 
 :root {
-  --background: #faf9f7;
-  --foreground: #1a1a2e;
+  --background: #f4f1eb;
+  --foreground: #1e2a3a;
 
-  /* Regal Color Palette */
-  --royal-purple: #2f0a61;
-  --royal-purple-light: #4a1a8a;
-  --gold: #c9a227;
-  --gold-light: #e8d48b;
-  --gold-dark: #9a7b1a;
-  --cream: #faf9f7;
-  --ivory: #f5f3ef;
-  --charcoal: #1a1a2e;
+  /* Knowledge Sanctuary Color Palette */
+  --stone: #f4f1eb;
+  --stone-alt: #e8e2d4;
+  --navy: #1e2a3a;
+  --navy-light: #2d3748;
+  --brass: #b8860b;
+  --brass-light: #d4af37;
 
-  /* House Colors */
-  --house-abu-bakr: #2f0a61;
-  --house-khadijah: #055437;
-  --house-umar: #000068;
-  --house-aishah: #910000;
+  /* House Colors - Sophisticated variants */
+  --house-abu-bakr: #1e2a3a;
+  --house-khadijah: #2d5a27;
+  --house-umar: #4a5568;
+  --house-aishah: #744210;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-body);
-  --font-display: var(--font-playfair);
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-crimson);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-sans), 'Cormorant Garamond', Georgia, serif;
+  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-/* Elegant headings */
+/* Scholarly headings */
 h1, h2, h3 {
-  font-family: var(--font-playfair), 'Playfair Display', Georgia, serif;
-  letter-spacing: -0.02em;
+  font-family: var(--font-crimson), Georgia, serif;
+  letter-spacing: -0.01em;
 }
 
-/* Gold accent underline */
-.gold-underline {
-  position: relative;
-}
-.gold-underline::after {
-  content: '';
-  position: absolute;
-  bottom: -4px;
-  left: 0;
-  width: 60px;
-  height: 3px;
-  background: linear-gradient(90deg, var(--gold) 0%, var(--gold-light) 100%);
-  border-radius: 2px;
+/* Sanctuary card styling */
+.sanctuary-card {
+  background: white;
+  border: 1px solid var(--stone-alt);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  transition: box-shadow 0.2s ease;
 }
 
-/* Regal card styling */
+.sanctuary-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Legacy support */
 .regal-card {
-  background: linear-gradient(180deg, #ffffff 0%, #faf9f7 100%);
-  border: 1px solid rgba(201, 162, 39, 0.15);
-  box-shadow:
-    0 1px 3px rgba(0, 0, 0, 0.04),
-    0 4px 12px rgba(0, 0, 0, 0.03),
-    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  background: white;
+  border: 1px solid var(--stone-alt);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
 .regal-card:hover {
-  box-shadow:
-    0 2px 8px rgba(0, 0, 0, 0.06),
-    0 8px 24px rgba(0, 0, 0, 0.04),
-    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
-/* Elegant button */
-.btn-regal {
-  background: linear-gradient(180deg, var(--royal-purple-light) 0%, var(--royal-purple) 100%);
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  box-shadow:
-    0 1px 2px rgba(0, 0, 0, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.15);
-  transition: all 0.2s ease;
-}
-
-.btn-regal:hover {
-  background: linear-gradient(180deg, var(--royal-purple) 0%, #220747 100%);
-  box-shadow:
-    0 2px 4px rgba(0, 0, 0, 0.15),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
-}
-
-/* Gold accent button */
-.btn-gold {
-  background: linear-gradient(180deg, var(--gold) 0%, var(--gold-dark) 100%);
+/* Sanctuary button */
+.btn-sanctuary {
+  background: var(--navy);
   color: white;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  box-shadow:
-    0 1px 2px rgba(0, 0, 0, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  border: none;
+  transition: background 0.2s ease;
 }
 
-/* Subtle pattern overlay */
-.pattern-overlay {
-  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c9a227' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+.btn-sanctuary:hover {
+  background: var(--navy-light);
+}
+
+/* Brass accent button */
+.btn-brass {
+  background: var(--brass);
+  color: white;
+  border: none;
+  transition: background 0.2s ease;
+}
+
+.btn-brass:hover {
+  background: var(--brass-light);
+}
+
+/* Legacy button support */
+.btn-regal {
+  background: var(--navy);
+  color: white;
+  border: none;
+}
+
+.btn-gold {
+  background: var(--brass);
+  color: white;
+  border: none;
 }
 
 /* Scrollbar styling */
@@ -111,63 +105,65 @@ h1, h2, h3 {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--ivory);
+  background: var(--stone-alt);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #d4d0c8 0%, #b8b4ac 100%);
+  background: #b8b4ac;
   border-radius: 4px;
-  border: 1px solid rgba(255, 255, 255, 0.5);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #c9a227 0%, #9a7b1a 100%);
+  background: var(--brass);
 }
 
 /* Table styling */
+.sanctuary-table thead,
 .regal-table thead {
-  background: linear-gradient(180deg, #f8f6f2 0%, #f0ede6 100%);
-  border-bottom: 2px solid rgba(201, 162, 39, 0.2);
+  background: var(--stone);
+  border-bottom: 2px solid var(--stone-alt);
 }
 
+.sanctuary-table th,
 .regal-table th {
-  font-family: var(--font-sans), sans-serif;
+  font-family: var(--font-inter), sans-serif;
   font-weight: 600;
   font-size: 0.7rem;
-  letter-spacing: 0.08em;
-  color: #6b6b7b;
+  letter-spacing: 0.05em;
+  color: var(--navy);
 }
 
+.sanctuary-table tbody tr,
 .regal-table tbody tr {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+  border-bottom: 1px solid var(--stone-alt);
   transition: background 0.15s ease;
 }
 
+.sanctuary-table tbody tr:hover,
 .regal-table tbody tr:hover {
-  background: rgba(201, 162, 39, 0.03);
+  background: var(--stone);
 }
 
 /* Input styling */
+.sanctuary-input,
 .regal-input {
   background: white;
-  border: 1px solid #e5e2db;
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.04);
+  border: 1px solid var(--stone-alt);
   transition: all 0.2s ease;
 }
 
+.sanctuary-input:focus,
 .regal-input:focus {
-  border-color: var(--gold);
-  box-shadow:
-    inset 0 1px 2px rgba(0, 0, 0, 0.04),
-    0 0 0 3px rgba(201, 162, 39, 0.1);
+  border-color: var(--brass);
+  box-shadow: 0 0 0 3px rgba(184, 134, 11, 0.1);
   outline: none;
 }
 
 /* Badge styling */
+.badge-brass,
 .badge-gold {
-  background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 100%);
-  color: #5c4a0f;
-  border: 1px solid rgba(201, 162, 39, 0.3);
+  background: var(--brass);
+  color: white;
   font-weight: 600;
 }
 
@@ -177,72 +173,17 @@ h1, h2, h3 {
   display: grid;
   place-items: center;
   font-size: 16px;
-  color: rgba(26, 26, 46, 0.6);
+  color: rgba(30, 42, 58, 0.6);
 }
 
 /* Auth page styles */
 .auth-page {
   min-height: 100vh;
-  background: linear-gradient(135deg, #faf9f7, #f8f6f3 45%, #f5f3ef);
-  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c9a227' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-  position: relative;
-  overflow: hidden;
+  background: var(--stone);
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 48px 16px;
-}
-
-.auth-background {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-
-.auth-star {
-  position: absolute;
-  width: 360px;
-  height: 360px;
-  opacity: 0.06;
-  color: var(--gold);
-}
-
-.auth-star svg {
-  width: 100%;
-  height: 100%;
-  fill: currentColor;
-}
-
-.auth-star-top {
-  top: -80px;
-  right: -80px;
-}
-
-.auth-star-bottom {
-  bottom: -80px;
-  left: -80px;
-}
-
-.auth-orb {
-  position: absolute;
-  width: 260px;
-  height: 260px;
-  border-radius: 999px;
-  filter: blur(128px);
-}
-
-.auth-orb-purple {
-  background: #2f0a61;
-  top: 20%;
-  left: 20%;
-  opacity: 0.06;
-}
-
-.auth-orb-gold {
-  background: #c9a227;
-  bottom: 20%;
-  right: 20%;
-  opacity: 0.08;
 }
 
 .auth-shell {
@@ -254,24 +195,13 @@ h1, h2, h3 {
   gap: 20px;
 }
 
-.auth-line {
-  height: 4px;
-  background: linear-gradient(90deg, transparent, var(--gold), transparent);
-  border-radius: 999px;
-}
-
 .auth-card {
-  background: linear-gradient(180deg, #ffffff 0%, #faf9f7 100%);
-  border-radius: 28px;
-  border: 1px solid rgba(201, 162, 39, 0.15);
-  box-shadow:
-    0 1px 3px rgba(0, 0, 0, 0.04),
-    0 4px 12px rgba(0, 0, 0, 0.03),
-    0 12px 32px rgba(0, 0, 0, 0.06),
-    inset 0 1px 0 rgba(255, 255, 255, 0.8);
-  overflow: hidden;
+  background: white;
+  border-radius: 16px;
+  border: 1px solid var(--stone-alt);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
   padding: 32px 28px 28px;
-  color: #1a1a2e;
+  color: var(--navy);
 }
 
 .auth-header {
@@ -298,35 +228,25 @@ h1, h2, h3 {
   width: 128px;
   height: 128px;
   object-fit: contain;
-  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.2));
-}
-
-.auth-logo-glow {
-  position: absolute;
-  inset: 0;
-  background: var(--gold);
-  filter: blur(32px);
-  opacity: 0.15;
-  z-index: -1;
 }
 
 .auth-header h1 {
   font-size: 28px;
-  color: #1a1a2e;
+  color: var(--navy);
+  font-family: var(--font-crimson), Georgia, serif;
 }
 
 .auth-header p {
-  font-family: var(--font-body), 'Cormorant Garamond', Georgia, serif;
   font-size: 14px;
-  color: rgba(26, 26, 46, 0.5);
-  letter-spacing: 0.15em;
+  color: rgba(30, 42, 58, 0.5);
+  letter-spacing: 0.1em;
   font-weight: 500;
 }
 
 .auth-divider {
   height: 1px;
   margin: 22px 0 16px;
-  background: linear-gradient(90deg, transparent, rgba(201, 162, 39, 0.5), transparent);
+  background: var(--stone-alt);
 }
 
 .auth-roles {
@@ -337,22 +257,21 @@ h1, h2, h3 {
 }
 
 .auth-role {
-  border: 1px solid rgba(26, 26, 46, 0.1);
+  border: 1px solid var(--stone-alt);
   background: rgba(255, 255, 255, 0.6);
-  color: rgba(26, 26, 46, 0.6);
+  color: rgba(30, 42, 58, 0.6);
   padding: 10px 8px;
   font-size: 11px;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   border-radius: 12px;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .auth-role.active {
-  border-color: rgba(201, 162, 39, 0.6);
-  background: rgba(201, 162, 39, 0.08);
-  color: #1a1a2e;
-  box-shadow: inset 0 0 0 1px rgba(201, 162, 39, 0.2);
+  border-color: var(--brass);
+  background: rgba(184, 134, 11, 0.08);
+  color: var(--navy);
 }
 
 .auth-form {
@@ -362,64 +281,53 @@ h1, h2, h3 {
 
 .auth-form label {
   font-size: 11px;
-  letter-spacing: 0.2em;
-  color: rgba(26, 26, 46, 0.5);
+  letter-spacing: 0.15em;
+  color: rgba(30, 42, 58, 0.5);
   font-weight: 600;
 }
 
 .auth-form input {
   padding: 14px 16px;
-  border-radius: 14px;
-  border: 1px solid rgba(26, 26, 46, 0.1);
+  border-radius: 12px;
+  border: 1px solid var(--stone-alt);
   background: #fff;
-  color: #1a1a2e;
+  color: var(--navy);
   outline: none;
   transition: border 0.2s ease, box-shadow 0.2s ease;
 }
 
 .auth-form input::placeholder {
-  color: rgba(26, 26, 46, 0.3);
+  color: rgba(30, 42, 58, 0.3);
 }
 
 .auth-form input:focus {
-  border-color: var(--gold);
-  box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.15);
+  border-color: var(--brass);
+  box-shadow: 0 0 0 3px rgba(184, 134, 11, 0.15);
 }
 
 .auth-error {
   padding: 12px 14px;
   border-radius: 12px;
-  background: rgba(145, 0, 0, 0.05);
-  border: 1px solid rgba(145, 0, 0, 0.2);
-  color: #910000;
+  background: rgba(116, 66, 16, 0.05);
+  border: 1px solid rgba(116, 66, 16, 0.2);
+  color: var(--house-aishah);
   font-size: 13px;
 }
 
 .auth-submit {
   margin-top: 6px;
   padding: 14px 16px;
-  border-radius: 14px;
+  border-radius: 12px;
   border: none;
   color: #fff;
   font-weight: 600;
-  background: linear-gradient(135deg, #4a1a8a 0%, #2f0a61 55%, #1a0536 100%);
-  position: relative;
-  overflow: hidden;
+  background: var(--navy);
   cursor: pointer;
-  transition: transform 0.2s ease;
+  transition: background 0.2s ease;
 }
 
-.auth-submit::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg, transparent, rgba(201, 162, 39, 0.3), transparent);
-  transform: translateX(-100%);
-  transition: transform 0.6s ease;
-}
-
-.auth-submit:hover::after {
-  transform: translateX(100%);
+.auth-submit:hover {
+  background: var(--navy-light);
 }
 
 .auth-submit:disabled {
@@ -435,7 +343,7 @@ h1, h2, h3 {
 .auth-forgot button {
   font-size: 12px;
   font-weight: 600;
-  color: var(--royal-purple);
+  color: var(--navy);
   background: none;
   border: none;
   cursor: pointer;
@@ -444,7 +352,7 @@ h1, h2, h3 {
 }
 
 .auth-forgot button:hover {
-  color: var(--gold);
+  color: var(--brass);
 }
 
 .auth-footer {
@@ -453,9 +361,9 @@ h1, h2, h3 {
   align-items: center;
   gap: 8px;
   font-size: 12px;
-  color: rgba(26, 26, 46, 0.4);
-  border: 1px solid rgba(26, 26, 46, 0.05);
-  background: rgba(26, 26, 46, 0.03);
+  color: rgba(30, 42, 58, 0.4);
+  border: 1px solid var(--stone-alt);
+  background: var(--stone);
   border-radius: 999px;
   padding: 8px 14px;
   justify-content: center;
@@ -465,7 +373,7 @@ h1, h2, h3 {
   width: 8px;
   height: 8px;
   border-radius: 999px;
-  background: var(--gold);
+  background: var(--brass);
   display: inline-block;
 }
 
@@ -476,17 +384,5 @@ h1, h2, h3 {
 
   .auth-card {
     padding: 28px 22px;
-  }
-}
-
-/* Animation */
-@keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(16px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
   }
 }
