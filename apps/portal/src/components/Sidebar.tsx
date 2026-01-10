@@ -45,12 +45,12 @@ export default function Sidebar({ role, portalLabel }: SidebarProps) {
       : studentNavItems
 
   return (
-    <aside className="fixed left-0 top-0 h-screen w-72 bg-[var(--stone)] border-r border-[var(--stone-alt)] flex flex-col shadow-sm z-50">
+    <aside className="fixed left-0 top-0 h-screen w-72 bg-[var(--cream)] border-r border-[var(--cream-alt)] flex flex-col shadow-sm z-50">
       {/* Decorative top border */}
-      <div className="h-1 bg-gradient-to-r from-[var(--brass)] via-[var(--brass-light)] to-[var(--brass)]"></div>
+      <div className="geometric-border h-0.5"></div>
 
       {/* Logo Section */}
-      <div className="p-8 border-b border-[var(--stone-alt)]">
+      <div className="p-8 border-b border-[var(--cream-alt)]">
         <div className="flex items-center gap-4">
           {/* Crest Logo */}
           <div className="relative w-14 h-14 flex items-center justify-center">
@@ -61,17 +61,17 @@ export default function Sidebar({ role, portalLabel }: SidebarProps) {
             />
           </div>
           <div>
-            <h1 className="text-xl font-semibold text-[var(--navy)] tracking-tight" style={{ fontFamily: 'var(--font-crimson), Georgia, serif' }}>
+            <h1 className="text-xl font-semibold text-[var(--charcoal)] tracking-tight">
               League of Champions
             </h1>
-            <p className="text-sm text-[var(--brass)] font-medium">{portalLabel}</p>
+            <p className="text-sm text-[var(--sage-primary)] font-medium">{portalLabel}</p>
           </div>
         </div>
       </div>
 
       {/* Navigation */}
       <nav className="flex-1 p-6 overflow-y-auto">
-        <p className="text-xs font-semibold text-[var(--navy)]/40 uppercase tracking-wide mb-4 px-4">Navigation</p>
+        <p className="text-xs font-semibold text-[var(--charcoal)]/40 uppercase tracking-wide mb-4 px-4">Navigation</p>
         <ul className="space-y-1">
           {navItems.map((item) => {
             const isActive = pathname === item.href ||
@@ -83,14 +83,14 @@ export default function Sidebar({ role, portalLabel }: SidebarProps) {
                   href={item.href}
                   className={`group flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all duration-200 ${
                     isActive
-                      ? 'bg-white text-[var(--navy)] border-l-4 border-[var(--brass)] shadow-sm'
-                      : 'text-[var(--navy)]/60 hover:text-[var(--navy)] hover:bg-white/60'
+                      ? 'bg-white text-[var(--charcoal)] border-l-4 border-[var(--sage-primary)] shadow-sm'
+                      : 'text-[var(--charcoal)]/60 hover:text-[var(--charcoal)] hover:bg-white/60'
                   }`}
                 >
                   <div className={`p-2 rounded-lg transition-all ${
                     isActive
-                      ? 'bg-[var(--brass)]/10'
-                      : 'bg-[var(--stone-alt)] group-hover:bg-[var(--stone-alt)]'
+                      ? 'bg-[var(--sage-primary)]/10'
+                      : 'bg-[var(--cream-alt)] group-hover:bg-[var(--cream-alt)]'
                   }`}>
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={item.icon} />
@@ -98,7 +98,7 @@ export default function Sidebar({ role, portalLabel }: SidebarProps) {
                   </div>
                   <span className="font-medium">{item.name}</span>
                   {isActive && (
-                    <div className="ml-auto w-1.5 h-1.5 rounded-full bg-[var(--brass)]"></div>
+                    <div className="ml-auto w-1.5 h-1.5 rounded-full bg-[var(--sage-primary)]"></div>
                   )}
                 </Link>
               </li>
@@ -108,12 +108,12 @@ export default function Sidebar({ role, portalLabel }: SidebarProps) {
       </nav>
 
       {/* Footer */}
-      <div className="p-6 border-t border-[var(--stone-alt)]">
-        <div className="px-4 py-3 rounded-xl bg-white border border-[var(--stone-alt)]">
-          <p className="text-xs text-[var(--navy)]/60 font-medium">
+      <div className="p-6 border-t border-[var(--cream-alt)]">
+        <div className="px-4 py-3 rounded-xl bg-white border border-[var(--cream-alt)]">
+          <p className="text-xs text-[var(--charcoal)]/60 font-medium">
             Dar Al-Arqam Islamic School
           </p>
-          <p className="text-xs text-[var(--navy)]/40 mt-1">
+          <p className="text-xs text-[var(--charcoal)]/40 mt-1">
             Knowledge & Excellence
           </p>
         </div>
