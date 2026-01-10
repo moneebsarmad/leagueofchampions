@@ -140,37 +140,36 @@ export default function Sidebar() {
   }
 
   return (
-    <aside className="fixed left-0 top-0 h-screen w-72 bg-gradient-to-b from-[#1a1a2e] to-[#16162a] flex flex-col shadow-2xl">
+    <aside className="fixed left-0 top-0 h-screen w-72 bg-[var(--stone)] border-r border-[var(--stone-alt)] flex flex-col shadow-sm">
       {/* Decorative top border */}
-      <div className="h-1 bg-gradient-to-r from-[#c9a227] via-[#e8d48b] to-[#c9a227]"></div>
+      <div className="h-1 bg-gradient-to-r from-[var(--brass)] via-[var(--brass-light)] to-[var(--brass)]"></div>
 
       {/* Logo Section */}
-      <div className="p-8 border-b border-white/5">
+      <div className="p-8 border-b border-[var(--stone-alt)]">
         <div className="flex items-center gap-4">
           {/* Crest Logo */}
           <div className="relative w-14 h-14 flex items-center justify-center">
             <img
               src="/crest.png"
-              alt="League of Stars crest"
+              alt="League of Champions crest"
               className="w-12 h-12 object-contain drop-shadow-md"
             />
-            <div className="absolute inset-0 rounded-full bg-[#c9a227] blur-xl opacity-20 -z-10"></div>
           </div>
           <div>
-            <h1 className="text-xl font-semibold text-white tracking-tight" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
-              League of Stars
+            <h1 className="text-xl font-semibold text-[var(--navy)] tracking-tight" style={{ fontFamily: 'var(--font-crimson), Georgia, serif' }}>
+              League of Champions
             </h1>
-            <p className="text-sm text-[#c9a227]/80 font-medium tracking-wide">Admin Portal</p>
+            <p className="text-sm text-[var(--brass)] font-medium">Admin Portal</p>
           </div>
         </div>
       </div>
 
       {/* Navigation */}
       <nav className={`flex-1 ${compact ? 'p-4' : 'p-6'} overflow-y-auto`}>
-        <p className="text-sm font-semibold text-white/30 tracking-widest mb-4 px-4">Navigation</p>
+        <p className="text-sm font-semibold text-[var(--navy)]/40 tracking-wide mb-4 px-4">Navigation</p>
         <ul className="space-y-1">
           {groupedItems.pinned.length > 0 && (
-            <li className="px-4 py-2 text-xs font-semibold tracking-[0.2em] text-[#e8d48b]/70">
+            <li className="px-4 py-2 text-xs font-semibold tracking-wide text-[var(--brass)]">
               Pinned
             </li>
           )}
@@ -179,7 +178,7 @@ export default function Sidebar() {
           ))}
 
           {groupedItems.primary.length > 0 && (
-            <li className="px-4 py-2 text-xs font-semibold tracking-[0.2em] text-white/30">
+            <li className="px-4 py-2 text-xs font-semibold tracking-wide text-[var(--navy)]/40">
               Primary
             </li>
           )}
@@ -188,7 +187,7 @@ export default function Sidebar() {
           ))}
 
           {groupedItems.admin.length > 0 && (
-            <li className="px-4 py-2 text-xs font-semibold tracking-[0.2em] text-white/30">
+            <li className="px-4 py-2 text-xs font-semibold tracking-wide text-[var(--navy)]/40">
               Admin
             </li>
           )}
@@ -201,26 +200,26 @@ export default function Sidebar() {
       <div className="px-6 pb-6">
         <button
           onClick={() => setCustomizeOpen((prev) => !prev)}
-          className="w-full text-sm text-[#e8d48b] font-medium py-2 rounded-xl border border-[#c9a227]/30 hover:border-[#c9a227]/60 transition"
+          className="w-full text-sm text-[var(--brass)] font-medium py-2 rounded-xl border border-[var(--brass)]/30 hover:border-[var(--brass)]/60 transition"
         >
           {customizeOpen ? 'Close Customization' : 'Customize Sidebar'}
         </button>
       </div>
 
       {customizeOpen && (
-        <div className="px-6 pb-6 border-t border-white/10">
+        <div className="px-6 pb-6 border-t border-[var(--stone-alt)]">
           <div className="flex items-center justify-between py-4">
-            <p className="text-xs text-white/50 tracking-widest">Customize</p>
+            <p className="text-xs text-[var(--navy)]/50 tracking-wide">Customize</p>
             <div className="flex gap-2">
               <button
                 onClick={resetPreferences}
-                className="text-xs text-white/60 hover:text-white transition"
+                className="text-xs text-[var(--navy)]/60 hover:text-[var(--navy)] transition"
               >
                 Reset
               </button>
               <button
                 onClick={savePreferences}
-                className="text-xs text-[#e8d48b] hover:text-[#f3e7b5] transition"
+                className="text-xs text-[var(--brass)] hover:text-[var(--brass-light)] transition"
               >
                 {saving ? 'Saving...' : 'Save'}
               </button>
@@ -228,10 +227,10 @@ export default function Sidebar() {
           </div>
 
           <div className="flex items-center justify-between mb-3">
-            <p className="text-xs text-white/50">Compact mode</p>
+            <p className="text-xs text-[var(--navy)]/50">Compact mode</p>
             <button
               onClick={() => setCompact((prev) => !prev)}
-              className={`w-10 h-5 rounded-full transition ${compact ? 'bg-[#c9a227]' : 'bg-white/10'}`}
+              className={`w-10 h-5 rounded-full transition ${compact ? 'bg-[var(--brass)]' : 'bg-[var(--stone-alt)]'}`}
             >
               <span className={`block w-4 h-4 rounded-full bg-white transform transition ${compact ? 'translate-x-5' : 'translate-x-1'}`} />
             </button>
@@ -246,30 +245,30 @@ export default function Sidebar() {
               return (
                 <div
                   key={id}
-                  className="flex items-center gap-3 rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-xs text-white/70"
+                  className="flex items-center gap-3 rounded-lg border border-[var(--stone-alt)] bg-white px-3 py-2 text-xs text-[var(--navy)]/70"
                   draggable
                   onDragStart={() => handleDragStart(id)}
                   onDragOver={(event) => event.preventDefault()}
                   onDrop={() => handleDrop(id)}
                 >
-                  <span className="text-white/40 cursor-grab">⋮⋮</span>
+                  <span className="text-[var(--navy)]/40 cursor-grab">::::</span>
                   <span className="flex-1">{item.name}</span>
                   <button
                     onClick={() => toggleFavorite(id)}
-                    className={`text-sm ${favorites.includes(id) ? 'text-[#e8d48b]' : 'text-white/40'}`}
+                    className={`text-sm ${favorites.includes(id) ? 'text-[var(--brass)]' : 'text-[var(--navy)]/40'}`}
                   >
-                    ★
+                    *
                   </button>
                   <button
                     onClick={() => toggleHidden(id)}
-                    className={`text-xs ${hidden.includes(id) ? 'text-rose-300' : 'text-white/40'}`}
+                    className={`text-xs ${hidden.includes(id) ? 'text-rose-500' : 'text-[var(--navy)]/40'}`}
                   >
                     {hidden.includes(id) ? 'Hidden' : 'Show'}
                   </button>
                   <select
                     value={groups[id] || 'Primary'}
                     onChange={(event) => setGroups((prev) => ({ ...prev, [id]: event.target.value as 'Primary' | 'Admin' }))}
-                    className="bg-white/10 text-white/70 rounded-md px-2 py-1 text-xs"
+                    className="bg-[var(--stone)] text-[var(--navy)]/70 rounded-md px-2 py-1 text-xs border border-[var(--stone-alt)]"
                   >
                     {groupOptions.map((group) => (
                       <option key={group} value={group}>{group}</option>
@@ -283,13 +282,13 @@ export default function Sidebar() {
       )}
 
       {/* Footer */}
-      <div className="p-6 border-t border-white/5">
-        <div className="px-4 py-3 rounded-xl bg-white/5">
-          <p className="text-sm text-white/40 font-medium tracking-wide">
-            Brighter Horizon Academy
+      <div className="p-6 border-t border-[var(--stone-alt)]">
+        <div className="px-4 py-3 rounded-xl bg-white border border-[var(--stone-alt)]">
+          <p className="text-sm text-[var(--navy)]/60 font-medium">
+            Dar Al-Arqam Islamic School
           </p>
-          <p className="text-xs text-white/20 mt-1">
-            Excellence in Education
+          <p className="text-xs text-[var(--navy)]/40 mt-1">
+            Knowledge & Excellence
           </p>
         </div>
       </div>
@@ -307,14 +306,14 @@ function NavItemRow({ item, pathname, compact }: { item: NavItem; pathname: stri
         href={item.href}
         className={`group flex items-center gap-3 ${compact ? 'px-3 py-2.5 text-sm' : 'px-4 py-3.5'} rounded-xl transition-all duration-200 ${
           isActive
-            ? 'bg-gradient-to-r from-[#c9a227]/20 to-[#c9a227]/5 text-[#e8d48b] border border-[#c9a227]/20'
-            : 'text-white/60 hover:text-white hover:bg-white/5'
+            ? 'bg-white text-[var(--navy)] border-l-4 border-[var(--brass)] shadow-sm'
+            : 'text-[var(--navy)]/60 hover:text-[var(--navy)] hover:bg-white/60'
         }`}
       >
         <div className={`p-2 rounded-lg transition-all ${
           isActive
-            ? 'bg-[#c9a227]/20'
-            : 'bg-white/5 group-hover:bg-white/10'
+            ? 'bg-[var(--brass)]/10'
+            : 'bg-[var(--stone-alt)] group-hover:bg-[var(--stone-alt)]'
         }`}>
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={item.icon} />
@@ -322,7 +321,7 @@ function NavItemRow({ item, pathname, compact }: { item: NavItem; pathname: stri
         </div>
         <span className="font-medium">{item.name}</span>
         {isActive && (
-          <div className="ml-auto w-1.5 h-1.5 rounded-full bg-[#c9a227]"></div>
+          <div className="ml-auto w-1.5 h-1.5 rounded-full bg-[var(--brass)]"></div>
         )}
       </Link>
     </li>

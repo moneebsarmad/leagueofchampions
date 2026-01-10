@@ -45,34 +45,33 @@ export default function Sidebar({ role, portalLabel }: SidebarProps) {
       : studentNavItems
 
   return (
-    <aside className="fixed left-0 top-0 h-screen w-72 bg-gradient-to-b from-[#1a1a2e] to-[#16162a] flex flex-col shadow-2xl z-50">
+    <aside className="fixed left-0 top-0 h-screen w-72 bg-[var(--stone)] border-r border-[var(--stone-alt)] flex flex-col shadow-sm z-50">
       {/* Decorative top border */}
-      <div className="h-1 bg-gradient-to-r from-[#c9a227] via-[#e8d48b] to-[#c9a227]"></div>
+      <div className="h-1 bg-gradient-to-r from-[var(--brass)] via-[var(--brass-light)] to-[var(--brass)]"></div>
 
       {/* Logo Section */}
-      <div className="p-8 border-b border-white/5">
+      <div className="p-8 border-b border-[var(--stone-alt)]">
         <div className="flex items-center gap-4">
           {/* Crest Logo */}
           <div className="relative w-14 h-14 flex items-center justify-center">
             <img
               src="/crest.png"
-              alt="League of Stars crest"
+              alt="League of Champions crest"
               className="w-12 h-12 object-contain drop-shadow-md"
             />
-            <div className="absolute inset-0 rounded-full bg-[#c9a227] blur-xl opacity-20 -z-10"></div>
           </div>
           <div>
-            <h1 className="text-xl font-semibold text-white tracking-tight" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
-              League of Stars
+            <h1 className="text-xl font-semibold text-[var(--navy)] tracking-tight" style={{ fontFamily: 'var(--font-crimson), Georgia, serif' }}>
+              League of Champions
             </h1>
-            <p className="text-sm text-[#c9a227]/80 font-medium tracking-wide" style={{ fontFamily: 'var(--font-body), Cormorant Garamond, Georgia, serif' }}>{portalLabel}</p>
+            <p className="text-sm text-[var(--brass)] font-medium">{portalLabel}</p>
           </div>
         </div>
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 p-6 overflow-y-auto" style={{ fontFamily: 'var(--font-body), Cormorant Garamond, Georgia, serif' }}>
-        <p className="text-xs font-semibold text-white/30 uppercase tracking-widest mb-4 px-4">Navigation</p>
+      <nav className="flex-1 p-6 overflow-y-auto">
+        <p className="text-xs font-semibold text-[var(--navy)]/40 uppercase tracking-wide mb-4 px-4">Navigation</p>
         <ul className="space-y-1">
           {navItems.map((item) => {
             const isActive = pathname === item.href ||
@@ -84,14 +83,14 @@ export default function Sidebar({ role, portalLabel }: SidebarProps) {
                   href={item.href}
                   className={`group flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all duration-200 ${
                     isActive
-                      ? 'bg-gradient-to-r from-[#c9a227]/20 to-[#c9a227]/5 text-[#e8d48b] border border-[#c9a227]/20'
-                      : 'text-white/60 hover:text-white hover:bg-white/5'
+                      ? 'bg-white text-[var(--navy)] border-l-4 border-[var(--brass)] shadow-sm'
+                      : 'text-[var(--navy)]/60 hover:text-[var(--navy)] hover:bg-white/60'
                   }`}
                 >
                   <div className={`p-2 rounded-lg transition-all ${
                     isActive
-                      ? 'bg-[#c9a227]/20'
-                      : 'bg-white/5 group-hover:bg-white/10'
+                      ? 'bg-[var(--brass)]/10'
+                      : 'bg-[var(--stone-alt)] group-hover:bg-[var(--stone-alt)]'
                   }`}>
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={item.icon} />
@@ -99,7 +98,7 @@ export default function Sidebar({ role, portalLabel }: SidebarProps) {
                   </div>
                   <span className="font-medium">{item.name}</span>
                   {isActive && (
-                    <div className="ml-auto w-1.5 h-1.5 rounded-full bg-[#c9a227]"></div>
+                    <div className="ml-auto w-1.5 h-1.5 rounded-full bg-[var(--brass)]"></div>
                   )}
                 </Link>
               </li>
@@ -109,13 +108,13 @@ export default function Sidebar({ role, portalLabel }: SidebarProps) {
       </nav>
 
       {/* Footer */}
-      <div className="p-6 border-t border-white/5" style={{ fontFamily: 'var(--font-body), Cormorant Garamond, Georgia, serif' }}>
-        <div className="px-4 py-3 rounded-xl bg-white/5">
-          <p className="text-xs text-white/40 font-medium tracking-wide">
-            Brighter Horizon Academy
+      <div className="p-6 border-t border-[var(--stone-alt)]">
+        <div className="px-4 py-3 rounded-xl bg-white border border-[var(--stone-alt)]">
+          <p className="text-xs text-[var(--navy)]/60 font-medium">
+            Dar Al-Arqam Islamic School
           </p>
-          <p className="text-xs text-white/20 mt-1">
-            Excellence in Education
+          <p className="text-xs text-[var(--navy)]/40 mt-1">
+            Knowledge & Excellence
           </p>
         </div>
       </div>
