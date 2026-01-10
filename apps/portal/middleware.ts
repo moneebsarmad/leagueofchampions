@@ -45,20 +45,22 @@ export async function middleware(request: NextRequest) {
     }
   }
 
+  const isStaffOrAdmin = role === 'staff' || role === 'admin'
+
   if (isDashboardRoute && !user) {
     const redirectUrl = request.nextUrl.clone()
     redirectUrl.pathname = '/'
     return NextResponse.redirect(redirectUrl)
   }
 
-  if (isDashboardRoute && role !== 'admin') {
+  if (isDashboardRoute && !isStaffOrAdmin) {
     const redirectUrl = request.nextUrl.clone()
     redirectUrl.pathname = '/'
-    redirectUrl.searchParams.set('error', 'not_admin')
+    redirectUrl.searchParams.set('error', 'not_staff')
     return NextResponse.redirect(redirectUrl)
   }
 
-  if (request.nextUrl.pathname === '/' && user && role === 'admin') {
+  if (request.nextUrl.pathname === '/' && user && isStaffOrAdmin) {
     const redirectUrl = request.nextUrl.clone()
     redirectUrl.pathname = '/dashboard'
     return NextResponse.redirect(redirectUrl)

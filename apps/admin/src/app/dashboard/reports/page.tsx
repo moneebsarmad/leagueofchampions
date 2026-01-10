@@ -187,7 +187,7 @@ export default function ReportsPage() {
             <div class="header">
               <img class="crest" src="${crestUrl}" alt="League of Stars Crest" />
               <div>
-                <div class="brand">League of Stars • Brighter Horizon Academy</div>
+                <div class="brand">League of Stars • Dār Al-Arqam Islamic School</div>
                 <div class="title">${title}</div>
               </div>
             </div>

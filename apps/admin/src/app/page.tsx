@@ -1,16 +1,22 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 import CrestLoader from '@/components/CrestLoader'
 
 export default function LoginPage() {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
+  const accessError = searchParams.get('error')
+  const accessMessage =
+    accessError === 'not_admin'
+      ? 'Admin access required. Please sign in with an admin account.'
+      : ''
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -77,6 +83,7 @@ export default function LoginPage() {
           <div className="auth-divider"></div>
 
           <form className="auth-form" onSubmit={handleLogin}>
+            {accessMessage ? <div className="auth-error">{accessMessage}</div> : null}
             <label htmlFor="email">Email</label>
             <input
               id="email"
@@ -116,7 +123,7 @@ export default function LoginPage() {
 
           <div className="auth-footer">
             <span className="auth-dot"></span>
-            Brighter Horizon Academy
+            Dār Al-Arqam Islamic School
           </div>
         </div>
         <div className="auth-line"></div>

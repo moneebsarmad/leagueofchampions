@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "./providers";
 
 const roles = [
@@ -24,10 +24,16 @@ const roles = [
 
 export default function Home() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { loading, signIn } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [authMessage, setAuthMessage] = useState<string | null>(null);
+  const accessError = searchParams.get("error");
+  const accessMessage =
+    accessError === "not_staff"
+      ? "Staff access required. Please sign in with a staff account."
+      : null;
   const [selectedRoleId, setSelectedRoleId] =
     useState<(typeof roles)[number]["id"]>("student");
 
@@ -95,6 +101,9 @@ export default function Home() {
           </div>
 
           <form className="auth-form" onSubmit={handleSignIn}>
+            {accessMessage ? (
+              <div className="auth-error">{accessMessage}</div>
+            ) : null}
             <label htmlFor="email">Email</label>
             <input
               id="email"
@@ -130,7 +139,7 @@ export default function Home() {
 
           <div className="auth-footer">
             <span className="auth-dot"></span>
-            Brighter Horizon Academy
+            Dār Al-Arqam Islamic School
           </div>
         </div>
         <div className="auth-line"></div>
