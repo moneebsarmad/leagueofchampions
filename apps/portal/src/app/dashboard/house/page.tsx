@@ -21,24 +21,24 @@ interface HouseStanding {
 }
 
 const houseConfig: Record<string, { color: string; gradient: string; logo: string }> = {
-  'House of Abū Bakr': {
-    color: '#2f0a61',
-    gradient: 'linear-gradient(135deg, #4a1a8a 0%, #2f0a61 50%, #1a0536 100%)',
+  'House of Abu Bakr': {
+    color: 'var(--house-abu-bakr)',
+    gradient: 'linear-gradient(135deg, #2d3748 0%, #1e2a3a 50%, #0f1720 100%)',
     logo: '/House%20of%20Ab%C5%AB%20Bakr.png',
   },
-  'House of Khadījah': {
-    color: '#055437',
-    gradient: 'linear-gradient(135deg, #0a7a50 0%, #055437 50%, #033320 100%)',
+  'House of Khadijah': {
+    color: 'var(--house-khadijah)',
+    gradient: 'linear-gradient(135deg, #3d7a3d 0%, #2d5a27 50%, #1a3a16 100%)',
     logo: '/House%20of%20Khad%C4%ABjah.png',
   },
-  'House of ʿUmar': {
-    color: '#000068',
-    gradient: 'linear-gradient(135deg, #1a1a9a 0%, #000068 50%, #000040 100%)',
+  'House of Umar': {
+    color: 'var(--house-umar)',
+    gradient: 'linear-gradient(135deg, #5a6778 0%, #4a5568 50%, #3a4550 100%)',
     logo: '/House%20of%20%CA%BFUmar.png',
   },
-  'House of ʿĀʾishah': {
-    color: '#910000',
-    gradient: 'linear-gradient(135deg, #c41a1a 0%, #910000 50%, #5a0000 100%)',
+  'House of Aishah': {
+    color: 'var(--house-aishah)',
+    gradient: 'linear-gradient(135deg, #8a5a1a 0%, #744210 50%, #5a320a 100%)',
     logo: '/House%20of%20%CA%BF%C4%80%CA%BEishah.png',
   },
 }
@@ -51,10 +51,10 @@ function canonicalHouse(value: string): string {
     .toLowerCase()
     .trim()
 
-  if (normalized.includes('bakr') || normalized.includes('abu')) return 'House of Abū Bakr'
-  if (normalized.includes('khadijah') || normalized.includes('khad')) return 'House of Khadījah'
-  if (normalized.includes('umar')) return 'House of ʿUmar'
-  if (normalized.includes('aishah') || normalized.includes('aish')) return 'House of ʿĀʾishah'
+  if (normalized.includes('bakr') || normalized.includes('abu')) return 'House of Abu Bakr'
+  if (normalized.includes('khadijah') || normalized.includes('khad')) return 'House of Khadijah'
+  if (normalized.includes('umar')) return 'House of Umar'
+  if (normalized.includes('aishah') || normalized.includes('aish')) return 'House of Aishah'
   return value
 }
 
@@ -112,9 +112,9 @@ export default function MyHousePage() {
 
   if (!profile || !houseInfo) {
     return (
-      <div className="bg-white rounded-2xl p-8 shadow-sm border border-[#c9a227]/10 text-center">
-        <p className="text-[#1a1a2e]/70 font-medium">We couldn't find your house yet.</p>
-        <p className="text-sm text-[#1a1a2e]/45 mt-2">Please contact the office to link your account.</p>
+      <div className="bg-white rounded-2xl p-8 shadow-sm border border-[var(--stone-alt)] text-center">
+        <p className="text-[var(--navy)]/70 font-medium">We couldn't find your house yet.</p>
+        <p className="text-sm text-[var(--navy)]/45 mt-2">Please contact the office to link your account.</p>
       </div>
     )
   }
@@ -122,16 +122,16 @@ export default function MyHousePage() {
   return (
     <div className="max-w-4xl mx-auto">
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-[#1a1a2e] mb-2" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+        <h1 className="text-3xl font-bold text-[var(--navy)] mb-2" style={{ fontFamily: 'var(--font-crimson), Georgia, serif' }}>
           My House
         </h1>
         <div className="flex items-center gap-3">
-          <div className="h-1 w-16 bg-gradient-to-r from-[#c9a227] to-[#e8d48b] rounded-full"></div>
-          <p className="text-[#1a1a2e]/50 text-sm font-medium">House standing and contribution snapshot.</p>
+          <div className="h-1 w-16 bg-gradient-to-r from-[var(--brass)] to-[var(--brass-light)] rounded-full"></div>
+          <p className="text-[var(--navy)]/50 text-sm font-medium">House standing and contribution snapshot.</p>
         </div>
       </div>
 
-      <div className="rounded-2xl overflow-hidden shadow-xl relative" style={{ background: houseInfo.gradient }}>
+      <div className="rounded-2xl overflow-hidden shadow-lg relative" style={{ background: houseInfo.gradient }}>
         <div className="absolute top-8 right-10 w-40 h-40 opacity-[0.06]">
           <svg viewBox="0 0 200 200" className="w-full h-full">
             <path fill="white" d="M100,10 L120,80 L190,80 L130,120 L150,190 L100,150 L50,190 L70,120 L10,80 L80,80 Z" />
@@ -146,7 +146,7 @@ export default function MyHousePage() {
               </div>
               <div>
                 <p className="text-white/70 text-xs uppercase tracking-[0.2em]">My House</p>
-                <h2 className="text-2xl font-bold text-white" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+                <h2 className="text-2xl font-bold text-white" style={{ fontFamily: 'var(--font-crimson), Georgia, serif' }}>
                   {canonical}
                 </h2>
               </div>

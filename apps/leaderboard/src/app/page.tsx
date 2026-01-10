@@ -23,7 +23,7 @@ function canonicalHouse(value: string): string {
   const normalized = value
     .normalize("NFKD")
     .replace(/\p{Diacritic}/gu, "")
-    .replace(/[’‘`]/g, "'")
+    .replace(/[''`]/g, "'")
     .toLowerCase()
     .trim()
     .replace(/\s+/g, " ");
@@ -47,29 +47,29 @@ const houseConfig: Record<string, Omit<House, "rank" | "points" | "name">> = {
     "House of Abu Bakr": {
       virtue: "Loyalty",
       description: "Rooted in honesty, unwavering in loyalty to faith and community.",
-      color: "#2f0a61",
-      bgColor: "#f6f1fb",
+      color: "#1e2a3a",
+      bgColor: "#f4f1eb",
       logo: "/house_of_abubakr.png",
     },
     "House of 'Umar": {
       virtue: "Moral Courage",
       description: "Living with fairness, speaking truth, and acting with courage.",
-      color: "#000068",
-      bgColor: "#f2f3fb",
+      color: "#4a5568",
+      bgColor: "#f4f1eb",
       logo: "/house_of_umar.png",
     },
     "House of 'A'ishah": {
       virtue: "Creativity",
       description: "Igniting creativity that inspires hearts and serves Allah.",
-      color: "#910000",
-      bgColor: "#fdf1f1",
+      color: "#744210",
+      bgColor: "#f4f1eb",
       logo: "/house_of_aishah.png",
     },
     "House of Khadijah": {
       virtue: "Wisdom",
       description: "Guided by wisdom, leading with grace and strength.",
-      color: "#055437",
-      bgColor: "#f1fbf6",
+      color: "#2d5a27",
+      bgColor: "#f4f1eb",
       logo: "/house_of_khadijah.png",
     },
   };
@@ -189,29 +189,29 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="h-screen py-4 px-4 sm:px-6 lg:px-8 starry-bg flex flex-col" style={{ background: "#1a1a2e" }}>
+    <div className="h-screen py-4 px-4 sm:px-6 lg:px-8 flex flex-col" style={{ background: "var(--navy)" }}>
       {/* School Branding */}
       <div
-        className="absolute top-4 left-6 text-sm tracking-wide"
+        className="absolute top-4 left-6 text-sm tracking-wide font-medium"
         style={{
-          color: "#c9a227",
-          fontFamily: "var(--font-cinzel), 'Cinzel', sans-serif"
+          color: "var(--brass)",
+          fontFamily: "var(--font-inter), sans-serif"
         }}
       >
-        Brighter Horizon Academy
+        Dar Al-Arqam Islamic School
       </div>
       <div className="absolute top-4 right-6 flex items-center gap-2">
         <Link
           href="/house-mvps"
-          className="inline-flex items-center gap-2 rounded-full border border-[#c9a227] px-4 py-2 text-xs uppercase tracking-[0.2em] text-[#c9a227] transition hover:bg-[#c9a227] hover:text-[#1a1a2e]"
-          style={{ fontFamily: "var(--font-cinzel), 'Cinzel', sans-serif" }}
+          className="inline-flex items-center gap-2 rounded-full border border-[var(--brass)] px-4 py-2 text-xs uppercase tracking-[0.15em] text-[var(--brass)] transition hover:bg-[var(--brass)] hover:text-white"
+          style={{ fontFamily: "var(--font-inter), sans-serif" }}
         >
           House MVPs
         </Link>
         <Link
           href="/hall-of-fame"
-          className="inline-flex items-center gap-2 rounded-full border border-[#c9a227] px-4 py-2 text-xs uppercase tracking-[0.2em] text-[#c9a227] transition hover:bg-[#c9a227] hover:text-[#1a1a2e]"
-          style={{ fontFamily: "var(--font-cinzel), 'Cinzel', sans-serif" }}
+          className="inline-flex items-center gap-2 rounded-full border border-[var(--brass)] px-4 py-2 text-xs uppercase tracking-[0.15em] text-[var(--brass)] transition hover:bg-[var(--brass)] hover:text-white"
+          style={{ fontFamily: "var(--font-inter), sans-serif" }}
         >
           Hall of Fame
         </Link>
@@ -224,7 +224,7 @@ export default function Home() {
           <div className="flex justify-center mb-2">
             <Image
               src="/crest.png"
-              alt="League of Stars Crest"
+              alt="League of Champions Crest"
               width={100}
               height={100}
               className="drop-shadow-lg"
@@ -234,21 +234,21 @@ export default function Home() {
 
           {/* Title */}
           <h1
-            className="italic text-3xl sm:text-4xl md:text-5xl text-white mb-2 gold-underline pb-1"
-            style={{ fontFamily: "var(--font-playfair), 'Playfair Display', Georgia, serif" }}
+            className="text-3xl sm:text-4xl md:text-5xl text-white mb-2 pb-1"
+            style={{ fontFamily: "var(--font-crimson), Georgia, serif" }}
           >
-            League of Stars Leaderboard
+            League of Champions
           </h1>
 
           {/* Tagline */}
           <p
-            className="italic text-lg sm:text-xl mt-3"
+            className="text-lg sm:text-xl mt-3"
             style={{
-              color: "#c9a227",
-              fontFamily: "var(--font-playfair), 'Playfair Display', Georgia, serif"
+              color: "var(--brass)",
+              fontFamily: "var(--font-crimson), Georgia, serif"
             }}
           >
-            Where Stars Are Made
+            Where Champions Are Made
           </p>
 
         </header>
