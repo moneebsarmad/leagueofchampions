@@ -18,14 +18,14 @@ interface HouseCardProps {
 export default function HouseCard({ house }: HouseCardProps) {
   return (
     <div
-      className="relative rounded-lg overflow-hidden shadow-lg float-card"
+      className="relative rounded-lg overflow-hidden shadow-lg transition-transform hover:scale-[1.02]"
       style={{
         borderLeft: `5px solid ${house.color}`,
         background: house.bgColor,
       }}
     >
       {/* Rank Badge */}
-      <div className="absolute top-3 right-3 w-7 h-7 rounded-full flex items-center justify-center text-sm badge-gold">
+      <div className="absolute top-3 right-3 w-7 h-7 rounded-full flex items-center justify-center text-sm badge-brass">
         {house.rank}
       </div>
 
@@ -35,7 +35,7 @@ export default function HouseCard({ house }: HouseCardProps) {
           className="text-2xl font-bold mb-1"
           style={{
             color: house.color,
-            fontFamily: "var(--font-playfair), 'Playfair Display', Georgia, serif"
+            fontFamily: "var(--font-crimson), Georgia, serif"
           }}
         >
           {house.name}
@@ -46,7 +46,7 @@ export default function HouseCard({ house }: HouseCardProps) {
           className="italic text-lg mb-1"
           style={{
             color: house.color,
-            fontFamily: "var(--font-playfair), 'Playfair Display', Georgia, serif"
+            fontFamily: "var(--font-crimson), Georgia, serif"
           }}
         >
           {house.virtue}
@@ -56,8 +56,8 @@ export default function HouseCard({ house }: HouseCardProps) {
         <p
           className="text-sm mb-2"
           style={{
-            color: "#4a4a4a",
-            fontFamily: "var(--font-cinzel), 'Cinzel', sans-serif"
+            color: "var(--navy)",
+            fontFamily: "var(--font-inter), sans-serif"
           }}
         >
           {house.description}
@@ -67,8 +67,8 @@ export default function HouseCard({ house }: HouseCardProps) {
         <p
           className="text-4xl font-bold"
           style={{
-            color: "#1a1a2e",
-            fontFamily: "var(--font-playfair), 'Playfair Display', Georgia, serif"
+            color: "var(--navy)",
+            fontFamily: "var(--font-crimson), Georgia, serif"
           }}
         >
           {house.points.toLocaleString()}

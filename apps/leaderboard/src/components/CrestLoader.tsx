@@ -13,7 +13,7 @@ export default function CrestLoader({ label = 'Loading...' }: CrestLoaderProps) 
         <div className="flex items-center justify-center mx-auto mb-4">
           <Image
             src="/crest.png"
-            alt="League of Stars crest"
+            alt="League of Champions crest"
             width={100}
             height={100}
             className="animate-pulse"
@@ -22,11 +22,11 @@ export default function CrestLoader({ label = 'Loading...' }: CrestLoaderProps) 
         </div>
         <div
           className="text-xl font-semibold text-white mb-2"
-          style={{ fontFamily: "var(--font-playfair), 'Playfair Display', Georgia, serif" }}
+          style={{ fontFamily: "var(--font-crimson), Georgia, serif" }}
         >
-          League of Stars
+          League of Champions
         </div>
-        <p className="text-[#c9a227] text-sm font-medium">{label}</p>
+        <p className="text-[var(--brass)] text-sm font-medium">{label}</p>
       </div>
     </div>
   )
