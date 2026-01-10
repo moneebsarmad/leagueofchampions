@@ -16,8 +16,7 @@ export function RequirePermission({
   permission,
   children,
   fallback = null,
-  loadingComponent = null,
-}: RequirePermissionProps) {
+  loadingComponent = null}: RequirePermissionProps) {
   const { hasPermission, loading } = usePermission(permission)
 
   if (loading) {
@@ -39,8 +38,7 @@ export function RequireRole({
   roles,
   children,
   fallback = null,
-  loadingComponent = null,
-}: RequireRoleProps) {
+  loadingComponent = null}: RequireRoleProps) {
   const { role, loading } = useUserRole()
 
   if (loading) {
@@ -86,8 +84,7 @@ export function PermissionGate({
   roles,
   children,
   fallback = null,
-  loadingComponent = null,
-}: PermissionGateProps) {
+  loadingComponent = null}: PermissionGateProps) {
   if (permission) {
     return (
       <RequirePermission
@@ -115,9 +112,9 @@ export function PermissionGate({
 // Access denied component for use as fallback
 export function AccessDenied({ message = 'You do not have permission to view this content.' }) {
   return (
-    <div className="bg-[#910000]/5 border border-[#910000]/20 rounded-xl p-6 text-center">
+    <div className="bg-[var(--danger)] border border-[var(--danger)] rounded-xl p-6 text-center">
       <svg
-        className="w-12 h-12 mx-auto text-[#910000]/60 mb-4"
+        className="w-12 h-12 mx-auto text-[var(--danger)]/60 mb-4"
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"
@@ -129,8 +126,8 @@ export function AccessDenied({ message = 'You do not have permission to view thi
           d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
         />
       </svg>
-      <h3 className="text-lg font-semibold text-[#910000] mb-2">Access Denied</h3>
-      <p className="text-sm text-[#1a1a2e]/60">{message}</p>
+      <h3 className="text-lg font-semibold text-[var(--danger)] mb-2">Access Denied</h3>
+      <p className="text-sm text-[var(--text-muted)]">{message}</p>
     </div>
   )
 }

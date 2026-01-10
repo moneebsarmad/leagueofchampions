@@ -44,8 +44,7 @@ const defaultGroups: Record<string, 'Primary' | 'Admin'> = {
   'data-quality': 'Admin',
   behaviour: 'Admin',
   reports: 'Admin',
-  settings: 'Admin',
-}
+  settings: 'Admin'}
 
 const groupOptions = ['Primary', 'Admin'] as const
 
@@ -140,36 +139,25 @@ export default function Sidebar() {
   }
 
   return (
-    <aside className="fixed left-0 top-0 h-screen w-72 bg-[var(--cream)] border-r border-[var(--cream-alt)] flex flex-col shadow-sm">
-      {/* Decorative top border */}
-      <div className="geometric-border h-0.5"></div>
-
-      {/* Logo Section */}
-      <div className="p-8 border-b border-[var(--cream-alt)]">
-        <div className="flex items-center gap-4">
-          {/* Crest Logo */}
-          <div className="relative w-14 h-14 flex items-center justify-center">
-            <img
-              src="/crest.png"
-              alt="League of Champions crest"
-              className="w-12 h-12 object-contain drop-shadow-md"
-            />
+    <aside className="fixed left-0 top-0 h-screen w-72 bg-[var(--surface)] text-[var(--text)] border-r border-[var(--border)] flex flex-col">
+      <div className="p-6 border-b border-[var(--border)]">
+        <div className="flex items-center gap-3">
+          <div className="w-9 h-9 rounded-xl bg-[var(--accent-soft)] text-[var(--accent)] flex items-center justify-center text-xs font-semibold">
+            DA
           </div>
           <div>
-            <h1 className="text-xl font-semibold text-[var(--charcoal)] tracking-tight">
-              League of Champions
-            </h1>
-            <p className="text-sm text-[var(--sage-primary)] font-medium">Admin Portal</p>
+            <p className="text-base font-semibold">Dār al-Arqam</p>
+            <p className="text-xs text-[var(--text-muted)]">League of Champions</p>
           </div>
         </div>
       </div>
 
       {/* Navigation */}
       <nav className={`flex-1 ${compact ? 'p-4' : 'p-6'} overflow-y-auto`}>
-        <p className="text-sm font-semibold text-[var(--charcoal)]/40 tracking-wide mb-4 px-4">Navigation</p>
+        <p className="text-xs font-semibold text-[var(--text-muted)] mb-3 px-4">Navigation</p>
         <ul className="space-y-1">
           {groupedItems.pinned.length > 0 && (
-            <li className="px-4 py-2 text-xs font-semibold tracking-wide text-[var(--sage-primary)]">
+            <li className="px-4 py-2 text-xs font-semibold text-[var(--text-muted)]">
               Pinned
             </li>
           )}
@@ -178,7 +166,7 @@ export default function Sidebar() {
           ))}
 
           {groupedItems.primary.length > 0 && (
-            <li className="px-4 py-2 text-xs font-semibold tracking-wide text-[var(--charcoal)]/40">
+            <li className="px-4 py-2 text-xs font-semibold text-[var(--text-muted)]">
               Primary
             </li>
           )}
@@ -187,7 +175,7 @@ export default function Sidebar() {
           ))}
 
           {groupedItems.admin.length > 0 && (
-            <li className="px-4 py-2 text-xs font-semibold tracking-wide text-[var(--charcoal)]/40">
+            <li className="px-4 py-2 text-xs font-semibold text-[var(--text-muted)]">
               Admin
             </li>
           )}
@@ -200,26 +188,26 @@ export default function Sidebar() {
       <div className="px-6 pb-6">
         <button
           onClick={() => setCustomizeOpen((prev) => !prev)}
-          className="w-full text-sm text-[var(--sage-primary)] font-medium py-2 rounded-xl border border-[var(--sage-primary)]/30 hover:border-[var(--sage-primary)]/60 transition"
+          className="btn-secondary w-full text-sm font-medium"
         >
           {customizeOpen ? 'Close Customization' : 'Customize Sidebar'}
         </button>
       </div>
 
       {customizeOpen && (
-        <div className="px-6 pb-6 border-t border-[var(--cream-alt)]">
+        <div className="px-6 pb-6 border-t border-[var(--border)]">
           <div className="flex items-center justify-between py-4">
-            <p className="text-xs text-[var(--charcoal)]/50 tracking-wide">Customize</p>
+            <p className="text-xs text-[var(--text-muted)]">Customize</p>
             <div className="flex gap-2">
               <button
                 onClick={resetPreferences}
-                className="text-xs text-[var(--charcoal)]/60 hover:text-[var(--charcoal)] transition"
+                className="text-xs text-[var(--text-muted)] hover:text-[var(--text)] transition"
               >
                 Reset
               </button>
               <button
                 onClick={savePreferences}
-                className="text-xs text-[var(--sage-primary)] hover:text-[var(--sage-secondary)] transition"
+                className="text-xs text-[var(--accent)] hover:text-[var(--accent-2)] transition"
               >
                 {saving ? 'Saving...' : 'Save'}
               </button>
@@ -227,10 +215,10 @@ export default function Sidebar() {
           </div>
 
           <div className="flex items-center justify-between mb-3">
-            <p className="text-xs text-[var(--charcoal)]/50">Compact mode</p>
+            <p className="text-xs text-[var(--text-muted)]">Compact mode</p>
             <button
               onClick={() => setCompact((prev) => !prev)}
-              className={`w-10 h-5 rounded-full transition ${compact ? 'bg-[var(--sage-primary)]' : 'bg-[var(--cream-alt)]'}`}
+              className={`w-10 h-5 rounded-full transition ${compact ? 'bg-[var(--accent)]' : 'bg-[var(--border)]'}`}
             >
               <span className={`block w-4 h-4 rounded-full bg-white transform transition ${compact ? 'translate-x-5' : 'translate-x-1'}`} />
             </button>
@@ -245,30 +233,30 @@ export default function Sidebar() {
               return (
                 <div
                   key={id}
-                  className="flex items-center gap-3 rounded-lg border border-[var(--cream-alt)] bg-white px-3 py-2 text-xs text-[var(--charcoal)]/70"
+                  className="flex items-center gap-3 rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-xs text-[var(--text-muted)]"
                   draggable
                   onDragStart={() => handleDragStart(id)}
                   onDragOver={(event) => event.preventDefault()}
                   onDrop={() => handleDrop(id)}
                 >
-                  <span className="text-[var(--charcoal)]/40 cursor-grab">::::</span>
+                  <span className="text-[var(--text-muted)] cursor-grab">::::</span>
                   <span className="flex-1">{item.name}</span>
                   <button
                     onClick={() => toggleFavorite(id)}
-                    className={`text-sm ${favorites.includes(id) ? 'text-[var(--sage-primary)]' : 'text-[var(--charcoal)]/40'}`}
+                    className={`text-sm ${favorites.includes(id) ? 'text-[var(--accent)]' : 'text-[var(--text-muted)]'}`}
                   >
                     *
                   </button>
                   <button
                     onClick={() => toggleHidden(id)}
-                    className={`text-xs ${hidden.includes(id) ? 'text-rose-500' : 'text-[var(--charcoal)]/40'}`}
+                    className={`text-xs ${hidden.includes(id) ? 'text-[var(--danger)]' : 'text-[var(--text-muted)]'}`}
                   >
                     {hidden.includes(id) ? 'Hidden' : 'Show'}
                   </button>
                   <select
                     value={groups[id] || 'Primary'}
                     onChange={(event) => setGroups((prev) => ({ ...prev, [id]: event.target.value as 'Primary' | 'Admin' }))}
-                    className="bg-[var(--cream)] text-[var(--charcoal)]/70 rounded-md px-2 py-1 text-xs border border-[var(--cream-alt)]"
+                    className="bg-[var(--surface-2)] text-[var(--text-muted)] rounded-md px-2 py-1 text-xs border border-[var(--border)]"
                   >
                     {groupOptions.map((group) => (
                       <option key={group} value={group}>{group}</option>
@@ -282,13 +270,13 @@ export default function Sidebar() {
       )}
 
       {/* Footer */}
-      <div className="p-6 border-t border-[var(--cream-alt)]">
-        <div className="px-4 py-3 rounded-xl bg-white border border-[var(--cream-alt)]">
-          <p className="text-sm text-[var(--charcoal)]/60 font-medium">
-            Dar Al-Arqam Islamic School
+      <div className="p-6 border-t border-[var(--border)]">
+        <div className="px-4 py-3 rounded-xl bg-[var(--surface-2)] border border-[var(--border)]">
+          <p className="text-sm text-[var(--text-muted)] font-medium">
+            Dār al-Arqam Islamic School
           </p>
-          <p className="text-xs text-[var(--charcoal)]/40 mt-1">
-            Knowledge & Excellence
+          <p className="text-xs text-[var(--text-muted)] mt-1">
+            League of Champions
           </p>
         </div>
       </div>
@@ -306,23 +294,20 @@ function NavItemRow({ item, pathname, compact }: { item: NavItem; pathname: stri
         href={item.href}
         className={`group flex items-center gap-3 ${compact ? 'px-3 py-2.5 text-sm' : 'px-4 py-3.5'} rounded-xl transition-all duration-200 ${
           isActive
-            ? 'bg-white text-[var(--charcoal)] border-l-4 border-[var(--sage-primary)] shadow-sm'
-            : 'text-[var(--charcoal)]/60 hover:text-[var(--charcoal)] hover:bg-white/60'
+            ? 'bg-[var(--accent-soft)] text-[var(--text)] border-l-[3px] border-[var(--accent)]'
+            : 'text-[var(--text-muted)] hover:text-[var(--text)] hover:bg-[var(--surface-2)]'
         }`}
       >
         <div className={`p-2 rounded-lg transition-all ${
           isActive
-            ? 'bg-[var(--sage-primary)]/10'
-            : 'bg-[var(--cream-alt)] group-hover:bg-[var(--cream-alt)]'
+            ? 'bg-[var(--accent-soft)] text-[var(--accent)]'
+            : 'bg-[var(--surface-2)] text-[var(--text-muted)] group-hover:text-[var(--text)]'
         }`}>
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={item.icon} />
           </svg>
         </div>
         <span className="font-medium">{item.name}</span>
-        {isActive && (
-          <div className="ml-auto w-1.5 h-1.5 rounded-full bg-[var(--sage-primary)]"></div>
-        )}
       </Link>
     </li>
   )

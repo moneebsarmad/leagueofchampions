@@ -20,28 +20,19 @@ interface HouseStanding {
   percentage?: number | null
 }
 
-const houseConfig: Record<string, { color: string; gradient: string; logo: string }> = {
+const houseConfig: Record<string, { color: string; logo: string }> = {
   'House of Abu Bakr': {
-    color: 'var(--house-abu-bakr)',
-    gradient: 'linear-gradient(135deg, #3d7a4d 0%, #2d5a27 50%, #1a4016 100%)',
-    logo: '/House%20of%20Ab%C5%AB%20Bakr.png',
-  },
+    color: 'var(--house-abu)',
+    logo: '/House%20of%20Ab%C5%AB%20Bakr.png'},
   'House of Khadijah': {
-    color: 'var(--house-khadijah)',
-    gradient: 'linear-gradient(135deg, #7b5433 0%, #6b4423 50%, #5a3413 100%)',
-    logo: '/House%20of%20Khad%C4%ABjah.png',
-  },
+    color: 'var(--house-khad)',
+    logo: '/House%20of%20Khad%C4%ABjah.png'},
   'House of Umar': {
     color: 'var(--house-umar)',
-    gradient: 'linear-gradient(135deg, #5a6578 0%, #4a5568 50%, #3a4558 100%)',
-    logo: '/House%20of%20%CA%BFUmar.png',
-  },
+    logo: '/House%20of%20%CA%BFUmar.png'},
   'House of Aishah': {
-    color: 'var(--house-aishah)',
-    gradient: 'linear-gradient(135deg, #9b5523 0%, #8b4513 50%, #7b3503 100%)',
-    logo: '/House%20of%20%CA%BF%C4%80%CA%BEishah.png',
-  },
-}
+    color: 'var(--house-aish)',
+    logo: '/House%20of%20%CA%BF%C4%80%CA%BEishah.png'}}
 
 function canonicalHouse(value: string): string {
   const normalized = value
@@ -100,8 +91,7 @@ export default function MyHousePage() {
     return {
       rank: match?.rank ?? null,
       totalPoints: Number(match?.total_points ?? 0),
-      percentage: Number(match?.percentage ?? 0),
-    }
+      percentage: Number(match?.percentage ?? 0)}
   }, [canonical, standings])
 
   if (loading) {
@@ -112,9 +102,9 @@ export default function MyHousePage() {
 
   if (!profile || !houseInfo) {
     return (
-      <div className="bg-white rounded-2xl p-8 shadow-sm border border-[var(--cream-alt)] text-center">
-        <p className="text-[var(--charcoal)]/70 font-medium">We couldn't find your house yet.</p>
-        <p className="text-sm text-[var(--charcoal)]/45 mt-2">Please contact the office to link your account.</p>
+      <div className="card rounded-2xl p-8 text-center">
+        <p className="text-[var(--text)] font-medium">We couldn't find your house yet.</p>
+        <p className="text-sm text-[var(--text-muted)] mt-2">Please contact the office to link your account.</p>
       </div>
     )
   }
@@ -122,53 +112,47 @@ export default function MyHousePage() {
   return (
     <div className="max-w-4xl mx-auto">
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-[var(--charcoal)] mb-2">
+        <h1 className="text-3xl font-bold text-[var(--text)] mb-2">
           My House
         </h1>
         <div className="flex items-center gap-3">
-          <div className="h-1 w-16 bg-gradient-to-r from-[var(--sage-primary)] to-[var(--sage-light)] rounded-full"></div>
-          <p className="text-[var(--charcoal)]/50 text-sm font-medium">House standing and contribution snapshot.</p>
+          <div className="h-1 w-16 bg-[var(--accent)] rounded-full"></div>
+          <p className="text-[var(--text-muted)] text-sm font-medium">House standing and contribution snapshot.</p>
         </div>
       </div>
 
-      <div className="rounded-2xl overflow-hidden shadow-lg relative" style={{ background: houseInfo.gradient }}>
-        <div className="absolute top-8 right-10 w-40 h-40 opacity-[0.06]">
-          <svg viewBox="0 0 200 200" className="w-full h-full">
-            <path fill="white" d="M100,10 L120,80 L190,80 L130,120 L150,190 L100,150 L50,190 L70,120 L10,80 L80,80 Z" />
-          </svg>
-        </div>
-
-        <div className="p-6 relative z-10">
+      <div className="card rounded-2xl overflow-hidden" style={{ borderLeft: `4px solid ${houseInfo.color}` }}>
+        <div className="p-6">
           <div className="flex items-start justify-between gap-6 mb-6">
             <div className="flex items-center gap-4">
-              <div className="w-16 h-16 rounded-2xl bg-white/15 flex items-center justify-center">
+              <div className="w-16 h-16 rounded-2xl bg-[var(--surface-2)] flex items-center justify-center border border-[var(--border)]">
                 <img src={houseInfo.logo} alt={canonical} className="w-12 h-12 object-contain" />
               </div>
               <div>
-                <p className="text-white/70 text-xs uppercase tracking-[0.2em]">My House</p>
-                <h2 className="text-2xl font-bold text-white">
+                <p className="text-[var(--text-muted)] text-xs tracking-[0.2em]">My House</p>
+                <h2 className="text-2xl font-bold text-[var(--text)]">
                   {canonical}
                 </h2>
               </div>
             </div>
             <div className="text-right">
-              <p className="text-sm text-white/70">House Rank</p>
-              <p className="text-3xl font-bold text-white">#{rankInfo.rank ?? '-'}</p>
+              <p className="text-sm text-[var(--text-muted)]">House Rank</p>
+              <p className="text-3xl font-bold text-[var(--text)]">#{rankInfo.rank ?? '-'}</p>
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="bg-white/10 rounded-xl p-4 border border-white/15">
-              <p className="text-xs uppercase tracking-wider text-white/60">Total Points</p>
-              <p className="text-2xl font-bold text-white mt-2">{rankInfo.totalPoints.toLocaleString()}</p>
+            <div className="surface-muted rounded-xl p-4 border border-[var(--border)]">
+              <p className="text-xs text-[var(--text-muted)]">Total Points</p>
+              <p className="text-2xl font-bold text-[var(--text)] mt-2">{rankInfo.totalPoints.toLocaleString()}</p>
             </div>
-            <div className="bg-white/10 rounded-xl p-4 border border-white/15">
-              <p className="text-xs uppercase tracking-wider text-white/60">Share of Points</p>
-              <p className="text-2xl font-bold text-white mt-2">{rankInfo.percentage.toFixed(1)}%</p>
+            <div className="surface-muted rounded-xl p-4 border border-[var(--border)]">
+              <p className="text-xs text-[var(--text-muted)]">Share of Points</p>
+              <p className="text-2xl font-bold text-[var(--text)] mt-2">{rankInfo.percentage.toFixed(1)}%</p>
             </div>
-            <div className="bg-white/10 rounded-xl p-4 border border-white/15">
-              <p className="text-xs uppercase tracking-wider text-white/60">My Class</p>
-              <p className="text-2xl font-bold text-white mt-2">{profile.grade}{profile.section}</p>
+            <div className="surface-muted rounded-xl p-4 border border-[var(--border)]">
+              <p className="text-xs text-[var(--text-muted)]">My Class</p>
+              <p className="text-2xl font-bold text-[var(--text)] mt-2">{profile.grade}{profile.section}</p>
             </div>
           </div>
         </div>

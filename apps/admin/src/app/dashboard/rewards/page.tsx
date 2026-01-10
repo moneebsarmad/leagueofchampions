@@ -90,9 +90,9 @@ interface GradeChampionEntry {
 
 // Hall of Fame tiers (thresholds: Century 100+, Badr 300+, Fath 700+)
 const hallOfFameTiers = [
-  { name: 'Century Club', points: 100, icon: '💯', color: 'from-[#6b4a1a] to-[#b08a2e]', view: VIEWS.CENTURY_CLUB },
-  { name: 'Badr Club', points: 300, icon: '🌙', color: 'from-[#1f2a44] to-[#3b537a]', view: VIEWS.BADR_CLUB },
-  { name: 'Fath Club', points: 700, icon: '🏆', color: 'from-[#23523b] to-[#3a7b59]', view: VIEWS.FATH_CLUB },
+  { name: 'Century Club', points: 100, icon: '💯', bar: 'var(--accent)', view: VIEWS.CENTURY_CLUB },
+  { name: 'Badr Club', points: 300, icon: '🌙', bar: 'var(--house-abu)', view: VIEWS.BADR_CLUB },
+  { name: 'Fath Club', points: 700, icon: '🏆', bar: 'var(--house-khad)', view: VIEWS.FATH_CLUB },
 ]
 
 // Quarterly badges
@@ -111,8 +111,7 @@ const houseLogos: Record<string, string> = {
   'House of Abū Bakr': '/houses/abu-bakr.png',
   'House of Khadījah': '/houses/khadijah.png',
   'House of ʿUmar': '/houses/umar.png',
-  'House of ʿĀʾishah': '/houses/aishah.png',
-}
+  'House of ʿĀʾishah': '/houses/aishah.png'}
 
 export default function RewardsPage() {
   const [students, setStudents] = useState<Student[]>([])
@@ -202,8 +201,7 @@ export default function RewardsPage() {
                   grade: Number(gradeRaw) || 0,
                   section: String(sectionRaw ?? ''),
                   gender: String(genderRaw ?? ''),
-                  totalPoints: Number(pointsRaw) || 0,
-                }
+                  totalPoints: Number(pointsRaw) || 0}
               })
               .filter(Boolean) as HallEntry[]
             return { view: tier.view, entries }
@@ -233,8 +231,7 @@ export default function RewardsPage() {
             totalPoints: 0,
             categoryPoints: {},
             weeklyPoints: {},
-            monthlyPoints: {},
-          }
+            monthlyPoints: {}}
         }
       })
 
@@ -251,8 +248,7 @@ export default function RewardsPage() {
           timestamp: m.timestamp || m.awarded_at || '',
           house: m.house || m.house_name || '',
           grade: m.grade || 0,
-          section: m.section || '',
-        }))
+          section: m.section || ''}))
         setMeritEntries(entries)
 
         // Calculate points per student
@@ -268,8 +264,7 @@ export default function RewardsPage() {
               totalPoints: 0,
               categoryPoints: {},
               weeklyPoints: {},
-              monthlyPoints: {},
-            }
+              monthlyPoints: {}}
           }
 
           studentMap[key].totalPoints += e.points
@@ -324,8 +319,7 @@ export default function RewardsPage() {
         gender: String(row.gender ?? ''),
         studentName: String(row.student_name ?? row.studentName ?? ''),
         grade: Number(row.grade ?? 0),
-        totalPoints: Number(row.total_points ?? row.totalPoints ?? 0),
-      }))
+        totalPoints: Number(row.total_points ?? row.totalPoints ?? 0)}))
 
       setBadgeLeaders(leaders)
     } catch (error) {
@@ -387,8 +381,7 @@ export default function RewardsPage() {
       const entries: GradeChampionEntry[] = (data || []).map((row: Record<string, unknown>) => ({
         grade: Number(row.grade ?? 0),
         section: String(row.section ?? ''),
-        points: Number(row.total_points ?? row.points ?? 0),
-      }))
+        points: Number(row.total_points ?? row.points ?? 0)}))
       setGradeChampionLeaders(entries)
     } catch (error) {
       console.error('Error fetching grade champions:', error)
@@ -425,9 +418,7 @@ export default function RewardsPage() {
         name: leader.studentName,
         grade: leader.grade,
         categoryPoints: {
-          [leader.category]: leader.totalPoints,
-        },
-      }
+          [leader.category]: leader.totalPoints}}
     }
 
     return quarterlyBadges.map((badge) => {
@@ -438,8 +429,7 @@ export default function RewardsPage() {
       return {
         ...badge,
         topMale: toEntry(topMale),
-        topFemale: toEntry(topFemale),
-      }
+        topFemale: toEntry(topFemale)}
     })
   }, [badgeLeaders])
 
@@ -450,8 +440,7 @@ export default function RewardsPage() {
       return {
         name: entry.studentName,
         grade: entry.grade,
-        house: studentHouseMap.get(key) || '',
-      }
+        house: studentHouseMap.get(key) || ''}
     })
   }, [consistencyLeaders, studentHouseMap])
 
@@ -466,8 +455,7 @@ export default function RewardsPage() {
           house: studentHouseMap.get(key) || '',
           percentIncrease: entry.percentIncrease,
           lastMonthPts: entry.lastMonthPts,
-          currentMonthPts: entry.currentMonthPts,
-        }
+          currentMonthPts: entry.currentMonthPts}
       })
       .sort((a, b) => b.percentIncrease - a.percentIncrease)
   }, [risingStarLeaders, studentHouseMap])
@@ -481,8 +469,7 @@ export default function RewardsPage() {
       return {
         house,
         mvp: leader ? { name: leader.studentName } : null,
-        points: leader?.points || 0,
-      }
+        points: leader?.points || 0}
     })
   }, [houseMvpLeaders])
 
@@ -495,8 +482,7 @@ export default function RewardsPage() {
       return {
         grade,
         champion: leader ? { section: leader.section } : null,
-        points: leader?.points || 0,
-      }
+        points: leader?.points || 0}
     })
   }, [gradeChampionLeaders])
 
@@ -519,8 +505,7 @@ export default function RewardsPage() {
           grade: row.grade,
           house: row.house,
           totalPoints: row.total_points,
-          pointsNeeded: row.points_needed,
-        }))
+          pointsNeeded: row.points_needed}))
       return { ...tier, students }
     })
   }, [approachingRows])
@@ -533,12 +518,12 @@ export default function RewardsPage() {
     <div>
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-[#1a1a2e] mb-2" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+        <h1 className="text-3xl font-bold text-[var(--text)] mb-2">
           Student Rewards
         </h1>
         <div className="flex items-center gap-3">
-          <div className="h-1 w-16 bg-gradient-to-r from-[#c9a227] to-[#e8d48b] rounded-full"></div>
-          <p className="text-[#1a1a2e]/50 text-sm font-medium">Recognition & incentive tracking</p>
+          <div className="h-1 w-16 bg-[var(--accent)] rounded-full"></div>
+          <p className="text-[var(--text-muted)] text-sm font-medium">Recognition & incentive tracking</p>
         </div>
       </div>
 
@@ -553,10 +538,10 @@ export default function RewardsPage() {
           <button
             key={tab.id}
             onClick={() => setSelectedTab(tab.id as typeof selectedTab)}
-            className={`flex items-center gap-2 px-5 py-3 rounded-xl font-medium text-sm transition-all whitespace-nowrap ${
+            className={`flex items-center gap-2 whitespace-nowrap transition-all ${
               selectedTab === tab.id
-                ? 'bg-gradient-to-r from-[#2f0a61] to-[#4a1a8a] text-white shadow-lg'
-                : 'bg-white text-[#1a1a2e]/60 hover:bg-[#1a1a2e]/5 border border-[#c9a227]/20'
+                ? 'btn-primary shadow-sm'
+                : 'btn-secondary text-[var(--text-muted)] hover:text-[var(--text)]'
             }`}
           >
             <span>{tab.icon}</span>
@@ -569,19 +554,19 @@ export default function RewardsPage() {
       {selectedTab === 'hall-of-fame' && (
         <div className="space-y-6">
           {hallOfFame.map((tier) => (
-            <div key={tier.name} className="regal-card rounded-2xl overflow-hidden">
-              <div className={`bg-gradient-to-r ${tier.color} p-6`}>
+            <div key={tier.name} className="card rounded-2xl overflow-hidden">
+              <div className="surface-muted p-6" style={{ borderLeft: `4px solid ${tier.bar}` }}>
                 <div className="flex items-center gap-4">
                   <span className="text-4xl">{tier.icon}</span>
                   <div>
-                    <h3 className="text-2xl font-bold text-white" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+                    <h3 className="text-2xl font-bold text-[var(--text)]">
                       {tier.name}
                     </h3>
-                    <p className="text-white/70">Students with {tier.points}+ individual points</p>
+                    <p className="text-sm text-[var(--text-muted)]">Students with {tier.points}+ individual points</p>
                   </div>
                   <div className="ml-auto text-right">
-                    <p className="text-3xl font-bold text-white">{tier.total}</p>
-                    <p className="text-white/70 text-sm">Total Members</p>
+                    <p className="text-3xl font-bold text-[var(--text)]">{tier.total}</p>
+                    <p className="text-sm text-[var(--text-muted)]">Total Members</p>
                   </div>
                 </div>
               </div>
@@ -589,50 +574,50 @@ export default function RewardsPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Males */}
                   <div>
-                    <h4 className="text-sm font-semibold text-[#1a1a2e]/40 tracking-wider mb-4">Male Recipients ({tier.males.length})</h4>
+                    <h4 className="text-sm font-semibold text-[var(--text-muted)] tracking-wider mb-4">Male Recipients ({tier.males.length})</h4>
                     {tier.males.length === 0 ? (
-                      <p className="text-[#1a1a2e]/30 text-sm">No male students have reached this milestone yet</p>
+                      <p className="text-[var(--text-muted)] text-sm">No male students have reached this milestone yet</p>
                     ) : (
                       <div className="space-y-2">
                         {tier.males.slice(0, 5).map((s, i) => (
-                          <div key={s.name} className="flex items-center gap-3 p-3 rounded-xl bg-[#f5f3ef]">
-                            <span className="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold">
+                          <div key={s.name} className="flex items-center gap-3 p-3 rounded-xl bg-[var(--bg-muted)]">
+                            <span className="w-6 h-6 rounded-full border border-[var(--border)] text-[var(--text-muted)] flex items-center justify-center text-xs font-bold">
                               {i + 1}
                             </span>
                             <div className="flex-1">
-                              <p className="font-medium text-[#1a1a2e]">{s.name}</p>
-                              <p className="text-xs text-[#1a1a2e]/40">Grade {s.grade} • {s.section}</p>
+                              <p className="font-medium text-[var(--text)]">{s.name}</p>
+                              <p className="text-xs text-[var(--text-muted)]">Grade {s.grade} • {s.section}</p>
                             </div>
-                            <span className="font-bold text-[#2f0a61]">{s.totalPoints} pts</span>
+                            <span className="font-bold text-[var(--accent-2)]">{s.totalPoints} pts</span>
                           </div>
                         ))}
                         {tier.males.length > 5 && (
-                          <p className="text-sm text-[#1a1a2e]/40 text-center">+{tier.males.length - 5} more</p>
+                          <p className="text-sm text-[var(--text-muted)] text-center">+{tier.males.length - 5} more</p>
                         )}
                       </div>
                     )}
                   </div>
                   {/* Females */}
                   <div>
-                    <h4 className="text-sm font-semibold text-[#1a1a2e]/40 tracking-wider mb-4">Female Recipients ({tier.females.length})</h4>
+                    <h4 className="text-sm font-semibold text-[var(--text-muted)] tracking-wider mb-4">Female Recipients ({tier.females.length})</h4>
                     {tier.females.length === 0 ? (
-                      <p className="text-[#1a1a2e]/30 text-sm">No female students have reached this milestone yet</p>
+                      <p className="text-[var(--text-muted)] text-sm">No female students have reached this milestone yet</p>
                     ) : (
                       <div className="space-y-2">
                         {tier.females.slice(0, 5).map((s, i) => (
-                          <div key={s.name} className="flex items-center gap-3 p-3 rounded-xl bg-[#f5f3ef]">
-                            <span className="w-6 h-6 rounded-full bg-pink-100 text-pink-600 flex items-center justify-center text-xs font-bold">
+                          <div key={s.name} className="flex items-center gap-3 p-3 rounded-xl bg-[var(--bg-muted)]">
+                            <span className="w-6 h-6 rounded-full border border-[var(--border)] text-[var(--text-muted)] flex items-center justify-center text-xs font-bold">
                               {i + 1}
                             </span>
                             <div className="flex-1">
-                              <p className="font-medium text-[#1a1a2e]">{s.name}</p>
-                              <p className="text-xs text-[#1a1a2e]/40">Grade {s.grade} • {s.section}</p>
+                              <p className="font-medium text-[var(--text)]">{s.name}</p>
+                              <p className="text-xs text-[var(--text-muted)]">Grade {s.grade} • {s.section}</p>
                             </div>
-                            <span className="font-bold text-[#2f0a61]">{s.totalPoints} pts</span>
+                            <span className="font-bold text-[var(--accent-2)]">{s.totalPoints} pts</span>
                           </div>
                         ))}
                         {tier.females.length > 5 && (
-                          <p className="text-sm text-[#1a1a2e]/40 text-center">+{tier.females.length - 5} more</p>
+                          <p className="text-sm text-[var(--text-muted)] text-center">+{tier.females.length - 5} more</p>
                         )}
                       </div>
                     )}
@@ -649,15 +634,15 @@ export default function RewardsPage() {
         <div>
           <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
             <div>
-              <h2 className="text-xl font-semibold text-[#1a1a2e]" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+              <h2 className="text-xl font-semibold text-[var(--text)]">
                 Quarterly Badges
               </h2>
-              <p className="text-sm text-[#1a1a2e]/50">Select the quarter to view top students by category.</p>
+              <p className="text-sm text-[var(--text-muted)]">Select the quarter to view top students by category.</p>
             </div>
             <select
               value={selectedQuarter}
               onChange={(e) => setSelectedQuarter(e.target.value as 'q1' | 'q2')}
-              className="px-4 py-2.5 border border-[#1a1a2e]/10 rounded-xl focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227] outline-none bg-white"
+              className="input min-w-[180px]"
             >
               {quarterOptions.map((option) => (
                 <option key={option.id} value={option.id}>{option.label}</option>
@@ -666,40 +651,40 @@ export default function RewardsPage() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {badgeWinners.map((badge) => (
-              <div key={badge.name} className="regal-card rounded-2xl p-6">
+              <div key={badge.name} className="card rounded-2xl p-6">
                 <div className="text-center mb-6">
                   <span className="text-5xl mb-3 block">{badge.icon}</span>
-                  <h3 className="text-xl font-bold text-[#1a1a2e]" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+                  <h3 className="text-xl font-bold text-[var(--text)]">
                     {badge.name}
                   </h3>
-                  <p className="text-sm text-[#1a1a2e]/50 mt-1">{badge.description}</p>
-                  <span className="inline-block mt-2 px-3 py-1 rounded-full text-xs font-semibold bg-[#c9a227]/10 text-[#9a7b1a]">
+                  <p className="text-sm text-[var(--text-muted)] mt-1">{badge.description}</p>
+                  <span className="inline-block mt-2 px-3 py-1 rounded-full text-xs font-semibold bg-[var(--accent)]/10 text-[var(--accent-2)]">
                     {badge.category}
                   </span>
                 </div>
                 <div className="space-y-4">
                   {/* Top Male */}
-                  <div className="p-4 rounded-xl bg-blue-50 border border-blue-100">
-                    <p className="text-xs font-semibold text-blue-600 tracking-wider mb-2">Top Male</p>
+                  <div className="surface-muted p-4" style={{ borderLeft: '3px solid var(--accent)' }}>
+                    <p className="text-xs font-semibold text-[var(--accent-2)] tracking-wider mb-2">Top Male</p>
                     {badge.topMale ? (
                       <div>
-                        <p className="font-bold text-[#1a1a2e]">{badge.topMale.name}</p>
-                        <p className="text-sm text-[#1a1a2e]/50">Grade {badge.topMale.grade} • {badge.topMale.categoryPoints[badge.category]} pts</p>
+                        <p className="font-bold text-[var(--text)]">{badge.topMale.name}</p>
+                        <p className="text-sm text-[var(--text-muted)]">Grade {badge.topMale.grade} • {badge.topMale.categoryPoints[badge.category]} pts</p>
                       </div>
                     ) : (
-                      <p className="text-[#1a1a2e]/30 text-sm">No data yet</p>
+                      <p className="text-[var(--text-muted)] text-sm">No data yet</p>
                     )}
                   </div>
                   {/* Top Female */}
-                  <div className="p-4 rounded-xl bg-pink-50 border border-pink-100">
-                    <p className="text-xs font-semibold text-pink-600 tracking-wider mb-2">Top Female</p>
+                  <div className="surface-muted p-4" style={{ borderLeft: '3px solid var(--house-aish)' }}>
+                    <p className="text-xs font-semibold text-[var(--house-aish)] tracking-wider mb-2">Top Female</p>
                     {badge.topFemale ? (
                       <div>
-                        <p className="font-bold text-[#1a1a2e]">{badge.topFemale.name}</p>
-                        <p className="text-sm text-[#1a1a2e]/50">Grade {badge.topFemale.grade} • {badge.topFemale.categoryPoints[badge.category]} pts</p>
+                        <p className="font-bold text-[var(--text)]">{badge.topFemale.name}</p>
+                        <p className="text-sm text-[var(--text-muted)]">Grade {badge.topFemale.grade} • {badge.topFemale.categoryPoints[badge.category]} pts</p>
                       </div>
                     ) : (
-                      <p className="text-[#1a1a2e]/30 text-sm">No data yet</p>
+                      <p className="text-[var(--text-muted)] text-sm">No data yet</p>
                     )}
                   </div>
                 </div>
@@ -713,27 +698,27 @@ export default function RewardsPage() {
       {selectedTab === 'monthly' && (
         <div className="space-y-8">
           {/* Consistency Crown */}
-          <div className="regal-card rounded-2xl p-6">
+          <div className="card rounded-2xl p-6">
             <div className="flex items-center gap-4 mb-6">
               <span className="text-4xl">👑</span>
               <div>
-                <h3 className="text-xl font-bold text-[#1a1a2e]" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+                <h3 className="text-xl font-bold text-[var(--text)]">
                   Consistency Crown
                 </h3>
-                <p className="text-sm text-[#1a1a2e]/50">20+ points in each of the past 3 consecutive weeks</p>
+                <p className="text-sm text-[var(--text-muted)]">20+ points in each of the past 3 consecutive weeks</p>
               </div>
-              <span className="ml-auto badge-gold px-3 py-1 rounded-lg text-sm">{consistencyCrown.length} eligible</span>
+              <span className="ml-auto chip px-3 py-1 rounded-lg text-sm">{consistencyCrown.length} eligible</span>
             </div>
             {consistencyCrown.length === 0 ? (
-              <p className="text-[#1a1a2e]/30 text-center py-4">No students have met this criteria yet</p>
+              <p className="text-[var(--text-muted)] text-center py-4">No students have met this criteria yet</p>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                 {consistencyCrown.slice(0, 6).map((s) => (
-                  <div key={s.name} className="flex items-center gap-3 p-3 rounded-xl bg-[#f5f3ef]">
+                  <div key={s.name} className="flex items-center gap-3 p-3 rounded-xl bg-[var(--bg-muted)]">
                     <span className="text-2xl">👑</span>
                     <div>
-                      <p className="font-medium text-[#1a1a2e]">{s.name}</p>
-                      <p className="text-xs text-[#1a1a2e]/40">Grade {s.grade} • {s.house}</p>
+                      <p className="font-medium text-[var(--text)]">{s.name}</p>
+                      <p className="text-xs text-[var(--text-muted)]">Grade {s.grade} • {s.house}</p>
                     </div>
                   </div>
                 ))}
@@ -742,34 +727,36 @@ export default function RewardsPage() {
           </div>
 
           {/* Rising Star */}
-          <div className="regal-card rounded-2xl p-6">
+          <div className="card rounded-2xl p-6">
             <div className="flex items-center gap-4 mb-6">
               <span className="text-4xl">🚀</span>
               <div>
-                <h3 className="text-xl font-bold text-[#1a1a2e]" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+                <h3 className="text-xl font-bold text-[var(--text)]">
                   Rising Star
                 </h3>
-                <p className="text-sm text-[#1a1a2e]/50">Highest % increase month-over-month (min 30 pts last month, +20 improvement)</p>
+                <p className="text-sm text-[var(--text-muted)]">Highest % increase month-over-month (min 30 pts last month, +20 improvement)</p>
               </div>
             </div>
             {risingStars.length === 0 ? (
-              <p className="text-[#1a1a2e]/30 text-center py-4">No students have met this criteria yet</p>
+              <p className="text-[var(--text-muted)] text-center py-4">No students have met this criteria yet</p>
             ) : (
               <div className="space-y-3">
                 {risingStars.slice(0, 5).map((s, i) => (
-                  <div key={s.name} className="flex items-center gap-4 p-4 rounded-xl bg-[#f5f3ef]">
+                  <div key={s.name} className="flex items-center gap-4 p-4 rounded-xl bg-[var(--bg-muted)]">
                     <span className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${
-                      i === 0 ? 'bg-gradient-to-br from-[#ffd700] to-[#b8860b] text-white' : 'bg-white text-[#1a1a2e]/50'
+                      i === 0
+                        ? 'bg-[var(--accent-soft)] text-[var(--accent-2)]'
+                        : 'bg-[var(--surface)] text-[var(--text-muted)] border border-[var(--border)]'
                     }`}>
                       {i + 1}
                     </span>
                     <div className="flex-1">
-                      <p className="font-medium text-[#1a1a2e]">{s.name}</p>
-                      <p className="text-xs text-[#1a1a2e]/40">Grade {s.grade} • {s.house}</p>
+                      <p className="font-medium text-[var(--text)]">{s.name}</p>
+                      <p className="text-xs text-[var(--text-muted)]">Grade {s.grade} • {s.house}</p>
                     </div>
                     <div className="text-right">
-                      <p className="font-bold text-green-600">+{s.percentIncrease.toFixed(0)}%</p>
-                      <p className="text-xs text-[#1a1a2e]/40">{s.lastMonthPts} → {s.currentMonthPts} pts</p>
+                      <p className="font-bold text-[var(--success)]">+{s.percentIncrease.toFixed(0)}%</p>
+                      <p className="text-xs text-[var(--text-muted)]">{s.lastMonthPts} → {s.currentMonthPts} pts</p>
                     </div>
                   </div>
                 ))}
@@ -778,30 +765,30 @@ export default function RewardsPage() {
           </div>
 
           {/* House MVPs */}
-          <div className="regal-card rounded-2xl p-6">
+          <div className="card rounded-2xl p-6">
             <div className="flex items-center gap-4 mb-6">
               <span className="text-4xl">🏅</span>
               <div>
-                <h3 className="text-xl font-bold text-[#1a1a2e]" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+                <h3 className="text-xl font-bold text-[var(--text)]">
                   House MVPs
                 </h3>
-                <p className="text-sm text-[#1a1a2e]/50">Top contributor from each house this month</p>
+                <p className="text-sm text-[var(--text-muted)]">Top contributor from each house this month</p>
               </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               {houseMVPs.map((h) => (
-                <div key={h.house} className="p-4 rounded-xl bg-[#f5f3ef] text-center">
+                <div key={h.house} className="p-4 rounded-xl bg-[var(--bg-muted)] text-center">
                   {houseLogos[h.house] && (
                     <img src={houseLogos[h.house]} alt={h.house} className="w-12 h-12 mx-auto mb-3 object-contain" />
                   )}
-                  <p className="text-xs font-semibold text-[#1a1a2e]/40 tracking-wider mb-2">{h.house.replace('House of ', '')}</p>
+                  <p className="text-xs font-semibold text-[var(--text-muted)] tracking-wider mb-2">{h.house.replace('House of ', '')}</p>
                   {h.mvp ? (
                     <>
-                      <p className="font-bold text-[#1a1a2e]">{h.mvp.name}</p>
-                      <p className="text-sm text-[#c9a227] font-semibold">{h.points} pts</p>
+                      <p className="font-bold text-[var(--text)]">{h.mvp.name}</p>
+                      <p className="text-sm text-[var(--accent)] font-semibold">{h.points} pts</p>
                     </>
                   ) : (
-                    <p className="text-[#1a1a2e]/30 text-sm">No data</p>
+                    <p className="text-[var(--text-muted)] text-sm">No data</p>
                   )}
                 </div>
               ))}
@@ -809,27 +796,27 @@ export default function RewardsPage() {
           </div>
 
           {/* Grade Champions */}
-          <div className="regal-card rounded-2xl p-6">
+          <div className="card rounded-2xl p-6">
             <div className="flex items-center gap-4 mb-6">
               <span className="text-4xl">🎓</span>
               <div>
-                <h3 className="text-xl font-bold text-[#1a1a2e]" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+                <h3 className="text-xl font-bold text-[var(--text)]">
                   Grade Champions
                 </h3>
-                <p className="text-sm text-[#1a1a2e]/50">Top section per grade this month</p>
+                <p className="text-sm text-[var(--text-muted)]">Top section per grade this month</p>
               </div>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3">
               {gradeChampions.map((g) => (
-                <div key={g.grade} className="p-4 rounded-xl bg-[#f5f3ef] text-center">
-                  <p className="text-xs font-semibold text-[#1a1a2e]/40 tracking-wider mb-2">Grade {g.grade}</p>
+                <div key={g.grade} className="p-4 rounded-xl bg-[var(--bg-muted)] text-center">
+                  <p className="text-xs font-semibold text-[var(--text-muted)] tracking-wider mb-2">Grade {g.grade}</p>
                   {g.champion ? (
                     <>
-                      <p className="font-bold text-[#1a1a2e] text-sm truncate">Section {g.champion.section}</p>
-                      <p className="text-sm text-[#c9a227] font-semibold">{g.points} pts</p>
+                      <p className="font-bold text-[var(--text)] text-sm truncate">Section {g.champion.section}</p>
+                      <p className="text-sm text-[var(--accent)] font-semibold">{g.points} pts</p>
                     </>
                   ) : (
-                    <p className="text-[#1a1a2e]/30 text-sm">No data</p>
+                    <p className="text-[var(--text-muted)] text-sm">No data</p>
                   )}
                 </div>
               ))}
@@ -841,36 +828,36 @@ export default function RewardsPage() {
       {/* Approaching Milestones Tab */}
       {selectedTab === 'approaching' && (
         <div className="space-y-6">
-          <div className="regal-card rounded-2xl p-6 bg-gradient-to-r from-[#c9a227]/5 to-transparent">
+          <div className="card rounded-2xl p-6" style={{ borderLeft: '4px solid var(--accent)' }}>
             <div className="flex items-center gap-3 mb-2">
               <span className="text-2xl">🎯</span>
-              <h3 className="text-lg font-bold text-[#1a1a2e]" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+              <h3 className="text-lg font-bold text-[var(--text)]">
                 Students Close to Milestones
               </h3>
             </div>
-            <p className="text-sm text-[#1a1a2e]/50 mb-0">Students within 20 points of reaching the next tier</p>
+            <p className="text-sm text-[var(--text-muted)] mb-0">Students within 20 points of reaching the next tier</p>
           </div>
 
           {approachingMilestones.map((tier) => (
-            <div key={tier.name} className="regal-card rounded-2xl p-6">
+            <div key={tier.name} className="card rounded-2xl p-6">
               <div className="flex items-center gap-3 mb-4">
                 <span className="text-2xl">{tier.icon}</span>
-                <h4 className="font-bold text-[#1a1a2e]">Approaching {tier.name} ({tier.points} pts)</h4>
-                <span className="ml-auto text-sm text-[#1a1a2e]/40">{tier.students.length} students</span>
+                <h4 className="font-bold text-[var(--text)]">Approaching {tier.name} ({tier.points} pts)</h4>
+                <span className="ml-auto text-sm text-[var(--text-muted)]">{tier.students.length} students</span>
               </div>
               {tier.students.length === 0 ? (
-                <p className="text-[#1a1a2e]/30 text-center py-4">No students are within 20 points of this milestone</p>
+                <p className="text-[var(--text-muted)] text-center py-4">No students are within 20 points of this milestone</p>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   {tier.students.map((s) => (
-                    <div key={s.name} className="flex items-center gap-3 p-3 rounded-xl bg-[#f5f3ef]">
+                    <div key={s.name} className="flex items-center gap-3 p-3 rounded-xl bg-[var(--bg-muted)]">
                       <div className="flex-1">
-                        <p className="font-medium text-[#1a1a2e]">{s.name}</p>
-                        <p className="text-xs text-[#1a1a2e]/40">Grade {s.grade} • {s.house}</p>
+                        <p className="font-medium text-[var(--text)]">{s.name}</p>
+                        <p className="text-xs text-[var(--text-muted)]">Grade {s.grade} • {s.house}</p>
                       </div>
                       <div className="text-right">
-                        <p className="font-bold text-[#2f0a61]">{s.totalPoints} pts</p>
-                        <p className="text-xs text-[#c9a227] font-semibold">{s.pointsNeeded} to go!</p>
+                        <p className="font-bold text-[var(--accent-2)]">{s.totalPoints} pts</p>
+                        <p className="text-xs text-[var(--accent)] font-semibold">{s.pointsNeeded} to go!</p>
                       </div>
                     </div>
                   ))}

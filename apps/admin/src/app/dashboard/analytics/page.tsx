@@ -32,14 +32,20 @@ interface Filters {
 }
 
 const houseColors: Record<string, string> = {
-  'House of Abū Bakr': '#2f0a61',
-  'House of Khadījah': '#055437',
-  'House of ʿUmar': '#000068',
-  'House of ʿĀʾishah': '#910000',
-}
+  'House of Abū Bakr': 'var(--house-abu)',
+  'House of Khadījah': 'var(--house-khad)',
+  'House of ʿUmar': 'var(--house-umar)',
+  'House of ʿĀʾishah': 'var(--house-aish)'}
 
 const categoryColors = [
-  '#2f0a61', '#055437', '#000068', '#910000', '#c9a227', '#1a1a2e', '#4a1a8a', '#0a7a50'
+  'var(--house-abu)',
+  'var(--house-khad)',
+  'var(--house-umar)',
+  'var(--house-aish)',
+  'var(--accent)',
+  'var(--accent-2)',
+  'var(--success)',
+  'var(--warning)',
 ]
 
 export default function AnalyticsPage() {
@@ -57,8 +63,7 @@ export default function AnalyticsPage() {
     category: '',
     subcategory: '',
     startDate: '',
-    endDate: '',
-  })
+    endDate: ''})
   const [appliedFilters, setAppliedFilters] = useState<Filters>(filters)
 
   const getThreeRCategory = (value: string) => {
@@ -150,8 +155,7 @@ export default function AnalyticsPage() {
       uniqueStudents,
       activeStaff,
       avgPerStudent,
-      avgPerAward,
-    }
+      avgPerAward}
   }, [filteredEntries])
 
   // Points by House chart data
@@ -159,8 +163,7 @@ export default function AnalyticsPage() {
     return houseStandings.map((entry) => ({
       name: entry.name,
       points: entry.points,
-      color: houseColors[entry.name] || '#666',
-    }))
+      color: houseColors[entry.name] || 'var(--text-muted)'}))
   }, [houseStandings])
 
   // Points by Category chart data
@@ -168,8 +171,7 @@ export default function AnalyticsPage() {
     return categoryTotals.map((entry, index) => ({
       name: entry.name,
       points: entry.points,
-      color: categoryColors[index % categoryColors.length],
-    }))
+      color: categoryColors[index % categoryColors.length]}))
   }, [categoryTotals])
 
   const fetchData = useCallback(async () => {
@@ -196,14 +198,12 @@ export default function AnalyticsPage() {
             getRowValue(row, ['category', 'r']) ?? getThreeRCategory(String(getRowValue(row, ['r']) ?? ''))
           ),
           subcategory: String(getRowValue(row, ['subcategory']) ?? ''),
-          timestamp: String(getRowValue(row, ['timestamp', 'awarded_at', 'date']) ?? ''),
-        }))
+          timestamp: String(getRowValue(row, ['timestamp', 'awarded_at', 'date']) ?? '')}))
         setAllEntries(entries)
 
         const categoryRows = (entriesRes.data || []).map((row) => ({
           name: String(getRowValue(row, ['category', 'r']) ?? '').trim(),
-          points: Number(getRowValue(row, ['points', 'total_points']) ?? 0),
-        }))
+          points: Number(getRowValue(row, ['points', 'total_points']) ?? 0)}))
         setCategoryTotals(categoryRows.filter((row) => row.name))
       }
 
@@ -213,8 +213,7 @@ export default function AnalyticsPage() {
       } else {
         const standings = (standingsRes.data || []).map((row) => ({
           name: String(getRowValue(row, ['house', 'house_name']) ?? ''),
-          points: Number(getRowValue(row, ['total_points', 'points']) ?? 0),
-        }))
+          points: Number(getRowValue(row, ['total_points', 'points']) ?? 0)}))
         setHouseStandings(standings.filter((row) => row.name))
       }
     } catch (error) {
@@ -239,8 +238,7 @@ export default function AnalyticsPage() {
       house,
       staff,
       grade,
-      section,
-    }
+      section}
     if (house || staff || grade || section) {
       setFilters(nextFilters)
       setAppliedFilters(nextFilters)
@@ -265,8 +263,7 @@ export default function AnalyticsPage() {
       category: '',
       subcategory: '',
       startDate: '',
-      endDate: '',
-    }
+      endDate: ''}
     setFilters(emptyFilters)
     setAppliedFilters(emptyFilters)
   }
@@ -318,12 +315,12 @@ export default function AnalyticsPage() {
         <head>
           <title>${title}</title>
           <style>
-            body { font-family: Georgia, 'Times New Roman', serif; color: #1a1a2e; padding: 24px; }
+            body { font-family: Inter, Arial, sans-serif; color: #14161a; padding: 24px; background: #fbfaf7; }
             h1 { font-size: 20px; margin: 0 0 12px; }
-            p { font-size: 12px; margin: 0 0 16px; color: #555; }
+            p { font-size: 12px; margin: 0 0 16px; color: #5a616b; }
             table { width: 100%; border-collapse: collapse; font-size: 11px; }
-            th, td { border: 1px solid #ddd; padding: 6px 8px; text-align: left; }
-            th { background: #f5f3ef; }
+            th, td { border: 1px solid #e6e1d7; padding: 6px 8px; text-align: left; }
+            th { background: #fbfaf7; color: #5a616b; }
           </style>
         </head>
         <body>
@@ -369,7 +366,7 @@ export default function AnalyticsPage() {
     const y = typeof props.y === 'number' ? props.y : 0
     const width = typeof props.width === 'number' ? props.width : 0
     const height = typeof props.height === 'number' ? props.height : 0
-    const fill = typeof props.fill === 'string' ? props.fill : '#c9a227'
+    const fill = typeof props.fill === 'string' ? props.fill : 'var(--accent)'
     const radius = Math.min(10, width / 2)
     const taper = Math.max(6, Math.min(width * 0.22, 14))
     const bottomY = y + height
@@ -401,7 +398,7 @@ export default function AnalyticsPage() {
     const width = typeof props?.width === 'number' ? props.width : 0
     const value = typeof props?.value === 'number' ? props.value : 0
     return (
-      <text x={x + width / 2} y={y - 8} textAnchor="middle" fill="#8a7a55" fontSize={11} fontWeight={600}>
+      <text x={x + width / 2} y={y - 8} textAnchor="middle" fill="var(--text-muted)" fontSize={11} fontWeight={600}>
         {value.toLocaleString()}
       </text>
     )
@@ -411,31 +408,31 @@ export default function AnalyticsPage() {
     <div>
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-[#1a1a2e] mb-2" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+        <h1 className="text-3xl font-bold text-[var(--text)] mb-2">
           Advanced Analytics
         </h1>
         <div className="flex items-center gap-3">
-          <div className="h-1 w-16 bg-gradient-to-r from-[#c9a227] to-[#e8d48b] rounded-full"></div>
-          <p className="text-[#1a1a2e]/50 text-sm font-medium">Comprehensive data insights and patterns</p>
+          <div className="h-1 w-16 bg-[var(--accent)] rounded-full"></div>
+          <p className="text-[var(--text-muted)] text-sm font-medium">Comprehensive data insights and patterns</p>
         </div>
       </div>
 
       {/* Filters */}
-      <div className="regal-card rounded-2xl p-6 mb-8">
+      <div className="card rounded-2xl p-6 mb-8">
         <div className="flex items-center gap-2 mb-5">
-          <svg className="w-5 h-5 text-[#c9a227]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-5 h-5 text-[var(--accent)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
           </svg>
-          <h3 className="text-sm font-semibold text-[#1a1a2e] tracking-wider">Filter Data</h3>
+          <h3 className="text-sm font-semibold text-[var(--text)] tracking-wider">Filter Data</h3>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4 mb-5">
           {/* House Filter */}
           <div>
-            <label className="block text-xs font-semibold text-[#1a1a2e]/40 mb-1.5 tracking-wider">House</label>
+            <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1.5 tracking-wider">House</label>
             <select
               value={filters.house}
               onChange={(e) => handleFilterChange('house', e.target.value)}
-              className="regal-input w-full px-3 py-2.5 rounded-xl text-sm"
+              className="input w-full px-3 py-2.5 rounded-xl text-sm"
             >
               <option value="">All Houses</option>
               {filterOptions.houses.map(h => (
@@ -446,11 +443,11 @@ export default function AnalyticsPage() {
 
           {/* Grade Filter */}
           <div>
-            <label className="block text-xs font-semibold text-[#1a1a2e]/40 mb-1.5 tracking-wider">Grade</label>
+            <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1.5 tracking-wider">Grade</label>
             <select
               value={filters.grade}
               onChange={(e) => handleFilterChange('grade', e.target.value)}
-              className="regal-input w-full px-3 py-2.5 rounded-xl text-sm"
+              className="input w-full px-3 py-2.5 rounded-xl text-sm"
             >
               <option value="">All Grades</option>
               {filterOptions.grades.map(g => (
@@ -461,11 +458,11 @@ export default function AnalyticsPage() {
 
           {/* Section Filter */}
           <div>
-            <label className="block text-xs font-semibold text-[#1a1a2e]/40 mb-1.5 tracking-wider">Section</label>
+            <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1.5 tracking-wider">Section</label>
             <select
               value={filters.section}
               onChange={(e) => handleFilterChange('section', e.target.value)}
-              className="regal-input w-full px-3 py-2.5 rounded-xl text-sm"
+              className="input w-full px-3 py-2.5 rounded-xl text-sm"
             >
               <option value="">All Sections</option>
               {filterOptions.sections.map(s => (
@@ -476,11 +473,11 @@ export default function AnalyticsPage() {
 
           {/* Staff Filter */}
           <div>
-            <label className="block text-xs font-semibold text-[#1a1a2e]/40 mb-1.5 tracking-wider">Staff</label>
+            <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1.5 tracking-wider">Staff</label>
             <select
               value={filters.staff}
               onChange={(e) => handleFilterChange('staff', e.target.value)}
-              className="regal-input w-full px-3 py-2.5 rounded-xl text-sm"
+              className="input w-full px-3 py-2.5 rounded-xl text-sm"
             >
               <option value="">All Staff</option>
               {filterOptions.staff.map(s => (
@@ -491,11 +488,11 @@ export default function AnalyticsPage() {
 
           {/* Category Filter */}
           <div>
-            <label className="block text-xs font-semibold text-[#1a1a2e]/40 mb-1.5 tracking-wider">Category</label>
+            <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1.5 tracking-wider">Category</label>
             <select
               value={filters.category}
               onChange={(e) => handleFilterChange('category', e.target.value)}
-              className="regal-input w-full px-3 py-2.5 rounded-xl text-sm"
+              className="input w-full px-3 py-2.5 rounded-xl text-sm"
             >
               <option value="">All Categories</option>
               {filterOptions.categories.map(c => (
@@ -506,11 +503,11 @@ export default function AnalyticsPage() {
 
           {/* Subcategory Filter */}
           <div>
-            <label className="block text-xs font-semibold text-[#1a1a2e]/40 mb-1.5 tracking-wider">Subcategory</label>
+            <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1.5 tracking-wider">Subcategory</label>
             <select
               value={filters.subcategory}
               onChange={(e) => handleFilterChange('subcategory', e.target.value)}
-              className="regal-input w-full px-3 py-2.5 rounded-xl text-sm"
+              className="input w-full px-3 py-2.5 rounded-xl text-sm"
             >
               <option value="">All Subcategories</option>
               {filterOptions.subcategories.map(s => (
@@ -521,45 +518,45 @@ export default function AnalyticsPage() {
 
           {/* Start Date */}
           <div>
-            <label className="block text-xs font-semibold text-[#1a1a2e]/40 mb-1.5 tracking-wider">Start Date</label>
+            <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1.5 tracking-wider">Start Date</label>
             <input
               type="date"
               value={filters.startDate}
               onChange={(e) => handleFilterChange('startDate', e.target.value)}
-              className="regal-input w-full px-3 py-2.5 rounded-xl text-sm"
+              className="input w-full px-3 py-2.5 rounded-xl text-sm"
             />
           </div>
 
           {/* End Date */}
           <div>
-            <label className="block text-xs font-semibold text-[#1a1a2e]/40 mb-1.5 tracking-wider">End Date</label>
+            <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1.5 tracking-wider">End Date</label>
             <input
               type="date"
               value={filters.endDate}
               onChange={(e) => handleFilterChange('endDate', e.target.value)}
-              className="regal-input w-full px-3 py-2.5 rounded-xl text-sm"
+              className="input w-full px-3 py-2.5 rounded-xl text-sm"
             />
           </div>
         </div>
 
         {/* Filter Actions */}
-        <div className="flex gap-3 pt-2 border-t border-[#c9a227]/10">
+        <div className="flex gap-3 pt-2 border-t border-[var(--border)]">
           <button
             onClick={clearFilters}
-            className="px-5 py-2.5 text-sm text-[#1a1a2e]/60 hover:text-[#1a1a2e] font-medium rounded-xl hover:bg-[#1a1a2e]/5 transition"
+            className="px-5 py-2.5 text-sm text-[var(--text-muted)] hover:text-[var(--text)] font-medium rounded-xl hover:bg-[var(--bg-muted)] transition"
           >
             Clear All
           </button>
           <button
             onClick={applyFilters}
-            className="btn-regal px-5 py-2.5 text-sm text-white font-medium rounded-xl"
+            className="btn-primary px-5 py-2.5 text-sm text-white font-medium rounded-xl"
           >
             Apply Filters
           </button>
           <div className="flex flex-wrap gap-2">
             <button
               onClick={exportCSV}
-              className="btn-gold px-5 py-2.5 text-sm font-medium rounded-xl flex items-center gap-2"
+              className="btn-primary px-5 py-2.5 text-sm font-medium rounded-xl flex items-center gap-2"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -568,7 +565,7 @@ export default function AnalyticsPage() {
             </button>
             <button
               onClick={exportPDF}
-              className="px-5 py-2.5 text-sm font-medium rounded-xl flex items-center gap-2 border border-[#c9a227]/30 text-[#1a1a2e] bg-white hover:border-[#c9a227]/60 transition"
+              className="px-5 py-2.5 text-sm font-medium rounded-xl flex items-center gap-2 border border-[var(--border)] text-[var(--text)] bg-white hover:border-[var(--border)] transition"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h10M7 11h10M7 15h6M5 3h8l4 4v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z" />
@@ -589,12 +586,12 @@ export default function AnalyticsPage() {
           { label: 'Avg/Student', value: computedStats.avgPerStudent, icon: '📈' },
           { label: 'Avg/Award', value: computedStats.avgPerAward, icon: '🏆' },
         ].map((stat) => (
-          <div key={stat.label} className="regal-card rounded-xl p-5">
+          <div key={stat.label} className="card rounded-xl p-5">
             <div className="flex items-center justify-between mb-2">
-              <p className="text-xs font-semibold text-[#1a1a2e]/40 tracking-wider">{stat.label}</p>
+              <p className="text-xs font-semibold text-[var(--text-muted)] tracking-wider">{stat.label}</p>
               <span className="text-lg">{stat.icon}</span>
             </div>
-            <p className="text-2xl font-bold text-[#1a1a2e]" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+            <p className="text-2xl font-bold text-[var(--text)]">
               {stat.value}
             </p>
           </div>
@@ -603,12 +600,12 @@ export default function AnalyticsPage() {
 
       {/* Empty State */}
       {filteredEntries.length === 0 && (
-        <div className="regal-card rounded-2xl p-12 text-center mb-8">
+        <div className="card rounded-2xl p-12 text-center mb-8">
           <div className="text-5xl mb-4">📭</div>
-          <h3 className="text-xl font-semibold text-[#1a1a2e] mb-2" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+          <h3 className="text-xl font-semibold text-[var(--text)] mb-2">
             No data matches your filters
           </h3>
-          <p className="text-[#1a1a2e]/50 max-w-md mx-auto">
+          <p className="text-[var(--text-muted)] max-w-md mx-auto">
             Try adjusting your filter criteria or clearing some filters to see more results.
           </p>
           <button
@@ -616,7 +613,7 @@ export default function AnalyticsPage() {
               setFilters({ house: '', grade: '', section: '', staff: '', category: '', subcategory: '', startDate: '', endDate: '' })
               setAppliedFilters({ house: '', grade: '', section: '', staff: '', category: '', subcategory: '', startDate: '', endDate: '' })
             }}
-            className="mt-6 px-6 py-2 bg-[#c9a227] text-white rounded-lg font-medium hover:bg-[#9a7b1a] transition-colors"
+            className="mt-6 px-6 py-2 bg-[var(--accent)] text-white rounded-lg font-medium hover:bg-[var(--accent-2)] transition-colors"
           >
             Clear All Filters
           </button>
@@ -627,23 +624,23 @@ export default function AnalyticsPage() {
       {filteredEntries.length > 0 && (
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Points by House */}
-        <div className="regal-card rounded-2xl p-6">
-          <h3 className="text-lg font-semibold text-[#1a1a2e] mb-1" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+        <div className="card rounded-2xl p-6">
+          <h3 className="text-lg font-semibold text-[var(--text)] mb-1">
             Points by House
           </h3>
-          <p className="text-xs text-[#1a1a2e]/40 mb-6">Distribution across all houses</p>
+          <p className="text-xs text-[var(--text-muted)] mb-6">Distribution across all houses</p>
           <div className="h-80">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={houseChartData} margin={{ left: 10, right: 10, top: 30, bottom: 30 }} barCategoryGap={18}>
-                <CartesianGrid strokeDasharray="4 6" vertical={false} stroke="#eee7d6" />
+                <CartesianGrid strokeDasharray="4 6" vertical={false} stroke="var(--border)" />
                 <XAxis
                   dataKey="name"
                   tickFormatter={(value: string) => value.replace('House of ', '')}
-                  tick={{ fontSize: 12, fill: '#1a1a2e' }}
+                  tick={{ fontSize: 12, fill: 'var(--text-muted)' }}
                   axisLine={false}
                   tickLine={false}
                 />
-                <YAxis tickFormatter={(v) => v.toLocaleString()} tick={{ fontSize: 11, fill: '#1a1a2e' }} axisLine={false} tickLine={false} />
+                <YAxis tickFormatter={(v) => v.toLocaleString()} tick={{ fontSize: 11, fill: 'var(--text-muted)' }} axisLine={false} tickLine={false} />
                 <Tooltip
                   formatter={(value) => [
                     typeof value === 'number' ? value.toLocaleString() : `${value ?? 0}`,
@@ -662,22 +659,22 @@ export default function AnalyticsPage() {
         </div>
 
         {/* Points by Category */}
-        <div className="regal-card rounded-2xl p-6">
-          <h3 className="text-lg font-semibold text-[#1a1a2e] mb-1" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+        <div className="card rounded-2xl p-6">
+          <h3 className="text-lg font-semibold text-[var(--text)] mb-1">
             Points by Category
           </h3>
-          <p className="text-xs text-[#1a1a2e]/40 mb-6">Breakdown by merit categories</p>
+          <p className="text-xs text-[var(--text-muted)] mb-6">Breakdown by merit categories</p>
           <div className="h-80">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={categoryChartData} margin={{ left: 10, right: 10, top: 30, bottom: 30 }} barCategoryGap={18}>
-                <CartesianGrid strokeDasharray="4 6" vertical={false} stroke="#eee7d6" />
+                <CartesianGrid strokeDasharray="4 6" vertical={false} stroke="var(--border)" />
                 <XAxis
                   dataKey="name"
-                  tick={{ fontSize: 12, fill: '#1a1a2e' }}
+                  tick={{ fontSize: 12, fill: 'var(--text-muted)' }}
                   axisLine={false}
                   tickLine={false}
                 />
-                <YAxis tickFormatter={(v) => v.toLocaleString()} tick={{ fontSize: 11, fill: '#1a1a2e' }} axisLine={false} tickLine={false} />
+                <YAxis tickFormatter={(v) => v.toLocaleString()} tick={{ fontSize: 11, fill: 'var(--text-muted)' }} axisLine={false} tickLine={false} />
                 <Tooltip
                   formatter={(value) => [
                     typeof value === 'number' ? value.toLocaleString() : `${value ?? 0}`,

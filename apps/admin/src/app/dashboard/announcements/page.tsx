@@ -95,12 +95,12 @@ export default function AnnouncementsPage() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-[#1a1a2e] mb-2" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+        <h1 className="text-3xl font-bold text-[var(--text)] mb-2">
           Announcements
         </h1>
         <div className="flex items-center gap-3">
-          <div className="h-1 w-16 bg-gradient-to-r from-[#c9a227] to-[#e8d48b] rounded-full"></div>
-          <p className="text-[#1a1a2e]/50 text-sm font-medium">Share updates with staff and students</p>
+          <div className="h-1 w-16 bg-[var(--accent)] rounded-full"></div>
+          <p className="text-[var(--text-muted)] text-sm font-medium">Share updates with staff and students</p>
           <div className={`ml-auto flex items-center gap-2 text-xs font-semibold tracking-widest px-3 py-1 rounded-full border ${
             isLive
               ? 'text-emerald-700 border-emerald-200 bg-emerald-50'
@@ -112,62 +112,62 @@ export default function AnnouncementsPage() {
         </div>
       </div>
 
-      <div className="regal-card rounded-2xl p-6 mb-8">
-        <h3 className="text-lg font-semibold text-[#1a1a2e]" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+      <div className="card rounded-2xl p-6 mb-8">
+        <h3 className="text-lg font-semibold text-[var(--text)]">
           New Announcement
         </h3>
         <div className="mt-4 space-y-4">
           <div>
-            <label className="block text-xs font-semibold text-[#1a1a2e]/40 mb-2 tracking-wider">
+            <label className="block text-xs font-semibold text-[var(--text-muted)] mb-2 tracking-wider">
               Title
             </label>
             <input
               type="text"
               value={title}
               onChange={(event) => setTitle(event.target.value)}
-              className="regal-input w-full px-4 py-3 rounded-xl text-sm"
+              className="input w-full px-4 py-3 rounded-xl text-sm"
               placeholder="Weekly house champions, events, reminders..."
             />
           </div>
           <div>
-            <label className="block text-xs font-semibold text-[#1a1a2e]/40 mb-2 tracking-wider">
+            <label className="block text-xs font-semibold text-[var(--text-muted)] mb-2 tracking-wider">
               Message
             </label>
             <textarea
               value={body}
               onChange={(event) => setBody(event.target.value)}
-              className="regal-input w-full px-4 py-3 rounded-xl text-sm h-32"
+              className="input w-full px-4 py-3 rounded-xl text-sm h-32"
               placeholder="Write the announcement..."
             />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-[#1a1a2e]/40 mb-2 tracking-wider">
+              <label className="block text-xs font-semibold text-[var(--text-muted)] mb-2 tracking-wider">
                 Publish At
               </label>
               <input
                 type="datetime-local"
                 value={publishAt}
                 onChange={(event) => setPublishAt(event.target.value)}
-                className="regal-input w-full px-4 py-3 rounded-xl text-sm"
+                className="input w-full px-4 py-3 rounded-xl text-sm"
               />
-              <p className="text-xs text-[#1a1a2e]/40 mt-1">Leave empty to publish immediately.</p>
+              <p className="text-xs text-[var(--text-muted)] mt-1">Leave empty to publish immediately.</p>
             </div>
             <div>
-              <label className="block text-xs font-semibold text-[#1a1a2e]/40 mb-2 tracking-wider">
+              <label className="block text-xs font-semibold text-[var(--text-muted)] mb-2 tracking-wider">
                 Expires At
               </label>
               <input
                 type="datetime-local"
                 value={expiresAt}
                 onChange={(event) => setExpiresAt(event.target.value)}
-                className="regal-input w-full px-4 py-3 rounded-xl text-sm"
+                className="input w-full px-4 py-3 rounded-xl text-sm"
               />
-              <p className="text-xs text-[#1a1a2e]/40 mt-1">Optional. Leave empty for no expiry.</p>
+              <p className="text-xs text-[var(--text-muted)] mt-1">Optional. Leave empty for no expiry.</p>
             </div>
           </div>
           <div>
-            <label className="block text-xs font-semibold text-[#1a1a2e]/40 mb-2 tracking-wider">
+            <label className="block text-xs font-semibold text-[var(--text-muted)] mb-2 tracking-wider">
               Audience Roles
             </label>
             <div className="flex flex-wrap gap-2">
@@ -178,18 +178,18 @@ export default function AnnouncementsPage() {
                   onClick={() => toggleRole(role)}
                   className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition ${
                     roles.includes(role)
-                      ? 'bg-[#c9a227]/20 border-[#c9a227]/50 text-[#7a5b1a]'
-                      : 'border-[#c9a227]/20 text-[#1a1a2e]/50 hover:border-[#c9a227]/50'
+                      ? 'bg-[var(--accent)]/20 border-[var(--border)] text-[var(--accent-2)]'
+                      : 'border-[var(--border)] text-[var(--text-muted)] hover:border-[var(--border)]'
                   }`}
                 >
                   {role}
                 </button>
               ))}
             </div>
-            <p className="text-xs text-[#1a1a2e]/40 mt-1">Leave empty to show to all roles.</p>
+            <p className="text-xs text-[var(--text-muted)] mt-1">Leave empty to show to all roles.</p>
           </div>
           <div>
-            <label className="block text-xs font-semibold text-[#1a1a2e]/40 mb-2 tracking-wider">
+            <label className="block text-xs font-semibold text-[var(--text-muted)] mb-2 tracking-wider">
               Target Houses
             </label>
             <div className="flex flex-wrap gap-2">
@@ -200,18 +200,18 @@ export default function AnnouncementsPage() {
                   onClick={() => toggleHouse(house)}
                   className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition ${
                     houses.includes(house)
-                      ? 'bg-[#2f0a61]/10 border-[#2f0a61]/40 text-[#2f0a61]'
-                      : 'border-[#c9a227]/20 text-[#1a1a2e]/50 hover:border-[#c9a227]/50'
+                      ? 'bg-[var(--accent-soft)] border-[var(--border)] text-[var(--accent-2)]'
+                      : 'border-[var(--border)] text-[var(--text-muted)] hover:border-[var(--border)]'
                   }`}
                 >
                   {house.replace('House of ', '')}
                 </button>
               ))}
             </div>
-            <p className="text-xs text-[#1a1a2e]/40 mt-1">Leave empty to show to all houses.</p>
+            <p className="text-xs text-[var(--text-muted)] mt-1">Leave empty to show to all houses.</p>
           </div>
           <div>
-            <label className="block text-xs font-semibold text-[#1a1a2e]/40 mb-2 tracking-wider">
+            <label className="block text-xs font-semibold text-[var(--text-muted)] mb-2 tracking-wider">
               Target Grades
             </label>
             <div className="flex flex-wrap gap-2">
@@ -222,15 +222,15 @@ export default function AnnouncementsPage() {
                   onClick={() => toggleGrade(grade)}
                   className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition ${
                     grades.includes(grade)
-                      ? 'bg-[#055437]/10 border-[#055437]/40 text-[#055437]'
-                      : 'border-[#c9a227]/20 text-[#1a1a2e]/50 hover:border-[#c9a227]/50'
+                      ? 'bg-[var(--house-khad)]/10 border-[var(--border)] text-[var(--house-khad)]'
+                      : 'border-[var(--border)] text-[var(--text-muted)] hover:border-[var(--border)]'
                   }`}
                 >
                   Grade {grade}
                 </button>
               ))}
             </div>
-            <p className="text-xs text-[#1a1a2e]/40 mt-1">Leave empty to show to all grades.</p>
+            <p className="text-xs text-[var(--text-muted)] mt-1">Leave empty to show to all grades.</p>
           </div>
           <div className="flex items-center gap-3">
             <button
@@ -238,8 +238,8 @@ export default function AnnouncementsPage() {
               onClick={() => setPinned((prev) => !prev)}
               className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition ${
                 pinned
-                  ? 'bg-[#c9a227]/20 border-[#c9a227]/50 text-[#7a5b1a]'
-                  : 'border-[#c9a227]/20 text-[#1a1a2e]/50 hover:border-[#c9a227]/50'
+                  ? 'bg-[var(--accent)]/20 border-[var(--border)] text-[var(--accent-2)]'
+                  : 'border-[var(--border)] text-[var(--text-muted)] hover:border-[var(--border)]'
               }`}
             >
               {pinned ? 'Pinned' : 'Pin announcement'}
@@ -248,7 +248,7 @@ export default function AnnouncementsPage() {
           <button
             onClick={handleCreate}
             disabled={isSubmitting || !title.trim() || !body.trim()}
-            className="btn-gold px-5 py-2.5 text-sm font-medium rounded-xl disabled:opacity-60"
+            className="btn-primary px-5 py-2.5 text-sm font-medium rounded-xl disabled:opacity-60"
           >
             {isSubmitting ? 'Posting...' : 'Post Announcement'}
           </button>
@@ -257,24 +257,24 @@ export default function AnnouncementsPage() {
 
       <div className="space-y-4">
         {announcements.length === 0 ? (
-          <div className="regal-card rounded-2xl p-6 text-[#1a1a2e]/40 text-sm">
+          <div className="card rounded-2xl p-6 text-[var(--text-muted)] text-sm">
             No announcements yet.
           </div>
         ) : (
           announcements.map((announcement) => (
-            <div key={announcement.id} className="regal-card rounded-2xl p-6">
+            <div key={announcement.id} className="card rounded-2xl p-6">
               <div className="flex items-start justify-between">
                 <div>
-                  <h3 className="text-lg font-semibold text-[#1a1a2e]" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+                  <h3 className="text-lg font-semibold text-[var(--text)]">
                     {announcement.title}
                   </h3>
-                  <p className="text-xs text-[#1a1a2e]/40 mt-1">
+                  <p className="text-xs text-[var(--text-muted)] mt-1">
                     {announcement.created_by} • {new Date(announcement.created_at).toLocaleDateString()}
                   </p>
                 </div>
                 <div className="flex items-center gap-2">
                   {announcement.pinned && (
-                    <span className="text-xs px-2 py-0.5 rounded-full bg-[#c9a227]/20 text-[#7a5b1a] font-semibold tracking-wider">
+                    <span className="text-xs px-2 py-0.5 rounded-full bg-[var(--accent)]/20 text-[var(--accent-2)] font-semibold tracking-wider">
                       Pinned
                     </span>
                   )}
@@ -283,10 +283,10 @@ export default function AnnouncementsPage() {
                   </span>
                 </div>
               </div>
-              <p className="mt-4 text-sm text-[#1a1a2e]/70 whitespace-pre-wrap">
+              <p className="mt-4 text-sm text-[var(--text-muted)] whitespace-pre-wrap">
                 {announcement.body}
               </p>
-              <div className="mt-4 flex flex-wrap gap-2 text-xs text-[#1a1a2e]/50">
+              <div className="mt-4 flex flex-wrap gap-2 text-xs text-[var(--text-muted)]">
                 {announcement.publish_at && (
                   <span>Publishes: {new Date(announcement.publish_at).toLocaleString()}</span>
                 )}

@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/lib/supabase";
@@ -27,8 +26,8 @@ const sections: HallSection[] = [
     title: "Century Club",
     subtitle: "Students with 100+ individual points",
     view: VIEWS.CENTURY_CLUB,
-    accent: "#9a7b1a",
-    tint: "#f7f1dc",
+    accent: "var(--accent)",
+    tint: "var(--surface-2)",
     icon: "100",
   },
   {
@@ -36,8 +35,8 @@ const sections: HallSection[] = [
     title: "Badr Club",
     subtitle: "Students with 300+ individual points",
     view: VIEWS.BADR_CLUB,
-    accent: "#3b4a6b",
-    tint: "#eef1f7",
+    accent: "var(--house-abu)",
+    tint: "var(--surface-2)",
     icon: "🌙",
   },
   {
@@ -45,8 +44,8 @@ const sections: HallSection[] = [
     title: "Fath Club",
     subtitle: "Students with 700+ individual points",
     view: VIEWS.FATH_CLUB,
-    accent: "#23523b",
-    tint: "#eef7f2",
+    accent: "var(--house-khad)",
+    tint: "var(--surface-2)",
     icon: "🏆",
   },
 ];
@@ -158,23 +157,18 @@ export default function HallOfFamePage() {
   }, []);
 
   return (
-    <div
-      className="min-h-screen py-6 px-4 sm:px-6 lg:px-8 starry-bg flex flex-col"
-      style={{ background: "#1a1a2e" }}
-    >
+    <div className="min-h-screen py-6 px-4 sm:px-6 lg:px-8 leaderboard-shell flex flex-col">
       <div className="max-w-6xl mx-auto w-full flex-1">
         <div className="absolute top-4 right-6 flex items-center gap-2">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 rounded-full border border-[#c9a227] px-4 py-2 text-xs uppercase tracking-[0.2em] text-[#c9a227] transition hover:bg-[#c9a227] hover:text-[#1a1a2e]"
-            style={{ fontFamily: "var(--font-cinzel), 'Cinzel', sans-serif" }}
+            className="btn-secondary text-xs"
           >
             Leaderboard
           </Link>
           <Link
             href="/house-mvps"
-            className="inline-flex items-center gap-2 rounded-full border border-[#c9a227] px-4 py-2 text-xs uppercase tracking-[0.2em] text-[#c9a227] transition hover:bg-[#c9a227] hover:text-[#1a1a2e]"
-            style={{ fontFamily: "var(--font-cinzel), 'Cinzel', sans-serif" }}
+            className="btn-secondary text-xs"
           >
             House MVPs
           </Link>
@@ -182,41 +176,23 @@ export default function HallOfFamePage() {
 
         <header className="text-center mb-6">
           <div className="flex justify-center mb-3">
-            <Image
-              src="/crest.png"
-              alt="League of Stars Crest"
-              width={90}
-              height={90}
-              className="drop-shadow-lg"
-              priority
-            />
+            <div className="w-12 h-12 rounded-2xl bg-[var(--accent-soft)] text-[var(--accent)] flex items-center justify-center text-sm font-semibold">
+              DA
+            </div>
           </div>
-          <h1
-            className="italic text-3xl sm:text-4xl md:text-5xl text-white mb-2 gold-underline pb-1"
-            style={{
-              fontFamily: "var(--font-playfair), 'Playfair Display', Georgia, serif",
-            }}
-          >
-            Hall of Fame
-          </h1>
-          <p
-            className="italic text-lg sm:text-xl mt-3"
-            style={{
-              color: "#c9a227",
-              fontFamily: "var(--font-playfair), 'Playfair Display', Georgia, serif",
-            }}
-          >
+          <h1 className="text-3xl sm:text-4xl md:text-5xl mb-2">Hall of Fame</h1>
+          <p className="text-[var(--text-muted)] text-lg sm:text-xl mt-2">
             Milestones that celebrate student excellence
           </p>
         </header>
 
         {loading ? (
           <div className="flex items-center justify-center py-16">
-            <p className="text-white text-lg">Loading Hall of Fame...</p>
+            <p className="text-[var(--text-muted)] text-lg">Loading Hall of Fame...</p>
           </div>
         ) : errorMessage ? (
           <div className="flex items-center justify-center py-16">
-            <p className="text-white text-lg">{errorMessage}</p>
+            <p className="text-[var(--text-muted)] text-lg">{errorMessage}</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
@@ -226,42 +202,28 @@ export default function HallOfFamePage() {
               return (
                 <div
                   key={section.id}
-                  className="rounded-lg overflow-hidden shadow-lg float-card"
+                  className="card overflow-hidden"
                   style={{
-                    borderLeft: `5px solid ${section.accent}`,
-                    background: section.tint,
+                    borderLeft: `4px solid ${section.accent}`,
                   }}
                 >
-                  <div className="flex items-center justify-between px-5 py-4">
+                  <div className="flex items-center justify-between px-5 py-4 border-b border-[var(--border)]">
                     <div className="flex items-center gap-3">
                       <span
                         className="text-xl"
-                        style={{
-                          color: section.accent,
-                          fontFamily:
-                            "var(--font-playfair), 'Playfair Display', Georgia, serif",
-                        }}
+                        style={{ color: section.accent }}
                       >
                         {section.icon}
                       </span>
                       <div>
                         <h2
                           className="text-2xl font-bold"
-                          style={{
-                            color: section.accent,
-                            fontFamily:
-                              "var(--font-playfair), 'Playfair Display', Georgia, serif",
-                          }}
+                          style={{ color: section.accent }}
                         >
                           {section.title}
                         </h2>
                         <p
-                          className="text-sm"
-                          style={{
-                            color: "#4a4a4a",
-                            fontFamily:
-                              "var(--font-cinzel), 'Cinzel', sans-serif",
-                          }}
+                          className="text-sm text-[var(--text-muted)]"
                         >
                           {section.subtitle}
                         </p>
@@ -269,11 +231,7 @@ export default function HallOfFamePage() {
                     </div>
                     <div
                       className="text-sm font-semibold"
-                      style={{
-                        color: section.accent,
-                        fontFamily:
-                          "var(--font-cinzel), 'Cinzel', sans-serif",
-                      }}
+                      style={{ color: section.accent }}
                     >
                       {entries.length} Total
                     </div>
@@ -281,14 +239,7 @@ export default function HallOfFamePage() {
 
                   <div className="px-5 pb-4">
                     {entries.length === 0 ? (
-                      <p
-                        className="text-sm"
-                        style={{
-                          color: "#4a4a4a",
-                          fontFamily:
-                            "var(--font-cinzel), 'Cinzel', sans-serif",
-                        }}
-                      >
+                      <p className="text-sm text-[var(--text-muted)]">
                         No students have reached this milestone yet.
                       </p>
                     ) : (
@@ -296,28 +247,14 @@ export default function HallOfFamePage() {
                         {entries.map((entry, index) => (
                           <div
                             key={`${section.id}-${entry.studentName}-${index}`}
-                            className="flex items-center justify-between rounded-md px-4 py-2"
-                            style={{
-                              background: "rgba(255,255,255,0.7)",
-                            }}
+                            className="surface-muted flex items-center justify-between rounded-md px-4 py-2"
                           >
-                            <span
-                              className="text-sm font-semibold"
-                              style={{
-                                color: "#1a1a2e",
-                                fontFamily:
-                                  "var(--font-cinzel), 'Cinzel', sans-serif",
-                              }}
-                            >
+                            <span className="text-sm font-semibold text-[var(--text)]">
                               {entry.studentName}
                             </span>
                             <span
                               className="text-sm font-bold"
-                              style={{
-                                color: section.accent,
-                                fontFamily:
-                                  "var(--font-playfair), 'Playfair Display', Georgia, serif",
-                              }}
+                              style={{ color: section.accent }}
                             >
                               {entry.points.toLocaleString()} pts
                             </span>

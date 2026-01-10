@@ -73,8 +73,7 @@ export default function SearchPage() {
             name: s.student_name || s.name || '',
             grade: s.grade || 0,
             section: s.section || '',
-            house: s.house || s.house_name || '',
-          }))
+            house: s.house || s.house_name || ''}))
           setStudents(allStudents.filter((s) => s.name))
         }
 
@@ -92,8 +91,7 @@ export default function SearchPage() {
             category: String(getRowValue(m, ['category', 'r']) ?? ''),
             subcategory: String(getRowValue(m, ['subcategory']) ?? ''),
             timestamp: String(getRowValue(m, ['timestamp', 'awarded_at', 'date']) ?? ''),
-            notes: String(getRowValue(m, ['notes']) ?? ''),
-          }))
+            notes: String(getRowValue(m, ['notes']) ?? '')}))
           setEntries(mappedEntries)
         }
 
@@ -106,8 +104,7 @@ export default function SearchPage() {
             name: String(getRowValue(row, ['staff_name', 'staff']) ?? ''),
             points: Number(getRowValue(row, ['total_points', 'points']) ?? 0),
             awards: Number(getRowValue(row, ['awards', 'award_count', 'recognitions']) ?? 0),
-            students: Number(getRowValue(row, ['students', 'unique_students']) ?? 0),
-          }))
+            students: Number(getRowValue(row, ['students', 'unique_students']) ?? 0)}))
           setStaffAwards(staffRows.filter((row) => row.name))
           setStaff(staffRows.filter((row) => row.name).map((row) => ({ name: row.name, email: '' })))
         }
@@ -146,8 +143,7 @@ export default function SearchPage() {
     return {
       points: staffEntry?.points ?? 0,
       awards: staffEntry?.awards ?? 0,
-      students: staffEntry?.students ?? 0,
-    }
+      students: staffEntry?.students ?? 0}
   }, [staffAwards, selectedStaffName])
 
   if (isLoading) {
@@ -157,17 +153,17 @@ export default function SearchPage() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-[#1a1a2e] mb-2" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+        <h1 className="text-3xl font-bold text-[var(--text)] mb-2">
           Student & Staff Search
         </h1>
         <div className="flex items-center gap-3">
-          <div className="h-1 w-16 bg-gradient-to-r from-[#c9a227] to-[#e8d48b] rounded-full"></div>
-          <p className="text-[#1a1a2e]/50 text-sm font-medium">Quick lookup for profiles and history</p>
+          <div className="h-1 w-16 bg-[var(--accent)] rounded-full"></div>
+          <p className="text-[var(--text-muted)] text-sm font-medium">Quick lookup for profiles and history</p>
         </div>
       </div>
 
-      <div className="regal-card rounded-2xl p-6 mb-8">
-        <label className="block text-xs font-semibold text-[#1a1a2e]/40 mb-2 tracking-wider">
+      <div className="card rounded-2xl p-6 mb-8">
+        <label className="block text-xs font-semibold text-[var(--text-muted)] mb-2 tracking-wider">
           Search by name
         </label>
         <input
@@ -179,19 +175,19 @@ export default function SearchPage() {
             setSelectedStaffName(null)
           }}
           placeholder="Type a student or staff name..."
-          className="regal-input w-full px-4 py-3 rounded-xl text-sm"
+          className="input w-full px-4 py-3 rounded-xl text-sm"
         />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-        <div className="regal-card rounded-2xl p-6">
-          <h3 className="text-lg font-semibold text-[#1a1a2e]" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+        <div className="card rounded-2xl p-6">
+          <h3 className="text-lg font-semibold text-[var(--text)]">
             Students
           </h3>
-          <p className="text-xs text-[#1a1a2e]/40 mt-1">Click a student to view recent recognitions.</p>
+          <p className="text-xs text-[var(--text-muted)] mt-1">Click a student to view recent recognitions.</p>
           <div className="mt-4 space-y-3">
             {filteredStudents.length === 0 && normalizedQuery ? (
-              <p className="text-sm text-[#1a1a2e]/40">No student matches found.</p>
+              <p className="text-sm text-[var(--text-muted)]">No student matches found.</p>
             ) : (
               filteredStudents.slice(0, 8).map((student) => {
                 const key = `${student.name.toLowerCase()}|${student.grade}|${student.section.toLowerCase()}`
@@ -199,16 +195,16 @@ export default function SearchPage() {
                   <button
                     key={key}
                     onClick={() => setSelectedStudentKey(key)}
-                    className="w-full text-left px-4 py-3 rounded-xl border border-[#c9a227]/15 hover:border-[#c9a227]/40 transition bg-white"
+                    className="w-full text-left px-4 py-3 rounded-xl border border-[var(--border)] hover:border-[var(--border)] transition bg-white"
                   >
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="font-semibold text-[#1a1a2e]">{student.name}</p>
-                        <p className="text-xs text-[#1a1a2e]/40">
+                        <p className="font-semibold text-[var(--text)]">{student.name}</p>
+                        <p className="text-xs text-[var(--text-muted)]">
                           Grade {student.grade}{student.section} • {student.house}
                         </p>
                       </div>
-                      <span className="text-xs text-[#1a1a2e]/40">View</span>
+                      <span className="text-xs text-[var(--text-muted)]">View</span>
                     </div>
                   </button>
                 )
@@ -218,20 +214,20 @@ export default function SearchPage() {
 
           {selectedStudentKey && (
             <div className="mt-6">
-              <p className="text-xs font-semibold text-[#1a1a2e]/40 tracking-wider mb-2">Recent recognitions</p>
+              <p className="text-xs font-semibold text-[var(--text-muted)] tracking-wider mb-2">Recent recognitions</p>
               {studentHistory.length === 0 ? (
-                <p className="text-sm text-[#1a1a2e]/40">No recognitions found.</p>
+                <p className="text-sm text-[var(--text-muted)]">No recognitions found.</p>
               ) : (
                 <div className="space-y-2">
                   {studentHistory.map((entry, index) => (
-                    <div key={`${entry.timestamp}-${index}`} className="rounded-xl bg-[#f5f3ef] px-4 py-3">
+                    <div key={`${entry.timestamp}-${index}`} className="rounded-xl bg-[var(--bg-muted)] px-4 py-3">
                       <div className="flex items-center justify-between">
-                        <p className="text-sm font-semibold text-[#1a1a2e]">
+                        <p className="text-sm font-semibold text-[var(--text)]">
                           {entry.subcategory || entry.category}
                         </p>
-                        <span className="text-sm font-semibold text-[#2f0a61]">{entry.points} pts</span>
+                        <span className="text-sm font-semibold text-[var(--accent-2)]">{entry.points} pts</span>
                       </div>
-                      <p className="text-xs text-[#1a1a2e]/50">
+                      <p className="text-xs text-[var(--text-muted)]">
                         {entry.staffName} • {entry.timestamp ? new Date(entry.timestamp).toLocaleDateString() : '—'}
                       </p>
                     </div>
@@ -242,23 +238,23 @@ export default function SearchPage() {
           )}
         </div>
 
-        <div className="regal-card rounded-2xl p-6">
-          <h3 className="text-lg font-semibold text-[#1a1a2e]" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+        <div className="card rounded-2xl p-6">
+          <h3 className="text-lg font-semibold text-[var(--text)]">
             Staff
           </h3>
-          <p className="text-xs text-[#1a1a2e]/40 mt-1">Quick stats for staff contributions.</p>
+          <p className="text-xs text-[var(--text-muted)] mt-1">Quick stats for staff contributions.</p>
           <div className="mt-4 space-y-3">
             {filteredStaff.length === 0 && normalizedQuery ? (
-              <p className="text-sm text-[#1a1a2e]/40">No staff matches found.</p>
+              <p className="text-sm text-[var(--text-muted)]">No staff matches found.</p>
             ) : (
               filteredStaff.slice(0, 8).map((member) => (
                 <button
                   key={`${member.name}-${member.email}`}
                   onClick={() => setSelectedStaffName(member.name)}
-                  className="w-full text-left px-4 py-3 rounded-xl border border-[#c9a227]/15 hover:border-[#c9a227]/40 transition bg-white"
+                  className="w-full text-left px-4 py-3 rounded-xl border border-[var(--border)] hover:border-[var(--border)] transition bg-white"
                 >
-                  <p className="font-semibold text-[#1a1a2e]">{member.name}</p>
-                  <p className="text-xs text-[#1a1a2e]/40">{member.email}</p>
+                  <p className="font-semibold text-[var(--text)]">{member.name}</p>
+                  <p className="text-xs text-[var(--text-muted)]">{member.email}</p>
                 </button>
               ))
             )}
@@ -266,17 +262,17 @@ export default function SearchPage() {
 
           {selectedStaffName && staffStats && (
             <div className="mt-6 grid grid-cols-3 gap-3">
-              <div className="rounded-xl bg-[#f5f3ef] px-4 py-3 text-center">
-                <p className="text-xs text-[#1a1a2e]/40 tracking-wider">Points</p>
-                <p className="text-lg font-semibold text-[#1a1a2e]">{staffStats.points.toLocaleString()}</p>
+              <div className="rounded-xl bg-[var(--bg-muted)] px-4 py-3 text-center">
+                <p className="text-xs text-[var(--text-muted)] tracking-wider">Points</p>
+                <p className="text-lg font-semibold text-[var(--text)]">{staffStats.points.toLocaleString()}</p>
               </div>
-              <div className="rounded-xl bg-[#f5f3ef] px-4 py-3 text-center">
-                <p className="text-xs text-[#1a1a2e]/40 tracking-wider">Awards</p>
-                <p className="text-lg font-semibold text-[#1a1a2e]">{staffStats.awards.toLocaleString()}</p>
+              <div className="rounded-xl bg-[var(--bg-muted)] px-4 py-3 text-center">
+                <p className="text-xs text-[var(--text-muted)] tracking-wider">Awards</p>
+                <p className="text-lg font-semibold text-[var(--text)]">{staffStats.awards.toLocaleString()}</p>
               </div>
-              <div className="rounded-xl bg-[#f5f3ef] px-4 py-3 text-center">
-                <p className="text-xs text-[#1a1a2e]/40 tracking-wider">Students</p>
-                <p className="text-lg font-semibold text-[#1a1a2e]">{staffStats.students.toLocaleString()}</p>
+              <div className="rounded-xl bg-[var(--bg-muted)] px-4 py-3 text-center">
+                <p className="text-xs text-[var(--text-muted)] tracking-wider">Students</p>
+                <p className="text-lg font-semibold text-[var(--text)]">{staffStats.students.toLocaleString()}</p>
               </div>
             </div>
           )}

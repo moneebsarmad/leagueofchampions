@@ -9,39 +9,24 @@ interface HouseData {
   name: string
   points: number
   color: string
-  gradient: string
-  accentGradient: string
   logo: string
   percentage: number
   topStudents: { name: string; points: number }[]
 }
 
-const houseConfig: Record<string, { color: string; gradient: string; accentGradient: string; logo: string }> = {
+const houseConfig: Record<string, { color: string; logo: string }> = {
   'House of Abu Bakr': {
-    color: 'var(--house-abu-bakr)',
-    gradient: 'linear-gradient(135deg, #3d7a4d 0%, #2d5a27 50%, #1a4016 100%)',
-    accentGradient: 'linear-gradient(135deg, #4d8a5d 0%, #3d7a4d 100%)',
-    logo: '/houses/abu-bakr.png',
-  },
+    color: 'var(--house-abu)',
+    logo: '/houses/abu-bakr.png'},
   'House of Khadijah': {
-    color: 'var(--house-khadijah)',
-    gradient: 'linear-gradient(135deg, #7b5433 0%, #6b4423 50%, #5a3413 100%)',
-    accentGradient: 'linear-gradient(135deg, #8b6443 0%, #7b5433 100%)',
-    logo: '/houses/khadijah.png',
-  },
+    color: 'var(--house-khad)',
+    logo: '/houses/khadijah.png'},
   'House of Umar': {
     color: 'var(--house-umar)',
-    gradient: 'linear-gradient(135deg, #5a6578 0%, #4a5568 50%, #3a4558 100%)',
-    accentGradient: 'linear-gradient(135deg, #6a7588 0%, #5a6578 100%)',
-    logo: '/houses/umar.png',
-  },
+    logo: '/houses/umar.png'},
   'House of Aishah': {
-    color: 'var(--house-aishah)',
-    gradient: 'linear-gradient(135deg, #9b5523 0%, #8b4513 50%, #7b3503 100%)',
-    accentGradient: 'linear-gradient(135deg, #ab6533 0%, #9b5523 100%)',
-    logo: '/houses/aishah.png',
-  },
-}
+    color: 'var(--house-aish)',
+    logo: '/houses/aishah.png'}}
 
 export default function DashboardPage() {
   const [houses, setHouses] = useState<HouseData[]>([])
@@ -122,8 +107,7 @@ export default function DashboardPage() {
         if (!house) return
         standingsMap.set(house, {
           points: Number(pointsRaw) || 0,
-          percentage: Number(percentRaw) || 0,
-        })
+          percentage: Number(percentRaw) || 0})
       })
 
       const houseStudents: Record<string, { name: string; points: number }[]> = {}
@@ -140,8 +124,7 @@ export default function DashboardPage() {
         }
         houseStudents[house].push({
           name: studentName,
-          points,
-        })
+          points})
       })
 
       const houseData: HouseData[] = Object.keys(houseConfig).map((name) => {
@@ -150,12 +133,9 @@ export default function DashboardPage() {
           name,
           points: standings?.points ?? 0,
           color: houseConfig[name].color,
-          gradient: houseConfig[name].gradient,
-          accentGradient: houseConfig[name].accentGradient,
           logo: houseConfig[name].logo,
           percentage: standings?.percentage ?? 0,
-          topStudents: (houseStudents[name] || []).slice(0, 5),
-        }
+          topStudents: (houseStudents[name] || []).slice(0, 5)}
       })
 
       setHouses(houseData)
@@ -171,8 +151,7 @@ export default function DashboardPage() {
     return date.toLocaleTimeString('en-US', {
       hour: 'numeric',
       minute: '2-digit',
-      hour12: true,
-    })
+      hour12: true})
   }
 
   if (isLoading) {
@@ -185,18 +164,18 @@ export default function DashboardPage() {
       <div className="mb-8">
         <div className="flex items-start justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-[var(--charcoal)] mb-2">
+            <h1 className="text-3xl font-bold text-[var(--text)] mb-2">
               House Standings
             </h1>
             <div className="flex items-center gap-3">
-              <div className="h-1 w-16 bg-gradient-to-r from-[var(--sage-primary)] to-[var(--sage-light)] rounded-full"></div>
-              <p className="text-[var(--charcoal)]/50 text-sm font-medium">Current academic year rankings</p>
+              <div className="h-1 w-16 bg-[var(--accent)] rounded-full"></div>
+              <p className="text-[var(--text-muted)] text-sm font-medium">Current academic year rankings</p>
             </div>
           </div>
           {lastUpdated && (
             <div className="text-right">
-              <p className="text-xs text-[var(--charcoal)]/40 font-medium">Last updated</p>
-              <p className="text-sm text-[var(--charcoal)]/70 font-semibold">{formatLastUpdated(lastUpdated)}</p>
+              <p className="text-xs text-[var(--text-muted)] font-medium">Last updated</p>
+              <p className="text-sm text-[var(--text)] font-semibold">{formatLastUpdated(lastUpdated)}</p>
             </div>
           )}
         </div>
@@ -207,84 +186,74 @@ export default function DashboardPage() {
         {houses.map((house, index) => (
           <div
             key={house.name}
-            className="rounded-2xl overflow-hidden shadow-lg relative"
-            style={{ background: house.gradient }}
+            className="card overflow-hidden relative"
+            style={{ borderLeft: `4px solid ${house.color}` }}
           >
-            {/* Decorative elements */}
-            <div className="absolute top-8 right-10 w-40 h-40 opacity-[0.06]">
-              <svg viewBox="0 0 200 200" className="w-full h-full">
-                <path fill="white" d="M100,10 L120,80 L190,80 L130,120 L150,190 L100,150 L50,190 L70,120 L10,80 L80,80 Z" />
-              </svg>
-            </div>
-
-            <div className="p-6 relative z-10">
+            <div className="p-6">
               {/* House Header */}
               <div className="flex items-start justify-between gap-6 mb-5">
                 <div>
-                  <div className="inline-flex items-center gap-2 text-sm tracking-[0.15em] font-semibold text-white/70 bg-white/10 border border-white/15 px-3 py-1.5 rounded-full mb-4">
-                    <span className="text-white/50">Rank</span>
-                    <span className="text-white">{index + 1}</span>
+                  <div className="chip mb-4">
+                    <span>Rank</span>
+                    <span className="text-[var(--text)] font-semibold">{index + 1}</span>
                   </div>
                   <div className="flex items-center gap-4 mb-2">
-                    <div className="w-14 h-14 rounded-xl bg-white/10 backdrop-blur-sm p-1.5 shadow-lg border border-white/10">
+                    <div className="w-14 h-14 rounded-xl bg-[var(--surface-2)] p-1.5 border border-[var(--border)]">
                       <img
                         src={house.logo}
                         alt={house.name}
-                        className="w-full h-full object-contain drop-shadow-md"
+                        className="w-full h-full object-contain"
                       />
                     </div>
-                    <h2 className="text-2xl font-bold text-white">
+                    <h2 className="text-2xl font-bold text-[var(--text)]">
                       {house.name}
                     </h2>
                   </div>
                   {/* Progress bar */}
-                  <div className="w-64 h-2.5 bg-white/20 rounded-full overflow-hidden mb-2 backdrop-blur-sm">
+                  <div className="w-64 h-2.5 bg-[var(--surface-2)] rounded-full overflow-hidden mb-2 border border-[var(--border)]">
                     <div
                       className="h-full rounded-full transition-all duration-700 ease-out"
                       style={{
                         width: `${house.percentage}%`,
-                        background: 'linear-gradient(90deg, var(--accent-warm) 0%, var(--accent-warm-light) 50%, var(--accent-warm) 100%)',
-                      }}
+                        background: house.color}}
                     />
                   </div>
-                  <p className="text-white/60 text-base font-medium">{house.percentage.toFixed(1)}% of total points</p>
+                  <p className="text-[var(--text-muted)] text-base font-medium">{house.percentage.toFixed(1)}% of total points</p>
                 </div>
                 <div className="text-right flex flex-col items-end gap-2 min-w-[150px] pt-4">
-                  <p className="text-4xl font-bold text-white leading-none">
+                  <p className="text-4xl font-bold text-[var(--text)] leading-none">
                     {house.points.toLocaleString()}
                   </p>
-                  <p className="text-white/50 text-lg font-medium">Total Points</p>
+                  <p className="text-[var(--text-muted)] text-lg font-medium">Total Points</p>
                 </div>
               </div>
 
               {/* Top Students */}
               <div className="mt-6">
-                <p className="text-white/50 text-base font-semibold tracking-wide mb-4">Top Performers</p>
+                <p className="text-[var(--text-muted)] text-base font-semibold mb-4">Top Performers</p>
                 <div className="flex gap-3 overflow-x-auto pb-1">
                   {house.topStudents.map((student, i) => (
                     <div
                       key={student.name}
-                      className="bg-white/10 backdrop-blur-md rounded-xl px-4 py-3 min-w-[150px] border border-white/10 hover:bg-white/15 transition-colors"
+                      className="surface-muted rounded-xl px-4 py-3 min-w-[150px] border border-[var(--border)] hover:bg-[var(--surface)] transition-colors"
                     >
                       <div className="flex items-center gap-2 mb-2">
                         <span className={`w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold ${
-                          i === 0 ? 'bg-[var(--accent-warm)] text-white' :
-                          i === 1 ? 'bg-white/30 text-white' :
-                          'bg-white/20 text-white/80'
+                          i === 0 ? 'bg-[var(--accent)] text-white' :
+                          i === 1 ? 'bg-[var(--surface)] text-[var(--text)] border border-[var(--border)]' :
+                          'bg-[var(--surface-2)] text-[var(--text-muted)]'
                         }`}>
                           {i + 1}
                         </span>
-                        <p className="text-white font-semibold text-base truncate flex-1">{student.name}</p>
+                        <p className="text-[var(--text)] font-semibold text-base truncate flex-1">{student.name}</p>
                       </div>
-                      <p className="text-[var(--accent-warm-light)] text-lg font-bold">{student.points} <span className="text-sm text-white/50 font-normal">pts</span></p>
+                      <p className="text-[var(--text)] text-lg font-bold">{student.points} <span className="text-sm text-[var(--text-muted)] font-normal">pts</span></p>
                     </div>
                   ))}
                 </div>
               </div>
             </div>
 
-            {/* Bottom accent line */}
-            <div className="h-1 bg-gradient-to-r from-transparent via-[var(--accent-warm)]/50 to-transparent"></div>
           </div>
         ))}
       </div>

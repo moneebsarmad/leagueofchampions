@@ -11,23 +11,23 @@ const houseConfig: Record<
   { color: string; bgColor: string; logo?: string | null }
 > = {
   "House of Abu Bakr": {
-    color: "#2f0a61",
-    bgColor: "#f6f1fb",
+    color: "var(--house-abu)",
+    bgColor: "var(--surface-2)",
     logo: "/house_of_abubakr.png",
   },
   "House of 'Umar": {
-    color: "#000068",
-    bgColor: "#f2f3fb",
+    color: "var(--house-umar)",
+    bgColor: "var(--surface-2)",
     logo: "/house_of_umar.png",
   },
   "House of 'A'ishah": {
-    color: "#910000",
-    bgColor: "#fdf1f1",
+    color: "var(--house-aish)",
+    bgColor: "var(--surface-2)",
     logo: "/house_of_aishah.png",
   },
   "House of Khadijah": {
-    color: "#055437",
-    bgColor: "#f1fbf6",
+    color: "var(--house-khad)",
+    bgColor: "var(--surface-2)",
     logo: "/house_of_khadijah.png",
   },
 };
@@ -234,69 +234,47 @@ export default function HouseMvpsPage() {
   );
 
   return (
-    <div
-      className="min-h-screen py-6 px-4 sm:px-6 lg:px-8 starry-bg flex flex-col"
-      style={{ background: "#1a1a2e" }}
-    >
+    <div className="min-h-screen py-6 px-4 sm:px-6 lg:px-8 leaderboard-shell flex flex-col">
       <div className="max-w-6xl mx-auto w-full flex-1">
         <div className="absolute top-4 right-6">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 rounded-full border border-[#c9a227] px-4 py-2 text-xs uppercase tracking-[0.2em] text-[#c9a227] transition hover:bg-[#c9a227] hover:text-[#1a1a2e]"
-            style={{ fontFamily: "var(--font-cinzel), 'Cinzel', sans-serif" }}
+            className="btn-secondary text-xs"
           >
             Back to Leaderboard
           </Link>
         </div>
         <header className="text-center mb-6">
           <div className="flex justify-center mb-3">
-            <Image
-              src="/crest.png"
-              alt="League of Stars Crest"
-              width={90}
-              height={90}
-              className="drop-shadow-lg"
-              priority
-            />
+            <div className="w-12 h-12 rounded-2xl bg-[var(--accent-soft)] text-[var(--accent)] flex items-center justify-center text-sm font-semibold">
+              DA
+            </div>
           </div>
-          <h1
-            className="italic text-3xl sm:text-4xl md:text-5xl text-white mb-2 gold-underline pb-1"
-            style={{
-              fontFamily: "var(--font-playfair), 'Playfair Display', Georgia, serif",
-            }}
-          >
-            House MVPs
-          </h1>
-          <p
-            className="italic text-lg sm:text-xl mt-3"
-            style={{
-              color: "#c9a227",
-              fontFamily: "var(--font-playfair), 'Playfair Display', Georgia, serif",
-            }}
-          >
+          <h1 className="text-3xl sm:text-4xl md:text-5xl mb-2">House MVPs</h1>
+          <p className="text-[var(--text-muted)] text-lg sm:text-xl mt-2">
             Top 5 students from each house
           </p>
         </header>
 
         {loading ? (
           <div className="flex items-center justify-center py-16">
-            <p className="text-white text-lg">Loading House MVPs...</p>
+            <p className="text-[var(--text-muted)] text-lg">Loading House MVPs...</p>
           </div>
         ) : errorMessage ? (
           <div className="flex items-center justify-center py-16">
-            <p className="text-white text-lg">{errorMessage}</p>
+            <p className="text-[var(--text-muted)] text-lg">{errorMessage}</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {visibleHouses.length === 0 ? (
               <div className="col-span-2 flex items-center justify-center py-12">
-                <p className="text-white text-lg">No MVPs found yet.</p>
+                <p className="text-[var(--text-muted)] text-lg">No MVPs found yet.</p>
               </div>
             ) : (
               visibleHouses.map((houseName) => {
               const config = houseConfig[houseName] || {
-                color: "#333333",
-                bgColor: "#f6f5f2",
+                color: "var(--text)",
+                bgColor: "var(--surface-2)",
                 logo: null,
               };
               const houseStudents = grouped[houseName] || [];
@@ -304,32 +282,23 @@ export default function HouseMvpsPage() {
               return (
                 <div
                   key={houseName}
-                  className="relative rounded-lg overflow-hidden shadow-lg float-card"
+                  className="card relative overflow-hidden"
                   style={{
-                    borderLeft: `5px solid ${config.color}`,
+                    borderLeft: `4px solid ${config.color}`,
                     background: config.bgColor,
                   }}
                 >
                   <div className="p-5 pr-28">
                     <h2
                       className="text-2xl font-bold mb-2"
-                      style={{
-                        color: config.color,
-                        fontFamily:
-                          "var(--font-playfair), 'Playfair Display', Georgia, serif",
-                      }}
+                      style={{ color: config.color }}
                     >
                       {houseName}
                     </h2>
                     <ol className="space-y-2">
                       {houseStudents.length === 0 ? (
                         <li
-                          className="text-sm"
-                          style={{
-                            color: "#4a4a4a",
-                            fontFamily:
-                              "var(--font-cinzel), 'Cinzel', sans-serif",
-                          }}
+                          className="text-sm text-[var(--text-muted)]"
                         >
                           No MVPs found yet.
                         </li>
@@ -337,12 +306,7 @@ export default function HouseMvpsPage() {
                         houseStudents.slice(0, 5).map((student, index) => (
                           <li
                             key={`${houseName}-${student.studentName}-${index}`}
-                            className="flex items-center justify-between text-sm"
-                            style={{
-                              color: "#1a1a2e",
-                              fontFamily:
-                                "var(--font-cinzel), 'Cinzel', sans-serif",
-                            }}
+                            className="flex items-center justify-between text-sm text-[var(--text)]"
                           >
                             <span>
                               {student.rank ?? index + 1}. {student.studentName}

@@ -1,95 +1,182 @@
 @import "tailwindcss";
 
 :root {
-  /* Dark theme for leaderboard display */
-  --background: #1a1a1a;
-  --foreground: #ffffff;
+  --bg: #fbfaf7;
+  --bg-muted: #f4f2ec;
+  --surface: #ffffff;
+  --surface-2: #fbfaf7;
+  --text: #14161a;
+  --text-muted: #5a616b;
+  --border: #e6e1d7;
+  --shadow: 0 8px 24px rgba(20, 22, 26, 0.06);
 
-  /* Scholarly Modern Color Palette */
-  --cream: #f7f6f0;
-  --cream-alt: #ede9e0;
-  --charcoal: #2c2c2c;
-  --charcoal-dark: #1a1a1a;
+  --accent: #0f766e;
+  --accent-2: #115e59;
+  --accent-soft: rgba(15, 118, 110, 0.1);
 
-  /* Sage Green Primary */
-  --sage-primary: #2d5a27;
-  --sage-secondary: #4a7c59;
-  --sage-light: #7ba05b;
-  --sage-muted: rgba(45, 90, 39, 0.1);
+  --danger: #b42318;
+  --warning: #b54708;
+  --success: #067647;
 
-  /* Warm Accent */
-  --accent-warm: #8b7355;
-  --accent-warm-light: #a08b6e;
+  --house-abu: #2b3a67;
+  --house-khad: #1f6f4a;
+  --house-umar: #1f3a5f;
+  --house-aish: #7a2e2e;
+}
 
-  /* House Colors - Earth Tones */
-  --house-abu-bakr: #2d5a27;
-  --house-khadijah: #6b4423;
-  --house-umar: #4a5568;
-  --house-aishah: #8b4513;
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0c0f14;
+    --bg-muted: #121722;
+    --surface: #0f141c;
+    --surface-2: #121722;
+    --text: #eef2f7;
+    --text-muted: #a8b3c2;
+    --border: rgba(255, 255, 255, 0.1);
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+
+    --accent: #2dd4bf;
+    --accent-2: #14b8a6;
+    --accent-soft: rgba(45, 212, 191, 0.14);
+  }
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-background: var(--bg);
+  --color-foreground: var(--text);
   --font-sans: var(--font-inter);
-  --font-heading: system-ui, -apple-system, sans-serif;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--bg);
+  color: var(--text);
   font-family: var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-/* Clean Modern Headings */
-h1, h2, h3 {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text);
   font-weight: 600;
-  letter-spacing: -0.02em;
 }
 
-/* Dark Geometric Pattern */
-.geometric-dark {
-  background: linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 100%);
-  background-image:
-    linear-gradient(45deg, transparent 24%, rgba(45, 90, 39, 0.05) 25%, rgba(45, 90, 39, 0.05) 26%, transparent 27%, transparent 74%, rgba(45, 90, 39, 0.05) 75%, rgba(45, 90, 39, 0.05) 76%, transparent 77%, transparent);
-  background-size: 30px 30px;
+/* Page background */
+.app-shell {
+  background: var(--bg);
+  color: var(--text);
 }
 
-/* Elevated Card with subtle animation */
-.elevated-card {
-  transform: translateY(0);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+.leaderboard-shell {
+  background: var(--bg);
+  color: var(--text);
+  background-image: radial-gradient(circle at top, var(--accent-soft), transparent 60%);
 }
 
-.elevated-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+/* Cards */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
 }
 
-/* Legacy support */
-.sanctuary-card,
-.regal-card {
-  background: white;
-  border: 1px solid var(--cream-alt);
-  border-radius: 12px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+/* Muted surface blocks */
+.surface-muted {
+  background: var(--bg-muted);
+  border: 1px solid var(--border);
+  border-radius: 16px;
 }
 
-/* Sage Badge */
-.badge-sage {
-  background: var(--sage-light);
+/* Buttons */
+.btn-primary {
+  background: var(--accent);
   color: white;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 12px;
+  padding: 10px 14px;
+}
+
+.btn-primary:hover {
+  background: var(--accent-2);
+}
+
+.btn-secondary {
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px 14px;
+}
+
+.btn-secondary:hover {
+  background: var(--surface-2);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   padding: 4px 10px;
   border-radius: 999px;
-  font-size: 0.75rem;
-  font-weight: 500;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--text-muted);
+  font-size: 12px;
 }
 
-/* Legacy badge support */
-.badge-brass,
-.badge-gold {
-  background: var(--sage-light);
-  color: white;
-  font-weight: 500;
+/* Inputs */
+.input {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px 12px;
+  outline: none;
+}
+
+.input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-soft);
+}
+
+/* Tables */
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+
+.table th {
+  background: var(--surface-2);
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.table td,
+.table th {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.table tr:last-child td {
+  border-bottom: none;
+}
+
+/* Section headings */
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+}
+
+.section-title::before {
+  content: "";
+  width: 10px;
+  height: 18px;
+  border-radius: 6px;
+  background: var(--accent);
 }

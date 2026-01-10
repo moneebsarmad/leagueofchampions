@@ -5,8 +5,7 @@ import { createSupabaseServerClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 
 export default async function DashboardLayout({
-  children,
-}: {
+  children}: {
   children: React.ReactNode
 }) {
   const supabase = await createSupabaseServerClient()
@@ -19,7 +18,7 @@ export default async function DashboardLayout({
   const adminName = authData.user.email || 'Admin'
 
   return (
-    <div className="min-h-screen bg-[#faf9f7] pattern-overlay">
+    <div className="min-h-screen app-shell">
       <Sidebar />
       <AnnouncementsPopup />
 

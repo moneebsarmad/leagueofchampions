@@ -18,57 +18,49 @@ const templates: ReportTemplate[] = [
     title: 'All-Time Merit Summary',
     description: 'Totals by house, grade, staff, and category.',
     format: 'BOTH',
-    scope: 'All-time',
-  },
+    scope: 'All-time'},
   {
     id: 'house-snapshot',
     title: 'House Performance Snapshot',
     description: 'Totals by house with student and staff engagement.',
     format: 'BOTH',
-    scope: 'All-time',
-  },
+    scope: 'All-time'},
   {
     id: 'grade-section-leaderboard',
     title: 'Grade & Section Leaderboard',
     description: 'Total points by grade and section.',
     format: 'BOTH',
-    scope: 'All-time',
-  },
+    scope: 'All-time'},
   {
     id: 'category-report',
     title: 'Merit Category Report',
     description: 'Points by 3R categories and subcategories.',
     format: 'BOTH',
-    scope: 'All-time',
-  },
+    scope: 'All-time'},
   {
     id: 'monthly-merit',
     title: 'Monthly Merit Log',
     description: 'All merit entries for the current month.',
     format: 'BOTH',
-    scope: 'Current month',
-  },
+    scope: 'Current month'},
   {
     id: 'monthly-highlights',
     title: 'Monthly Highlights',
     description: 'Top students, staff, and houses this month.',
     format: 'BOTH',
-    scope: 'Current month',
-  },
+    scope: 'Current month'},
   {
     id: 'leadership-summary',
     title: 'Leadership Summary',
     description: 'Four key charts for leadership review.',
     format: 'BOTH',
-    scope: 'All-time',
-  },
+    scope: 'All-time'},
   {
     id: 'staff-recognition',
     title: 'Staff Recognition Report',
     description: 'Monthly staff awards and participation stats.',
     format: 'BOTH',
-    scope: 'Current month',
-  },
+    scope: 'Current month'},
 ]
 
 export default function ReportsPage() {
@@ -95,8 +87,7 @@ export default function ReportsPage() {
       name: s.student_name || s.name || '',
       grade: s.grade || 0,
       section: s.section || '',
-      house: s.house || s.house_name || '',
-    }))
+      house: s.house || s.house_name || ''}))
     setStudents(allStudents.filter((s) => s.name))
   }
 
@@ -150,7 +141,13 @@ export default function ReportsPage() {
       </tr>
     `).join('')
 
-    const crestUrl = `${window.location.origin}/crest.png`
+    const crestSvg = `
+      <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80">
+        <rect width="80" height="80" rx="18" fill="#0f766e" />
+        <text x="40" y="46" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="20" fill="#ffffff" font-weight="600">DA</text>
+      </svg>
+    `
+    const crestUrl = `data:image/svg+xml;utf8,${encodeURIComponent(crestSvg)}`
     const summaryHtml = options?.summaryHtml || summary.replace(/\n/g, '<br/>')
     const variant = options?.variant || 'default'
     const chartsHtml = options?.chartsHtml || ''
@@ -159,25 +156,25 @@ export default function ReportsPage() {
         <head>
           <title>${title}</title>
           <style>
-            body { font-family: Georgia, 'Times New Roman', serif; color: #1a1a2e; padding: 24px; background: #f7f4ee; }
-            .report { background: #fffdf9; border: 1px solid #e7dfcf; border-radius: 16px; padding: 24px; box-shadow: 0 10px 30px rgba(20, 14, 4, 0.06); }
+            body { font-family: Inter, Arial, sans-serif; color: #14161a; padding: 24px; background: #fbfaf7; }
+            .report { background: #ffffff; border: 1px solid #e6e1d7; border-radius: 16px; padding: 24px; box-shadow: 0 10px 30px rgba(20, 22, 26, 0.08); }
             .header { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
             .crest { width: 64px; height: 64px; object-fit: contain; }
-            .brand { font-size: 12px; letter-spacing: 0.12em; color: #7a6a43; }
+            .brand { font-size: 12px; letter-spacing: 0.12em; color: #5a616b; }
             .title { font-size: 20px; margin: 4px 0 0; }
-            .subtitle { font-size: 12px; color: #6b5b3a; margin: 6px 0 16px; }
+            .subtitle { font-size: 12px; color: #5a616b; margin: 6px 0 16px; }
             .summary-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-bottom: 18px; }
-            .summary-card { border: 1px solid #eadfca; background: #fbf8f1; border-radius: 12px; padding: 10px 12px; }
-            .summary-label { font-size: 10px; letter-spacing: 0.12em; color: #8a7a55; margin-bottom: 4px; }
-            .summary-value { font-size: 16px; font-weight: 700; color: #2b1d0a; }
-            .divider { height: 1px; background: #eadfca; margin: 14px 0; }
+            .summary-card { border: 1px solid #e6e1d7; background: #fbfaf7; border-radius: 12px; padding: 10px 12px; }
+            .summary-label { font-size: 10px; letter-spacing: 0.12em; color: #5a616b; margin-bottom: 4px; }
+            .summary-value { font-size: 16px; font-weight: 700; color: #14161a; }
+            .divider { height: 1px; background: #e6e1d7; margin: 14px 0; }
             .charts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin: 16px 0; }
-            .chart-card { border: 1px solid #eadfca; border-radius: 12px; padding: 12px; background: #fffaf0; }
-            .chart-title { font-size: 11px; letter-spacing: 0.12em; color: #7a6a43; margin-bottom: 8px; }
+            .chart-card { border: 1px solid #e6e1d7; border-radius: 12px; padding: 12px; background: #fbfaf7; }
+            .chart-title { font-size: 11px; letter-spacing: 0.12em; color: #5a616b; margin-bottom: 8px; }
             table { width: 100%; border-collapse: collapse; font-size: 11px; }
-            th, td { border: 1px solid #e7dfcf; padding: 7px 8px; text-align: left; }
-            th { background: #f3ead6; color: #5b4a22; letter-spacing: 0.08em; font-size: 10px; }
-            tr:nth-child(even) td { background: #fbf8f1; }
+            th, td { border: 1px solid #e6e1d7; padding: 7px 8px; text-align: left; }
+            th { background: #fbfaf7; color: #5a616b; letter-spacing: 0.08em; font-size: 10px; }
+            tr:nth-child(even) td { background: #fbfaf7; }
             .report-card .title { font-size: 22px; }
             .report-card .crest { width: 72px; height: 72px; }
           </style>
@@ -185,9 +182,9 @@ export default function ReportsPage() {
         <body>
           <div class="report ${variant === 'student' ? 'report-card' : ''}">
             <div class="header">
-              <img class="crest" src="${crestUrl}" alt="League of Stars Crest" />
+              <img class="crest" src="${crestUrl}" alt="Dār al-Arqam mark" />
               <div>
-                <div class="brand">League of Stars • Dār Al-Arqam Islamic School</div>
+                <div class="brand">League of Champions • Dār al-Arqam Islamic School</div>
                 <div class="title">${title}</div>
               </div>
             </div>
@@ -235,8 +232,7 @@ export default function ReportsPage() {
       rowMapper: (row) => [
         String(getRowValue(row, ['house', 'house_name']) ?? ''),
         Number(getRowValue(row, ['total_points', 'points']) ?? 0),
-      ],
-    },
+      ]},
     'house-snapshot': {
       view: VIEWS.HOUSE_STANDINGS,
       title: 'House Performance Snapshot',
@@ -245,8 +241,7 @@ export default function ReportsPage() {
         String(getRowValue(row, ['house', 'house_name']) ?? ''),
         Number(getRowValue(row, ['total_points', 'points']) ?? 0),
         Number(getRowValue(row, ['rank']) ?? 0),
-      ],
-    },
+      ]},
     'grade-section-leaderboard': {
       view: VIEWS.GRADE_SECTION_TOTALS,
       title: 'Grade & Section Leaderboard',
@@ -255,8 +250,7 @@ export default function ReportsPage() {
         String(getRowValue(row, ['grade']) ?? ''),
         String(getRowValue(row, ['section']) ?? ''),
         Number(getRowValue(row, ['total_points', 'points']) ?? 0),
-      ],
-    },
+      ]},
     'category-report': {
       view: VIEWS.STUDENT_POINTS_BY_R,
       title: 'Merit Category Report',
@@ -265,8 +259,7 @@ export default function ReportsPage() {
         String(getRowValue(row, ['category', 'r']) ?? ''),
         String(getRowValue(row, ['subcategory']) ?? ''),
         Number(getRowValue(row, ['total_points', 'points']) ?? 0),
-      ],
-    },
+      ]},
     'monthly-merit': {
       view: VIEWS.STUDENT_POINTS_BY_R,
       title: 'Monthly Merit Log',
@@ -279,8 +272,7 @@ export default function ReportsPage() {
         String(getRowValue(row, ['category', 'r']) ?? ''),
         String(getRowValue(row, ['subcategory']) ?? ''),
         Number(getRowValue(row, ['total_points', 'points']) ?? 0),
-      ],
-    },
+      ]},
     'monthly-highlights': {
       view: VIEWS.TOP_STUDENTS_HOUSE,
       title: 'Monthly Highlights',
@@ -290,8 +282,7 @@ export default function ReportsPage() {
         String(getRowValue(row, ['student_name', 'student', 'name']) ?? ''),
         Number(getRowValue(row, ['total_points', 'points']) ?? 0),
         Number(getRowValue(row, ['rank', 'house_rank']) ?? 0),
-      ],
-    },
+      ]},
     'leadership-summary': {
       view: VIEWS.GRADE_SECTION_TOTALS,
       title: 'Leadership Summary',
@@ -300,8 +291,7 @@ export default function ReportsPage() {
         String(getRowValue(row, ['grade']) ?? ''),
         String(getRowValue(row, ['section']) ?? ''),
         Number(getRowValue(row, ['total_points', 'points']) ?? 0),
-      ],
-    },
+      ]},
     'staff-recognition': {
       view: VIEWS.STAFF_3R,
       title: 'Staff Recognition Report',
@@ -311,9 +301,7 @@ export default function ReportsPage() {
         Number(getRowValue(row, ['total_points', 'points']) ?? 0),
         Number(getRowValue(row, ['rank']) ?? 0),
         String(getRowValue(row, ['month_start']) ?? ''),
-      ],
-    },
-  }
+      ]}}
 
   const generateReport = async (template: ReportTemplate, format: 'CSV' | 'PDF') => {
     setIsGenerating(`${template.id}-${format}`)
@@ -500,68 +488,68 @@ export default function ReportsPage() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-[#1a1a2e] mb-2" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+        <h1 className="text-3xl font-bold text-[var(--text)] mb-2">
           Reports
         </h1>
         <div className="flex items-center gap-3">
-          <div className="h-1 w-16 bg-gradient-to-r from-[#c9a227] to-[#e8d48b] rounded-full"></div>
-          <p className="text-[#1a1a2e]/50 text-sm font-medium">
+          <div className="h-1 w-16 bg-[var(--accent)] rounded-full"></div>
+          <p className="text-[var(--text-muted)] text-sm font-medium">
             Generate exports and printable summaries
           </p>
         </div>
       </div>
 
-      <div className="regal-card rounded-2xl p-4 mb-6">
+      <div className="card rounded-2xl p-4 mb-6">
         <div className="flex flex-wrap items-center gap-4 justify-between">
           <div className="flex items-center gap-3">
-            <h3 className="text-sm font-semibold text-[#1a1a2e] tracking-wider">
+            <h3 className="text-sm font-semibold text-[var(--text)] tracking-wider">
               Report Date Range
             </h3>
-            <span className="text-xs px-2.5 py-1 rounded-full bg-[#f5f3ef] text-[#1a1a2e]/60 border border-[#c9a227]/20">
+            <span className="text-xs px-2.5 py-1 rounded-full bg-[var(--bg-muted)] text-[var(--text-muted)] border border-[var(--border)]">
               {rangeBadgeLabel}
             </span>
           </div>
           <div className="flex flex-wrap items-center gap-3">
-            <label className="text-xs font-semibold text-[#1a1a2e]/40 tracking-wider">
+            <label className="text-xs font-semibold text-[var(--text-muted)] tracking-wider">
               Start
             </label>
             <input
               type="date"
               value={startDate}
               onChange={(event) => setStartDate(event.target.value)}
-              className="regal-input px-3 py-2 rounded-xl text-sm"
+              className="input px-3 py-2 rounded-xl text-sm"
             />
-            <label className="text-xs font-semibold text-[#1a1a2e]/40 tracking-wider">
+            <label className="text-xs font-semibold text-[var(--text-muted)] tracking-wider">
               End
             </label>
             <input
               type="date"
               value={endDate}
               onChange={(event) => setEndDate(event.target.value)}
-              className="regal-input px-3 py-2 rounded-xl text-sm"
+              className="input px-3 py-2 rounded-xl text-sm"
             />
           </div>
         </div>
       </div>
 
-      <div className="regal-card rounded-2xl p-6 mb-8">
+      <div className="card rounded-2xl p-6 mb-8">
         <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
           <div>
-            <h3 className="text-lg font-semibold text-[#1a1a2e]" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+            <h3 className="text-lg font-semibold text-[var(--text)]">
               Student Report
             </h3>
-            <p className="text-xs text-[#1a1a2e]/50 mt-1">
+            <p className="text-xs text-[var(--text-muted)] mt-1">
               Generate a detailed report for a single student.
             </p>
           </div>
-          <div className="text-xs px-2.5 py-1 rounded-full bg-[#f5f3ef] text-[#1a1a2e]/60 border border-[#c9a227]/20">
+          <div className="text-xs px-2.5 py-1 rounded-full bg-[var(--bg-muted)] text-[var(--text-muted)] border border-[var(--border)]">
             PDF / CSV
           </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           <div className="lg:col-span-2">
-            <label className="block text-xs font-semibold text-[#1a1a2e]/40 mb-1.5 tracking-wider">
+            <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1.5 tracking-wider">
               Student
             </label>
             <div className="relative">
@@ -573,25 +561,25 @@ export default function ReportsPage() {
                   setSelectedStudent(null)
                 }}
                 placeholder="Search by student name..."
-                className="regal-input w-full px-3 py-2.5 rounded-xl text-sm"
+                className="input w-full px-3 py-2.5 rounded-xl text-sm"
               />
               {studentSearch && (
-                <div className="absolute z-10 mt-2 w-full rounded-xl border border-[#c9a227]/20 bg-white shadow-lg overflow-hidden">
+                <div className="absolute z-10 mt-2 w-full rounded-xl border border-[var(--border)] bg-white shadow-lg overflow-hidden">
                   {filteredStudents.length === 0 ? (
-                    <div className="px-4 py-3 text-xs text-[#1a1a2e]/40">No matches found</div>
+                    <div className="px-4 py-3 text-xs text-[var(--text-muted)]">No matches found</div>
                   ) : (
                     filteredStudents.map((student) => (
                       <button
                         key={`${student.name}-${student.grade}-${student.section}`}
                         type="button"
-                        className="w-full text-left px-4 py-2 hover:bg-[#f5f3ef] text-sm"
+                        className="w-full text-left px-4 py-2 hover:bg-[var(--bg-muted)] text-sm"
                         onClick={() => {
                           setSelectedStudent(student)
                           setStudentSearch(`${student.name} (Grade ${student.grade}${student.section})`)
                         }}
                       >
-                        <span className="font-semibold text-[#1a1a2e]">{student.name}</span>
-                        <span className="text-xs text-[#1a1a2e]/40"> • Grade {student.grade}{student.section} • {student.house}</span>
+                        <span className="font-semibold text-[var(--text)]">{student.name}</span>
+                        <span className="text-xs text-[var(--text-muted)]"> • Grade {student.grade}{student.section} • {student.house}</span>
                       </button>
                     ))
                   )}
@@ -604,14 +592,14 @@ export default function ReportsPage() {
             <button
               onClick={() => generateStudentReport('PDF')}
               disabled={!selectedStudent || isGenerating === 'student-PDF'}
-              className="btn-gold px-4 py-2 text-sm rounded-xl disabled:opacity-60"
+              className="btn-primary px-4 py-2 text-sm rounded-xl disabled:opacity-60"
             >
               {isGenerating === 'student-PDF' ? 'Generating...' : 'PDF'}
             </button>
             <button
               onClick={() => generateStudentReport('CSV')}
               disabled={!selectedStudent || isGenerating === 'student-CSV'}
-              className="px-4 py-2 text-sm rounded-xl border border-[#c9a227]/30 text-[#1a1a2e] bg-white hover:border-[#c9a227]/60 transition disabled:opacity-60"
+              className="px-4 py-2 text-sm rounded-xl border border-[var(--border)] text-[var(--text)] bg-white hover:border-[var(--border)] transition disabled:opacity-60"
             >
               {isGenerating === 'student-CSV' ? 'Generating...' : 'CSV'}
             </button>
@@ -620,25 +608,25 @@ export default function ReportsPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-        <div className="regal-card rounded-2xl p-6">
+        <div className="card rounded-2xl p-6">
           <div className="flex items-start justify-between mb-4">
             <div>
-              <h3 className="text-lg font-semibold text-[#1a1a2e]" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+              <h3 className="text-lg font-semibold text-[var(--text)]">
                 House Report
               </h3>
-              <p className="text-xs text-[#1a1a2e]/50 mt-1">Totals and entries for a single house.</p>
+              <p className="text-xs text-[var(--text-muted)] mt-1">Totals and entries for a single house.</p>
             </div>
-            <span className="text-xs px-2.5 py-1 rounded-full bg-[#f5f3ef] text-[#1a1a2e]/60 border border-[#c9a227]/20">
+            <span className="text-xs px-2.5 py-1 rounded-full bg-[var(--bg-muted)] text-[var(--text-muted)] border border-[var(--border)]">
               PDF / CSV
             </span>
           </div>
-          <label className="block text-xs font-semibold text-[#1a1a2e]/40 mb-1.5 tracking-wider">
+          <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1.5 tracking-wider">
             House
           </label>
           <select
             value={selectedHouse}
             onChange={(event) => setSelectedHouse(event.target.value)}
-            className="regal-input w-full px-3 py-2.5 rounded-xl text-sm mb-4"
+            className="input w-full px-3 py-2.5 rounded-xl text-sm mb-4"
           >
             <option value="">Select house</option>
             {houseOptions.map((house) => (
@@ -646,46 +634,46 @@ export default function ReportsPage() {
             ))}
           </select>
           {selectedHouse && houseLogos[selectedHouse] && (
-            <div className="mb-4 flex items-center gap-3 rounded-xl border border-[#c9a227]/15 bg-[#fbf8f1] px-3 py-2">
+            <div className="mb-4 flex items-center gap-3 rounded-xl border border-[var(--border)] bg-[var(--surface-2)] px-3 py-2">
               <img
                 src={houseLogos[selectedHouse]}
                 alt={`${selectedHouse} logo`}
                 className="h-10 w-10 object-contain"
               />
-              <span className="text-sm font-medium text-[#1a1a2e]">{selectedHouse}</span>
+              <span className="text-sm font-medium text-[var(--text)]">{selectedHouse}</span>
             </div>
           )}
           <div className="flex gap-2">
             <button
               onClick={() => generateHouseReport('PDF')}
               disabled={!selectedHouse || isGenerating === 'house-PDF'}
-              className="btn-gold px-4 py-2 text-sm rounded-xl disabled:opacity-60"
+              className="btn-primary px-4 py-2 text-sm rounded-xl disabled:opacity-60"
             >
               {isGenerating === 'house-PDF' ? 'Generating...' : 'PDF'}
             </button>
             <button
               onClick={() => generateHouseReport('CSV')}
               disabled={!selectedHouse || isGenerating === 'house-CSV'}
-              className="px-4 py-2 text-sm rounded-xl border border-[#c9a227]/30 text-[#1a1a2e] bg-white hover:border-[#c9a227]/60 transition disabled:opacity-60"
+              className="px-4 py-2 text-sm rounded-xl border border-[var(--border)] text-[var(--text)] bg-white hover:border-[var(--border)] transition disabled:opacity-60"
             >
               {isGenerating === 'house-CSV' ? 'Generating...' : 'CSV'}
             </button>
           </div>
         </div>
 
-        <div className="regal-card rounded-2xl p-6">
+        <div className="card rounded-2xl p-6">
           <div className="flex items-start justify-between mb-4">
             <div>
-              <h3 className="text-lg font-semibold text-[#1a1a2e]" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+              <h3 className="text-lg font-semibold text-[var(--text)]">
                 Grade Report
               </h3>
-              <p className="text-xs text-[#1a1a2e]/50 mt-1">Totals and entries for a grade.</p>
+              <p className="text-xs text-[var(--text-muted)] mt-1">Totals and entries for a grade.</p>
             </div>
-            <span className="text-xs px-2.5 py-1 rounded-full bg-[#f5f3ef] text-[#1a1a2e]/60 border border-[#c9a227]/20">
+            <span className="text-xs px-2.5 py-1 rounded-full bg-[var(--bg-muted)] text-[var(--text-muted)] border border-[var(--border)]">
               PDF / CSV
             </span>
           </div>
-          <label className="block text-xs font-semibold text-[#1a1a2e]/40 mb-1.5 tracking-wider">
+          <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1.5 tracking-wider">
             Grade
           </label>
           <select
@@ -694,7 +682,7 @@ export default function ReportsPage() {
               setSelectedGrade(event.target.value)
               setSelectedSection('')
             }}
-            className="regal-input w-full px-3 py-2.5 rounded-xl text-sm mb-4"
+            className="input w-full px-3 py-2.5 rounded-xl text-sm mb-4"
           >
             <option value="">Select grade</option>
             {gradeOptions.map((grade) => (
@@ -705,35 +693,35 @@ export default function ReportsPage() {
             <button
               onClick={() => generateGradeReport('PDF')}
               disabled={!selectedGrade || isGenerating === 'grade-PDF'}
-              className="btn-gold px-4 py-2 text-sm rounded-xl disabled:opacity-60"
+              className="btn-primary px-4 py-2 text-sm rounded-xl disabled:opacity-60"
             >
               {isGenerating === 'grade-PDF' ? 'Generating...' : 'PDF'}
             </button>
             <button
               onClick={() => generateGradeReport('CSV')}
               disabled={!selectedGrade || isGenerating === 'grade-CSV'}
-              className="px-4 py-2 text-sm rounded-xl border border-[#c9a227]/30 text-[#1a1a2e] bg-white hover:border-[#c9a227]/60 transition disabled:opacity-60"
+              className="px-4 py-2 text-sm rounded-xl border border-[var(--border)] text-[var(--text)] bg-white hover:border-[var(--border)] transition disabled:opacity-60"
             >
               {isGenerating === 'grade-CSV' ? 'Generating...' : 'CSV'}
             </button>
           </div>
         </div>
 
-        <div className="regal-card rounded-2xl p-6">
+        <div className="card rounded-2xl p-6">
           <div className="flex items-start justify-between mb-4">
             <div>
-              <h3 className="text-lg font-semibold text-[#1a1a2e]" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+              <h3 className="text-lg font-semibold text-[var(--text)]">
                 Grade/Section Report
               </h3>
-              <p className="text-xs text-[#1a1a2e]/50 mt-1">Totals and entries for one section.</p>
+              <p className="text-xs text-[var(--text-muted)] mt-1">Totals and entries for one section.</p>
             </div>
-            <span className="text-xs px-2.5 py-1 rounded-full bg-[#f5f3ef] text-[#1a1a2e]/60 border border-[#c9a227]/20">
+            <span className="text-xs px-2.5 py-1 rounded-full bg-[var(--bg-muted)] text-[var(--text-muted)] border border-[var(--border)]">
               PDF / CSV
             </span>
           </div>
           <div className="grid grid-cols-2 gap-3 mb-4">
             <div>
-              <label className="block text-xs font-semibold text-[#1a1a2e]/40 mb-1.5 tracking-wider">
+              <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1.5 tracking-wider">
                 Grade
               </label>
               <select
@@ -742,7 +730,7 @@ export default function ReportsPage() {
                   setSelectedGrade(event.target.value)
                   setSelectedSection('')
                 }}
-                className="regal-input w-full px-3 py-2.5 rounded-xl text-sm"
+                className="input w-full px-3 py-2.5 rounded-xl text-sm"
               >
                 <option value="">Grade</option>
                 {gradeOptions.map((grade) => (
@@ -751,13 +739,13 @@ export default function ReportsPage() {
               </select>
             </div>
             <div>
-              <label className="block text-xs font-semibold text-[#1a1a2e]/40 mb-1.5 tracking-wider">
+              <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1.5 tracking-wider">
                 Section
               </label>
               <select
                 value={selectedSection}
                 onChange={(event) => setSelectedSection(event.target.value)}
-                className="regal-input w-full px-3 py-2.5 rounded-xl text-sm"
+                className="input w-full px-3 py-2.5 rounded-xl text-sm"
               >
                 <option value="">Section</option>
                 {sectionOptions.map((section) => (
@@ -770,14 +758,14 @@ export default function ReportsPage() {
             <button
               onClick={() => generateSectionReport('PDF')}
               disabled={!selectedGrade || !selectedSection || isGenerating === 'section-PDF'}
-              className="btn-gold px-4 py-2 text-sm rounded-xl disabled:opacity-60"
+              className="btn-primary px-4 py-2 text-sm rounded-xl disabled:opacity-60"
             >
               {isGenerating === 'section-PDF' ? 'Generating...' : 'PDF'}
             </button>
             <button
               onClick={() => generateSectionReport('CSV')}
               disabled={!selectedGrade || !selectedSection || isGenerating === 'section-CSV'}
-              className="px-4 py-2 text-sm rounded-xl border border-[#c9a227]/30 text-[#1a1a2e] bg-white hover:border-[#c9a227]/60 transition disabled:opacity-60"
+              className="px-4 py-2 text-sm rounded-xl border border-[var(--border)] text-[var(--text)] bg-white hover:border-[var(--border)] transition disabled:opacity-60"
             >
               {isGenerating === 'section-CSV' ? 'Generating...' : 'CSV'}
             </button>
@@ -787,32 +775,32 @@ export default function ReportsPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
         {templates.map((template) => (
-          <div key={template.id} className="regal-card rounded-2xl p-6">
+          <div key={template.id} className="card rounded-2xl p-6">
             <div className="flex items-start justify-between mb-4">
               <div>
-                <h3 className="text-lg font-semibold text-[#1a1a2e]" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+                <h3 className="text-lg font-semibold text-[var(--text)]">
                   {template.title}
                 </h3>
-                <p className="text-xs text-[#1a1a2e]/50 mt-1">{template.description}</p>
+                <p className="text-xs text-[var(--text-muted)] mt-1">{template.description}</p>
               </div>
-              <span className="text-xs px-2.5 py-1 rounded-full bg-[#f5f3ef] text-[#1a1a2e]/60 border border-[#c9a227]/20">
+              <span className="text-xs px-2.5 py-1 rounded-full bg-[var(--bg-muted)] text-[var(--text-muted)] border border-[var(--border)]">
                 {template.scope}
               </span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold tracking-wider text-[#1a1a2e]/40">{template.format}</span>
+              <span className="text-xs font-semibold tracking-wider text-[var(--text-muted)]">{template.format}</span>
               <div className="flex gap-2">
                 <button
                   onClick={() => generateReport(template, 'PDF')}
                   disabled={isGenerating === `${template.id}-PDF`}
-                  className="btn-gold px-4 py-2 text-sm rounded-xl disabled:opacity-60"
+                  className="btn-primary px-4 py-2 text-sm rounded-xl disabled:opacity-60"
                 >
                   {isGenerating === `${template.id}-PDF` ? 'Generating...' : 'PDF'}
                 </button>
                 <button
                   onClick={() => generateReport(template, 'CSV')}
                   disabled={isGenerating === `${template.id}-CSV`}
-                  className="px-4 py-2 text-sm rounded-xl border border-[#c9a227]/30 text-[#1a1a2e] bg-white hover:border-[#c9a227]/60 transition disabled:opacity-60"
+                  className="px-4 py-2 text-sm rounded-xl border border-[var(--border)] text-[var(--text)] bg-white hover:border-[var(--border)] transition disabled:opacity-60"
                 >
                   {isGenerating === `${template.id}-CSV` ? 'Generating...' : 'CSV'}
                 </button>
@@ -822,11 +810,11 @@ export default function ReportsPage() {
         ))}
       </div>
 
-      <div className="regal-card rounded-2xl p-6">
-        <h3 className="text-lg font-semibold text-[#1a1a2e]" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+      <div className="card rounded-2xl p-6">
+        <h3 className="text-lg font-semibold text-[var(--text)]">
           Saved Report Templates
         </h3>
-        <p className="text-xs text-[#1a1a2e]/50 mt-1">
+        <p className="text-xs text-[var(--text-muted)] mt-1">
           Coming next: save custom filters, schedule exports, and track history.
         </p>
       </div>

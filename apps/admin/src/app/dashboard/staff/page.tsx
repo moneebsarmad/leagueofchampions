@@ -21,12 +21,26 @@ interface StaffMember {
 }
 
 const tierColors = {
-  High: { bg: 'bg-emerald-100', text: 'text-emerald-900', border: 'border-emerald-300', dot: '#0f766e' },
-  Medium: { bg: 'bg-amber-100', text: 'text-amber-900', border: 'border-amber-300', dot: '#b45309' },
-  Low: { bg: 'bg-rose-100', text: 'text-rose-900', border: 'border-rose-300', dot: '#9f1239' },
-}
+  High: {
+    bg: 'bg-[var(--accent-soft)]',
+    text: 'text-[var(--accent-2)]',
+    border: 'border-[var(--accent)]',
+    dot: 'var(--accent)',
+  },
+  Medium: {
+    bg: 'bg-[var(--warning)]/10',
+    text: 'text-[var(--warning)]',
+    border: 'border-[var(--warning)]',
+    dot: 'var(--warning)',
+  },
+  Low: {
+    bg: 'bg-[var(--danger)]/10',
+    text: 'text-[var(--danger)]',
+    border: 'border-[var(--danger)]',
+    dot: 'var(--danger)',
+  }}
 
-const pieColors = ['#0f766e', '#b45309', '#9f1239']
+const pieColors = ['var(--accent)', 'var(--warning)', 'var(--danger)']
 const houses = ['House of Abū Bakr', 'House of Khadījah', 'House of ʿUmar', 'House of ʿĀʾishah']
 
 interface StaffMeritEntry {
@@ -163,8 +177,7 @@ export default function StaffPage() {
       { start: '2025-12-22', end: '2026-01-04' },
     ].map((range) => ({
       start: parseDate(range.start),
-      end: parseDate(range.end),
-    }))
+      end: parseDate(range.end)}))
 
     const isInBreak = (date: Date) =>
       breakRanges.some((range) => date >= range.start && date <= range.end)
@@ -239,8 +252,7 @@ export default function StaffPage() {
         points: stats.points,
         awards: stats.awards,
         students: stats.students.size,
-        lastActive: stats.lastActive,
-      }
+        lastActive: stats.lastActive}
     })
 
     list.sort((a, b) => b.points - a.points)
@@ -268,8 +280,7 @@ export default function StaffPage() {
           section: String(m.section ?? ''),
           points: Number(m.total_points ?? m.points ?? 0),
           timestamp: String(m.timestamp ?? m.awarded_at ?? ''),
-          r: String(m.r ?? m.category ?? ''),
-        }))
+          r: String(m.r ?? m.category ?? '')}))
         setStaffData(staffRows)
         setAllMeritEntries(entries)
         const filteredEntries = filterEntriesByMonth(entries, selectedMonth)
@@ -350,8 +361,7 @@ export default function StaffPage() {
         const [year, month] = key.split('-').map(Number)
         const label = new Date(year, month - 1, 1).toLocaleDateString('en-US', {
           month: 'long',
-          year: 'numeric',
-        })
+          year: 'numeric'})
         return { key, label }
       })
   }, [allMeritEntries, selectedMonth])
@@ -373,8 +383,7 @@ export default function StaffPage() {
     const [selectedYear, selectedMonthIndex] = selectedMonth.split('-').map(Number)
     const monthLabel = new Date(selectedYear, selectedMonthIndex - 1, 1).toLocaleDateString('en-US', {
       month: 'long',
-      year: 'numeric',
-    })
+      year: 'numeric'})
 
     const houseSpiritRow = houseSpiritRows[0] || null
     const allStarRow = allStarRows[0] || null
@@ -388,10 +397,8 @@ export default function StaffPage() {
         winner: winner
           ? {
             name: winner.staff_name,
-            points: winner.total_points,
-          }
-          : null,
-      }
+            points: winner.total_points}
+          : null}
     })
 
     return {
@@ -400,32 +407,27 @@ export default function StaffPage() {
         ? {
           house: houseSpiritRow.house,
           staffCount: houseSpiritRow.staff_count,
-          points: houseSpiritRow.total_points,
-        }
+          points: houseSpiritRow.total_points}
         : null,
       allStar: allStarRow
         ? {
           name: allStarRow.staff_name,
           categories: allStarRow.categories,
-          points: allStarRow.total_points,
-        }
+          points: allStarRow.total_points}
         : null,
       steadyHand: steadyHandRow
         ? {
           name: steadyHandRow.staff_name,
           days: steadyHandRow.active_days,
-          awards: steadyHandRow.awards,
-        }
+          awards: steadyHandRow.awards}
         : null,
       diamondFinder: diamondFinderRow
         ? {
           name: diamondFinderRow.staff_name,
           students: diamondFinderRow.students,
-          points: diamondFinderRow.total_points,
-        }
+          points: diamondFinderRow.total_points}
         : null,
-      houseChampions,
-    }
+      houseChampions}
   }, [selectedMonth, houseSpiritRows, allStarRows, steadyHandRows, diamondFinderRows, houseChampionRows])
 
   const consistencyLeaderboard = useMemo(() => {
@@ -453,20 +455,20 @@ export default function StaffPage() {
       <div className="mb-8">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-[#1a1a2e] mb-2" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+            <h1 className="text-3xl font-bold text-[var(--text)] mb-2">
               Staff Engagement
             </h1>
             <div className="flex items-center gap-3">
-              <div className="h-1 w-16 bg-gradient-to-r from-[#c9a227] to-[#e8d48b] rounded-full"></div>
-              <p className="text-[#1a1a2e]/50 text-sm font-medium">Performance metrics and consistency tracking</p>
+              <div className="h-1 w-16 bg-[var(--accent)] rounded-full"></div>
+              <p className="text-[var(--text-muted)] text-sm font-medium">Performance metrics and consistency tracking</p>
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <span className="text-xs tracking-widest text-[#1a1a2e]/40">Month</span>
+            <span className="text-xs tracking-widest text-[var(--text-muted)]">Month</span>
             <select
               value={selectedMonth}
               onChange={(e) => setSelectedMonth(e.target.value)}
-              className="px-4 py-2.5 border border-[#1a1a2e]/10 rounded-xl focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227] outline-none bg-white"
+              className="input"
             >
               {monthOptions.map((option) => (
                 <option key={option.key} value={option.key}>{option.label}</option>
@@ -479,11 +481,11 @@ export default function StaffPage() {
       {/* Charts Section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         {/* Tier Distribution Pie Chart */}
-        <div className="regal-card rounded-2xl p-6">
-          <h3 className="text-lg font-semibold text-[#1a1a2e] mb-1" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+        <div className="card rounded-2xl p-6">
+          <h3 className="text-lg font-semibold text-[var(--text)] mb-1">
             Engagement Tier Distribution
           </h3>
-          <p className="text-xs text-[#1a1a2e]/40 mb-6">Staff categorized by consistency levels</p>
+          <p className="text-xs text-[var(--text-muted)] mb-6">Staff categorized by consistency levels</p>
           <div className="h-64 flex items-center">
             <div className="w-1/2">
               <ResponsiveContainer width="100%" height={200}>
@@ -510,8 +512,8 @@ export default function StaffPage() {
                 <div key={tier.name} className="flex items-center gap-3">
                   <div className="w-4 h-4 rounded-full shadow-sm" style={{ backgroundColor: tier.color }}></div>
                   <div>
-                    <p className="text-sm font-semibold text-[#1a1a2e]">{tier.name}</p>
-                    <p className="text-xs text-[#1a1a2e]/40">{tier.value} staff members</p>
+                    <p className="text-sm font-semibold text-[var(--text)]">{tier.name}</p>
+                    <p className="text-xs text-[var(--text-muted)]">{tier.value} staff members</p>
                   </div>
                 </div>
               ))}
@@ -520,19 +522,19 @@ export default function StaffPage() {
         </div>
 
         {/* Consistency Leaderboard */}
-        <div className="regal-card rounded-2xl p-6">
-          <h3 className="text-lg font-semibold text-[#1a1a2e] mb-1" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+        <div className="card rounded-2xl p-6">
+          <h3 className="text-lg font-semibold text-[var(--text)] mb-1">
             Consistency Leaderboard
           </h3>
-          <p className="text-xs text-[#1a1a2e]/40 mb-6">Top 10 most consistent staff members</p>
+          <p className="text-xs text-[var(--text-muted)] mb-6">Top 10 most consistent staff members</p>
           <div className="h-80">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={consistencyLeaderboard} layout="vertical" margin={{ left: 140, right: 28, top: 10, bottom: 10 }}>
-                <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} stroke="#e5e2db" />
-                <XAxis type="number" domain={[0, 100]} tickFormatter={(v) => `${v}%`} stroke="#1a1a2e" opacity={0.3} />
-                <YAxis type="category" dataKey="name" width={130} tick={{ fontSize: 12, fill: '#1a1a2e' }} />
+                <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} stroke="var(--border)" />
+                <XAxis type="number" domain={[0, 100]} tickFormatter={(v) => `${v}%`} stroke="var(--text-muted)" opacity={0.3} />
+                <YAxis type="category" dataKey="name" width={130} tick={{ fontSize: 12, fill: 'var(--text-muted)' }} />
                 <Tooltip formatter={(value: number) => [`${value}%`, 'Consistency']} />
-                <Bar dataKey="consistency" fill="#c9a227" radius={[0, 6, 6, 0]} />
+                <Bar dataKey="consistency" fill="var(--accent)" radius={[0, 6, 6, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -540,66 +542,66 @@ export default function StaffPage() {
       </div>
 
       {/* Monthly Staff Rewards */}
-      <div className="regal-card rounded-2xl p-6 mb-8">
+      <div className="card rounded-2xl p-6 mb-8">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h3 className="text-lg font-semibold text-[#1a1a2e]" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+            <h3 className="text-lg font-semibold text-[var(--text)]">
               Monthly Staff Rewards
             </h3>
-            <p className="text-xs text-[#1a1a2e]/40 mt-1">Recognition for {monthlyAwards.monthLabel}</p>
+            <p className="text-xs text-[var(--text-muted)] mt-1">Recognition for {monthlyAwards.monthLabel}</p>
           </div>
-          <div className="text-xs text-[#1a1a2e]/40">
+          <div className="text-xs text-[var(--text-muted)]">
             Based on merit entries submitted this month
           </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          <div className="p-5 rounded-xl bg-[#f5f3ef] border border-[#c9a227]/20">
-            <p className="text-xs font-semibold text-[#1a1a2e]/40 tracking-widest">House Spirit Award</p>
-            <p className="text-sm text-[#1a1a2e]/60 mt-1">House with the highest collective staff participation</p>
+          <div className="p-5 rounded-xl bg-[var(--bg-muted)] border border-[var(--border)]">
+            <p className="text-xs font-semibold text-[var(--text-muted)] tracking-widest">House Spirit Award</p>
+            <p className="text-sm text-[var(--text-muted)] mt-1">House with the highest collective staff participation</p>
             <div className="mt-4">
-              <p className="text-lg font-bold text-[#1a1a2e]">{monthlyAwards.houseSpirit?.house || 'No data'}</p>
+              <p className="text-lg font-bold text-[var(--text)]">{monthlyAwards.houseSpirit?.house || 'No data'}</p>
               {monthlyAwards.houseSpirit && (
-                <p className="text-xs text-[#1a1a2e]/50 mt-1">
+                <p className="text-xs text-[var(--text-muted)] mt-1">
                   {monthlyAwards.houseSpirit.staffCount} active staff • {monthlyAwards.houseSpirit.points.toLocaleString()} pts
                 </p>
               )}
             </div>
           </div>
 
-          <div className="p-5 rounded-xl bg-[#f5f3ef] border border-[#c9a227]/20">
-            <p className="text-xs font-semibold text-[#1a1a2e]/40 tracking-widest">3R All-Star</p>
-            <p className="text-sm text-[#1a1a2e]/60 mt-1">Most diverse merit categories</p>
+          <div className="p-5 rounded-xl bg-[var(--bg-muted)] border border-[var(--border)]">
+            <p className="text-xs font-semibold text-[var(--text-muted)] tracking-widest">3R All-Star</p>
+            <p className="text-sm text-[var(--text-muted)] mt-1">Most diverse merit categories</p>
             <div className="mt-4">
-              <p className="text-lg font-bold text-[#1a1a2e]">{monthlyAwards.allStar?.name || 'No data'}</p>
+              <p className="text-lg font-bold text-[var(--text)]">{monthlyAwards.allStar?.name || 'No data'}</p>
               {monthlyAwards.allStar && (
-                <p className="text-xs text-[#1a1a2e]/50 mt-1">
+                <p className="text-xs text-[var(--text-muted)] mt-1">
                   {monthlyAwards.allStar.categories} categories • {monthlyAwards.allStar.points.toLocaleString()} pts
                 </p>
               )}
             </div>
           </div>
 
-          <div className="p-5 rounded-xl bg-[#f5f3ef] border border-[#c9a227]/20">
-            <p className="text-xs font-semibold text-[#1a1a2e]/40 tracking-widest">The Steady Hand</p>
-            <p className="text-sm text-[#1a1a2e]/60 mt-1">Most days with point submissions</p>
+          <div className="p-5 rounded-xl bg-[var(--bg-muted)] border border-[var(--border)]">
+            <p className="text-xs font-semibold text-[var(--text-muted)] tracking-widest">The Steady Hand</p>
+            <p className="text-sm text-[var(--text-muted)] mt-1">Most days with point submissions</p>
             <div className="mt-4">
-              <p className="text-lg font-bold text-[#1a1a2e]">{monthlyAwards.steadyHand?.name || 'No data'}</p>
+              <p className="text-lg font-bold text-[var(--text)]">{monthlyAwards.steadyHand?.name || 'No data'}</p>
               {monthlyAwards.steadyHand && (
-                <p className="text-xs text-[#1a1a2e]/50 mt-1">
+                <p className="text-xs text-[var(--text-muted)] mt-1">
                   {monthlyAwards.steadyHand.days} days • {monthlyAwards.steadyHand.awards} awards
                 </p>
               )}
             </div>
           </div>
 
-          <div className="p-5 rounded-xl bg-[#f5f3ef] border border-[#c9a227]/20">
-            <p className="text-xs font-semibold text-[#1a1a2e]/40 tracking-widest">The Diamond Finder</p>
-            <p className="text-sm text-[#1a1a2e]/60 mt-1">Most unique students recognized</p>
+          <div className="p-5 rounded-xl bg-[var(--bg-muted)] border border-[var(--border)]">
+            <p className="text-xs font-semibold text-[var(--text-muted)] tracking-widest">The Diamond Finder</p>
+            <p className="text-sm text-[var(--text-muted)] mt-1">Most unique students recognized</p>
             <div className="mt-4">
-              <p className="text-lg font-bold text-[#1a1a2e]">{monthlyAwards.diamondFinder?.name || 'No data'}</p>
+              <p className="text-lg font-bold text-[var(--text)]">{monthlyAwards.diamondFinder?.name || 'No data'}</p>
               {monthlyAwards.diamondFinder && (
-                <p className="text-xs text-[#1a1a2e]/50 mt-1">
+                <p className="text-xs text-[var(--text-muted)] mt-1">
                   {monthlyAwards.diamondFinder.students} students • {monthlyAwards.diamondFinder.points.toLocaleString()} pts
                 </p>
               )}
@@ -607,27 +609,27 @@ export default function StaffPage() {
           </div>
         </div>
 
-        <div className="mt-6 p-5 rounded-xl bg-white border border-[#c9a227]/10">
+        <div className="surface-muted p-5">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <p className="text-xs font-semibold text-[#1a1a2e]/40 tracking-widest">House Champion Award</p>
-              <p className="text-sm text-[#1a1a2e]/60 mt-1">Top contributor from each house</p>
+              <p className="text-xs font-semibold text-[var(--text-muted)] tracking-widest">House Champion Award</p>
+              <p className="text-sm text-[var(--text-muted)] mt-1">Top contributor from each house</p>
             </div>
-            <span className="text-xs text-[#1a1a2e]/40">4 recipients</span>
+            <span className="text-xs text-[var(--text-muted)]">4 recipients</span>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
             {monthlyAwards.houseChampions.map((entry) => (
-              <div key={entry.house} className="rounded-xl bg-[#f5f3ef] px-4 py-3">
-                <p className="text-xs font-semibold text-[#1a1a2e]/40 tracking-wider">
+              <div key={entry.house} className="rounded-xl bg-[var(--bg-muted)] px-4 py-3">
+                <p className="text-xs font-semibold text-[var(--text-muted)] tracking-wider">
                   {entry.house.replace('House of ', '')}
                 </p>
                 {entry.winner ? (
                   <>
-                    <p className="text-sm font-semibold text-[#1a1a2e] mt-1">{entry.winner.name}</p>
-                    <p className="text-xs text-[#1a1a2e]/50">{entry.winner.points.toLocaleString()} pts</p>
+                    <p className="text-sm font-semibold text-[var(--text)] mt-1">{entry.winner.name}</p>
+                    <p className="text-xs text-[var(--text-muted)]">{entry.winner.points.toLocaleString()} pts</p>
                   </>
                 ) : (
-                  <p className="text-xs text-[#1a1a2e]/30 mt-1">No data</p>
+                  <p className="text-xs text-[var(--text-muted)] mt-1">No data</p>
                 )}
               </div>
             ))}
@@ -636,22 +638,22 @@ export default function StaffPage() {
       </div>
 
       {/* Detailed Staff Table */}
-      <div className="regal-card rounded-2xl overflow-hidden">
-        <div className="p-6 border-b border-[#c9a227]/10">
+      <div className="card rounded-2xl overflow-hidden">
+        <div className="p-6 border-b border-[var(--border)]">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
-              <h3 className="text-lg font-semibold text-[#1a1a2e]" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+              <h3 className="text-lg font-semibold text-[var(--text)]">
                 Detailed Staff Engagement
               </h3>
-              <p className="text-xs text-[#1a1a2e]/40 mt-1">Complete performance breakdown for all staff members</p>
+              <p className="text-xs text-[var(--text-muted)] mt-1">Complete performance breakdown for all staff members</p>
             </div>
-            <span className="text-xs font-semibold tracking-wider bg-[#c9a227]/15 text-[#9a7b1a] px-3 py-1 rounded-full">
+            <span className="text-xs font-semibold tracking-wider bg-[var(--accent)]/15 text-[var(--accent-2)] px-3 py-1 rounded-full">
               {selectedMonthLabel}
             </span>
           </div>
         </div>
         <div className="overflow-x-auto">
-          <table className="w-full regal-table">
+          <table className="w-full table">
             <thead>
               <tr>
                 <th className="text-left py-4 px-4">Rank</th>
@@ -669,7 +671,7 @@ export default function StaffPage() {
             <tbody>
               {staffList.length === 0 ? (
                 <tr>
-                  <td colSpan={10} className="py-12 text-center text-[#1a1a2e]/40">
+                  <td colSpan={10} className="py-12 text-center text-[var(--text-muted)]">
                     No staff members found
                   </td>
                 </tr>
@@ -678,22 +680,22 @@ export default function StaffPage() {
                   <tr key={member.email || member.name}>
                     <td className="py-4 px-4">
                       <span className={`inline-flex items-center justify-center w-9 h-9 rounded-xl font-bold text-sm shadow-sm ${
-                        member.rank === 1 ? 'bg-gradient-to-br from-[#ffd700] to-[#b8860b] text-white' :
-                        member.rank === 2 ? 'bg-gradient-to-br from-[#e8e8e8] to-[#b8b8b8] text-[#1a1a2e]' :
-                        member.rank === 3 ? 'bg-gradient-to-br from-[#cd7f32] to-[#8b4513] text-white' :
-                        'bg-[#f5f3ef] text-[#1a1a2e]/50'
+                        member.rank === 1 ? 'bg-[var(--accent)] text-white' :
+                        member.rank === 2 ? 'bg-[var(--surface-2)] text-[var(--text)] border border-[var(--border)]' :
+                        member.rank === 3 ? 'bg-[var(--accent-soft)] text-[var(--text)]' :
+                        'bg-[var(--bg-muted)] text-[var(--text-muted)]'
                       }`}>
                         {member.rank}
                       </span>
                     </td>
                     <td className="py-4 px-4">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#2f0a61] to-[#1a0536] text-white flex items-center justify-center font-bold text-sm shadow-md">
+                        <div className="w-10 h-10 rounded-xl bg-[var(--accent)] text-white flex items-center justify-center font-bold text-sm shadow-md">
                           {getInitials(member.name)}
                         </div>
                         <div>
-                          <p className="font-semibold text-[#1a1a2e]">{member.name}</p>
-                          <p className="text-xs text-[#1a1a2e]/40">{member.email}</p>
+                          <p className="font-semibold text-[var(--text)]">{member.name}</p>
+                          <p className="text-xs text-[var(--text-muted)]">{member.email}</p>
                         </div>
                       </div>
                     </td>
@@ -705,7 +707,7 @@ export default function StaffPage() {
                     </td>
                     <td className="py-4 px-4">
                       <div className="flex items-center gap-2">
-                        <div className="w-20 h-2 bg-[#e5e2db] rounded-full overflow-hidden">
+                        <div className="w-20 h-2 bg-[var(--border)] rounded-full overflow-hidden">
                           <div
                             className="h-full rounded-full transition-all"
                             style={{
@@ -714,26 +716,26 @@ export default function StaffPage() {
                             }}
                           />
                         </div>
-                        <span className="text-sm font-medium text-[#1a1a2e]">{member.consistency}%</span>
+                        <span className="text-sm font-medium text-[var(--text)]">{member.consistency}%</span>
                       </div>
                     </td>
                     <td className="py-4 px-4">
                       {member.streak > 0 ? (
-                        <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-orange-50 text-orange-700 border border-orange-200">
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-[var(--surface-2)] text-[var(--text)] border border-[var(--border)]">
                           <span>🔥</span> {member.streak} {member.streak === 1 ? 'week' : 'weeks'}
                         </span>
                       ) : (
-                        <span className="text-[#1a1a2e]/30">—</span>
+                        <span className="text-[var(--text-muted)]">—</span>
                       )}
                     </td>
                     <td className="py-4 px-4">
-                      <span className="font-bold text-[#2f0a61]" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+                      <span className="font-bold text-[var(--accent-2)]">
                         {member.points.toLocaleString()}
                       </span>
                     </td>
-                    <td className="py-4 px-4 text-[#1a1a2e]/70 font-medium">{member.awards.toLocaleString()}</td>
-                    <td className="py-4 px-4 text-[#1a1a2e]/70 font-medium">{member.students.toLocaleString()}</td>
-                    <td className="py-4 px-4 text-sm text-[#1a1a2e]/50">
+                    <td className="py-4 px-4 text-[var(--text-muted)] font-medium">{member.awards.toLocaleString()}</td>
+                    <td className="py-4 px-4 text-[var(--text-muted)] font-medium">{member.students.toLocaleString()}</td>
+                    <td className="py-4 px-4 text-sm text-[var(--text-muted)]">
                       {member.lastActive
                         ? new Date(member.lastActive).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
                         : 'Never'}
@@ -741,7 +743,7 @@ export default function StaffPage() {
                     <td className="py-4 px-4">
                       <div className="flex gap-1.5 flex-wrap">
                         {member.points >= 500 && (
-                          <span className="badge-gold inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs">
+                          <span className="chip inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs">
                             ⭐ 500+ Pts
                           </span>
                         )}
@@ -756,7 +758,7 @@ export default function StaffPage() {
                           </span>
                         )}
                         {member.points < 500 && member.students < 50 && member.streak < 5 && (
-                          <span className="text-[#1a1a2e]/30 text-xs">—</span>
+                          <span className="text-[var(--text-muted)] text-xs">—</span>
                         )}
                       </div>
                     </td>

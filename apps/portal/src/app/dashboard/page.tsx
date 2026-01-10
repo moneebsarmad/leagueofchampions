@@ -17,33 +17,23 @@ interface HouseData {
   name: string
   points: number
   color: string
-  gradient: string
   logo: string
   percentage: number
 }
 
-const houseConfig: Record<string, { color: string; gradient: string; logo: string }> = {
+const houseConfig: Record<string, { color: string; logo: string }> = {
   'House of Abu Bakr': {
-    color: 'var(--house-abu-bakr)',
-    gradient: 'linear-gradient(135deg, #3d7a4d 0%, #2d5a27 50%, #1a4016 100%)',
-    logo: '/House%20of%20Ab%C5%AB%20Bakr.png',
-  },
+    color: 'var(--house-abu)',
+    logo: '/House%20of%20Ab%C5%AB%20Bakr.png'},
   'House of Khadijah': {
-    color: 'var(--house-khadijah)',
-    gradient: 'linear-gradient(135deg, #7b5433 0%, #6b4423 50%, #5a3413 100%)',
-    logo: '/House%20of%20Khad%C4%ABjah.png',
-  },
+    color: 'var(--house-khad)',
+    logo: '/House%20of%20Khad%C4%ABjah.png'},
   'House of Umar': {
     color: 'var(--house-umar)',
-    gradient: 'linear-gradient(135deg, #5a6578 0%, #4a5568 50%, #3a4558 100%)',
-    logo: '/House%20of%20%CA%BFUmar.png',
-  },
+    logo: '/House%20of%20%CA%BFUmar.png'},
   'House of Aishah': {
-    color: 'var(--house-aishah)',
-    gradient: 'linear-gradient(135deg, #9b5523 0%, #8b4513 50%, #7b3503 100%)',
-    logo: '/House%20of%20%CA%BF%C4%80%CA%BEishah.png',
-  },
-}
+    color: 'var(--house-aish)',
+    logo: '/House%20of%20%CA%BF%C4%80%CA%BEishah.png'}}
 
 function canonicalHouse(value: string): string {
   const normalized = value
@@ -86,8 +76,7 @@ export default function DashboardPage() {
           house: String(row.house ?? 'Unknown'),
           totalPoints: Number(row.total_points ?? 0),
           percentage: Number(row.percentage ?? row.percent ?? 0),
-          overallTotal: Number(row.overall_total ?? row.total_all ?? 0),
-        }))
+          overallTotal: Number(row.overall_total ?? row.total_all ?? 0)}))
         setLeaderboard(mapped)
       }
       setDataLoading(false)
@@ -100,19 +89,15 @@ export default function DashboardPage() {
     return leaderboard.map((entry) => {
       const canonicalName = canonicalHouse(entry.house)
       const config = houseConfig[canonicalName] ?? {
-        color: 'var(--charcoal)',
-        gradient: 'linear-gradient(135deg, #3c3c3c 0%, #2c2c2c 100%)',
-        logo: '/crest.png',
-      }
+        color: 'var(--text)',
+        logo: null}
 
       return {
         name: entry.house,
         points: entry.totalPoints,
         color: config.color,
-        gradient: config.gradient,
         logo: config.logo,
-        percentage: entry.percentage ?? 0,
-      }
+        percentage: entry.percentage ?? 0}
     })
   }, [leaderboard])
 
@@ -127,8 +112,8 @@ export default function DashboardPage() {
 
   if (dataError) {
     return (
-      <div className="sanctuary-card rounded-2xl p-6">
-        <div className="flex items-center gap-3 text-[var(--house-aishah)]">
+      <div className="card rounded-2xl p-6">
+        <div className="flex items-center gap-3 text-[var(--house-aish)]">
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
           </svg>
@@ -142,68 +127,68 @@ export default function DashboardPage() {
     <div>
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-[var(--charcoal)] mb-2">
+        <h1 className="text-3xl font-bold text-[var(--text)] mb-2">
           House Standings
         </h1>
         <div className="flex items-center gap-3">
-          <div className="h-1 w-16 bg-gradient-to-r from-[var(--sage-primary)] to-[var(--sage-light)] rounded-full"></div>
-          <p className="text-[var(--charcoal)]/50 text-sm font-medium">Current academic year rankings</p>
+          <div className="h-1 w-16 bg-[var(--accent)] rounded-full"></div>
+          <p className="text-[var(--text-muted)] text-sm font-medium">Current academic year rankings</p>
         </div>
       </div>
 
       {/* House Podium */}
       {houses.length === 0 ? (
-        <div className="modern-card rounded-2xl p-8 text-center">
-          <p className="text-[var(--charcoal)]/50">No points logged yet.</p>
+        <div className="card rounded-2xl p-8 text-center">
+          <p className="text-[var(--text-muted)]">No points logged yet.</p>
         </div>
       ) : (
         <div className="space-y-6">
           {topHouse ? (
             <div
-              className="rounded-3xl overflow-hidden shadow-xl relative"
-              style={{ background: topHouse.gradient }}
+              className="card rounded-3xl overflow-hidden relative"
+              style={{ borderLeft: `4px solid ${topHouse.color}` }}
             >
-              <div className="absolute -top-6 right-6 text-[120px] font-black text-white/10">
+              <div className="absolute -top-6 right-6 text-[120px] font-black text-[var(--border)]/60">
                 1
               </div>
-              <div className="p-8 relative z-10">
+              <div className="p-8">
                 <div className="flex items-center justify-between gap-8">
                   <div className="flex items-center gap-5">
-                    <div className="w-20 h-20 rounded-2xl bg-white/10 backdrop-blur-sm p-2 shadow-lg border border-white/10">
-                      <img
-                        src={topHouse.logo}
-                        alt={topHouse.name}
-                        className="w-full h-full object-contain drop-shadow-md"
-                      />
-                    </div>
-                    <div>
-                      <div className="inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.2em] font-semibold text-white/70 bg-white/10 border border-white/15 px-3 py-1 rounded-full mb-3">
-                        <span className="text-white/50">Top House</span>
+                    {topHouse.logo ? (
+                      <div className="w-20 h-20 rounded-2xl bg-[var(--surface-2)] p-2 border border-[var(--border)]">
+                        <img
+                          src={topHouse.logo}
+                          alt={topHouse.name}
+                          className="w-full h-full object-contain"
+                        />
                       </div>
-                      <h2 className="text-3xl font-bold text-white">
+                    ) : null}
+                    <div>
+                      <div className="chip mb-3">
+                        <span>Top House</span>
+                      </div>
+                      <h2 className="text-3xl font-bold text-[var(--text)]">
                         {topHouse.name}
                       </h2>
-                      <p className="text-white/60 text-sm font-medium">{topHouse.percentage.toFixed(1)}% of total points</p>
+                      <p className="text-[var(--text-muted)] text-sm font-medium">{topHouse.percentage.toFixed(1)}% of total points</p>
                     </div>
                   </div>
                   <div className="text-right flex flex-col items-end gap-2">
-                    <p className="text-5xl font-bold text-white leading-none">
+                    <p className="text-5xl font-bold text-[var(--text)] leading-none">
                       {topHouse.points.toLocaleString()}
                     </p>
-                    <p className="text-white/50 text-sm font-medium">Total Points</p>
+                    <p className="text-[var(--text-muted)] text-sm font-medium">Total Points</p>
                   </div>
                 </div>
-                <div className="mt-6 h-2.5 bg-white/20 rounded-full overflow-hidden">
+                <div className="mt-6 h-2.5 bg-[var(--surface-2)] rounded-full overflow-hidden border border-[var(--border)]">
                   <div
                     className="h-full rounded-full transition-all duration-700 ease-out"
                     style={{
                       width: `${topHouse.percentage}%`,
-                      background: 'linear-gradient(90deg, var(--accent-warm) 0%, var(--accent-warm-light) 50%, var(--accent-warm) 100%)',
-                    }}
+                      background: topHouse.color}}
                   />
                 </div>
               </div>
-              <div className="h-1 bg-gradient-to-r from-transparent via-[var(--accent-warm)]/60 to-transparent"></div>
             </div>
           ) : null}
 
@@ -211,41 +196,42 @@ export default function DashboardPage() {
             {otherHouses.map((house, index) => (
               <div
                 key={house.name}
-                className="rounded-2xl overflow-hidden shadow-lg relative"
-                style={{ background: house.gradient }}
+                className="card rounded-2xl overflow-hidden relative"
+                style={{ borderLeft: `4px solid ${house.color}` }}
               >
-                <div className="absolute top-4 right-4 text-4xl font-black text-white/10">
+                <div className="absolute top-4 right-4 text-4xl font-black text-[var(--border)]/60">
                   {index + 2}
                 </div>
-                <div className="p-5 relative z-10">
+                <div className="p-5">
                   <div className="flex items-center gap-3 mb-4">
-                    <div className="w-12 h-12 rounded-xl bg-white/10 backdrop-blur-sm p-1.5 shadow-lg border border-white/10">
-                      <img
-                        src={house.logo}
-                        alt={house.name}
-                        className="w-full h-full object-contain drop-shadow-md"
-                      />
-                    </div>
+                    {house.logo ? (
+                      <div className="w-12 h-12 rounded-xl bg-[var(--surface-2)] p-1.5 border border-[var(--border)]">
+                        <img
+                          src={house.logo}
+                          alt={house.name}
+                          className="w-full h-full object-contain"
+                        />
+                      </div>
+                    ) : null}
                     <div>
-                      <h3 className="text-lg font-bold text-white">
+                      <h3 className="text-lg font-bold text-[var(--text)]">
                         {house.name}
                       </h3>
-                      <p className="text-white/60 text-xs font-medium">{house.percentage.toFixed(1)}% of total points</p>
+                      <p className="text-[var(--text-muted)] text-xs font-medium">{house.percentage.toFixed(1)}% of total points</p>
                     </div>
                   </div>
                   <div className="flex items-baseline justify-between">
-                    <p className="text-3xl font-bold text-white leading-none">
+                    <p className="text-3xl font-bold text-[var(--text)] leading-none">
                       {house.points.toLocaleString()}
                     </p>
-                    <p className="text-white/50 text-xs font-medium">Points</p>
+                    <p className="text-[var(--text-muted)] text-xs font-medium">Points</p>
                   </div>
-                  <div className="mt-3 h-2 bg-white/20 rounded-full overflow-hidden">
+                  <div className="mt-3 h-2 bg-[var(--surface-2)] rounded-full overflow-hidden border border-[var(--border)]">
                     <div
                       className="h-full rounded-full transition-all duration-700 ease-out"
                       style={{
                         width: `${house.percentage}%`,
-                        background: 'linear-gradient(90deg, var(--accent-warm) 0%, var(--accent-warm-light) 50%, var(--accent-warm) 100%)',
-                      }}
+                        background: house.color}}
                     />
                   </div>
                 </div>
@@ -253,9 +239,9 @@ export default function DashboardPage() {
             ))}
           </div>
 
-          <div className="bg-gradient-to-r from-[var(--charcoal)] to-[var(--charcoal-light)] px-5 py-4 rounded-2xl">
-            <div className="flex items-center justify-between text-white">
-              <span className="text-sm font-medium text-white/60">Total Points Awarded</span>
+          <div className="surface-muted px-5 py-4 rounded-2xl">
+            <div className="flex items-center justify-between text-[var(--text)]">
+              <span className="text-sm font-medium text-[var(--text-muted)]">Total Points Awarded</span>
               <span className="text-xl font-bold">
                 {(leaderboard[0]?.overallTotal ?? 0).toLocaleString()}
               </span>

@@ -17,10 +17,15 @@ interface Student {
 }
 
 const houseColors: Record<string, string> = {
-  'House of Abū Bakr': '#2f0a61',
-  'House of Khadījah': '#055437',
-  'House of ʿUmar': '#000068',
-  'House of ʿĀʾishah': '#910000',
+  'House of Abū Bakr': 'var(--house-abu)',
+  'House of Khadījah': 'var(--house-khad)',
+  'House of ʿUmar': 'var(--house-umar)',
+  'House of ʿĀʾishah': 'var(--house-aish)'}
+
+const categoryColors: Record<string, string> = {
+  Respect: 'var(--accent)',
+  Responsibility: 'var(--house-khad)',
+  Righteousness: 'var(--house-abu)',
 }
 
 export default function StudentsPage() {
@@ -57,8 +62,7 @@ export default function StudentsPage() {
         section: s.section || '',
         house: s.house || s.house_name || '',
         gender: s.gender || '',
-        points: Number(s.total_points ?? s.points ?? 0),
-      }))
+        points: Number(s.total_points ?? s.points ?? 0)}))
 
       const { data: categoryData, error: categoryError } = await supabase
         .from(VIEWS.STUDENT_POINTS_BY_R)
@@ -75,8 +79,7 @@ export default function StudentsPage() {
           return {
             studentKey,
             category: String(row.category ?? row.r ?? ''),
-            points: Number(row.total_points ?? row.points ?? 0),
-          }
+            points: Number(row.total_points ?? row.points ?? 0)}
         })
         setCategoryTotals(totals)
       }
@@ -147,11 +150,11 @@ export default function StudentsPage() {
       {/* Student List */}
       <div className={`${selectedStudent ? 'w-1/2' : 'w-full'} transition-all`}>
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-bold text-gray-900">Students ({students.length})</h1>
+          <h1 className="text-2xl font-bold text-[var(--text)]">Students ({students.length})</h1>
         </div>
 
         {/* Search and Filters */}
-        <div className="bg-white rounded-xl p-4 shadow-sm mb-6">
+        <div className="card p-4 mb-6">
           <div className="flex flex-wrap gap-4">
             {/* Search */}
             <div className="flex-1 min-w-64">
@@ -160,7 +163,7 @@ export default function StudentsPage() {
                 placeholder="Search students..."
                 value={searchText}
                 onChange={(e) => setSearchText(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none"
+                className="input w-full"
               />
             </div>
 
@@ -168,7 +171,7 @@ export default function StudentsPage() {
             <select
               value={selectedGrade || ''}
               onChange={(e) => setSelectedGrade(e.target.value || null)}
-              className="px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none"
+              className="input"
             >
               <option value="">All Grades</option>
               {grades.map((g) => (
@@ -180,7 +183,7 @@ export default function StudentsPage() {
             <select
               value={selectedHouse || ''}
               onChange={(e) => setSelectedHouse(e.target.value || null)}
-              className="px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none"
+              className="input"
             >
               <option value="">All Houses</option>
               {Object.keys(houseColors).map((h) => (
@@ -195,35 +198,33 @@ export default function StudentsPage() {
           {Object.entries(groupedStudents).map(([classLabel, classStudents]) => (
             <div key={classLabel}>
               <div className="flex items-center justify-between mb-3">
-                <h2 className="text-lg font-semibold text-gray-900">Class {classLabel}</h2>
-                <span className="text-sm text-gray-500">{classStudents.length} students</span>
+                <h2 className="text-lg font-semibold text-[var(--text)]">Class {classLabel}</h2>
+                <span className="text-sm text-[var(--text-muted)]">{classStudents.length} students</span>
               </div>
-              <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+              <div className="card overflow-hidden">
                 {classStudents.map((student, index) => (
                   <div
                     key={student.id}
                     onClick={() => setSelectedStudent(student)}
                     className={`flex items-center gap-4 p-4 cursor-pointer transition-colors ${
-                      index !== classStudents.length - 1 ? 'border-b border-gray-50' : ''
-                    } ${selectedStudent?.id === student.id ? 'bg-purple-50' : 'hover:bg-gray-50'}`}
+                      index !== classStudents.length - 1 ? 'border-b border-[var(--border)]' : ''
+                    } ${selectedStudent?.id === student.id ? 'bg-[var(--accent-soft)]' : 'hover:bg-[var(--surface-2)]'}`}
                   >
                     <div
                       className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold"
                       style={{
-                        backgroundColor: '#eef2f0',
-                        color: '#0f5b3a',
-                      }}
+                        backgroundColor: 'var(--accent-soft)',
+                        color: 'var(--accent-2)'}}
                     >
                       {getInitials(student.name)}
                     </div>
                     <div className="flex-1">
                       <p
-                        className="font-semibold text-gray-900"
-                        style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}
+                        className="font-semibold text-[var(--text)]"
                       >
                         {student.name}
                       </p>
-                      <div className="flex items-center gap-2 text-sm text-gray-500">
+                      <div className="flex items-center gap-2 text-sm text-[var(--text-muted)]">
                         <span>Grade {student.grade}{student.section}</span>
                         <span>•</span>
                         <div
@@ -235,12 +236,11 @@ export default function StudentsPage() {
                     </div>
                     <div className="text-right">
                       <p
-                        className="font-bold text-gray-900"
-                        style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}
+                        className="font-bold text-[var(--text)]"
                       >
                         {student.points}
                       </p>
-                      <p className="text-xs text-gray-500">points</p>
+                      <p className="text-xs text-[var(--text-muted)]">points</p>
                     </div>
                   </div>
                 ))}
@@ -253,14 +253,14 @@ export default function StudentsPage() {
       {/* Student Detail Panel */}
       {selectedStudent && (
         <div className="w-1/2 sticky top-24 h-fit">
-          <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+          <div className="card overflow-hidden">
             {/* Header */}
-            <div className="p-6 border-b border-gray-100">
+            <div className="p-6 border-b border-[var(--border)]">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-semibold text-gray-900">Student Details</h2>
+                <h2 className="text-lg font-semibold text-[var(--text)]">Student Details</h2>
                 <button
                   onClick={() => setSelectedStudent(null)}
-                  className="text-gray-400 hover:text-gray-600"
+                  className="text-[var(--text-muted)] hover:text-[var(--text)]"
                 >
                   ✕
                 </button>
@@ -270,30 +270,29 @@ export default function StudentsPage() {
                 <div
                   className="w-16 h-16 rounded-full flex items-center justify-center text-xl font-bold"
                   style={{
-                    backgroundColor: `${houseColors[selectedStudent.house] || '#666'}20`,
-                    color: houseColors[selectedStudent.house] || '#666',
-                  }}
+                    backgroundColor: 'var(--surface-2)',
+                    color: houseColors[selectedStudent.house] || 'var(--text-muted)',
+                    border: '1px solid var(--border)'}}
                 >
                   {getInitials(selectedStudent.name)}
                 </div>
                 <div>
                   <p
-                    className="text-xl font-bold text-gray-900"
-                    style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}
+                    className="text-xl font-bold text-[var(--text)]"
                   >
                     {selectedStudent.name}
                   </p>
-                  <p className="text-gray-500">
+                  <p className="text-[var(--text-muted)]">
                     <Link
                       href={`/dashboard/analytics?grade=${encodeURIComponent(String(selectedStudent.grade))}&section=${encodeURIComponent(selectedStudent.section)}`}
-                      className="hover:text-[#2f0a61] transition-colors"
+                      className="hover:text-[var(--accent-2)] transition-colors"
                     >
                       Grade {selectedStudent.grade}{selectedStudent.section}
                     </Link>
-                    <span className="text-gray-400"> • </span>
+                    <span className="text-[var(--text-muted)]"> • </span>
                     <Link
                       href={`/dashboard/analytics?house=${encodeURIComponent(selectedStudent.house)}`}
-                      className="hover:text-[#2f0a61] transition-colors"
+                      className="hover:text-[var(--accent-2)] transition-colors"
                     >
                       {selectedStudent.house}
                     </Link>
@@ -303,34 +302,28 @@ export default function StudentsPage() {
             </div>
 
             {/* Total Points */}
-            <div className="p-6 border-b border-gray-100 text-center">
-              <p className="text-sm text-gray-500 mb-1">Total Points</p>
+            <div className="p-6 border-b border-[var(--border)] text-center">
+              <p className="text-sm text-[var(--text-muted)] mb-1">Total Points</p>
               <p
                 className="text-4xl font-bold"
                 style={{
-                  color: houseColors[selectedStudent.house] || '#1a1a2e',
-                  fontFamily: 'var(--font-playfair), Georgia, serif',
-                }}
+                  color: houseColors[selectedStudent.house] || 'var(--text)'}}
               >
                 {selectedStudent.points}
               </p>
             </div>
 
             {/* Points by Category */}
-            <div className="p-6 border-b border-gray-100">
-              <h3 className="text-sm font-semibold text-gray-500 mb-3">Points by Category</h3>
+            <div className="p-6 border-b border-[var(--border)]">
+              <h3 className="text-sm font-semibold text-[var(--text-muted)] mb-3">Points by Category</h3>
               {['Respect', 'Responsibility', 'Righteousness'].map((category) => {
                 const categoryPoints = getCategoryPoints(category)
-                const color = category === 'Respect'
-                  ? '#1f4e79'
-                  : category === 'Responsibility'
-                    ? '#8a6a1e'
-                    : '#6b2f8a'
+                const color = categoryColors[category] || 'var(--text-muted)'
                 return (
                   <div key={category} className="flex items-center justify-between py-2">
                     <div className="flex items-center gap-2">
                       <div className="w-3 h-3 rounded-full" style={{ backgroundColor: color }} />
-                      <span className="text-sm text-gray-700">{category}</span>
+                      <span className="text-sm text-[var(--text)]">{category}</span>
                     </div>
                     <span className="font-semibold" style={{ color }}>{categoryPoints}</span>
                   </div>

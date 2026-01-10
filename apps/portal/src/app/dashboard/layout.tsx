@@ -48,8 +48,7 @@ function portalLabel(role: Role) {
 }
 
 export default function DashboardLayout({
-  children,
-}: {
+  children}: {
   children: React.ReactNode
 }) {
   const router = useRouter()
@@ -79,7 +78,7 @@ export default function DashboardLayout({
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#faf9f7] pattern-overlay">
+      <div className="min-h-screen app-shell">
         <CrestLoader label="Loading session..." />
       </div>
     )
@@ -91,7 +90,7 @@ export default function DashboardLayout({
 
   if (profileLoading) {
     return (
-      <div className="min-h-screen bg-[#faf9f7] pattern-overlay">
+      <div className="min-h-screen app-shell">
         <CrestLoader label="Loading profile..." />
       </div>
     )
@@ -99,15 +98,15 @@ export default function DashboardLayout({
 
   if (!role) {
     return (
-      <div className="min-h-screen bg-[#faf9f7] pattern-overlay flex items-center justify-center">
+      <div className="min-h-screen app-shell flex items-center justify-center">
         <div className="text-center max-w-md mx-auto px-4">
-          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#910000] to-[#5a0000] flex items-center justify-center mx-auto mb-4">
+          <div className="w-12 h-12 rounded-xl bg-[var(--danger)] flex items-center justify-center mx-auto mb-4">
             <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
             </svg>
           </div>
-          <p className="text-[#1a1a2e] font-medium mb-2">Profile role not found</p>
-          <p className="text-[#1a1a2e]/50 text-sm">Please contact an administrator.</p>
+          <p className="text-[var(--text)] font-medium mb-2">Profile role not found</p>
+          <p className="text-[var(--text-muted)] text-sm">Please contact an administrator.</p>
         </div>
       </div>
     )
@@ -116,7 +115,7 @@ export default function DashboardLayout({
   const displayName = staffName || formatDisplayName(user.email ?? '')
 
   return (
-    <div className="min-h-screen bg-[#faf9f7] pattern-overlay">
+    <div className="min-h-screen app-shell">
       <Sidebar role={role} portalLabel={portalLabel(role)} />
 
       {/* Main Content */}

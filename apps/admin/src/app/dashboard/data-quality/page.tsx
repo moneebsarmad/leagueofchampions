@@ -12,8 +12,7 @@ export default function DataQualityPage() {
     missingSection: 0,
     houseVariantCount: 0,
     staffMissing: [] as string[],
-    studentMissing: [] as string[],
-  })
+    studentMissing: [] as string[]})
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
@@ -25,8 +24,7 @@ export default function DataQualityPage() {
       missingSection: 0,
       houseVariantCount: 0,
       staffMissing: [],
-      studentMissing: [],
-    })
+      studentMissing: []})
     setIsLoading(false)
   }, [])
 
@@ -37,12 +35,12 @@ export default function DataQualityPage() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-[#1a1a2e] mb-2" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+        <h1 className="text-3xl font-bold text-[var(--text)] mb-2">
           Data Quality Panel
         </h1>
         <div className="flex items-center gap-3">
-          <div className="h-1 w-16 bg-gradient-to-r from-[#c9a227] to-[#e8d48b] rounded-full"></div>
-          <p className="text-[#1a1a2e]/50 text-sm font-medium">Spot missing or inconsistent data</p>
+          <div className="h-1 w-16 bg-[var(--accent)] rounded-full"></div>
+          <p className="text-[var(--text-muted)] text-sm font-medium">Spot missing or inconsistent data</p>
         </div>
       </div>
 
@@ -55,25 +53,25 @@ export default function DataQualityPage() {
           { label: 'Missing Section', value: stats.missingSection },
           { label: 'House Variants', value: stats.houseVariantCount },
         ].map((item) => (
-          <div key={item.label} className="regal-card rounded-2xl p-6">
-            <p className="text-xs font-semibold text-[#1a1a2e]/40 tracking-wider">{item.label}</p>
-            <p className="text-3xl font-semibold text-[#1a1a2e] mt-2">{item.value}</p>
+          <div key={item.label} className="card rounded-2xl p-6">
+            <p className="text-xs font-semibold text-[var(--text-muted)] tracking-wider">{item.label}</p>
+            <p className="text-3xl font-semibold text-[var(--text)] mt-2">{item.value}</p>
           </div>
         ))}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="regal-card rounded-2xl p-6">
-          <h3 className="text-lg font-semibold text-[#1a1a2e]" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+        <div className="card rounded-2xl p-6">
+          <h3 className="text-lg font-semibold text-[var(--text)]">
             Staff Missing in Staff Table
           </h3>
-          <p className="text-xs text-[#1a1a2e]/40 mt-1">Sample of names in Merit Log but not in Staff table.</p>
+          <p className="text-xs text-[var(--text-muted)] mt-1">Sample of names in Merit Log but not in Staff table.</p>
           <div className="mt-4 space-y-2">
             {stats.staffMissing.length === 0 ? (
-              <p className="text-sm text-[#1a1a2e]/50">No mismatches found.</p>
+              <p className="text-sm text-[var(--text-muted)]">No mismatches found.</p>
             ) : (
               stats.staffMissing.map((name, idx) => (
-                <div key={`${name}-${idx}`} className="px-3 py-2 rounded-xl bg-[#f5f3ef] text-sm text-[#1a1a2e]">
+                <div key={`${name}-${idx}`} className="px-3 py-2 rounded-xl bg-[var(--bg-muted)] text-sm text-[var(--text)]">
                   {name}
                 </div>
               ))
@@ -81,17 +79,17 @@ export default function DataQualityPage() {
           </div>
         </div>
 
-        <div className="regal-card rounded-2xl p-6">
-          <h3 className="text-lg font-semibold text-[#1a1a2e]" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+        <div className="card rounded-2xl p-6">
+          <h3 className="text-lg font-semibold text-[var(--text)]">
             Students Missing in Students Table
           </h3>
-          <p className="text-xs text-[#1a1a2e]/40 mt-1">Sample of student entries not found in the students table.</p>
+          <p className="text-xs text-[var(--text-muted)] mt-1">Sample of student entries not found in the students table.</p>
           <div className="mt-4 space-y-2">
             {stats.studentMissing.length === 0 ? (
-              <p className="text-sm text-[#1a1a2e]/50">No mismatches found.</p>
+              <p className="text-sm text-[var(--text-muted)]">No mismatches found.</p>
             ) : (
               stats.studentMissing.map((name, idx) => (
-                <div key={`${name}-${idx}`} className="px-3 py-2 rounded-xl bg-[#f5f3ef] text-sm text-[#1a1a2e]">
+                <div key={`${name}-${idx}`} className="px-3 py-2 rounded-xl bg-[var(--bg-muted)] text-sm text-[var(--text)]">
                   {name}
                 </div>
               ))

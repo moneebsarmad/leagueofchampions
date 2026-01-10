@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/lib/supabase";
@@ -47,29 +46,29 @@ const houseConfig: Record<string, Omit<House, "rank" | "points" | "name">> = {
     "House of Abu Bakr": {
       virtue: "Loyalty",
       description: "Rooted in honesty, unwavering in loyalty to faith and community.",
-      color: "#1e2a3a",
-      bgColor: "#f4f1eb",
+      color: "var(--house-abu)",
+      bgColor: "var(--bg-muted)",
       logo: "/house_of_abubakr.png",
     },
     "House of 'Umar": {
       virtue: "Moral Courage",
       description: "Living with fairness, speaking truth, and acting with courage.",
-      color: "#4a5568",
-      bgColor: "#f4f1eb",
+      color: "var(--house-umar)",
+      bgColor: "var(--bg-muted)",
       logo: "/house_of_umar.png",
     },
     "House of 'A'ishah": {
       virtue: "Creativity",
       description: "Igniting creativity that inspires hearts and serves Allah.",
-      color: "#744210",
-      bgColor: "#f4f1eb",
+      color: "var(--house-aish)",
+      bgColor: "var(--bg-muted)",
       logo: "/house_of_aishah.png",
     },
     "House of Khadijah": {
       virtue: "Wisdom",
       description: "Guided by wisdom, leading with grace and strength.",
-      color: "#2d5a27",
-      bgColor: "#f4f1eb",
+      color: "var(--house-khad)",
+      bgColor: "var(--bg-muted)",
       logo: "/house_of_khadijah.png",
     },
   };
@@ -189,48 +188,31 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="h-screen py-4 px-4 sm:px-6 lg:px-8 flex flex-col geometric-dark">
-      {/* School Branding */}
-      <div className="absolute top-4 left-6 text-sm tracking-wide font-medium text-[var(--sage-light)]">
-        Dar Al-Arqam Islamic School
+    <div className="h-screen py-4 px-4 sm:px-6 lg:px-8 flex flex-col leaderboard-shell">
+      <div className="absolute top-4 left-6 text-sm font-medium text-[var(--text-muted)]">
+        Dār al-Arqam Islamic School
       </div>
       <div className="absolute top-4 right-6 flex items-center gap-2">
-        <Link
-          href="/house-mvps"
-          className="inline-flex items-center gap-2 rounded-full border border-[var(--sage-light)] px-4 py-2 text-xs uppercase tracking-[0.15em] text-[var(--sage-light)] transition hover:bg-[var(--sage-light)] hover:text-white"
-        >
+        <Link href="/house-mvps" className="btn-secondary text-xs">
           House MVPs
         </Link>
-        <Link
-          href="/hall-of-fame"
-          className="inline-flex items-center gap-2 rounded-full border border-[var(--sage-light)] px-4 py-2 text-xs uppercase tracking-[0.15em] text-[var(--sage-light)] transition hover:bg-[var(--sage-light)] hover:text-white"
-        >
+        <Link href="/hall-of-fame" className="btn-secondary text-xs">
           Hall of Fame
         </Link>
       </div>
 
       <div className="max-w-6xl mx-auto w-full flex flex-col flex-1">
-        {/* Header with Crest */}
         <header className="text-center mb-4">
-          {/* Crest */}
           <div className="flex justify-center mb-2">
-            <Image
-              src="/crest.png"
-              alt="League of Champions Crest"
-              width={100}
-              height={100}
-              className="drop-shadow-lg"
-              priority
-            />
+            <div className="w-14 h-14 rounded-2xl bg-[var(--accent-soft)] text-[var(--accent)] flex items-center justify-center text-sm font-semibold">
+              DA
+            </div>
           </div>
 
-          {/* Title */}
-          <h1 className="text-3xl sm:text-4xl md:text-5xl text-white mb-2 pb-1">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl mb-2">
             League of Champions
           </h1>
-
-          {/* Tagline */}
-          <p className="text-lg sm:text-xl mt-3 text-[var(--sage-light)]">
+          <p className="text-lg sm:text-xl mt-2 text-[var(--text-muted)]">
             Where Champions Are Made
           </p>
 

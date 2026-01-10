@@ -26,10 +26,15 @@ interface MeritEntry {
 }
 
 const houseColors: Record<string, string> = {
-  'House of Abū Bakr': '#2f0a61',
-  'House of Khadījah': '#055437',
-  'House of ʿUmar': '#000068',
-  'House of ʿĀʾishah': '#910000',
+  'House of Abū Bakr': 'var(--house-abu)',
+  'House of Khadījah': 'var(--house-khad)',
+  'House of ʿUmar': 'var(--house-umar)',
+  'House of ʿĀʾishah': 'var(--house-aish)'}
+
+const categoryColors: Record<string, string> = {
+  Respect: 'var(--accent)',
+  Responsibility: 'var(--house-khad)',
+  Righteousness: 'var(--house-abu)',
 }
 
 function canonicalHouse(value: string): string {
@@ -49,7 +54,7 @@ function canonicalHouse(value: string): string {
 
 function getHouseColor(house: string): string {
   const canonical = canonicalHouse(house)
-  return houseColors[canonical] || '#1a1a2e'
+  return houseColors[canonical] || 'var(--text)'
 }
 
 function getInitials(name: string): string {
@@ -100,8 +105,7 @@ export default function StudentsPage() {
         grade: s.grade || 0,
         section: s.section || '',
         house: s.house || s.house_name || '',
-        points: Number(s.total_points ?? s.points ?? 0),
-      }))
+        points: Number(s.total_points ?? s.points ?? 0)}))
 
       const { data: meritData, error: meritError } = await supabase
         .from(VIEWS.STUDENT_POINTS_BY_R)
@@ -118,8 +122,7 @@ export default function StudentsPage() {
           dateOfEvent: m.date || '',
           staffName: m.staff_name || m.staff || '',
           grade: m.grade || 0,
-          section: m.section || '',
-        }))
+          section: m.section || ''}))
         setMeritEntries(entries)
       }
 
@@ -186,17 +189,17 @@ export default function StudentsPage() {
       <div className={`${selectedStudent ? 'w-1/2' : 'w-full'} transition-all duration-300`}>
         {/* Header */}
         <div className="mb-6">
-          <h1 className="text-3xl font-bold text-[#1a1a2e] mb-2" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+          <h1 className="text-3xl font-bold text-[var(--text)] mb-2">
             Students
           </h1>
           <div className="flex items-center gap-3">
-            <div className="h-1 w-16 bg-gradient-to-r from-[#c9a227] to-[#e8d48b] rounded-full"></div>
-            <p className="text-[#1a1a2e]/50 text-sm font-medium">{students.length} students enrolled</p>
+            <div className="h-1 w-16 bg-[var(--accent)] rounded-full"></div>
+            <p className="text-[var(--text-muted)] text-sm font-medium">{students.length} students enrolled</p>
           </div>
         </div>
 
         {/* Search and Filters */}
-        <div className="bg-white rounded-2xl p-5 shadow-sm border border-[#c9a227]/10 mb-6">
+        <div className="card rounded-2xl p-5 mb-6">
           <div className="flex flex-wrap gap-4">
             {/* Search */}
             <div className="flex-1 min-w-64">
@@ -205,7 +208,7 @@ export default function StudentsPage() {
                 placeholder="Search students..."
                 value={searchText}
                 onChange={(e) => setSearchText(e.target.value)}
-                className="w-full px-4 py-2.5 border border-[#1a1a2e]/10 rounded-xl focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227] outline-none transition-all"
+                className="input w-full"
               />
             </div>
 
@@ -213,7 +216,7 @@ export default function StudentsPage() {
             <select
               value={selectedGrade || ''}
               onChange={(e) => setSelectedGrade(e.target.value || null)}
-              className="px-4 py-2.5 border border-[#1a1a2e]/10 rounded-xl focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227] outline-none bg-white"
+              className="input"
             >
               <option value="">All Grades</option>
               {grades.map((g) => (
@@ -225,7 +228,7 @@ export default function StudentsPage() {
             <select
               value={selectedHouse || ''}
               onChange={(e) => setSelectedHouse(e.target.value || null)}
-              className="px-4 py-2.5 border border-[#1a1a2e]/10 rounded-xl focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227] outline-none bg-white"
+              className="input"
             >
               <option value="">All Houses</option>
               {houses.map((h) => (
@@ -237,7 +240,7 @@ export default function StudentsPage() {
             <select
               value={selectedSection || ''}
               onChange={(e) => setSelectedSection(e.target.value || null)}
-              className="px-4 py-2.5 border border-[#1a1a2e]/10 rounded-xl focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227] outline-none bg-white"
+              className="input"
             >
               <option value="">All Sections</option>
               {sections.map((section) => (
@@ -252,10 +255,10 @@ export default function StudentsPage() {
           {Object.entries(groupedStudents).map(([classLabel, classStudents]) => (
             <div key={classLabel}>
               <div className="flex items-center justify-between mb-3">
-                <h2 className="text-lg font-semibold text-[#1a1a2e]">Class {classLabel}</h2>
-                <span className="text-sm text-[#1a1a2e]/50">{classStudents.length} students</span>
+                <h2 className="text-lg font-semibold text-[var(--text)]">Class {classLabel}</h2>
+                <span className="text-sm text-[var(--text-muted)]">{classStudents.length} students</span>
               </div>
-              <div className="bg-white rounded-2xl shadow-sm border border-[#c9a227]/10 overflow-hidden">
+              <div className="card rounded-2xl overflow-hidden">
                 {classStudents.map((student, index) => {
                   const houseColor = getHouseColor(student.house)
                   return (
@@ -263,23 +266,23 @@ export default function StudentsPage() {
                       key={student.id}
                       onClick={() => setSelectedStudent(student)}
                       className={`flex items-center gap-4 p-4 cursor-pointer transition-all ${
-                        index !== classStudents.length - 1 ? 'border-b border-[#1a1a2e]/5' : ''
-                      } ${selectedStudent?.id === student.id ? 'bg-[#c9a227]/5' : 'hover:bg-[#faf9f7]'}`}
+                        index !== classStudents.length - 1 ? 'border-b border-[var(--border)]' : ''
+                      } ${selectedStudent?.id === student.id ? 'bg-[var(--accent-soft)]' : 'hover:bg-[var(--surface-2)]'}`}
                     >
                       <div
                         className="w-11 h-11 rounded-xl flex items-center justify-center text-sm font-bold"
                         style={{
-                          backgroundColor: `${houseColor}15`,
+                          backgroundColor: 'var(--surface-2)',
                           color: houseColor,
-                        }}
+                          border: '1px solid var(--border)'}}
                       >
                         {getInitials(student.name)}
                       </div>
                       <div className="flex-1">
-                        <p className="font-medium text-[#1a1a2e]">{student.name}</p>
-                        <div className="flex items-center gap-2 text-sm text-[#1a1a2e]/50">
+                        <p className="font-medium text-[var(--text)]">{student.name}</p>
+                        <div className="flex items-center gap-2 text-sm text-[var(--text-muted)]">
                           <span>Grade {student.grade}{student.section}</span>
-                          <span className="text-[#1a1a2e]/20">•</span>
+                          <span className="text-[var(--text-muted)]">•</span>
                           <div
                             className="w-2 h-2 rounded-full"
                             style={{ backgroundColor: houseColor }}
@@ -288,10 +291,10 @@ export default function StudentsPage() {
                         </div>
                       </div>
                       <div className="text-right">
-                        <p className="font-bold text-[#1a1a2e]">{student.points}</p>
-                        <p className="text-xs text-[#1a1a2e]/40">points</p>
+                        <p className="font-bold text-[var(--text)]">{student.points}</p>
+                        <p className="text-xs text-[var(--text-muted)]">points</p>
                       </div>
-                      <svg className="w-5 h-5 text-[#1a1a2e]/20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-5 h-5 text-[var(--text-muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                       </svg>
                     </div>
@@ -302,8 +305,8 @@ export default function StudentsPage() {
           ))}
 
           {Object.keys(groupedStudents).length === 0 && (
-            <div className="bg-white rounded-2xl p-8 text-center border border-[#c9a227]/10">
-              <p className="text-[#1a1a2e]/50">No students found matching your criteria.</p>
+            <div className="card rounded-2xl p-8 text-center">
+              <p className="text-[var(--text-muted)]">No students found matching your criteria.</p>
             </div>
           )}
         </div>
@@ -312,14 +315,14 @@ export default function StudentsPage() {
       {/* Student Detail Panel */}
       {selectedStudent && (
         <div className="w-1/2 sticky top-24 h-fit">
-          <div className="bg-white rounded-2xl shadow-sm border border-[#c9a227]/10 overflow-hidden">
+          <div className="card rounded-2xl overflow-hidden">
             {/* Header */}
-            <div className="p-6 border-b border-[#1a1a2e]/5">
+            <div className="p-6 border-b border-[var(--border)]">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-semibold text-[#1a1a2e]">Student Details</h2>
+                <h2 className="text-lg font-semibold text-[var(--text)]">Student Details</h2>
                 <button
                   onClick={() => setSelectedStudent(null)}
-                  className="text-[#1a1a2e]/40 hover:text-[#1a1a2e] transition-colors"
+                  className="text-[var(--text-muted)] hover:text-[var(--text)] transition-colors"
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -331,32 +334,32 @@ export default function StudentsPage() {
                 <div
                   className="w-16 h-16 rounded-xl flex items-center justify-center text-xl font-bold"
                   style={{
-                    backgroundColor: `${getHouseColor(selectedStudent.house)}15`,
+                    backgroundColor: 'var(--surface-2)',
                     color: getHouseColor(selectedStudent.house),
-                  }}
+                    border: '1px solid var(--border)'}}
                 >
                   {getInitials(selectedStudent.name)}
                 </div>
                 <div>
-                  <p className="text-xl font-bold text-[#1a1a2e]" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+                  <p className="text-xl font-bold text-[var(--text)]">
                     {selectedStudent.name}
                   </p>
-                  <p className="text-[#1a1a2e]/50">
+                  <p className="text-[var(--text-muted)]">
                     <button
                       type="button"
                       onClick={() => {
                         setSelectedGrade(String(selectedStudent.grade))
                         setSelectedSection(selectedStudent.section || null)
                       }}
-                      className="text-[#2f0a61] underline underline-offset-2 decoration-[#c9a227] decoration-2 hover:text-[#1a1a2e] transition-colors"
+                      className="text-[var(--accent-2)] underline underline-offset-2 decoration-[var(--accent)] decoration-2 hover:text-[var(--text)] transition-colors"
                     >
                       Grade {selectedStudent.grade}{selectedStudent.section}
                     </button>
-                    <span className="text-[#1a1a2e]/20"> • </span>
+                    <span className="text-[var(--text-muted)]"> • </span>
                     <button
                       type="button"
                       onClick={() => setSelectedHouse(canonicalHouse(selectedStudent.house))}
-                      className="text-[#2f0a61] underline underline-offset-2 decoration-[#c9a227] decoration-2 hover:text-[#1a1a2e] transition-colors"
+                      className="text-[var(--accent-2)] underline underline-offset-2 decoration-[var(--accent)] decoration-2 hover:text-[var(--text)] transition-colors"
                     >
                       {canonicalHouse(selectedStudent.house)}
                     </button>
@@ -366,34 +369,28 @@ export default function StudentsPage() {
             </div>
 
             {/* Total Points */}
-            <div className="p-6 border-b border-[#1a1a2e]/5 text-center bg-gradient-to-br from-[#faf9f7] to-white">
-              <p className="text-sm text-[#1a1a2e]/50 mb-1">Total Points</p>
+            <div className="surface-muted p-6 text-center">
+              <p className="text-sm text-[var(--text-muted)] mb-1">Total Points</p>
               <p
                 className="text-4xl font-bold"
                 style={{
-                  color: getHouseColor(selectedStudent.house),
-                  fontFamily: 'var(--font-playfair), Georgia, serif'
-                }}
+                  color: getHouseColor(selectedStudent.house)}}
               >
                 {selectedStudent.points}
               </p>
             </div>
 
             {/* Points by Category */}
-            <div className="p-6 border-b border-[#1a1a2e]/5">
-              <h3 className="text-xs font-semibold text-[#1a1a2e]/40 uppercase tracking-wider mb-3">Points by Category</h3>
+            <div className="p-6 border-b border-[var(--border)]">
+              <h3 className="text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider mb-3">Points by Category</h3>
               {['Respect', 'Responsibility', 'Righteousness'].map((category) => {
                 const categoryPoints = getCategoryPoints(category)
-                const color = category === 'Respect'
-                  ? '#1f4e79'
-                  : category === 'Responsibility'
-                    ? '#8a6a1e'
-                    : '#6b2f8a'
+                const color = categoryColors[category] || 'var(--text-muted)'
                 return (
                   <div key={category} className="flex items-center justify-between py-2.5">
                     <div className="flex items-center gap-3">
                       <div className="w-3 h-3 rounded-full" style={{ backgroundColor: color }} />
-                      <span className="text-sm text-[#1a1a2e]/70">{category}</span>
+                      <span className="text-sm text-[var(--text-muted)]">{category}</span>
                     </div>
                     <span className="font-semibold" style={{ color }}>{categoryPoints}</span>
                   </div>
@@ -404,36 +401,36 @@ export default function StudentsPage() {
             {/* Recent Activity */}
             <div className="p-6">
               <div className="flex items-center justify-between mb-3">
-                <h3 className="text-xs font-semibold text-[#1a1a2e]/40 uppercase tracking-wider">Recent Activity</h3>
+                <h3 className="text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider">Recent Activity</h3>
                 {selectedStaff ? (
                   <button
                     type="button"
                     onClick={() => setSelectedStaff(null)}
-                    className="text-xs text-[#1a1a2e]/50 hover:text-[#2f0a61] transition-colors"
+                    className="text-xs text-[var(--text-muted)] hover:text-[var(--accent-2)] transition-colors"
                   >
                     Clear staff filter
                   </button>
                 ) : null}
               </div>
               {filteredStudentMerits.length === 0 ? (
-                <p className="text-[#1a1a2e]/40 text-sm">No activity yet</p>
+                <p className="text-[var(--text-muted)] text-sm">No activity yet</p>
               ) : (
                 <div className="space-y-3 max-h-64 overflow-y-auto">
                   {filteredStudentMerits.slice(0, 10).map((merit, index) => (
-                    <div key={index} className="flex items-center justify-between py-2.5 border-b border-[#1a1a2e]/5 last:border-0">
+                    <div key={index} className="flex items-center justify-between py-2.5 border-b border-[var(--border)] last:border-0">
                       <div>
-                        <p className="text-sm font-medium text-[#1a1a2e]">
+                        <p className="text-sm font-medium text-[var(--text)]">
                           {merit.subcategory || merit.r?.split(' – ')[0]}
                         </p>
                         <button
                           type="button"
                           onClick={() => setSelectedStaff(merit.staffName)}
-                          className="text-xs text-[#2f0a61] underline underline-offset-2 decoration-[#c9a227] decoration-2 hover:text-[#1a1a2e] transition-colors"
+                          className="text-xs text-[var(--accent-2)] underline underline-offset-2 decoration-[var(--accent)] decoration-2 hover:text-[var(--text)] transition-colors"
                         >
                           {merit.staffName}
                         </button>
                       </div>
-                      <span className="text-[#055437] font-semibold">+{merit.points}</span>
+                      <span className="text-[var(--house-khad)] font-semibold">+{merit.points}</span>
                     </div>
                   ))}
                 </div>

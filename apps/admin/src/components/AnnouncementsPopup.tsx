@@ -62,14 +62,14 @@ export default function AnnouncementsPopup() {
 
   return (
     <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/40 px-4">
-      <div className="regal-card w-full max-w-2xl rounded-2xl p-6 shadow-2xl">
+      <div className="card w-full max-w-2xl rounded-2xl p-6 shadow-2xl">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-[#1a1a2e]" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+          <h3 className="text-lg font-semibold text-[var(--text)]">
             Latest Announcements
           </h3>
           <button
             onClick={handleDismiss}
-            className="text-xs font-semibold tracking-wider text-[#1a1a2e]/50 hover:text-[#1a1a2e]"
+            className="text-xs font-semibold tracking-wider text-[var(--text-muted)] hover:text-[var(--text)]"
           >
             Dismiss
           </button>
@@ -77,26 +77,26 @@ export default function AnnouncementsPopup() {
 
         <div className="space-y-3 max-h-80 overflow-y-auto pr-1">
           {unseenAnnouncements.map((item) => (
-            <div key={item.id} className="rounded-xl border border-[#c9a227]/20 bg-white/90 px-4 py-3">
+            <div key={item.id} className="rounded-xl border border-[var(--border)] bg-white/90 px-4 py-3">
               <div className="flex items-center gap-2">
-                {item.pinned && <span className="text-xs px-2 py-0.5 rounded-full bg-[#c9a227]/20 text-[#7a5b1a] font-semibold tracking-wider">Pinned</span>}
-                <h4 className="text-sm font-semibold text-[#1a1a2e]">{item.title}</h4>
+                {item.pinned && <span className="text-xs px-2 py-0.5 rounded-full bg-[var(--accent)]/20 text-[var(--accent-2)] font-semibold tracking-wider">Pinned</span>}
+                <h4 className="text-sm font-semibold text-[var(--text)]">{item.title}</h4>
               </div>
-              <p className="text-xs text-[#1a1a2e]/60 mt-1">
+              <p className="text-xs text-[var(--text-muted)] mt-1">
                 {item.created_by} • {new Date(item.created_at).toLocaleDateString()}
               </p>
-              <p className="text-sm text-[#1a1a2e]/70 mt-2 whitespace-pre-wrap">{item.body}</p>
+              <p className="text-sm text-[var(--text-muted)] mt-2 whitespace-pre-wrap">{item.body}</p>
             </div>
           ))}
         </div>
 
         <div className="mt-4 flex items-center justify-between">
-          <Link href="/dashboard/announcements" className="text-sm font-semibold text-[#2f0a61] hover:text-[#1a0536]">
+          <Link href="/dashboard/announcements" className="text-sm font-semibold text-[var(--accent-2)] hover:text-[var(--accent)]">
             View all announcements →
           </Link>
           <button
             onClick={handleDismiss}
-            className="btn-gold px-4 py-2 text-sm font-medium rounded-xl"
+            className="btn-primary px-4 py-2 text-sm font-medium rounded-xl"
           >
             Mark as Read
           </button>

@@ -5,8 +5,7 @@ import {
   useContext,
   useEffect,
   useMemo,
-  useState,
-} from "react";
+  useState} from "react";
 import type { Session, User } from "@supabase/supabase-js";
 import { isDemo, supabase } from "../lib/supabaseClient";
 
@@ -76,8 +75,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       signIn: async (email, password) => {
         const { error } = await supabase.auth.signInWithPassword({
           email,
-          password,
-        });
+          password});
         return error ? error.message : null;
       },
       signOut: async () => {
@@ -85,8 +83,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         if (error) {
           console.error("Supabase sign out error", error.message);
         }
-      },
-    }),
+      }}),
     [session, user, loading]
   );
 
