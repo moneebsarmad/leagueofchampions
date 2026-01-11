@@ -144,7 +144,7 @@ export default function ReportsPage() {
     const crestSvg = `
       <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80">
         <rect width="80" height="80" rx="18" fill="#111827" />
-        <text x="40" y="46" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="20" fill="#ffffff" font-weight="600">DA</text>
+        <text x="40" y="46" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="20" fill="#ffffff" font-weight="600">DAAIS</text>
       </svg>
     `
     const crestUrl = `data:image/svg+xml;utf8,${encodeURIComponent(crestSvg)}`

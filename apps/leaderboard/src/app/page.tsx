@@ -207,7 +207,7 @@ export default function Home() {
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 rounded-2xl bg-[var(--surface-2)] text-[var(--text)] border border-[var(--border)] flex items-center justify-center text-sm font-semibold">
-                DA
+                DAAIS
               </div>
               <div>
                 <h1 className="text-2xl sm:text-3xl font-semibold">Weekly Standings</h1>

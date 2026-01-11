@@ -59,7 +59,7 @@ export default function HomeClient() {
       <div className="card w-full max-w-md p-8">
         <div className="text-center mb-6">
           <div className="mx-auto mb-4 h-12 w-12 rounded-2xl bg-[var(--surface-2)] text-[var(--text)] border border-[var(--border)] flex items-center justify-center text-sm font-semibold">
-            DA
+            DAAIS
           </div>
           <h1 className="text-2xl font-semibold">League of Champions</h1>
           <p className="text-[var(--text-muted)] text-sm mt-1">

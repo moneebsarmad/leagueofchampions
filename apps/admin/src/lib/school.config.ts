@@ -3,7 +3,7 @@ export const schoolConfig = {
   productName: 'League of Champions',
   logo: {
     type: 'monogram',
-    text: 'DA',
+    text: 'DAAIS',
   },
   houses: {
     abu: { name: 'House of Abu Bakr', color: 'var(--house-abu)' },
