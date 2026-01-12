@@ -74,7 +74,12 @@ export default function DashboardLayout({
     if (!user) return
 
     setProfileLoading(true)
-    setRole(mapRoleToPortalRole(user.user_metadata?.role ?? null))
+    const userRole = user.user_metadata?.role ?? null
+    console.log('[Dashboard] User metadata:', user.user_metadata)
+    console.log('[Dashboard] Role from metadata:', userRole)
+    const mappedRole = mapRoleToPortalRole(userRole)
+    console.log('[Dashboard] Mapped role:', mappedRole)
+    setRole(mappedRole)
     setProfileLoading(false)
   }, [user])
 
