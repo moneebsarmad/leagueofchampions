@@ -18,12 +18,6 @@
       --gold: #a08050;
       --border: #e0ddd6;
 
-      --silver: #7a8b9a;
-      --silver-bg: #f4f6f8;
-      --gold-tier: #9a7b4a;
-      --gold-bg: #faf7f2;
-      --platinum: #5a6b7a;
-      --platinum-bg: #f2f4f6;
     }
 
     * {
@@ -175,7 +169,7 @@
 
     .tiers-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
       gap: 24px;
     }
 
@@ -194,18 +188,6 @@
       box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
     }
 
-    .tier-card--silver:hover {
-      border-color: var(--silver);
-    }
-
-    .tier-card--gold:hover {
-      border-color: var(--gold-tier);
-    }
-
-    .tier-card--platinum:hover {
-      border-color: var(--platinum);
-    }
-
     .tier-card--featured {
       border-color: var(--gold);
       box-shadow: 0 4px 24px rgba(160, 128, 80, 0.12);
@@ -221,18 +203,6 @@
       border-bottom: 1px solid var(--border);
     }
 
-    .tier-card--silver .tier-header {
-      background: var(--silver-bg);
-    }
-
-    .tier-card--gold .tier-header {
-      background: var(--gold-bg);
-    }
-
-    .tier-card--platinum .tier-header {
-      background: var(--platinum-bg);
-    }
-
     .tier-badge {
       display: inline-block;
       padding: 4px 12px;
@@ -242,21 +212,8 @@
       letter-spacing: 0.1em;
       text-transform: uppercase;
       margin-bottom: 12px;
-    }
-
-    .tier-card--silver .tier-badge {
-      background: rgba(122, 139, 154, 0.15);
-      color: var(--silver);
-    }
-
-    .tier-card--gold .tier-badge {
-      background: rgba(154, 123, 74, 0.15);
-      color: var(--gold-tier);
-    }
-
-    .tier-card--platinum .tier-badge {
-      background: rgba(90, 107, 122, 0.15);
-      color: var(--platinum);
+      background: var(--warm);
+      color: var(--ink);
     }
 
     .tier-header h3 {
@@ -379,7 +336,7 @@
       border-radius: 12px;
       overflow: hidden;
       border: 1px solid var(--border);
-      min-width: 900px;
+      min-width: 720px;
     }
 
     .pricing-table th,
@@ -429,24 +386,6 @@
       color: var(--ink);
     }
 
-    .pricing-table .check {
-      color: var(--gold);
-      font-weight: 500;
-    }
-
-    .pricing-table .dash {
-      color: var(--ink-muted);
-    }
-
-    .pricing-table .tier-divider td {
-      border-top: 2px solid var(--border);
-    }
-
-    .pricing-table td[rowspan] {
-      vertical-align: middle;
-      background: rgba(250, 249, 247, 0.5);
-    }
-
     .pricing-footnote {
       margin-top: 24px;
       text-align: center;
@@ -474,6 +413,20 @@
       margin-bottom: 12px;
     }
 
+    .breakdown-block {
+      margin-bottom: 40px;
+    }
+
+    .breakdown-block:last-child {
+      margin-bottom: 0;
+    }
+
+    .breakdown-block h3 {
+      font-size: 1.3rem;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+
     .breakdown-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -483,7 +436,7 @@
     .breakdown-card {
       background: white;
       border-radius: 12px;
-      padding: 28px;
+      padding: 24px;
       border: 1px solid var(--border);
       transition: all 0.3s ease;
     }
@@ -495,8 +448,8 @@
     }
 
     .breakdown-card h4 {
-      font-size: 1.1rem;
-      margin-bottom: 12px;
+      font-size: 1rem;
+      margin-bottom: 10px;
       color: var(--ink);
     }
 
@@ -505,16 +458,23 @@
       line-height: 1.6;
     }
 
-    .breakdown-card .included {
-      margin-top: 16px;
-      padding-top: 16px;
-      border-top: 1px dashed var(--border);
-      font-size: 0.8rem;
+    .breakdown-card .link-note {
+      margin-top: 12px;
+      font-size: 0.85rem;
       color: var(--ink-muted);
     }
 
-    .breakdown-card .included strong {
-      color: var(--ink-soft);
+    .breakdown-link {
+      display: inline-block;
+      margin-top: 12px;
+      color: var(--ink);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .breakdown-link:hover {
+      text-decoration: underline;
     }
 
     /* Decision Help */
@@ -649,6 +609,9 @@
   </style>
 </head>
 <body>
+  <!-- LEADERBOARD_DEMO = https://leagueofchampions-leaderboard.vercel.app/ -->
+  <!-- PORTAL_DEMO = https://leagueofchampions-portal.vercel.app/ -->
+  <!-- ADMIN_DEMO = (unknown / restricted) — do not link publicly unless confirmed -->
 
   <!-- Hero -->
   <section class="hero">
@@ -668,18 +631,20 @@
   <section class="intro">
     <div class="container">
       <div class="intro-content">
-        <h2>Two Components, One Partnership</h2>
+      <h2>Three Components, One Partnership</h2>
+      <p>
+        League of Champions is not just software access. It’s a culture partnership with three parts:
+      </p>
+      <p>
+        • Onboarding (setup + staff alignment)<br>
+        • Ongoing stewardship (touchpoints that keep consistency alive)<br>
+        • LOC App suite (daily visibility for students, staff, and families)
+      </p>
+      <div class="intro-note">
         <p>
-          Every partnership includes two parts: an <strong>annual school partnership</strong> covering culture design, training, and advisory support — and <strong>per-student platform access</strong> for daily use of the apps.
+          Most schools don’t need more initiatives. They need alignment that survives the semester.
         </p>
-        <p>
-          The annual partnership reflects how intentionally a school wants to steward culture. The per-student cost simply scales with enrollment.
-        </p>
-        <div class="intro-note">
-          <p>
-            "What level is right for us?" usually comes down to one question: <em>Do you want to carry alignment forward independently, or do you want structured guidance throughout the year?</em>
-          </p>
-        </div>
+      </div>
       </div>
     </div>
   </section>
@@ -688,84 +653,62 @@
   <section class="tiers">
     <div class="container">
       <div class="tiers-header">
-        <p class="eyebrow">Three Levels</p>
-        <h2>Choose Based on Depth, Not Features</h2>
-        <p class="lead" style="margin: 0 auto;">Every level includes the full platform. What differs is the advisory relationship.</p>
+        <p class="eyebrow">Two Levels</p>
+        <h2>Choose Based on Stewardship</h2>
+        <p class="lead" style="margin: 0 auto;">Every level includes the full platform. What differs is the rhythm of alignment.</p>
       </div>
 
       <div class="tiers-grid">
-        <!-- Silver -->
-        <div class="tier-card tier-card--silver">
+        <!-- Tier 1 -->
+        <div class="tier-card">
           <div class="tier-header">
-            <span class="tier-badge">Silver</span>
-            <h3>Establishing a Shared Language</h3>
-            <p class="tier-tagline">Foundation for culture</p>
+            <span class="tier-badge">Tier 1</span>
+            <h3>Onboarding + Light Stewardship</h3>
+            <p class="tier-tagline">Launch the system. Keep it steady.</p>
           </div>
           <div class="tier-body">
             <p class="tier-description">
-              Best for schools beginning their culture journey or piloting a unified framework. Silver focuses on helping leadership and staff align around a shared language for character and growth.
+              For schools that want a clear launch, a shared staff language, and a small number of touchpoints to prevent drift.
             </p>
             <div class="tier-section">
-              <p class="tier-label">What's Included</p>
+              <p class="tier-label">What’s Included</p>
               <ul class="tier-list">
-                <li>Initial culture framework setup</li>
-                <li>Beginning-of-year staff orientation</li>
-                <li>Full platform access for daily use</li>
+                <li>Onboarding package (setup + staff training)</li>
+                <li>2 leadership check-ins (year)</li>
+                <li>1 staff calibration session (mid-year)</li>
+                <li>2 implementation reviews (brief + action notes)</li>
               </ul>
             </div>
             <p class="tier-note">
-              Silver introduces the framework clearly, but assumes the school will carry alignment forward independently.
+              Best when you have an internal culture lead who can carry the weekly rhythm.
             </p>
           </div>
         </div>
 
-        <!-- Gold -->
-        <div class="tier-card tier-card--gold tier-card--featured">
+        <!-- Tier 2 -->
+        <div class="tier-card tier-card--featured">
           <div class="featured-label">Most Common</div>
           <div class="tier-header">
-            <span class="tier-badge">Gold</span>
-            <h3>Sustaining Consistency</h3>
-            <p class="tier-tagline">Culture needs reinforcement</p>
+            <span class="tier-badge">Tier 2</span>
+            <h3>Onboarding + Active Stewardship</h3>
+            <p class="tier-tagline">More touchpoints. More consistency.</p>
           </div>
           <div class="tier-body">
             <p class="tier-description">
-              For schools that recognise culture needs reinforcement, not just introduction. Gold ensures staff remain aligned as the year unfolds and expectations stay consistent across classrooms.
+              For schools that want tighter alignment across teachers, stronger follow-through, and more structured reinforcement as the year unfolds.
             </p>
             <div class="tier-section">
-              <p class="tier-label">Everything in Silver, plus</p>
+              <p class="tier-label">What’s Included</p>
               <ul class="tier-list">
-                <li>Semester follow-up staff sessions</li>
-                <li>Leadership check-in calls (1 per semester)</li>
-                <li>Student Insight Cards for reflection</li>
+                <li>Everything in Tier 1</li>
+                <li>4 leadership check-ins (year)</li>
+                <li>2 staff follow-up sessions</li>
+                <li>2 data reviews + action plan</li>
+                <li>1 targeted team session (Deans / Advisors / Grade team)</li>
               </ul>
             </div>
             <p class="tier-note">
-              Ideal for schools seeking steady, sustainable culture without over-engineering.
-            </p>
-          </div>
-        </div>
-
-        <!-- Platinum -->
-        <div class="tier-card tier-card--platinum">
-          <div class="tier-header">
-            <span class="tier-badge">Platinum</span>
-            <h3>Strategic Stewardship</h3>
-            <p class="tier-tagline">Hands-on guidance</p>
-          </div>
-          <div class="tier-body">
-            <p class="tier-description">
-              For schools seeking deeper advisory support and long-term cultural coherence. Platinum provides structured guidance as culture evolves across departments and grade levels.
-            </p>
-            <div class="tier-section">
-              <p class="tier-label">Everything in Gold, plus</p>
-              <ul class="tier-list">
-                <li>Targeted training for specific teams</li>
-                <li>Expanded check-ins (up to 3 per semester)</li>
-                <li>Access to 3Rs curriculum guidance</li>
-              </ul>
-            </div>
-            <p class="tier-note">
-              Best suited for schools navigating growth, transition, or deeper institutional change.
+              Best when consistency is a priority across many classrooms or rapid growth.
             </p>
           </div>
         </div>
@@ -788,64 +731,34 @@
         <table class="pricing-table">
           <thead>
             <tr>
-              <th>Partnership</th>
-              <th>School Size</th>
-              <th>Annual Fee</th>
-              <th>Per Student</th>
-              <th>Check-in Calls</th>
-              <th>Insight Cards</th>
-              <th>3Rs Curriculum</th>
+              <th>Tier</th>
+              <th>Onboarding (one-time)</th>
+              <th>Annual stewardship</th>
+              <th>Apps (per student)</th>
+              <th>Typical live hours / year</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td class="tier-name" rowspan="2">Silver</td>
-              <td>0–500 students</td>
-              <td class="price">$4,000</td>
-              <td class="price">$4/student</td>
-              <td rowspan="2" class="dash">—</td>
-              <td rowspan="2" class="dash">—</td>
-              <td rowspan="2" class="dash">—</td>
+              <td class="tier-name">Tier 1</td>
+              <td class="price">$3,500</td>
+              <td class="price">$3,000</td>
+              <td class="price">$5</td>
+              <td>~14–18 hours</td>
             </tr>
             <tr>
-              <td>501–1000 students</td>
-              <td class="price">$6,000</td>
-              <td class="price">$5/student</td>
-            </tr>
-            <tr class="tier-divider">
-              <td class="tier-name" rowspan="2">Gold</td>
-              <td>0–500 students</td>
+              <td class="tier-name">Tier 2</td>
+              <td class="price">$4,500</td>
               <td class="price">$5,000</td>
-              <td class="price">$8/student</td>
-              <td rowspan="2">1 per semester</td>
-              <td rowspan="2" class="check">Included</td>
-              <td rowspan="2" class="dash">—</td>
-            </tr>
-            <tr>
-              <td>501–1000 students</td>
-              <td class="price">$7,500</td>
-              <td class="price">$9/student</td>
-            </tr>
-            <tr class="tier-divider">
-              <td class="tier-name" rowspan="2">Platinum</td>
-              <td>0–500 students</td>
-              <td class="price">$7,500</td>
-              <td class="price">$12/student</td>
-              <td rowspan="2">Up to 3 per semester</td>
-              <td rowspan="2" class="check">Included</td>
-              <td rowspan="2" class="price">$2,500/year</td>
-            </tr>
-            <tr>
-              <td>501–1000 students</td>
-              <td class="price">$10,000</td>
-              <td class="price">$13/student</td>
+              <td class="price">$8</td>
+              <td>~22–26 hours</td>
             </tr>
           </tbody>
         </table>
       </div>
 
       <div class="pricing-footnote">
-        <p>Annual partnership reflects culture design, training, and advisory responsibility.<br>Per-student pricing reflects platform access and scale.</p>
+        <p>Apps pricing covers platform access. Stewardship covers alignment and advisory. (Adjust the billing interval label if your pricing is monthly instead of annual.)</p>
       </div>
     </div>
   </section>
@@ -858,37 +771,99 @@
         <h2>Understanding the Components</h2>
       </div>
 
-      <div class="breakdown-grid">
-        <div class="breakdown-card">
-          <h4>Staff Orientation & Training</h4>
-          <p>
-            Beginning-of-year sessions that establish shared vocabulary, explain the framework philosophy, and align staff around consistent expectations. Not a one-time presentation — a foundation for how adults talk about growth.
-          </p>
-          <p class="included"><strong>Silver:</strong> BOY only · <strong>Gold:</strong> BOY + semester follow-ups · <strong>Platinum:</strong> + targeted team sessions</p>
+      <div class="breakdown-block">
+        <h3>Onboarding (included in both tiers)</h3>
+        <div class="breakdown-grid">
+          <div class="breakdown-card">
+            <h4>Discovery + Culture Map (90 min)</h4>
+            <p>
+              Clarify the 3Rs language, staff habits to reinforce, and what consistency should look like across classrooms.
+            </p>
+          </div>
+          <div class="breakdown-card">
+            <h4>Platform Setup + Roster Import (3–5 hours)</h4>
+            <p>
+              Accounts, roles, house assignment, categories, and launch configuration.
+            </p>
+          </div>
+          <div class="breakdown-card">
+            <h4>Staff Orientation (3 hours)</h4>
+            <p>
+              Practice awarding, calibrate scenarios, and align on how praise/correction will sound.
+            </p>
+          </div>
+          <div class="breakdown-card">
+            <h4>Launch Support (2 hours)</h4>
+            <p>
+              Week 1 check-in, adjustments, and staff follow-through plan.
+            </p>
+          </div>
         </div>
+      </div>
 
-        <div class="breakdown-card">
-          <h4>Leadership Check-in Calls</h4>
-          <p>
-            Scheduled conversations with school leadership to reflect on implementation, surface challenges, and adjust direction. These calls ensure the framework adapts to your school's reality rather than becoming a static system.
-          </p>
-          <p class="included"><strong>Silver:</strong> Not included · <strong>Gold:</strong> 1 per semester · <strong>Platinum:</strong> Up to 3 per semester</p>
+      <div class="breakdown-block">
+        <h3>Tier 1 stewardship (annual)</h3>
+        <div class="breakdown-grid">
+          <div class="breakdown-card">
+            <h4>Leadership check-ins (2 × 60 min)</h4>
+            <p>
+              Surface drift early, remove obstacles, and keep expectations stable.
+            </p>
+          </div>
+          <div class="breakdown-card">
+            <h4>Staff calibration (1 × 120 min)</h4>
+            <p>
+              Re-align language, address inconsistencies, and reset norms mid-year.
+            </p>
+          </div>
+          <div class="breakdown-card">
+            <h4>Implementation reviews (2 × 60 min)</h4>
+            <p>
+              Short written notes: what’s working, what’s drifting, what to reinforce next.
+            </p>
+          </div>
         </div>
+      </div>
 
-        <div class="breakdown-card">
-          <h4>Student Insight Cards (SICs)</h4>
-          <p>
-            Structured reflection tools that help staff have meaningful conversations with students about growth, behaviour, and character. Not performance reviews — prompts for genuine formation dialogue.
-          </p>
-          <p class="included"><strong>Silver:</strong> Not included · <strong>Gold & Platinum:</strong> Included</p>
+      <div class="breakdown-block">
+        <h3>Tier 2 stewardship (annual)</h3>
+        <div class="breakdown-grid">
+          <div class="breakdown-card">
+            <h4>Leadership check-ins (4 × 60 min)</h4>
+          </div>
+          <div class="breakdown-card">
+            <h4>Staff follow-ups (2 × 120 min)</h4>
+          </div>
+          <div class="breakdown-card">
+            <h4>Data review + action plan (2 × 90 min)</h4>
+            <p>
+              Patterns by grade/house/categories + next-step plan for staff consistency.
+            </p>
+          </div>
+          <div class="breakdown-card">
+            <h4>Targeted team session (1 × 120 min)</h4>
+            <p>
+              Deans, Advisors, or a grade team — focus on one pressure-point.
+            </p>
+          </div>
         </div>
+      </div>
 
-        <div class="breakdown-card">
-          <h4>3Rs Curriculum</h4>
-          <p>
-            A structured curriculum for deeper character formation work. Implementation guidance included to ensure it integrates with your existing schedule and approach rather than competing with it.
-          </p>
-          <p class="included"><strong>Silver & Gold:</strong> Not included · <strong>Platinum:</strong> Available for $2,500/year</p>
+      <div class="breakdown-block">
+        <h3>LOC App suite (included)</h3>
+        <div class="breakdown-grid">
+          <div class="breakdown-card">
+            <h4>Leaderboard (public display)</h4>
+            <a class="breakdown-link" href="https://leagueofchampions-leaderboard.vercel.app/">View leaderboard demo</a>
+          </div>
+          <div class="breakdown-card">
+            <h4>Portal (students • parents • staff)</h4>
+            <a class="breakdown-link" href="https://leagueofchampions-portal.vercel.app/">View portal demo</a>
+          </div>
+          <div class="breakdown-card">
+            <h4>Admin tools (inside the Portal)</h4>
+            <p class="link-note">Admin views are permission-based. Walkthrough available on request.</p>
+          </div>
         </div>
       </div>
     </div>
@@ -898,26 +873,26 @@
   <section class="decision">
     <div class="container">
       <div class="decision-content">
-        <h2>Which Partnership Fits Your School?</h2>
+        <h2>How Schools Choose</h2>
 
         <div class="decision-item">
-          <p class="decision-question">"We're piloting this for the first time and want to start simple."</p>
-          <p class="decision-answer"><strong>Silver</strong> gives you the foundation without overwhelming your staff. You can always deepen the partnership in year two.</p>
+          <p class="decision-question">"We have a strong culture lead and want a clean launch."</p>
+          <p class="decision-answer">Start with Tier 1. You’ll get the system, staff alignment, and a few touchpoints to prevent drift.</p>
         </div>
 
         <div class="decision-item">
-          <p class="decision-question">"We've tried culture initiatives before that faded by November."</p>
-          <p class="decision-answer"><strong>Gold</strong> exists precisely for this. The semester follow-ups and check-in calls keep alignment alive when the initial energy naturally fades.</p>
+          <p class="decision-question">"Consistency across teachers is our biggest gap."</p>
+          <p class="decision-answer">Tier 2 adds the touchpoints that keep language and expectations from fragmenting by classroom.</p>
         </div>
 
         <div class="decision-item">
-          <p class="decision-question">"We're growing fast and need help maintaining consistency across campuses or divisions."</p>
-          <p class="decision-answer"><strong>Platinum</strong> provides the advisory bandwidth to handle complexity — targeted training for different teams, more frequent touchpoints, and curriculum support.</p>
+          <p class="decision-question">"We’ve tried initiatives that faded by November."</p>
+          <p class="decision-answer">Tier 2 is designed to survive the semester — follow-ups, reviews, and leadership rhythm.</p>
         </div>
 
         <div class="decision-item">
           <p class="decision-question">"We're not sure yet."</p>
-          <p class="decision-answer">That's expected. Most schools start with a conversation about where they are and where they want to go. We'll help you think through what makes sense.</p>
+          <p class="decision-answer">That’s normal. We’ll ask a few questions about staffing, student culture, and your current pain points — then recommend what fits.</p>
         </div>
       </div>
     </div>
@@ -926,13 +901,13 @@
   <!-- CTA -->
   <section class="cta">
     <div class="container">
-      <h2>Ready to Explore What Fits?</h2>
+      <h2>Start with a conversation.</h2>
       <p>
-        Start a conversation. We'll help you think through what level matches your school's readiness and goals.
+        We’ll help you choose the level of stewardship that matches your school’s reality — staffing, readiness, and goals.
       </p>
       <div class="btn-group">
         <a href="mailto:contact@leagueofchampions.com" class="btn btn--primary">Start a Conversation</a>
-        <a href="landing-v3.html#decision" class="btn btn--secondary">Review the Framework</a>
+        <a href="landing-v3.html#framework" class="btn btn--secondary">Review the Framework</a>
       </div>
     </div>
   </section>
