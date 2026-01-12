@@ -19,3 +19,10 @@ export const VIEWS = {
   GRADE_CHAMPIONS: 'grade_champions',
   QUARTERLY_BADGES: 'quarterly_badge_leaders',
 } as const
+
+export const TABLES = {
+  MERIT_LOG: 'merit_log',
+  CATEGORIES: '3r_categories',
+  STUDENTS: 'students',
+  STAFF: 'staff',
+} as const

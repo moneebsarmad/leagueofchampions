@@ -503,7 +503,7 @@ export default function StaffPage() {
                       <Cell key={`cell-${index}`} fill={entry.color} />
                     ))}
                   </Pie>
-                  <Tooltip formatter={(value: number) => [value, 'Staff']} />
+                  <Tooltip formatter={(value) => [value, 'Staff']} />
                 </PieChart>
               </ResponsiveContainer>
             </div>
@@ -533,7 +533,7 @@ export default function StaffPage() {
                 <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} stroke="var(--border)" />
                 <XAxis type="number" domain={[0, 100]} tickFormatter={(v) => `${v}%`} stroke="var(--text-muted)" opacity={0.3} />
                 <YAxis type="category" dataKey="name" width={130} tick={{ fontSize: 12, fill: 'var(--text-muted)' }} />
-                <Tooltip formatter={(value: number) => [`${value}%`, 'Consistency']} />
+                <Tooltip formatter={(value) => [`${value}%`, 'Consistency']} />
                 <Bar dataKey="consistency" fill="var(--accent)" radius={[0, 6, 6, 0]} />
               </BarChart>
             </ResponsiveContainer>

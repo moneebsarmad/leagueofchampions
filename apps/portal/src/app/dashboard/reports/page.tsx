@@ -63,6 +63,13 @@ const templates: ReportTemplate[] = [
     scope: 'Current month'},
 ]
 
+const houseLogos: Record<string, string> = {
+  'House of Abū Bakr': '/houses/abu-bakr.png',
+  'House of Khadījah': '/houses/khadijah.png',
+  'House of ʿUmar': '/houses/umar.png',
+  'House of ʿĀʾishah': '/houses/aishah.png'
+}
+
 export default function ReportsPage() {
   const [isGenerating, setIsGenerating] = useState<string | null>(null)
   const [startDate, setStartDate] = useState('')

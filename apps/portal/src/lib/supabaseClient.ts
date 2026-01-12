@@ -1,17 +1,16 @@
-import { createClient } from "@supabase/supabase-js";
+'use client'
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-export const isDemo = process.env.NEXT_PUBLIC_DEMO_MODE === "true";
+import { createBrowserClient } from '@supabase/ssr'
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error("Missing Supabase environment variables");
-}
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+export const isDemo = process.env.NEXT_PUBLIC_DEMO_MODE === 'true'
+
+export const supabase = createBrowserClient(supabaseUrl, supabaseAnonKey, {
   auth: {
     persistSession: !isDemo,
     autoRefreshToken: !isDemo,
     detectSessionInUrl: !isDemo,
   },
-});
+})
