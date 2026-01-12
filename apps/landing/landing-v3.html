@@ -18,11 +18,6 @@
       --gold: #a08050;
       --border: #e0ddd6;
 
-      /* House Structure Colors */
-      --truth-bg: #f4f2f6;
-      --truth-accent: #5a4a70;
-      --service-bg: #f0f4f2;
-      --service-accent: #3d6b56;
     }
 
     * {
@@ -282,6 +277,36 @@
       font-weight: 300;
     }
 
+    .anchor-label {
+      margin-top: 28px;
+      font-size: 0.85rem;
+      color: var(--ink-muted);
+    }
+
+    .anchor-cards {
+      margin-top: 16px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      text-align: left;
+    }
+
+    .anchor-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+    }
+
+    .anchor-card h3 {
+      font-size: 1rem;
+      margin-bottom: 8px;
+    }
+
+    .anchor-card p {
+      font-size: 0.9rem;
+    }
+
     /* ========== SECTION 4: CORE IDEA ========== */
 
     .core-section {
@@ -336,7 +361,7 @@
       font-size: 0.95rem;
     }
 
-    /* ========== SECTION 5: DECISION POINT ========== */
+    /* ========== SECTION 5: HOUSE SYSTEM ========== */
 
     .decision-section {
       background: var(--warm-dark);
@@ -345,7 +370,7 @@
 
     .decision-intro {
       text-align: center;
-      margin-bottom: 64px;
+      margin-bottom: 48px;
     }
 
     .decision-intro h2 {
@@ -354,8 +379,10 @@
 
     .decision-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 32px;
+      grid-template-columns: 1fr;
+      gap: 24px;
+      max-width: 760px;
+      margin: 0 auto;
     }
 
     .decision-card {
@@ -364,41 +391,19 @@
       display: flex;
       flex-direction: column;
       transition: all 0.3s ease;
+      background: white;
+      border: 1px solid var(--border);
     }
 
-    .decision-card--truth {
-      background: var(--truth-bg);
-      border: 1px solid #d0c8d8;
-    }
-
-    .decision-card--truth:hover {
+    .decision-card:hover {
       transform: translateY(-6px);
-      box-shadow: 0 12px 32px rgba(90, 74, 112, 0.15);
-      border-color: var(--truth-accent);
-    }
-
-    .decision-card--service {
-      background: var(--service-bg);
-      border: 1px solid #c8d0c4;
-    }
-
-    .decision-card--service:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 12px 32px rgba(61, 107, 86, 0.15);
-      border-color: var(--service-accent);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
     }
 
     .decision-header {
       padding: 28px 32px;
+      background: var(--ink);
       color: white;
-    }
-
-    .decision-card--truth .decision-header {
-      background: var(--truth-accent);
-    }
-
-    .decision-card--service .decision-header {
-      background: var(--service-accent);
     }
 
     .decision-tagline {
@@ -447,16 +452,8 @@
       border-radius: 100px;
       font-size: 0.85rem;
       font-weight: 500;
-    }
-
-    .decision-card--truth .decision-pill {
-      background: rgba(90, 74, 112, 0.12);
-      color: var(--truth-accent);
-    }
-
-    .decision-card--service .decision-pill {
-      background: rgba(61, 107, 86, 0.12);
-      color: var(--service-accent);
+      background: var(--warm);
+      color: var(--ink);
     }
 
     .decision-text {
@@ -472,16 +469,8 @@
       font-style: italic;
       font-size: 1rem;
       color: var(--ink);
-    }
-
-    .decision-card--truth .decision-question {
-      background: rgba(90, 74, 112, 0.08);
-      border-left: 3px solid var(--truth-accent);
-    }
-
-    .decision-card--service .decision-question {
-      background: rgba(61, 107, 86, 0.08);
-      border-left: 3px solid var(--service-accent);
+      background: rgba(0, 0, 0, 0.03);
+      border-left: 3px solid var(--gold);
     }
 
     .decision-fit {
@@ -503,48 +492,60 @@
       color: var(--ink);
     }
 
-    .decision-link {
-      display: inline-block;
-      margin-top: 20px;
-      padding: 10px 0;
-      font-size: 0.9rem;
-      font-weight: 500;
-      text-decoration: none;
-      transition: all 0.25s ease;
+    .houses-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      margin-top: 28px;
     }
 
-    .decision-card--truth .decision-link {
-      color: var(--truth-accent);
+    .house-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
     }
 
-    .decision-card--service .decision-link {
-      color: var(--service-accent);
+    .house-card h3 {
+      font-size: 1.05rem;
+      margin-bottom: 8px;
     }
 
-    .decision-link:hover {
-      letter-spacing: 0.02em;
-      padding-left: 8px;
+    .house-anchors {
+      font-size: 0.85rem;
+      color: var(--ink-muted);
+      margin-bottom: 12px;
     }
 
-    .decision-link::after {
-      content: '';
-      display: block;
-      width: 0;
-      height: 2px;
-      margin-top: 2px;
-      transition: width 0.25s ease;
+    .house-bullets {
+      list-style: none;
+      margin: 0;
+      padding: 0;
     }
 
-    .decision-card--truth .decision-link::after {
-      background: var(--truth-accent);
+    .house-bullets li {
+      font-size: 0.85rem;
+      color: var(--ink-soft);
+      padding: 4px 0;
+      padding-left: 14px;
+      position: relative;
     }
 
-    .decision-card--service .decision-link::after {
-      background: var(--service-accent);
+    .house-bullets li::before {
+      content: '·';
+      position: absolute;
+      left: 0;
+      color: var(--gold);
+      font-weight: bold;
+      font-size: 1.1rem;
+      line-height: 1;
     }
 
-    .decision-link:hover::after {
-      width: 100%;
+    .houses-note {
+      margin-top: 16px;
+      font-size: 0.85rem;
+      color: var(--ink-muted);
+      text-align: center;
     }
 
     /* ========== SECTION 6: APPS ========== */
@@ -569,7 +570,7 @@
 
     .apps-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
       gap: 24px;
     }
 
@@ -677,118 +678,10 @@
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     }
 
-    /* ========== SECTION 6 & 7: LEAGUE HOUSE DETAILS ========== */
-
-    .leagues-section {
-      background: var(--cream);
-    }
-
-    .leagues-section--champions {
-      background: #faf8fc;
-    }
-
-    .leagues-section--builders {
-      background: #f8faf6;
-    }
-
-    .leagues-section h2 {
-      text-align: center;
-      margin-bottom: 12px;
-    }
-
-    .leagues-section .lead {
-      text-align: center;
-      margin: 0 auto 48px;
-    }
-
-    .houses-detail-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
-    }
-
-    .house-detail-card {
-      background: white;
-      border-radius: 12px;
-      overflow: hidden;
-      border: 1px solid var(--border);
-    }
-
-    .house-detail-header {
-      padding: 20px 24px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .leagues-section--champions .house-detail-header {
-      border-left: 4px solid var(--exemplars-accent);
-    }
-
-    .leagues-section--builders .house-detail-header {
-      border-left: 4px solid #4a6b56;
-    }
-
-    .house-detail-header h3 {
-      font-size: 1.15rem;
-      margin-bottom: 4px;
-    }
-
-    .house-virtue {
-      font-size: 0.9rem;
-      color: var(--ink-soft);
-      margin: 0;
-    }
-
-    .house-virtue .arabic {
-      font-style: italic;
+    .app-note {
+      margin-top: 10px;
+      font-size: 0.8rem;
       color: var(--ink-muted);
-    }
-
-    .house-detail-body {
-      padding: 20px 24px;
-    }
-
-    .house-failure {
-      margin-bottom: 16px;
-    }
-
-    .house-failure-label,
-    .house-looks-label {
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--ink-muted);
-      font-weight: 600;
-      margin-bottom: 6px;
-    }
-
-    .house-failure p {
-      font-size: 0.9rem;
-      color: var(--ink-soft);
-      margin: 0;
-    }
-
-    .house-looks-like ul {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-    }
-
-    .house-looks-like li {
-      font-size: 0.85rem;
-      color: var(--ink-soft);
-      padding: 4px 0;
-      padding-left: 16px;
-      position: relative;
-    }
-
-    .house-looks-like li::before {
-      content: '·';
-      position: absolute;
-      left: 0;
-      color: var(--gold);
-      font-weight: bold;
-      font-size: 1.2rem;
-      line-height: 1;
     }
 
     /* ========== SECTION 8: MS → HS ========== */
@@ -806,54 +699,44 @@
       margin: 0 auto 48px;
     }
 
-    .continuity-ladder {
-      display: flex;
-      justify-content: center;
+    .continuity-grid {
+      display: grid;
+      grid-template-columns: 180px repeat(3, 1fr);
+      gap: 16px;
+      text-align: left;
       align-items: stretch;
-      gap: 0;
-      max-width: 600px;
+      max-width: 900px;
       margin: 0 auto;
     }
 
-    .continuity-stage {
-      flex: 1;
-      padding: 32px 24px;
-      background: white;
+    .continuity-header {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--ink-muted);
+      padding: 12px 14px;
+      border-radius: 8px;
+      background: var(--warm);
       border: 1px solid var(--border);
+      text-align: center;
     }
 
-    .continuity-stage:first-child {
-      border-radius: 12px 0 0 12px;
-      border-right: none;
-    }
-
-    .continuity-stage:last-child {
-      border-radius: 0 12px 12px 0;
-    }
-
-    .continuity-stage h4 {
+    .continuity-row-label {
       font-family: 'Libre Baskerville', serif;
-      font-size: 1.1rem;
-      margin-bottom: 16px;
+      font-size: 1rem;
+      padding: 18px 16px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: white;
     }
 
-    .continuity-stage ul {
-      list-style: none;
-      text-align: left;
-    }
-
-    .continuity-stage li {
-      padding: 6px 0;
+    .continuity-cell {
+      padding: 18px 16px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: white;
       font-size: 0.9rem;
       color: var(--ink-soft);
-    }
-
-    .continuity-arrow {
-      display: flex;
-      align-items: center;
-      padding: 0 16px;
-      color: var(--ink-muted);
-      font-size: 1.5rem;
     }
 
     .continuity-note {
@@ -919,43 +802,29 @@
         grid-template-columns: 1fr;
       }
 
+      .anchor-cards {
+        grid-template-columns: 1fr;
+      }
+
+      .houses-grid {
+        grid-template-columns: 1fr;
+      }
+
       .apps-grid {
         grid-template-columns: 1fr;
       }
 
-      .houses-detail-grid {
+      .continuity-grid {
         grid-template-columns: 1fr;
       }
 
-      .continuity-ladder {
-        flex-direction: column;
-      }
-
-      .continuity-stage:first-child {
-        border-radius: 12px 12px 0 0;
-        border-right: 1px solid var(--border);
-        border-bottom: none;
-      }
-
-      .continuity-stage:last-child {
-        border-radius: 0 0 12px 12px;
-      }
-
-      .continuity-arrow {
-        justify-content: center;
-        padding: 12px 0;
-        transform: rotate(90deg);
-      }
-
-      .anchor-points {
-        flex-direction: column;
-        gap: 16px;
-        align-items: center;
-      }
     }
   </style>
 </head>
 <body>
+  <!-- LEADERBOARD_DEMO = https://leagueofchampions-leaderboard.vercel.app/ -->
+  <!-- PORTAL_DEMO = https://leagueofchampions-portal.vercel.app/ -->
+  <!-- ADMIN_DEMO = (unknown / restricted) — do not link publicly unless confirmed -->
 
   <!-- SECTION 1: HERO -->
   <section class="hero">
@@ -964,10 +833,10 @@
         <p class="eyebrow">League of Champions</p>
         <h1>Tarbiyah as Culture, Not Just Curriculum</h1>
         <p class="lead">
-          A formation framework for Islamic schools — spanning Middle and High School with one shared language for identity, character, and leadership.</p>
+          A school-wide formation system for Islamic schools — Grades 6–12. One shared language for expectations, growth, and leadership, used daily by every adult.</p>
         <div class="btn-group">
-          <a href="#problem" class="btn btn--primary">Why This Matters</a>
-          <a href="#decision" class="btn btn--secondary">Explore House Structures</a>
+          <a href="#framework" class="btn btn--primary">See the Framework</a>
+          <a href="partnership.html" class="btn btn--secondary">View Partnership</a>
         </div>
       </div>
     </div>
@@ -983,10 +852,10 @@
           <span class="problem-icon">◇</span>
           <h3>Fragmented Culture</h3>
           <ul class="problem-list">
-            <li>Inconsistent expectations</li>
-            <li>Rule-heavy enforcement</li>
-            <li>Scattered character programs</li>
-            <li>No shared language</li>
+            <li>Expectations change by classroom</li>
+            <li>Correction feels like enforcement</li>
+            <li>Character efforts stay isolated</li>
+            <li>Students don’t know what “good” looks like</li>
           </ul>
         </div>
 
@@ -996,10 +865,10 @@
           <span class="problem-icon">◈</span>
           <h3>Intentional Culture</h3>
           <ul class="problem-list">
-            <li>Shared framework</li>
-            <li>Formation-first approach</li>
-            <li>Unified MS–HS experience</li>
-            <li>Common language for growth</li>
+            <li>One framework across classrooms</li>
+            <li>Correction becomes coaching</li>
+            <li>Formation reinforced daily</li>
+            <li>A shared language for growth</li>
           </ul>
         </div>
       </div>
@@ -1007,24 +876,39 @@
   </section>
 
   <!-- SECTION 3: WHAT THIS IS -->
-  <section class="anchor-section">
+  <section id="framework" class="anchor-section">
     <div class="container container--narrow">
       <p class="eyebrow">What This Is</p>
       <h2 style="white-space: nowrap;">A School-Wide Formation Framework</h2>
       <p class="lead">
-        Not a rewards system. Not a curriculum add-on.<br>
-        A shared language for how students grow — used daily, across all grades.
+        Not a rewards system. Not a curriculum add-on. A daily language for tarbiyah — used in praise, correction, and reflection across the school.
       </p>
 
       <p class="anchor-inline">
         <span><strong>1</strong> Framework</span>
         <span class="divider">|</span>
-        <span><strong>2</strong> House Structure Options</span>
+        <span><strong>3</strong>Rs</span>
         <span class="divider">|</span>
-        <span><strong>4</strong> Houses Each</span>
+        <span><strong>4</strong> Houses</span>
         <span class="divider">|</span>
-        <span><strong>6–12</strong> Unified</span>
+        <span><strong>Grades 6–12</strong> Unified</span>
       </p>
+
+      <div class="anchor-label">The shared language</div>
+      <div class="anchor-cards">
+        <div class="anchor-card">
+          <h3>Respect (Adab)</h3>
+          <p>How we treat people, spaces, and boundaries.</p>
+        </div>
+        <div class="anchor-card">
+          <h3>Responsibility (Amanah)</h3>
+          <p>Owning commitments — even the small ones.</p>
+        </div>
+        <div class="anchor-card">
+          <h3>Righteousness (Taqwa)</h3>
+          <p>Choosing what’s right when no one is watching.</p>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -1053,87 +937,87 @@
     </div>
   </section>
 
-  <!-- SECTION 5: CHOOSE YOUR HOUSE STRUCTURE -->
-  <section id="decision" class="decision-section">
+  <!-- SECTION 5: THE HOUSE SYSTEM -->
+  <section class="decision-section">
     <div class="container">
       <div class="decision-intro">
-        <p class="eyebrow">House Structures</p>
-        <h2>Two Options. Same Framework.</h2>
+        <p class="eyebrow">The House System</p>
+        <h2>One System. Four Houses.</h2>
         <p class="lead">
-          Choose the house structure that fits your school's culture.<br>
-          Both use the same system — the virtues differ.
+          Houses create belonging. The 3Rs create clarity. Every student belongs to a house — and every adult reinforces the same language.
         </p>
       </div>
 
       <div class="decision-grid">
-        <!-- CHAMPIONS OF TRUTH -->
-        <div class="decision-card decision-card--truth">
+        <div class="decision-card">
           <div class="decision-header">
-            <h3>Champions of Truth</h3>
-            <p class="decision-tagline">Standing for what's right when it costs something</p>
+            <h3>Champions of Ihsan</h3>
+            <p class="decision-tagline">Character that holds under pressure — and shows up in service.</p>
           </div>
           <div class="decision-body">
             <div class="decision-row">
               <p class="decision-label">Core Virtues</p>
               <div class="decision-pills">
                 <span class="decision-pill">Truthfulness</span>
-                <span class="decision-pill">Unwavering support</span>
-                <span class="decision-pill">Justice</span>
-                <span class="decision-pill">Integrity of knowledge</span>
+                <span class="decision-pill">Reliability</span>
+                <span class="decision-pill">Courage</span>
+                <span class="decision-pill">Service</span>
               </div>
             </div>
 
             <div class="decision-row">
               <p class="decision-label">Guiding Question</p>
               <div class="decision-question">
-                What do students stand for, even when it costs them?
+                Who are our students becoming — when nobody is watching?
               </div>
             </div>
 
             <div class="decision-row">
               <div class="decision-fit">
-                <p class="decision-fit-label">Best For</p>
-                <p>Schools helping students navigate social pressure, stand firm in belief, and speak truth with courage.</p>
+                <p class="decision-fit-label">How it forms students</p>
+                <p>It gives staff a consistent way to notice growth, name it, and coach it — so expectations don’t reset every period.</p>
               </div>
             </div>
-
-            <a href="truth-houses.html" class="decision-link">View Houses & Details →</a>
           </div>
         </div>
 
-        <!-- CHAMPIONS OF SERVICE -->
-        <div class="decision-card decision-card--service">
-          <div class="decision-header">
-            <h3>Champions of Service</h3>
-            <p class="decision-tagline">Building what others can stand on</p>
+        <div>
+          <p class="anchor-label">The four houses</p>
+          <div class="houses-grid">
+            <div class="house-card">
+              <h3>House of Abu Bakr</h3>
+              <p class="house-anchors">Anchors: Truthfulness</p>
+              <ul class="house-bullets">
+                <li>Tells the truth even when it’s uncomfortable</li>
+                <li>Protects trust and honesty in friendships</li>
+              </ul>
+            </div>
+            <div class="house-card">
+              <h3>House of Umar</h3>
+              <p class="house-anchors">Anchors: Justice</p>
+              <ul class="house-bullets">
+                <li>Owns mistakes and makes things right</li>
+                <li>Uses strength to protect, not to intimidate</li>
+              </ul>
+            </div>
+            <div class="house-card">
+              <h3>House of Khadijah</h3>
+              <p class="house-anchors">Anchors: Service</p>
+              <ul class="house-bullets">
+                <li>Helps without needing attention</li>
+                <li>Strengthens the community quietly and consistently</li>
+              </ul>
+            </div>
+            <div class="house-card">
+              <h3>House of Aishah</h3>
+              <p class="house-anchors">Anchors: Knowledge</p>
+              <ul class="house-bullets">
+                <li>Asks better questions and seeks clarity</li>
+                <li>Uses learning to improve character — not ego</li>
+              </ul>
+            </div>
           </div>
-          <div class="decision-body">
-            <div class="decision-row">
-              <p class="decision-label">Core Virtues</p>
-              <div class="decision-pills">
-                <span class="decision-pill">Preparing the way</span>
-                <span class="decision-pill">Service</span>
-                <span class="decision-pill">Courage</span>
-                <span class="decision-pill">Reliability</span>
-              </div>
-            </div>
-
-            <div class="decision-row">
-              <p class="decision-label">Guiding Question</p>
-              <div class="decision-question">
-                What do students build that others can rely on?
-              </div>
-            </div>
-
-            <div class="decision-row">
-              <div class="decision-fit">
-                <p class="decision-fit-label">Best For</p>
-                <p>Schools developing leadership, service-mindedness, and students who take initiative to strengthen their community.</p>
-              </div>
-            </div>
-
-            <a href="service-houses.html" class="decision-link">View Houses & Details →</a>
-          </div>
+          <p class="houses-note">House names can be adapted to fit your school’s tradition. The purpose stays the same: belonging + formation.</p>
         </div>
       </div>
     </div>
@@ -1153,7 +1037,7 @@
         <div class="app-card">
           <div class="app-icon">◈</div>
           <h3>Leaderboard</h3>
-          <p class="app-desc">Real-time house standings displayed school-wide.</p>
+          <p class="app-desc">Public house standings and recognitions — so culture stays visible.</p>
           <ul class="app-features">
             <li>Live house rankings</li>
             <li>Hall of Fame recognition</li>
@@ -1161,39 +1045,25 @@
           </ul>
           <span class="app-platform">Web · Display</span>
           <div class="app-demo-link">
-            <a href="appdemo.html">Try Demo →</a>
+            <a href="https://leagueofchampions-leaderboard.vercel.app/">Try Demo →</a>
           </div>
         </div>
 
         <!-- Portal -->
         <div class="app-card app-card--featured">
           <div class="app-icon">◉</div>
-          <h3>Portal</h3>
-          <p class="app-desc">Personal dashboards for students, parents, and staff.</p>
+          <h3>Portal (Staff • Students • Parents)</h3>
+          <p class="app-desc">One place to track growth, award points, and keep the 3Rs consistent.</p>
           <ul class="app-features">
-            <li>Track individual progress</li>
-            <li>Award and receive points</li>
-            <li>View house activity</li>
-          </ul>
-          <span class="app-platform">Web · iOS · Android</span>
-          <div class="app-demo-link">
-            <a href="appdemo.html">Try Demo →</a>
-          </div>
-        </div>
-
-        <!-- Admin -->
-        <div class="app-card">
-          <div class="app-icon">◎</div>
-          <h3>Admin Console</h3>
-          <p class="app-desc">Full control for programme coordinators.</p>
-          <ul class="app-features">
-            <li>Manage students & staff</li>
-            <li>Analytics & reports</li>
-            <li>System configuration</li>
+            <li>Student progress + milestones</li>
+            <li>House activity and recognitions</li>
+            <li>Staff awarding + reflection notes</li>
+            <li>Admin tools: roster, analytics, configuration</li>
           </ul>
           <span class="app-platform">Web</span>
           <div class="app-demo-link">
-            <a href="appdemo.html">Try Demo →</a>
+            <a href="https://leagueofchampions-portal.vercel.app/">Try Demo →</a>
+            <div class="app-note">Admin views are permission-based.</div>
           </div>
         </div>
       </div>
@@ -1205,43 +1075,38 @@
   <section class="continuity-section">
     <div class="container">
       <p class="eyebrow">Grades 6–12</p>
-      <h2>One System. MS → HS.</h2>
+      <h2>One System. Deeper Expectations.</h2>
       <p class="lead">
-        The League and Houses stay the same.<br>
-        What changes is depth.
+        Middle School is coached practice. High School is owned character and leadership.
       </p>
 
-      <div class="continuity-ladder">
-        <div class="continuity-stage">
-          <h4>Middle School</h4>
-          <ul>
-            <li>Practice</li>
-            <li>Guidance</li>
-            <li>Awareness</li>
-          </ul>
-        </div>
-        <div class="continuity-arrow">→</div>
-        <div class="continuity-stage">
-          <h4>High School</h4>
-          <ul>
-            <li>Ownership</li>
-            <li>Independence</li>
-            <li>Consistency</li>
-          </ul>
-        </div>
+      <div class="continuity-grid">
+        <div></div>
+        <div class="continuity-header">Respect (Adab)</div>
+        <div class="continuity-header">Responsibility (Amanah)</div>
+        <div class="continuity-header">Righteousness (Taqwa)</div>
+
+        <div class="continuity-row-label">Middle School (Guided)</div>
+        <div class="continuity-cell">Tone, manners, boundaries — coached daily.</div>
+        <div class="continuity-cell">Preparedness, follow-through, small commitments.</div>
+        <div class="continuity-cell">Daily choices; sincerity; avoiding harm.</div>
+
+        <div class="continuity-row-label">High School (Owned)</div>
+        <div class="continuity-cell">Disagreement with dignity; protecting others’ honor.</div>
+        <div class="continuity-cell">Owning outcomes; leading; accountability.</div>
+        <div class="continuity-cell">Principle under pressure; self-correction; service with ikhlas.</div>
       </div>
 
-      <p class="continuity-note">Same framework. Deeper expectations.</p>
+      <p class="continuity-note">Same 3Rs. A shift from guidance → ownership.</p>
     </div>
   </section>
 
   <!-- SECTION 9: CLOSING -->
   <section class="closing-section">
     <div class="container container--narrow">
-      <h2>Culture Built Intentionally</h2>
+      <h2>Culture students can feel.</h2>
       <p>
-        Strong culture doesn't happen by accident.<br>
-        This framework provides coherence — across grades, across years.
+        A coherent tarbiyah system — so expectations, praise, and correction stay consistent across grades and classrooms.
       </p>
       <div class="btn-group">
         <a href="partnership.html" class="btn btn--primary">View Partnership Levels</a>

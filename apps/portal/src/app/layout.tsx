@@ -1,18 +1,18 @@
 import type { Metadata } from "next";
-import { Inter, Oswald } from "next/font/google";
+import { Montserrat, Amiri } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "./providers";
 
-const inter = Inter({
+const montserrat = Montserrat({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-inter",
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-montserrat",
 });
 
-const oswald = Oswald({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-display",
+const amiri = Amiri({
+  subsets: ["arabic", "latin"],
+  weight: ["400", "700"],
+  variable: "--font-amiri",
 });
 
 export const metadata: Metadata = {
@@ -23,7 +23,7 @@ export default function RootLayout({
   children}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} ${oswald.variable} ${inter.className} antialiased`}>
+      <body className={`${montserrat.variable} ${amiri.variable} ${montserrat.className} antialiased`}>
         <AuthProvider>{children}</AuthProvider>
       </body>
     </html>

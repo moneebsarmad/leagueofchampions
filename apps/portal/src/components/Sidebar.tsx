@@ -95,21 +95,30 @@ export default function Sidebar({ role, portalLabel, isSuperAdmin = false }: Sid
   const isAdmin = isAdminRole(role)
 
   return (
-    <aside className="fixed left-0 top-0 h-screen w-72 ink-band ink-band--striped text-white border-r border-white/10 flex flex-col z-50">
+    <aside className="fixed left-0 top-0 h-screen w-72 bg-[var(--midnight-primary)] text-white flex flex-col z-50">
+      {/* Victory Gold Accent Bar */}
+      <div className="h-1.5 bg-gradient-to-r from-[var(--victory-gold-dark)] via-[var(--victory-gold)] to-[var(--victory-gold-dark)]">
+        <div className="h-full bg-gradient-to-r from-transparent via-[var(--victory-gold-light)] to-transparent opacity-50"></div>
+      </div>
+
+      {/* Header */}
       <div className="p-6 border-b border-white/10">
         <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[var(--victory-gold)] to-[var(--victory-gold-dark)] flex items-center justify-center shadow-lg">
+            <span className="text-[var(--midnight-primary)] font-bold text-sm">DA</span>
+          </div>
           <div>
-            <p className="text-base font-semibold text-white">Dār al-Arqam</p>
-            <p className="text-xs text-white/70">{portalLabel}</p>
+            <p className="text-base font-bold text-white tracking-tight">Dar al-Arqam</p>
+            <p className="text-xs text-[var(--victory-gold)] font-medium">{portalLabel}</p>
           </div>
         </div>
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 p-6 overflow-y-auto">
+      <nav className="flex-1 p-4 overflow-y-auto">
         {isAdmin ? (
           <>
-            <p className="text-xs font-semibold text-white/60 mb-3 px-4">Primary</p>
+            <p className="text-[11px] font-semibold text-white/50 uppercase tracking-wider mb-3 px-3">Primary</p>
             <ul className="space-y-1 mb-6">
               {navItems.primary.map((item) => (
                 <NavItemRow key={item.id} item={item} pathname={pathname} />
@@ -118,7 +127,7 @@ export default function Sidebar({ role, portalLabel, isSuperAdmin = false }: Sid
 
             {navItems.superAdmin.length > 0 && (
               <>
-                <p className="text-xs font-semibold text-white/60 mb-3 px-4">Super Admin</p>
+                <p className="text-[11px] font-semibold text-[var(--victory-gold)] uppercase tracking-wider mb-3 px-3">Super Admin</p>
                 <ul className="space-y-1 mb-6">
                   {navItems.superAdmin.map((item) => (
                     <NavItemRow key={item.id} item={item} pathname={pathname} />
@@ -127,7 +136,7 @@ export default function Sidebar({ role, portalLabel, isSuperAdmin = false }: Sid
               </>
             )}
 
-            <p className="text-xs font-semibold text-white/60 mb-3 px-4">Admin</p>
+            <p className="text-[11px] font-semibold text-white/50 uppercase tracking-wider mb-3 px-3">Admin</p>
             <ul className="space-y-1">
               {navItems.secondary.map((item) => (
                 <NavItemRow key={item.id} item={item} pathname={pathname} />
@@ -136,7 +145,7 @@ export default function Sidebar({ role, portalLabel, isSuperAdmin = false }: Sid
           </>
         ) : (
           <>
-            <p className="text-xs font-semibold text-white/60 mb-4 px-4">Navigation</p>
+            <p className="text-[11px] font-semibold text-white/50 uppercase tracking-wider mb-3 px-3">Navigation</p>
             <ul className="space-y-1">
               {navItems.primary.map((item) => (
                 <NavItemRow key={item.id} item={item} pathname={pathname} />
@@ -147,13 +156,13 @@ export default function Sidebar({ role, portalLabel, isSuperAdmin = false }: Sid
       </nav>
 
       {/* Footer */}
-      <div className="p-6 border-t border-white/10">
-        <div className="px-4 py-3 rounded-xl bg-white/5 border border-white/10">
-          <p className="text-xs text-white/70 font-medium">
-            Dār al-Arqam Islamic School
-          </p>
-          <p className="text-xs text-white/50 mt-1">
+      <div className="p-4 border-t border-white/10">
+        <div className="px-4 py-3 rounded-lg bg-[var(--midnight-secondary)] border border-white/5">
+          <p className="text-xs text-white/80 font-semibold">
             League of Champions
+          </p>
+          <p className="text-[11px] text-white/50 mt-0.5">
+            Where Champions Are Made
           </p>
         </div>
       </div>
@@ -169,22 +178,25 @@ function NavItemRow({ item, pathname }: { item: NavItem; pathname: string }) {
     <li>
       <Link
         href={item.href}
-        className={`group flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all duration-200 ${
+        className={`group relative flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 ${
           isActive
-            ? 'bg-white/10 text-white border-l-[3px] border-[var(--gold)]'
-            : 'text-white/70 hover:text-white hover:bg-white/10'
+            ? 'bg-gradient-to-r from-[var(--victory-gold-dark)] to-[var(--victory-gold)] text-[var(--midnight-primary)] shadow-lg'
+            : 'text-white/70 hover:text-white hover:bg-[var(--midnight-secondary)]'
         }`}
       >
-        <div className={`p-2 rounded-lg transition-all ${
+        {isActive && (
+          <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-[var(--victory-gold)] rounded-r shadow-[0_0_8px_var(--victory-gold)]"></div>
+        )}
+        <div className={`p-1.5 rounded-md transition-all ${
           isActive
-            ? 'bg-white/10 text-white'
-            : 'bg-white/5 text-white/60 group-hover:text-white'
+            ? 'bg-[var(--midnight-primary)]/20'
+            : 'bg-white/5 group-hover:bg-white/10'
         }`}>
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={item.icon} />
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={item.icon} />
           </svg>
         </div>
-        <span className="font-medium">{item.name}</span>
+        <span className={`text-sm ${isActive ? 'font-semibold' : 'font-medium'}`}>{item.name}</span>
       </Link>
     </li>
   )
