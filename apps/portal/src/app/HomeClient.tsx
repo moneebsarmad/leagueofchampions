@@ -55,14 +55,17 @@ export default function HomeClient() {
   };
 
   return (
-    <div className="min-h-screen app-shell flex items-center justify-center px-4 py-12">
-      <div className="card w-full max-w-md p-8">
+    <div className="min-h-screen app-shell flex items-center justify-center px-4 py-12 victory-pattern">
+      <div className="victory-card w-full max-w-md p-8">
         <div className="text-center mb-6">
-          <div className="mx-auto mb-4 h-12 w-12 rounded-2xl bg-[var(--surface-2)] text-[var(--text)] border border-[var(--border)] flex items-center justify-center text-sm font-semibold">
-            DAAIS
+          <div className="relative inline-block mx-auto mb-4">
+            <div className="h-14 w-14 rounded-2xl bg-gradient-to-br from-[var(--midnight-primary)] to-[var(--midnight-secondary)] border-2 border-[var(--victory-gold)] flex items-center justify-center shadow-lg">
+              <span className="text-sm font-bold bg-gradient-to-b from-[var(--victory-gold-light)] to-[var(--victory-gold)] bg-clip-text text-transparent">DA</span>
+            </div>
+            <div className="absolute -inset-0.5 rounded-2xl bg-[var(--victory-gold)] opacity-20 blur"></div>
           </div>
-          <h1 className="text-2xl font-semibold">League of Champions</h1>
-          <p className="text-[var(--text-muted)] text-sm mt-1">
+          <h1 className="text-2xl font-bold text-[var(--text)]">League of Champions</h1>
+          <p className="text-[var(--victory-gold)] text-sm mt-1 font-medium">
             {selectedRole.title} Portal
           </p>
         </div>
@@ -134,7 +137,7 @@ export default function HomeClient() {
           ) : null}
 
           <button
-            className="btn-primary w-full font-semibold"
+            className="btn-victory w-full"
             type="submit"
             disabled={loading || !email || !password}
           >

@@ -195,11 +195,20 @@ export default function Home() {
 
   return (
     <div className="min-h-screen app-shell flex flex-col">
-      <div className="ink-band ink-band--striped border-b" style={{ borderColor: "var(--gold-ring)" }}>
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between gap-4">
-          <div>
-            <div className="display text-2xl sm:text-3xl font-semibold">League of Champions</div>
-            <div className="text-sm text-white/70">Dār al-Arqam Islamic School</div>
+      {/* Championship Header Banner */}
+      <div className="victory-arena border-b-2 border-[var(--victory-gold)]">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex items-center justify-between gap-4">
+          <div className="flex items-center gap-4">
+            <div className="relative">
+              <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-[var(--victory-gold)] to-[var(--victory-gold-dark)] flex items-center justify-center shadow-lg">
+                <span className="text-[var(--midnight-primary)] font-bold text-lg">DA</span>
+              </div>
+              <div className="absolute -inset-0.5 rounded-xl bg-[var(--victory-gold)] opacity-30 blur"></div>
+            </div>
+            <div>
+              <div className="display text-2xl sm:text-3xl font-bold text-white">League of Champions</div>
+              <div className="text-sm text-[var(--victory-gold)] font-medium">Dār al-Arqam Islamic School</div>
+            </div>
           </div>
           <span className="champ-badge">
             <span className="champ-dot"></span>
@@ -211,14 +220,9 @@ export default function Home() {
       <div className="w-full flex-1 py-6 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto w-full flex flex-col flex-1">
           <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-2xl bg-[var(--surface-2)] text-[var(--text)] border border-[var(--border)] flex items-center justify-center text-sm font-semibold">
-                DAAIS
-              </div>
-              <div>
-                <h1 className="text-2xl sm:text-3xl font-semibold">Weekly Standings</h1>
-                <p className="text-sm text-[var(--text-muted)]">Where Champions Are Made</p>
-              </div>
+            <div>
+              <h1 className="text-2xl sm:text-3xl font-bold text-[var(--text)]">Weekly Standings</h1>
+              <p className="text-sm text-[var(--victory-gold)] font-medium">Where Champions Are Made</p>
             </div>
             <div className="flex items-center gap-2">
               <Link href="/house-mvps" className="btn-secondary text-xs">
