@@ -68,18 +68,18 @@ export default function DashboardHeader({ userName, role }: DashboardHeaderProps
 
         <div className="flex items-center gap-6">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-[var(--accent)] flex items-center justify-center text-white text-sm font-semibold shadow-md">
-              {initials(userName)}
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[var(--midnight-primary)] to-[var(--midnight-secondary)] border border-[var(--victory-gold)] flex items-center justify-center text-sm font-bold shadow-md">
+              <span className="bg-gradient-to-b from-[var(--victory-gold-light)] to-[var(--victory-gold)] bg-clip-text text-transparent">{initials(userName)}</span>
             </div>
             <div>
               <p className="text-sm font-semibold text-[var(--text)]">{userName}</p>
-              <p className="text-xs text-[var(--text-muted)]">{roleLabel(role)}</p>
+              <p className="text-xs text-[var(--victory-gold)]">{roleLabel(role)}</p>
             </div>
           </div>
           <div className="w-px h-8 bg-[var(--border)]"></div>
           <button
             onClick={handleLogout}
-            className="flex items-center gap-2 text-sm text-[var(--text-muted)] hover:text-[var(--accent)] font-medium transition-colors cursor-pointer"
+            className="flex items-center gap-2 text-sm text-[var(--text-muted)] hover:text-[var(--victory-gold)] font-medium transition-colors cursor-pointer"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />

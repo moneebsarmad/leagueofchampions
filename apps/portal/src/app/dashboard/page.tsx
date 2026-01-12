@@ -131,7 +131,7 @@ export default function DashboardPage() {
           House Standings
         </h1>
         <div className="flex items-center gap-3">
-          <div className="h-1 w-16 bg-[var(--accent)] rounded-full"></div>
+          <div className="h-1 w-16 bg-gradient-to-r from-[var(--victory-gold-dark)] to-[var(--victory-gold)] rounded-full"></div>
           <p className="text-[var(--text-muted)] text-sm font-medium">Current academic year rankings</p>
         </div>
       </div>
