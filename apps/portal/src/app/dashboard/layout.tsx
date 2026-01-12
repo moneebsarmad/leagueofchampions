@@ -11,9 +11,19 @@ import AnnouncementsPopup from '../../components/AnnouncementsPopup'
 // All valid roles
 const VALID_ROLES: UserRole[] = ['student', 'parent', 'staff', 'admin', 'super_admin', 'house_mentor', 'teacher', 'support_staff']
 
-function mapRoleToPortalRole(dbRole: string | null): UserRole | null {
+function mapRoleToPortalRole(dbRole: string | null | undefined): UserRole | null {
   if (!dbRole) return null
-  if (VALID_ROLES.includes(dbRole as UserRole)) return dbRole as UserRole
+  // Normalize role: lowercase and trim
+  const normalized = String(dbRole).toLowerCase().trim()
+
+  // Direct match
+  if (VALID_ROLES.includes(normalized as UserRole)) return normalized as UserRole
+
+  // Handle variations
+  if (normalized === 'superadmin' || normalized === 'super-admin') return 'super_admin'
+  if (normalized === 'housementor' || normalized === 'house-mentor') return 'house_mentor'
+  if (normalized === 'supportstaff' || normalized === 'support-staff') return 'support_staff'
+
   return null
 }
 
@@ -97,7 +107,11 @@ export default function DashboardLayout({
   }
 
   if (!user) {
-    return null
+    return (
+      <div className="min-h-screen app-shell">
+        <CrestLoader label="Redirecting to login..." />
+      </div>
+    )
   }
 
   if (profileLoading) {
@@ -109,6 +123,7 @@ export default function DashboardLayout({
   }
 
   if (!role) {
+    const rawRole = user.user_metadata?.role
     return (
       <div className="min-h-screen app-shell flex items-center justify-center">
         <div className="text-center max-w-md mx-auto px-4">
@@ -118,7 +133,8 @@ export default function DashboardLayout({
             </svg>
           </div>
           <p className="text-[var(--text)] font-medium mb-2">Profile role not found</p>
-          <p className="text-[var(--text-muted)] text-sm">Please contact an administrator.</p>
+          <p className="text-[var(--text-muted)] text-sm mb-4">Please contact an administrator.</p>
+          <p className="text-[var(--text-muted)] text-xs">Debug: role="{rawRole ?? 'undefined'}"</p>
         </div>
       </div>
     )
