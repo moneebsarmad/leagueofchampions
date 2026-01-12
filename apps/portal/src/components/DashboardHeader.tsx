@@ -2,18 +2,29 @@
 
 import { useRouter } from 'next/navigation'
 import { useAuth } from '../app/providers'
+import { UserRole } from './Sidebar'
 
 type DashboardHeaderProps = {
   userName: string
-  role: 'student' | 'parent' | 'staff'
+  role: UserRole
 }
 
-function roleLabel(role: 'student' | 'parent' | 'staff') {
+function roleLabel(role: UserRole) {
   switch (role) {
     case 'student':
       return 'Student'
     case 'parent':
       return 'Parent'
+    case 'admin':
+      return 'Admin'
+    case 'super_admin':
+      return 'Super Admin'
+    case 'teacher':
+      return 'Teacher'
+    case 'house_mentor':
+      return 'House Mentor'
+    case 'support_staff':
+      return 'Support Staff'
     case 'staff':
       return 'Staff'
     default:

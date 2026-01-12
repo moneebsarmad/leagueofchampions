@@ -3,20 +3,17 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '../providers'
-import Sidebar from '../../components/Sidebar'
+import Sidebar, { UserRole } from '../../components/Sidebar'
 import DashboardHeader from '../../components/DashboardHeader'
 import CrestLoader from '../../components/CrestLoader'
+import AnnouncementsPopup from '../../components/AnnouncementsPopup'
 
-type Role = 'student' | 'parent' | 'staff'
+// All valid roles
+const VALID_ROLES: UserRole[] = ['student', 'parent', 'staff', 'admin', 'super_admin', 'house_mentor', 'teacher', 'support_staff']
 
-// RBAC roles that map to 'staff' portal access
-const STAFF_ROLES = ['staff', 'super_admin', 'admin', 'house_mentor', 'teacher', 'support_staff']
-
-function mapRoleToPortalRole(dbRole: string | null): Role | null {
+function mapRoleToPortalRole(dbRole: string | null): UserRole | null {
   if (!dbRole) return null
-  if (dbRole === 'student') return 'student'
-  if (dbRole === 'parent') return 'parent'
-  if (STAFF_ROLES.includes(dbRole)) return 'staff'
+  if (VALID_ROLES.includes(dbRole as UserRole)) return dbRole as UserRole
   return null
 }
 
@@ -34,17 +31,27 @@ function formatDisplayName(email: string) {
     .join(' ')
 }
 
-function portalLabel(role: Role) {
+function portalLabel(role: UserRole) {
   switch (role) {
     case 'student':
       return 'Student Portal'
     case 'parent':
       return 'Parent Portal'
+    case 'admin':
+    case 'super_admin':
+      return 'Admin Portal'
     case 'staff':
+    case 'teacher':
+    case 'house_mentor':
+    case 'support_staff':
       return 'Staff Portal'
     default:
       return 'Portal'
   }
+}
+
+function isAdminRole(role: UserRole): boolean {
+  return role === 'admin' || role === 'super_admin'
 }
 
 export default function DashboardLayout({
@@ -53,7 +60,7 @@ export default function DashboardLayout({
 }) {
   const router = useRouter()
   const { user, loading } = useAuth()
-  const [role, setRole] = useState<Role | null>(null)
+  const [role, setRole] = useState<UserRole | null>(null)
   const [profileLoading, setProfileLoading] = useState(true)
   const [staffName, setStaffName] = useState<string | null>(null)
 
@@ -113,16 +120,19 @@ export default function DashboardLayout({
   }
 
   const displayName = staffName || formatDisplayName(user.email ?? '')
+  const showAdmin = isAdminRole(role)
+  const isSuperAdmin = role === 'super_admin'
 
   return (
     <div className="min-h-screen app-shell">
-      <Sidebar role={role} portalLabel={portalLabel(role)} />
+      <Sidebar role={role} portalLabel={portalLabel(role)} isSuperAdmin={isSuperAdmin} />
+      {showAdmin && <AnnouncementsPopup />}
 
       {/* Main Content */}
       <div className="ml-72">
         <div className="ink-band ink-band--striped px-6 py-4 border-b" style={{ borderColor: 'var(--gold-ring)' }}>
           <div className="flex items-center justify-between">
-            <div className="text-lg font-semibold display">Portal Dashboard</div>
+            <div className="text-lg font-semibold display">{showAdmin ? 'Dashboard' : 'Portal Dashboard'}</div>
             <span className="champ-badge">
               <span className="champ-dot"></span>
               Season Live
