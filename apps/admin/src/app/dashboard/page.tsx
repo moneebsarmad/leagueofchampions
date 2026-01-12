@@ -193,7 +193,7 @@ export default function DashboardPage() {
               {/* House Header */}
               <div className="flex items-start justify-between gap-6 mb-5">
                 <div>
-                  <div className="chip mb-4">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[var(--border)] bg-[var(--surface-2)] text-xs text-[var(--text-muted)] mb-4">
                     <span>Rank</span>
                     <span className="text-[var(--text)] font-semibold">{index + 1}</span>
                   </div>
@@ -235,11 +235,11 @@ export default function DashboardPage() {
                   {house.topStudents.map((student, i) => (
                     <div
                       key={student.name}
-                      className={`surface-muted rounded-xl px-4 py-3 min-w-[150px] border border-[var(--border)] hover:bg-[var(--surface)] transition-colors ${i === 0 ? 'bg-[var(--champ-soft)] border-l-[3px] border-[var(--champ)]' : ''}`}
+                      className={`bg-[var(--surface-2)] rounded-xl px-4 py-3 min-w-[150px] border border-[var(--border)] hover:bg-[var(--surface)] transition-colors ${i === 0 ? 'bg-[var(--gold-soft)] border-l-[3px] border-[var(--gold)]' : ''}`}
                     >
                       <div className="flex items-center gap-2 mb-2">
                         <span className={`w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold ${
-                          i === 0 ? 'bg-[var(--champ)] text-white' :
+                          i === 0 ? 'bg-[var(--gold)] text-white' :
                           i === 1 ? 'bg-[var(--surface)] text-[var(--text)] border border-[var(--border)]' :
                           'bg-[var(--surface-2)] text-[var(--text-muted)]'
                         }`}>

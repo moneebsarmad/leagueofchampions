@@ -120,6 +120,15 @@ export default function DashboardLayout({
 
       {/* Main Content */}
       <div className="ml-72">
+        <div className="ink-band ink-band--striped px-6 py-4 border-b" style={{ borderColor: 'var(--gold-ring)' }}>
+          <div className="flex items-center justify-between">
+            <div className="text-lg font-semibold display">Portal Dashboard</div>
+            <span className="champ-badge">
+              <span className="champ-dot"></span>
+              Season Live
+            </span>
+          </div>
+        </div>
         {/* Header */}
         <DashboardHeader userName={displayName} role={role} />
 

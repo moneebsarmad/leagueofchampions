@@ -142,15 +142,15 @@ export default function MyHousePage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="surface-muted rounded-xl p-4 border border-[var(--border)]">
+            <div className="bg-[var(--surface-2)] rounded-xl p-4 border border-[var(--border)]">
               <p className="text-xs text-[var(--text-muted)]">Total Points</p>
               <p className="text-2xl font-bold text-[var(--text)] mt-2">{rankInfo.totalPoints.toLocaleString()}</p>
             </div>
-            <div className="surface-muted rounded-xl p-4 border border-[var(--border)]">
+            <div className="bg-[var(--surface-2)] rounded-xl p-4 border border-[var(--border)]">
               <p className="text-xs text-[var(--text-muted)]">Share of Points</p>
               <p className="text-2xl font-bold text-[var(--text)] mt-2">{rankInfo.percentage.toFixed(1)}%</p>
             </div>
-            <div className="surface-muted rounded-xl p-4 border border-[var(--border)]">
+            <div className="bg-[var(--surface-2)] rounded-xl p-4 border border-[var(--border)]">
               <p className="text-xs text-[var(--text-muted)]">My Class</p>
               <p className="text-2xl font-bold text-[var(--text)] mt-2">{profile.grade}{profile.section}</p>
             </div>

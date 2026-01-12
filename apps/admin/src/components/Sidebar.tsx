@@ -139,25 +139,22 @@ export default function Sidebar() {
   }
 
   return (
-    <aside className="fixed left-0 top-0 h-screen w-72 bg-[var(--surface)] text-[var(--text)] border-r border-[var(--border)] flex flex-col">
-      <div className="p-6 border-b border-[var(--border)]">
+    <aside className="fixed left-0 top-0 h-screen w-72 ink-band ink-band--striped text-white border-r border-white/10 flex flex-col">
+      <div className="p-6 border-b border-white/10">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-[var(--surface-2)] text-[var(--text)] border border-[var(--border)] flex items-center justify-center text-xs font-semibold">
-            DAAIS
-          </div>
           <div>
-            <p className="text-base font-semibold">Dār al-Arqam</p>
-            <p className="text-xs text-[var(--text-muted)]">League of Champions</p>
+            <p className="text-base font-semibold text-white">Dār al-Arqam</p>
+            <p className="text-xs text-white/70">League of Champions</p>
           </div>
         </div>
       </div>
 
       {/* Navigation */}
       <nav className={`flex-1 ${compact ? 'p-4' : 'p-6'} overflow-y-auto`}>
-        <p className="text-xs font-semibold text-[var(--text-muted)] mb-3 px-4">Navigation</p>
+        <p className="text-xs font-semibold text-white/60 mb-3 px-4">Navigation</p>
         <ul className="space-y-1">
           {groupedItems.pinned.length > 0 && (
-            <li className="px-4 py-2 text-xs font-semibold text-[var(--text-muted)]">
+            <li className="px-4 py-2 text-xs font-semibold text-white/60">
               Pinned
             </li>
           )}
@@ -166,7 +163,7 @@ export default function Sidebar() {
           ))}
 
           {groupedItems.primary.length > 0 && (
-            <li className="px-4 py-2 text-xs font-semibold text-[var(--text-muted)]">
+            <li className="px-4 py-2 text-xs font-semibold text-white/60">
               Primary
             </li>
           )}
@@ -175,7 +172,7 @@ export default function Sidebar() {
           ))}
 
           {groupedItems.admin.length > 0 && (
-            <li className="px-4 py-2 text-xs font-semibold text-[var(--text-muted)]">
+            <li className="px-4 py-2 text-xs font-semibold text-white/60">
               Admin
             </li>
           )}
@@ -188,26 +185,26 @@ export default function Sidebar() {
       <div className="px-6 pb-6">
         <button
           onClick={() => setCustomizeOpen((prev) => !prev)}
-          className="btn-secondary w-full text-sm font-medium"
+          className="w-full text-sm font-medium rounded-xl border border-white/15 px-4 py-2 text-white/80 hover:text-white hover:bg-white/10 transition"
         >
           {customizeOpen ? 'Close Customization' : 'Customize Sidebar'}
         </button>
       </div>
 
       {customizeOpen && (
-        <div className="px-6 pb-6 border-t border-[var(--border)]">
+        <div className="px-6 pb-6 border-t border-white/10">
           <div className="flex items-center justify-between py-4">
-            <p className="text-xs text-[var(--text-muted)]">Customize</p>
+            <p className="text-xs text-white/60">Customize</p>
             <div className="flex gap-2">
               <button
                 onClick={resetPreferences}
-                className="text-xs text-[var(--text-muted)] hover:text-[var(--text)] transition"
+                className="text-xs text-white/60 hover:text-white transition"
               >
                 Reset
               </button>
               <button
                 onClick={savePreferences}
-                className="text-xs text-[var(--text-muted)] hover:text-[var(--text)] transition"
+                className="text-xs text-white/60 hover:text-white transition"
               >
                 {saving ? 'Saving...' : 'Save'}
               </button>
@@ -215,10 +212,10 @@ export default function Sidebar() {
           </div>
 
           <div className="flex items-center justify-between mb-3">
-            <p className="text-xs text-[var(--text-muted)]">Compact mode</p>
+            <p className="text-xs text-white/60">Compact mode</p>
             <button
               onClick={() => setCompact((prev) => !prev)}
-              className={`w-10 h-5 rounded-full transition ${compact ? 'bg-[var(--accent)]' : 'bg-[var(--border)]'}`}
+              className={`w-10 h-5 rounded-full transition ${compact ? 'bg-[var(--accent)]' : 'bg-white/20'}`}
             >
               <span className={`block w-4 h-4 rounded-full bg-white transform transition ${compact ? 'translate-x-5' : 'translate-x-1'}`} />
             </button>
@@ -233,30 +230,30 @@ export default function Sidebar() {
               return (
                 <div
                   key={id}
-                  className="flex items-center gap-3 rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-xs text-[var(--text-muted)]"
+                  className="flex items-center gap-3 rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-xs text-white/60"
                   draggable
                   onDragStart={() => handleDragStart(id)}
                   onDragOver={(event) => event.preventDefault()}
                   onDrop={() => handleDrop(id)}
                 >
-                  <span className="text-[var(--text-muted)] cursor-grab">::::</span>
+                  <span className="text-white/50 cursor-grab">::::</span>
                   <span className="flex-1">{item.name}</span>
                   <button
                     onClick={() => toggleFavorite(id)}
-                    className={`text-sm ${favorites.includes(id) ? 'text-[var(--accent)]' : 'text-[var(--text-muted)]'}`}
+                    className={`text-sm ${favorites.includes(id) ? 'text-white' : 'text-white/60'}`}
                   >
                     *
                   </button>
                   <button
                     onClick={() => toggleHidden(id)}
-                    className={`text-xs ${hidden.includes(id) ? 'text-[var(--danger)]' : 'text-[var(--text-muted)]'}`}
+                    className={`text-xs ${hidden.includes(id) ? 'text-[var(--danger)]' : 'text-white/60'}`}
                   >
                     {hidden.includes(id) ? 'Hidden' : 'Show'}
                   </button>
                   <select
                     value={groups[id] || 'Primary'}
                     onChange={(event) => setGroups((prev) => ({ ...prev, [id]: event.target.value as 'Primary' | 'Admin' }))}
-                    className="bg-[var(--surface-2)] text-[var(--text-muted)] rounded-md px-2 py-1 text-xs border border-[var(--border)]"
+                    className="bg-white/10 text-white/70 rounded-md px-2 py-1 text-xs border border-white/10"
                   >
                     {groupOptions.map((group) => (
                       <option key={group} value={group}>{group}</option>
@@ -270,12 +267,12 @@ export default function Sidebar() {
       )}
 
       {/* Footer */}
-      <div className="p-6 border-t border-[var(--border)]">
-        <div className="px-4 py-3 rounded-xl bg-[var(--surface-2)] border border-[var(--border)]">
-          <p className="text-sm text-[var(--text-muted)] font-medium">
+      <div className="p-6 border-t border-white/10">
+        <div className="px-4 py-3 rounded-xl bg-white/5 border border-white/10">
+          <p className="text-sm text-white/70 font-medium">
             Dār al-Arqam Islamic School
           </p>
-          <p className="text-xs text-[var(--text-muted)] mt-1">
+          <p className="text-xs text-white/50 mt-1">
             League of Champions
           </p>
         </div>
@@ -294,14 +291,14 @@ function NavItemRow({ item, pathname, compact }: { item: NavItem; pathname: stri
         href={item.href}
         className={`group flex items-center gap-3 ${compact ? 'px-3 py-2.5 text-sm' : 'px-4 py-3.5'} rounded-xl transition-all duration-200 ${
           isActive
-            ? 'bg-[var(--champ-soft)] text-[var(--text)] border-l-[3px] border-[var(--champ)]'
-            : 'text-[var(--text-muted)] hover:text-[var(--text)] hover:bg-[var(--surface-2)]'
+            ? 'bg-white/10 text-white border-l-[3px] border-[var(--gold)]'
+            : 'text-white/70 hover:text-white hover:bg-white/10'
         }`}
       >
         <div className={`p-2 rounded-lg transition-all ${
           isActive
-            ? 'bg-[var(--champ-soft)] text-[var(--champ)]'
-            : 'bg-[var(--surface-2)] text-[var(--text-muted)] group-hover:text-[var(--text)]'
+            ? 'bg-white/10 text-white'
+            : 'bg-white/5 text-white/60 group-hover:text-white'
         }`}>
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={item.icon} />

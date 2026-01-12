@@ -555,7 +555,7 @@ export default function RewardsPage() {
         <div className="space-y-6">
           {hallOfFame.map((tier) => (
             <div key={tier.name} className="card rounded-2xl overflow-hidden">
-              <div className="surface-muted p-6" style={{ borderLeft: `4px solid ${tier.bar}` }}>
+              <div className="bg-[var(--surface-2)] border border-[var(--border)] rounded-2xl p-6" style={{ borderLeft: `4px solid ${tier.bar}` }}>
                 <div className="flex items-center gap-4">
                   <span className="text-4xl">{tier.icon}</span>
                   <div>
@@ -664,7 +664,7 @@ export default function RewardsPage() {
                 </div>
                 <div className="space-y-4">
                   {/* Top Male */}
-                  <div className="surface-muted p-4" style={{ borderLeft: '3px solid var(--accent)' }}>
+                  <div className="bg-[var(--surface-2)] border border-[var(--border)] rounded-2xl p-4" style={{ borderLeft: '3px solid var(--accent)' }}>
                     <p className="text-xs font-semibold text-[var(--accent)] tracking-wider mb-2">Top Male</p>
                     {badge.topMale ? (
                       <div>
@@ -676,7 +676,7 @@ export default function RewardsPage() {
                     )}
                   </div>
                   {/* Top Female */}
-                  <div className="surface-muted p-4" style={{ borderLeft: '3px solid var(--house-aish)' }}>
+                  <div className="bg-[var(--surface-2)] border border-[var(--border)] rounded-2xl p-4" style={{ borderLeft: '3px solid var(--house-aish)' }}>
                     <p className="text-xs font-semibold text-[var(--house-aish)] tracking-wider mb-2">Top Female</p>
                     {badge.topFemale ? (
                       <div>
@@ -707,7 +707,7 @@ export default function RewardsPage() {
                 </h3>
                 <p className="text-sm text-[var(--text-muted)]">20+ points in each of the past 3 consecutive weeks</p>
               </div>
-              <span className="ml-auto chip px-3 py-1 rounded-lg text-sm">{consistencyCrown.length} eligible</span>
+              <span className="ml-auto px-3 py-1 rounded-lg text-sm border border-[var(--border)] bg-[var(--surface-2)] text-[var(--text-muted)]">{consistencyCrown.length} eligible</span>
             </div>
             {consistencyCrown.length === 0 ? (
               <p className="text-[var(--text-muted)] text-center py-4">No students have met this criteria yet</p>

@@ -609,7 +609,7 @@ export default function StaffPage() {
           </div>
         </div>
 
-        <div className="surface-muted p-5">
+        <div className="bg-[var(--surface-2)] border border-[var(--border)] rounded-2xl p-5">
           <div className="flex items-center justify-between mb-4">
             <div>
               <p className="text-xs font-semibold text-[var(--text-muted)] tracking-widest">House Champion Award</p>
@@ -743,17 +743,17 @@ export default function StaffPage() {
                     <td className="py-4 px-4">
                       <div className="flex gap-1.5 flex-wrap">
                         {member.points >= 500 && (
-                          <span className="chip inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs">
+                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs border border-[var(--border)] bg-[var(--surface-2)] text-[var(--text-muted)]">
                             ⭐ 500+ Pts
                           </span>
                         )}
                         {member.students >= 50 && (
-                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200">
+                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs border border-[var(--border)] bg-[var(--surface-2)] text-[var(--text-muted)]">
                             👥 50+ Students
                           </span>
                         )}
                         {member.streak >= 5 && (
-                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold bg-orange-50 text-orange-700 border border-orange-200">
+                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs border border-[var(--border)] bg-[var(--surface-2)] text-[var(--text-muted)]">
                             🔥 Hot Streak
                           </span>
                         )}

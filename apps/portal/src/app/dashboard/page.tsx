@@ -164,7 +164,7 @@ export default function DashboardPage() {
                       </div>
                     ) : null}
                     <div>
-                      <div className="chip mb-3">
+                      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[var(--border)] bg-[var(--surface-2)] text-xs text-[var(--text-muted)] mb-3">
                         <span>Top House</span>
                       </div>
                       <h2 className="text-3xl font-bold text-[var(--text)]">
@@ -239,7 +239,7 @@ export default function DashboardPage() {
             ))}
           </div>
 
-          <div className="surface-muted px-5 py-4 rounded-2xl">
+          <div className="bg-[var(--surface-2)] border border-[var(--border)] px-5 py-4 rounded-2xl">
             <div className="flex items-center justify-between text-[var(--text)]">
               <span className="text-sm font-medium text-[var(--text-muted)]">Total Points Awarded</span>
               <span className="text-xl font-bold">

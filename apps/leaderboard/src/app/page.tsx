@@ -4,19 +4,19 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { VIEWS } from "@/lib/views";
-import HouseCard from "@/components/HouseCard";
+import PodiumRow from "@/components/PodiumRow";
 import CrestLoader from "@/components/CrestLoader";
 
 interface House {
-    rank: number;
-    name: string;
-    virtue: string;
-    description: string;
-    points: number;
-    color: string;
-    bgColor: string;
-    logo?: string | null;
-  }
+  rank: number;
+  name: string;
+  virtue: string;
+  description: string;
+  points: number;
+  color: string;
+  bgColor: string;
+  logo?: string | null;
+}
 
 function canonicalHouse(value: string): string {
   const normalized = value
@@ -43,62 +43,62 @@ function canonicalHouse(value: string): string {
 }
 
 const houseConfig: Record<string, Omit<House, "rank" | "points" | "name">> = {
-    "House of Abu Bakr": {
-      virtue: "Loyalty",
-      description: "Rooted in honesty, unwavering in loyalty to faith and community.",
-      color: "var(--house-abu)",
-      bgColor: "var(--surface-2)",
-      logo: "/house_of_abubakr.png",
-    },
-    "House of 'Umar": {
-      virtue: "Moral Courage",
-      description: "Living with fairness, speaking truth, and acting with courage.",
-      color: "var(--house-umar)",
-      bgColor: "var(--surface-2)",
-      logo: "/house_of_umar.png",
-    },
-    "House of 'A'ishah": {
-      virtue: "Creativity",
-      description: "Igniting creativity that inspires hearts and serves Allah.",
-      color: "var(--house-aish)",
-      bgColor: "var(--surface-2)",
-      logo: "/house_of_aishah.png",
-    },
-    "House of Khadijah": {
-      virtue: "Wisdom",
-      description: "Guided by wisdom, leading with grace and strength.",
-      color: "var(--house-khad)",
-      bgColor: "var(--surface-2)",
-      logo: "/house_of_khadijah.png",
-    },
-  };
+  "House of Abu Bakr": {
+    virtue: "Loyalty",
+    description: "Rooted in honesty, unwavering in loyalty to faith and community.",
+    color: "var(--house-abu)",
+    bgColor: "var(--surface-2)",
+    logo: "/house_of_abubakr.png",
+  },
+  "House of 'Umar": {
+    virtue: "Moral Courage",
+    description: "Living with fairness, speaking truth, and acting with courage.",
+    color: "var(--house-umar)",
+    bgColor: "var(--surface-2)",
+    logo: "/house_of_umar.png",
+  },
+  "House of 'A'ishah": {
+    virtue: "Creativity",
+    description: "Igniting creativity that inspires hearts and serves Allah.",
+    color: "var(--house-aish)",
+    bgColor: "var(--surface-2)",
+    logo: "/house_of_aishah.png",
+  },
+  "House of Khadijah": {
+    virtue: "Wisdom",
+    description: "Guided by wisdom, leading with grace and strength.",
+    color: "var(--house-khad)",
+    bgColor: "var(--surface-2)",
+    logo: "/house_of_khadijah.png",
+  },
+};
 
 const fallbackHouses: House[] = [
-    {
-      rank: 1,
-      name: "House of Abu Bakr",
-      points: 4985,
-      ...houseConfig["House of Abu Bakr"],
-    },
-    {
-      rank: 2,
-      name: "House of 'Umar",
-      points: 4175,
-      ...houseConfig["House of 'Umar"],
-    },
-    {
-      rank: 3,
-      name: "House of 'A'ishah",
-      points: 3995,
-      ...houseConfig["House of 'A'ishah"],
-    },
-    {
-      rank: 4,
-      name: "House of Khadijah",
-      points: 3480,
-      ...houseConfig["House of Khadijah"],
-    },
-  ];
+  {
+    rank: 1,
+    name: "House of Abu Bakr",
+    points: 4985,
+    ...houseConfig["House of Abu Bakr"],
+  },
+  {
+    rank: 2,
+    name: "House of 'Umar",
+    points: 4175,
+    ...houseConfig["House of 'Umar"],
+  },
+  {
+    rank: 3,
+    name: "House of 'A'ishah",
+    points: 3995,
+    ...houseConfig["House of 'A'ishah"],
+  },
+  {
+    rank: 4,
+    name: "House of Khadijah",
+    points: 3480,
+    ...houseConfig["House of Khadijah"],
+  },
+];
 
 export default function Home() {
   const [houses, setHouses] = useState<House[]>(fallbackHouses);
@@ -187,18 +187,24 @@ export default function Home() {
     };
   }, []);
 
+  const [first, second, third] = houses;
+  const updatedLabel = new Date().toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
   return (
     <div className="min-h-screen app-shell flex flex-col">
-      <div className="broadcast">
-        <div className="broadcast-inner">
+      <div className="ink-band ink-band--striped border-b" style={{ borderColor: "var(--gold-ring)" }}>
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between gap-4">
           <div>
-            <div className="broadcast-title">League of Champions</div>
-            <div className="broadcast-sub">Dār al-Arqam Islamic School · Weekly Standings</div>
+            <div className="display text-2xl sm:text-3xl font-semibold">League of Champions</div>
+            <div className="text-sm text-white/70">Dār al-Arqam Islamic School</div>
           </div>
-          <div className="broadcast-chip">
-            <span className="broadcast-dot"></span>
-            Live Rankings
-          </div>
+          <span className="champ-badge">
+            <span className="champ-dot"></span>
+            Weekly Standings
+          </span>
         </div>
       </div>
 
@@ -224,18 +230,73 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Leaderboard Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-            {loading ? (
-              <div className="col-span-2">
-                <CrestLoader label="Loading standings..." />
-              </div>
-            ) : (
-              houses.map((house) => (
-                <HouseCard key={house.name} house={house} />
-              ))
-            )}
-          </div>
+          {loading ? (
+            <CrestLoader label="Loading standings..." />
+          ) : first && second && third ? (
+            <PodiumRow
+              first={{
+                id: first.name,
+                name: first.name,
+                points: first.points,
+                subtitle: first.virtue,
+                accentVar: first.color,
+              }}
+              second={{
+                id: second.name,
+                name: second.name,
+                points: second.points,
+                subtitle: second.virtue,
+                accentVar: second.color,
+              }}
+              third={{
+                id: third.name,
+                name: third.name,
+                points: third.points,
+                subtitle: third.virtue,
+                accentVar: third.color,
+              }}
+              metaLeft="Week of Jan 11"
+              metaRight={`Updated ${updatedLabel}`}
+            />
+          ) : null}
+
+          {!loading ? (
+            <div className="mt-6">
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th>Rank</th>
+                    <th>House</th>
+                    <th>Virtue</th>
+                    <th>Points</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {houses.map((house) => {
+                    const isFirst = house.rank === 1;
+                    const isSecond = house.rank === 2;
+                    const isThird = house.rank === 3;
+                    const rowStyle = isFirst
+                      ? { borderLeft: "3px solid var(--gold)", background: "var(--gold-soft)" }
+                      : isSecond
+                        ? { borderLeft: "3px solid rgba(139, 148, 158, 0.6)" }
+                        : isThird
+                          ? { borderLeft: "3px solid rgba(138, 90, 68, 0.6)" }
+                          : { borderLeft: "3px solid transparent" };
+
+                    return (
+                      <tr key={house.name} style={rowStyle}>
+                        <td className="score">{house.rank}</td>
+                        <td className="font-semibold">{house.name}</td>
+                        <td className="muted">{house.virtue}</td>
+                        <td className="score">{house.points.toLocaleString()}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          ) : null}
         </div>
       </div>
     </div>

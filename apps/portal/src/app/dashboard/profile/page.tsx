@@ -173,7 +173,7 @@ export default function MyPointsPage() {
           </div>
         </div>
 
-        <div className="surface-muted p-6 text-center">
+        <div className="bg-[var(--surface-2)] border border-[var(--border)] rounded-2xl p-6 text-center">
           <p className="text-sm text-[var(--text-muted)] mb-1">Total Points</p>
           <p
             className="text-4xl font-bold"

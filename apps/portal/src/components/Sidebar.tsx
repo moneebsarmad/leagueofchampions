@@ -45,22 +45,19 @@ export default function Sidebar({ role, portalLabel }: SidebarProps) {
       : studentNavItems
 
   return (
-    <aside className="fixed left-0 top-0 h-screen w-72 bg-[var(--surface)] text-[var(--text)] border-r border-[var(--border)] flex flex-col z-50">
-      <div className="p-6 border-b border-[var(--border)]">
+    <aside className="fixed left-0 top-0 h-screen w-72 ink-band ink-band--striped text-white border-r border-white/10 flex flex-col z-50">
+      <div className="p-6 border-b border-white/10">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-[var(--surface-2)] text-[var(--text)] border border-[var(--border)] flex items-center justify-center text-xs font-semibold">
-            DAAIS
-          </div>
           <div>
-            <p className="text-base font-semibold">Dār al-Arqam</p>
-            <p className="text-xs text-[var(--text-muted)]">League of Champions</p>
+            <p className="text-base font-semibold text-white">Dār al-Arqam</p>
+            <p className="text-xs text-white/70">League of Champions</p>
           </div>
         </div>
       </div>
 
       {/* Navigation */}
       <nav className="flex-1 p-6 overflow-y-auto">
-        <p className="text-xs font-semibold text-[var(--text-muted)] mb-4 px-4">Navigation</p>
+        <p className="text-xs font-semibold text-white/60 mb-4 px-4">Navigation</p>
         <ul className="space-y-1">
           {navItems.map((item) => {
             const isActive = pathname === item.href ||
@@ -72,14 +69,14 @@ export default function Sidebar({ role, portalLabel }: SidebarProps) {
                   href={item.href}
                   className={`group flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all duration-200 ${
                     isActive
-                      ? 'bg-[var(--champ-soft)] text-[var(--text)] border-l-[3px] border-[var(--champ)]'
-                      : 'text-[var(--text-muted)] hover:text-[var(--text)] hover:bg-[var(--surface-2)]'
+                      ? 'bg-white/10 text-white border-l-[3px] border-[var(--gold)]'
+                      : 'text-white/70 hover:text-white hover:bg-white/10'
                   }`}
                 >
                   <div className={`p-2 rounded-lg transition-all ${
                     isActive
-                      ? 'bg-[var(--champ-soft)] text-[var(--champ)]'
-                      : 'bg-[var(--surface-2)] text-[var(--text-muted)] group-hover:text-[var(--text)]'
+                      ? 'bg-white/10 text-white'
+                      : 'bg-white/5 text-white/60 group-hover:text-white'
                   }`}>
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={item.icon} />
@@ -94,12 +91,12 @@ export default function Sidebar({ role, portalLabel }: SidebarProps) {
       </nav>
 
       {/* Footer */}
-      <div className="p-6 border-t border-[var(--border)]">
-        <div className="px-4 py-3 rounded-xl bg-[var(--surface-2)] border border-[var(--border)]">
-          <p className="text-xs text-[var(--text-muted)] font-medium">
+      <div className="p-6 border-t border-white/10">
+        <div className="px-4 py-3 rounded-xl bg-white/5 border border-white/10">
+          <p className="text-xs text-white/70 font-medium">
             Dār al-Arqam Islamic School
           </p>
-          <p className="text-xs text-[var(--text-muted)] mt-1">
+          <p className="text-xs text-white/50 mt-1">
             League of Champions
           </p>
         </div>
