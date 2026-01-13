@@ -95,21 +95,19 @@ export default function Sidebar({ role, portalLabel, isSuperAdmin = false }: Sid
   const isAdmin = isAdminRole(role)
 
   return (
-    <aside className="fixed left-0 top-0 h-screen w-72 bg-[var(--midnight-primary)] text-white flex flex-col z-50">
-      {/* Victory Gold Accent Bar */}
-      <div className="h-1.5 bg-gradient-to-r from-[var(--victory-gold-dark)] via-[var(--victory-gold)] to-[var(--victory-gold-dark)]">
-        <div className="h-full bg-gradient-to-r from-transparent via-[var(--victory-gold-light)] to-transparent opacity-50"></div>
-      </div>
+    <aside className="fixed left-0 top-0 h-screen w-72 bg-gradient-to-b from-[var(--charcoal)] to-[var(--charcoal-light)] text-white flex flex-col z-50">
+      {/* Gold Top Border */}
+      <div className="h-1 bg-gradient-to-r from-[var(--gold-dark)] via-[var(--gold)] to-[var(--gold-dark)]"></div>
 
       {/* Header */}
       <div className="p-6 border-b border-white/10">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[var(--victory-gold)] to-[var(--victory-gold-dark)] flex items-center justify-center shadow-lg">
-            <span className="text-[var(--midnight-primary)] font-bold text-sm">DA</span>
+          <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[var(--gold)] to-[var(--gold-dark)] flex items-center justify-center shadow-lg shadow-[var(--gold)]/20">
+            <span className="text-[var(--charcoal)] font-bold text-sm" style={{ fontFamily: 'var(--font-playfair), serif' }}>DA</span>
           </div>
           <div>
-            <p className="text-base font-bold text-white tracking-tight">Dar al-Arqam</p>
-            <p className="text-xs text-[var(--victory-gold)] font-medium">{portalLabel}</p>
+            <p className="text-base font-semibold text-white" style={{ fontFamily: 'var(--font-playfair), serif' }}>Dar al-Arqam</p>
+            <p className="text-xs text-[var(--gold-light)] font-medium tracking-wide">{portalLabel}</p>
           </div>
         </div>
       </div>
@@ -180,23 +178,23 @@ function NavItemRow({ item, pathname }: { item: NavItem; pathname: string }) {
         href={item.href}
         className={`group relative flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 ${
           isActive
-            ? 'bg-gradient-to-r from-[var(--victory-gold-dark)] to-[var(--victory-gold)] text-[var(--midnight-primary)] shadow-lg'
-            : 'text-white/70 hover:text-white hover:bg-[var(--midnight-secondary)]'
+            ? 'bg-[var(--gold)]/15 text-[var(--gold)]'
+            : 'text-white/70 hover:text-white hover:bg-white/5'
         }`}
       >
         {isActive && (
-          <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-[var(--victory-gold)] rounded-r shadow-[0_0_8px_var(--victory-gold)]"></div>
+          <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-[var(--gold)] rounded-r shadow-[0_0_8px_var(--gold)]"></div>
         )}
         <div className={`p-1.5 rounded-md transition-all ${
           isActive
-            ? 'bg-[var(--midnight-primary)]/20'
+            ? 'bg-[var(--gold)]/20'
             : 'bg-white/5 group-hover:bg-white/10'
         }`}>
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={item.icon} />
           </svg>
         </div>
-        <span className={`text-sm ${isActive ? 'font-semibold' : 'font-medium'}`}>{item.name}</span>
+        <span className={`text-sm ${isActive ? 'font-semibold' : 'font-medium'}`} style={{ fontFamily: 'var(--font-cormorant), serif' }}>{item.name}</span>
       </Link>
     </li>
   )

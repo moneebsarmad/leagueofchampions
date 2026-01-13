@@ -1,353 +1,302 @@
 @import "tailwindcss";
 
 :root {
-  /* Victory Refined - Core Palette */
-  --bg-pearl: #F8F8FF;
-  --bg-pearl-alt: #F0F0F6;
-  --midnight-primary: #0B1426;
-  --midnight-secondary: #1B2B47;
-  --text-midnight: #0B1426;
-  --text-charcoal: #2C3E50;
-  --text-muted: #5b6472;
-  --victory-gold: #D4AF37;
-  --victory-gold-light: #E6C547;
-  --victory-gold-dark: #B8941F;
-  --accent-silver: #C0C0C0;
+  /* Regal Academic Palette */
+  --royal-purple: #2f0a61;
+  --royal-purple-light: #4a1a8a;
+  --royal-purple-deep: #1a0536;
 
-  /* Mapped Variables */
-  --ink: var(--midnight-primary);
-  --ink-2: var(--midnight-secondary);
-  --ink-3: #111827;
+  --gold: #c9a227;
+  --gold-light: #e8d48b;
+  --gold-dark: #9a7b1a;
+  --gold-soft: rgba(201, 162, 39, 0.12);
+  --gold-ring: rgba(201, 162, 39, 0.35);
 
-  --bg: var(--bg-pearl);
+  --cream: #faf9f7;
+  --ivory: #f5f3ef;
+  --charcoal: #1a1a2e;
+  --charcoal-light: #16162a;
+
+  /* Semantic mappings */
+  --bg: var(--cream);
   --surface: #ffffff;
-  --surface-2: var(--bg-pearl-alt);
+  --surface-2: var(--ivory);
+  --text: var(--charcoal);
+  --text-muted: #64748b;
+  --border: rgba(201, 162, 39, 0.2);
+  --shadow: 0 4px 20px rgba(26, 26, 46, 0.08);
 
-  --text: var(--text-midnight);
+  /* House Colors */
+  --house-abu: #2f0a61;
+  --house-khad: #055437;
+  --house-umar: #000068;
+  --house-aish: #910000;
 
-  --border: rgba(11, 20, 38, 0.12);
-  --shadow: 0 12px 34px rgba(11, 20, 38, 0.10);
-
-  --gold: var(--victory-gold);
-  --gold-2: var(--victory-gold-dark);
-  --gold-soft: rgba(212, 175, 55, 0.12);
-  --gold-ring: rgba(212, 175, 55, 0.35);
-
-  --accent: var(--midnight-secondary);
-  --accent-2: var(--midnight-primary);
-  --accent-soft: rgba(27, 43, 71, 0.12);
-
+  /* Status Colors */
   --success: #16a34a;
   --danger: #b42318;
   --warning: #b54708;
 
-  /* House Colors - Championship Themes */
-  --house-abu: #0B1426;
-  --house-khad: #2E8B57;
-  --house-umar: #4169E1;
-  --house-aish: #B22222;
-
-  /* Victory Stripe Pattern */
-  --stripe: repeating-linear-gradient(
-    135deg,
-    rgba(255,255,255,0.06) 0px,
-    rgba(255,255,255,0.06) 6px,
-    rgba(255,255,255,0.02) 6px,
-    rgba(255,255,255,0.02) 12px
-  );
-
   /* Fonts */
-  --font-heading: var(--font-montserrat);
-  --font-body: var(--font-montserrat);
-  --font-arabic: var(--font-amiri);
-  --font-display: var(--font-montserrat);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #070a0f;
-    --surface: #0b0f16;
-    --surface-2: #111827;
-
-    --text: #eef2f7;
-    --text-muted: #a7b0be;
-
-    --border: rgba(255, 255, 255, 0.10);
-    --shadow: 0 16px 44px rgba(0, 0, 0, 0.55);
-
-    --gold: #f0c75e;
-    --gold-2: #d6a93a;
-    --gold-soft: rgba(240, 199, 94, 0.14);
-    --gold-ring: rgba(240, 199, 94, 0.28);
-
-    --accent: #60a5fa;
-    --accent-2: #3b82f6;
-    --accent-soft: rgba(96, 165, 250, 0.14);
-  }
+  --font-body: var(--font-cormorant);
+  --font-heading: var(--font-playfair);
+  --font-display: var(--font-playfair);
 }
 
 @theme inline {
   --color-background: var(--bg);
   --color-foreground: var(--text);
-  --font-sans: var(--font-montserrat);
+  --font-sans: var(--font-cormorant);
 }
 
 body {
-  background: var(--bg);
+  background: var(--cream);
   color: var(--text);
-  font-family: var(--font-montserrat), system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--font-cormorant), Georgia, 'Times New Roman', serif;
 }
 
-.display {
-  font-family: var(--font-display), var(--font-montserrat), system-ui, sans-serif;
-  font-weight: 700;
+/* Display Typography */
+h1, h2, h3, .display {
+  font-family: var(--font-playfair), Georgia, serif;
+  font-weight: 600;
   letter-spacing: -0.01em;
 }
 
-/* Shell */
+/* App Shell with Pattern Overlay */
 .app-shell {
-  background: var(--bg);
+  background: var(--cream);
   color: var(--text);
   min-height: 100vh;
+  position: relative;
 }
 
-/* Victory Pattern Background */
-.victory-pattern {
-  background-image:
-    radial-gradient(circle at 50% 50%, transparent 1px, transparent 0),
-    linear-gradient(30deg, transparent 48%, rgba(212, 175, 55, 0.03) 49%, rgba(212, 175, 55, 0.03) 52%, transparent 53%),
-    linear-gradient(-30deg, transparent 48%, rgba(212, 175, 55, 0.02) 49%, rgba(212, 175, 55, 0.02) 52%, transparent 53%);
-  background-size: 40px 40px, 40px 40px, 40px 40px;
+.app-shell::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c9a227' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
 }
 
-/* Ink bands - Championship Midnight */
-.ink-band {
-  background: var(--ink);
-  color: #ffffff;
+.app-shell > * {
+  position: relative;
+  z-index: 1;
 }
 
-.ink-band--striped {
-  background-color: var(--ink);
-  background-image: var(--stripe);
+/* Regal Card */
+.regal-card {
+  background: linear-gradient(180deg, #ffffff 0%, var(--ivory) 100%);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: var(--shadow), 0 1px 3px rgba(201, 162, 39, 0.1);
+  position: relative;
+  overflow: hidden;
 }
 
-/* Victory Card */
 .card {
-  background: var(--surface);
+  background: linear-gradient(180deg, #ffffff 0%, var(--ivory) 100%);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: 16px;
   box-shadow: var(--shadow);
   position: relative;
   overflow: hidden;
 }
 
-.card::before {
+/* Gold Underline Accent */
+.gold-underline {
+  position: relative;
+  display: inline-block;
+}
+
+.gold-underline::after {
   content: '';
   position: absolute;
-  top: 0;
+  bottom: -4px;
   left: 0;
   right: 0;
   height: 3px;
-  background: linear-gradient(90deg, var(--victory-gold-dark), var(--victory-gold), var(--victory-gold-dark));
+  background: linear-gradient(90deg, var(--gold-dark), var(--gold), var(--gold-dark));
+  border-radius: 2px;
 }
 
-.victory-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  box-shadow: var(--shadow);
-  position: relative;
-  overflow: hidden;
-  transition: all 0.3s ease;
-}
-
-.victory-card:hover {
-  box-shadow: 0 16px 44px rgba(11, 20, 38, 0.15);
-  border-color: var(--victory-gold);
-}
-
-.victory-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, var(--victory-gold-dark), var(--victory-gold), var(--victory-gold-dark));
-}
-
-/* Champion Border */
-.champion-border {
-  position: relative;
-}
-
-.champion-border::after {
-  content: '';
-  position: absolute;
-  top: -2px;
-  left: -2px;
-  right: -2px;
-  bottom: -2px;
-  background: linear-gradient(45deg, var(--victory-gold), var(--midnight-primary), var(--victory-gold));
-  border-radius: inherit;
-  z-index: -1;
-  opacity: 0.6;
-}
-
-/* Victory Corner Accent */
-.victory-corner::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 24px;
-  height: 24px;
-  background: linear-gradient(-45deg, var(--victory-gold) 0%, transparent 70%);
-  clip-path: polygon(100% 0%, 0% 0%, 100% 100%);
-}
-
-/* Buttons - Champion Style */
-.btn-primary {
-  background: var(--midnight-primary);
+/* Buttons - Regal Style */
+.btn-regal {
+  background: linear-gradient(135deg, var(--royal-purple) 0%, var(--royal-purple-light) 100%);
   color: #ffffff;
-  border-radius: 8px;
-  padding: 12px 20px;
-  border: 2px solid transparent;
+  padding: 12px 24px;
+  border-radius: 10px;
   font-weight: 600;
+  font-family: var(--font-cormorant), serif;
   letter-spacing: 0.02em;
   transition: all 0.2s ease;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 4px 12px rgba(47, 10, 97, 0.25);
+  border: none;
+}
+
+.btn-regal:hover {
+  background: linear-gradient(135deg, var(--royal-purple-light) 0%, var(--royal-purple) 100%);
+  transform: translateY(-1px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 6px 20px rgba(47, 10, 97, 0.35);
+}
+
+.btn-gold {
+  background: linear-gradient(135deg, var(--gold-dark) 0%, var(--gold) 50%, var(--gold-light) 100%);
+  color: var(--charcoal);
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-family: var(--font-cormorant), serif;
+  letter-spacing: 0.02em;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(201, 162, 39, 0.3);
+  border: none;
+}
+
+.btn-gold:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(201, 162, 39, 0.4);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--royal-purple) 0%, var(--royal-purple-light) 100%);
+  color: #ffffff;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  border: none;
 }
 
 .btn-primary:hover {
-  background: var(--midnight-secondary);
-  border-color: var(--victory-gold);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(11, 20, 38, 0.2);
+  background: linear-gradient(135deg, var(--royal-purple-light) 0%, var(--royal-purple) 100%);
 }
 
 .btn-secondary {
   background: var(--surface);
   color: var(--text);
-  border-radius: 8px;
   padding: 12px 20px;
+  border-radius: 10px;
   border: 1px solid var(--border);
   font-weight: 500;
   transition: all 0.2s ease;
 }
 
 .btn-secondary:hover {
-  background: var(--surface-2);
-  border-color: var(--victory-gold);
+  background: var(--ivory);
+  border-color: var(--gold);
 }
 
-.btn-champion {
-  background: var(--midnight-primary);
-  color: #ffffff;
-  padding: 12px 24px;
-  border-radius: 8px;
-  font-weight: 600;
-  letter-spacing: 0.03em;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 12px rgba(11, 20, 38, 0.15);
-  border: 2px solid transparent;
-}
-
-.btn-champion:hover {
-  background: var(--midnight-secondary);
-  border-color: var(--victory-gold);
-  transform: scale(1.02);
-  box-shadow: 0 6px 20px rgba(11, 20, 38, 0.25);
-}
-
-.btn-victory {
-  background: linear-gradient(135deg, var(--victory-gold-dark), var(--victory-gold));
-  color: var(--midnight-primary);
-  padding: 12px 24px;
-  border-radius: 8px;
-  font-weight: 700;
-  letter-spacing: 0.03em;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
-  border: 1px solid var(--victory-gold-dark);
-}
-
-.btn-victory:hover {
-  background: linear-gradient(135deg, var(--victory-gold), var(--victory-gold-light));
-  transform: scale(1.02);
-  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
-}
-
-/* Inputs - Champion Style */
-.input {
-  background: var(--surface);
+/* Inputs - Regal Style */
+.input, .regal-input {
+  background: var(--ivory);
   border: 2px solid var(--border);
-  border-radius: 8px;
-  padding: 12px 14px;
-  font-weight: 500;
-  transition: all 0.2s ease;
-}
-
-.input:hover {
-  background: #ffffff;
-}
-
-.input:focus {
-  border-color: var(--victory-gold);
-  box-shadow: 0 0 0 4px var(--gold-soft);
-  outline: none;
-}
-
-.champion-input {
-  background: var(--surface);
-  border: 2px solid var(--border);
-  border-radius: 8px;
+  border-radius: 10px;
   padding: 12px 16px;
-  font-weight: 500;
+  font-family: var(--font-cormorant), serif;
+  font-size: 16px;
   transition: all 0.2s ease;
 }
 
-.champion-input:hover {
-  background: #ffffff;
-}
-
-.champion-input:focus {
-  border-color: var(--victory-gold);
+.input:focus, .regal-input:focus {
+  border-color: var(--gold);
   box-shadow: 0 0 0 4px var(--gold-soft);
   outline: none;
 }
 
-/* Champion badge */
+/* Regal Table */
+.regal-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+
+.regal-table th {
+  background: linear-gradient(180deg, var(--ivory) 0%, var(--cream) 100%);
+  color: var(--charcoal);
+  font-family: var(--font-playfair), serif;
+  font-weight: 600;
+  padding: 16px 20px;
+  text-align: left;
+  border-bottom: 2px solid var(--border);
+}
+
+.regal-table td {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  transition: background 0.15s ease;
+}
+
+.regal-table tr:hover td {
+  background: var(--gold-soft);
+}
+
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.table th {
+  background: linear-gradient(180deg, var(--ivory) 0%, var(--cream) 100%);
+  color: var(--charcoal);
+  font-family: var(--font-playfair), serif;
+  font-weight: 600;
+  padding: 14px 16px;
+  text-align: left;
+  border-bottom: 2px solid var(--border);
+}
+
+.table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s ease;
+}
+
+.table tr:hover td {
+  background: var(--gold-soft);
+}
+
+/* Badge */
+.badge-gold {
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+  color: var(--charcoal);
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  font-family: var(--font-cormorant), serif;
+  letter-spacing: 0.02em;
+}
+
 .champ-badge {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 6px 12px;
+  padding: 6px 14px;
   border-radius: 999px;
   border: 1px solid var(--gold-ring);
   background: var(--gold-soft);
-  color: var(--victory-gold-dark);
+  color: var(--gold-dark);
   font-size: 12px;
   font-weight: 600;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .champ-dot {
   width: 8px;
   height: 8px;
   border-radius: 999px;
-  background: var(--victory-gold);
-  box-shadow: 0 0 6px var(--victory-gold);
-}
-
-.badge-victory {
-  background: var(--victory-gold);
-  color: var(--midnight-primary);
-  padding: 4px 12px;
-  border-radius: 999px;
-  font-size: 12px;
-  font-weight: 700;
-  box-shadow: 0 2px 8px rgba(212, 175, 55, 0.3);
-  border: 1px solid var(--victory-gold-dark);
+  background: var(--gold);
+  box-shadow: 0 0 8px var(--gold);
 }
 
 /* Numeric */
@@ -355,32 +304,28 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
-.rank-num {
-  font-family: var(--font-display), var(--font-montserrat), system-ui, sans-serif;
-  letter-spacing: -0.02em;
-  font-weight: 800;
+/* Sidebar Band */
+.ink-band {
+  background: linear-gradient(180deg, var(--charcoal) 0%, var(--charcoal-light) 100%);
+  color: #ffffff;
 }
 
-.rank-num--xl {
-  font-size: 40px;
+.ink-band--striped {
+  background: linear-gradient(180deg, var(--charcoal) 0%, var(--charcoal-light) 100%);
 }
 
-.rank-num--lg {
-  font-size: 32px;
-}
-
-/* Podium - Championship Style */
+/* Podium Cards */
 .podium {
-  background: var(--surface);
+  background: linear-gradient(180deg, #ffffff 0%, var(--ivory) 100%);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: 16px;
   box-shadow: var(--shadow);
   position: relative;
   overflow: hidden;
 }
 
 .podium--gold {
-  border-color: var(--victory-gold);
+  border-color: var(--gold);
   box-shadow: 0 0 0 3px var(--gold-soft), var(--shadow);
 }
 
@@ -391,11 +336,7 @@ body {
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(90deg, var(--victory-gold-dark), var(--victory-gold), var(--victory-gold-dark));
-}
-
-.podium--silver {
-  border-color: rgba(192, 192, 192, 0.5);
+  background: linear-gradient(90deg, var(--gold-dark), var(--gold), var(--gold-dark));
 }
 
 .podium--silver::before {
@@ -408,10 +349,6 @@ body {
   background: linear-gradient(90deg, #A0A0A0, #C0C0C0, #A0A0A0);
 }
 
-.podium--bronze {
-  border-color: rgba(205, 127, 50, 0.5);
-}
-
 .podium--bronze::before {
   content: '';
   position: absolute;
@@ -422,95 +359,113 @@ body {
   background: linear-gradient(90deg, #8B4513, #CD7F32, #8B4513);
 }
 
-.ribbon {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  padding: 6px 12px;
-  border-radius: 6px;
-  background: var(--midnight-primary);
-  color: #ffffff;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.ribbon--gold {
-  background: var(--victory-gold);
-  color: var(--midnight-primary);
-}
-
-/* Table - Champion Style */
-.table {
-  width: 100%;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  overflow: hidden;
-  border-collapse: separate;
-  border-spacing: 0;
-}
-
-.table th {
-  background: var(--midnight-primary);
-  color: #ffffff;
-  font-size: 12px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  padding: 14px 16px;
-  border-bottom: 2px solid var(--victory-gold);
-}
-
-.table td {
-  padding: 14px 16px;
-  border-top: 1px solid var(--border);
-  transition: background 0.15s ease;
-}
-
-.table tr:hover td {
-  background: var(--surface-2);
-}
-
-.champion-table {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: var(--shadow);
-}
-
-.champion-table th {
-  background: var(--midnight-primary);
-  color: #ffffff;
-  font-weight: 700;
-  padding: 16px 20px;
-  text-align: left;
-  border-bottom: 3px solid var(--victory-gold);
-}
-
-.champion-table td {
-  padding: 16px 20px;
-  border-bottom: 1px solid var(--border);
-  transition: background 0.15s ease;
-}
-
-.champion-table tr:nth-child(even) {
-  background: var(--surface-2);
-}
-
-.champion-table tr:hover td {
-  background: var(--gold-soft);
-}
-
+/* Helper classes */
 .muted {
   color: var(--text-muted);
 }
 
+/* Auth Page Styles */
+.auth-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--cream) 0%, var(--ivory) 50%, var(--cream) 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-page::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c9a227' fill-opacity='0.06'%3E%3Cpath d='M50 50c0-5.523 4.477-10 10-10s10 4.477 10 10-4.477 10-10 10c0 5.523-4.477 10-10 10s-10-4.477-10-10 4.477-10 10-10zM10 10c0-5.523 4.477-10 10-10s10 4.477 10 10-4.477 10-10 10c0 5.523-4.477 10-10 10S0 25.523 0 20s4.477-10 10-10z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+.auth-card {
+  background: linear-gradient(180deg, #ffffff 0%, var(--ivory) 100%);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  box-shadow: 0 20px 60px rgba(26, 26, 46, 0.12), 0 1px 3px rgba(201, 162, 39, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--royal-purple), var(--gold), var(--royal-purple));
+}
+
+/* Decorative Elements */
+.auth-star {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: var(--gold);
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  opacity: 0.4;
+  animation: twinkle 3s ease-in-out infinite;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.1); }
+}
+
+.auth-orb-purple {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--royal-purple-light) 0%, transparent 70%);
+  opacity: 0.15;
+  filter: blur(60px);
+}
+
+.auth-orb-gold {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--gold) 0%, transparent 70%);
+  opacity: 0.2;
+  filter: blur(40px);
+}
+
+/* Gold sweep animation for auth button */
+.auth-submit {
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-submit::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  animation: sweep 3s ease-in-out infinite;
+}
+
+@keyframes sweep {
+  0% { left: -100%; }
+  50%, 100% { left: 100%; }
+}
+
+/* Victory Arena (for dark sections) */
+.victory-arena {
+  background: linear-gradient(180deg, var(--charcoal) 0%, var(--charcoal-light) 100%);
+  color: #ffffff;
+}
+
 /* Podium layout helpers */
 .podium-section { margin-top: 20px; }
-.podium-meta { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 14px; color: rgba(255,255,255,0.75); font-size: 12px; font-weight: 500; }
+.podium-meta { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 14px; color: var(--text-muted); font-size: 12px; font-weight: 500; }
 .podium-grid { display: grid; gap: 16px; grid-template-columns: 1fr; }
 
 @media (min-width: 900px) {
@@ -520,92 +475,9 @@ body {
 
 .podium-inner { padding: 20px; }
 .podium-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
-.podium-name { font-weight: 800; letter-spacing: -0.01em; }
+.podium-name { font-family: var(--font-playfair), serif; font-weight: 700; letter-spacing: -0.01em; }
 .podium-sub { margin-top: 4px; color: var(--text-muted); font-size: 13px; font-weight: 500; }
 .podium-bottom { display: flex; align-items: flex-end; justify-content: space-between; margin-top: 16px; gap: 12px; }
 .podium-accent { width: 6px; height: 36px; border-radius: 999px; }
 
 .dot { width: 10px; height: 10px; border-radius: 999px; display: inline-block; }
-
-/* Arabic Typography */
-.arabic-victory {
-  font-family: var(--font-amiri);
-  font-weight: 700;
-  color: var(--victory-gold);
-}
-
-.bilingual-champion {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-}
-
-.bilingual-champion .english {
-  font-family: var(--font-montserrat);
-  font-weight: 700;
-  color: var(--text-midnight);
-}
-
-.bilingual-champion .arabic {
-  font-family: var(--font-amiri);
-  font-weight: 700;
-  color: var(--victory-gold);
-}
-
-/* Champion Navigation */
-.champion-nav-item {
-  position: relative;
-  padding: 12px 20px;
-  color: rgba(255, 255, 255, 0.8);
-  transition: all 0.2s ease;
-  border-radius: 8px;
-}
-
-.champion-nav-item:hover {
-  background: var(--midnight-secondary);
-  color: var(--victory-gold);
-}
-
-.champion-nav-item.active {
-  background: linear-gradient(135deg, var(--victory-gold-dark), var(--victory-gold));
-  color: var(--midnight-primary);
-  font-weight: 600;
-  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
-}
-
-.champion-nav-item.active::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 4px;
-  height: 60%;
-  background: var(--victory-gold);
-  box-shadow: 0 0 8px var(--victory-gold);
-  border-radius: 0 4px 4px 0;
-}
-
-/* Victory Arena (for leaderboard dark background) */
-.victory-arena {
-  background:
-    radial-gradient(ellipse at top, var(--midnight-secondary) 0%, var(--midnight-primary) 100%),
-    linear-gradient(45deg, transparent 24%, rgba(212, 175, 55, 0.03) 25%, rgba(212, 175, 55, 0.03) 26%, transparent 27%);
-  background-size: 100% 100%, 60px 60px;
-}
-
-/* Champion Elevation */
-.champion-elevation {
-  transform: translateY(0);
-  transition: all 0.3s ease;
-}
-
-.champion-elevation:hover {
-  transform: translateY(-4px) scale(1.02);
-  box-shadow: 0 12px 32px rgba(11, 20, 38, 0.2);
-}
-
-.champion-elevation.gold:hover {
-  box-shadow: 0 12px 32px rgba(212, 175, 55, 0.3);
-}
