@@ -28,7 +28,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     let isMounted = true;
 
     const initSession = async () => {
+      console.log('[Auth] Initializing session...')
       if (isDemo) {
+        console.log('[Auth] Demo mode, skipping auth')
         if (isMounted) {
           setSession(null);
           setUser(null);
@@ -36,13 +38,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         }
         return;
       }
-      const { data, error } = await supabase.auth.getSession();
-      if (!isMounted) return;
-      if (error) {
-        console.error("Supabase session error", error.message);
+      try {
+        const { data, error } = await supabase.auth.getSession();
+        console.log('[Auth] getSession result:', { hasSession: !!data.session, error: error?.message })
+        if (!isMounted) return;
+        if (error) {
+          console.error("[Auth] Supabase session error", error.message);
+        }
+        setSession(data.session ?? null);
+        setUser(data.session?.user ?? null);
+        console.log('[Auth] User set:', data.session?.user?.email ?? 'no user')
+      } catch (err) {
+        console.error('[Auth] Error getting session:', err)
       }
-      setSession(data.session ?? null);
-      setUser(data.session?.user ?? null);
       setLoading(false);
     };
 
