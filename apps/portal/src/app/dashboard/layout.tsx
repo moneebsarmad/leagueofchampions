@@ -76,9 +76,10 @@ export default function DashboardLayout({
 
   useEffect(() => {
     if (!loading && !user) {
-      router.replace('/')
+      console.log('[Dashboard] No user, redirecting to login...')
+      window.location.href = '/'
     }
-  }, [loading, user, router])
+  }, [loading, user])
 
   useEffect(() => {
     if (!user) return
