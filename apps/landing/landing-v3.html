@@ -17,6 +17,17 @@
       --warm-dark: #e8e4dc;
       --gold: #a08050;
       --border: #e0ddd6;
+      --card-radius: 12px;
+      --card-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+      --card-shadow-hover: 0 18px 36px rgba(0, 0, 0, 0.12);
+      --card-ring: 0 0 0 3px rgba(160, 128, 80, 0.18);
+      --card-title-size: 1.15rem;
+      --card-body-size: 0.95rem;
+      --card-caption-size: 0.85rem;
+      --house-abubakr: #2f0a61;
+      --house-khadijah: #055437;
+      --house-umar: #000068;
+      --house-aishah: #910000;
 
     }
 
@@ -137,6 +148,24 @@
       background: white;
     }
 
+    .card-base {
+      border-radius: var(--card-radius);
+      border: 1px solid var(--border);
+      box-shadow: var(--card-shadow);
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+
+    .card-base:hover,
+    .card-base:focus-within {
+      transform: translateY(-6px);
+      box-shadow: var(--card-shadow-hover);
+    }
+
+    .card-base:focus-within {
+      outline: none;
+      box-shadow: var(--card-shadow-hover), var(--card-ring);
+    }
+
     /* ========== SECTION 1: HERO ========== */
 
     .hero {
@@ -149,12 +178,11 @@
     }
 
     .hero-content {
-      max-width: 640px;
+      max-width: 900px;
     }
 
     .hero h1 {
       margin-bottom: 24px;
-      white-space: nowrap;
     }
 
     .hero .lead {
@@ -169,7 +197,8 @@
 
     .problem-section h2 {
       text-align: center;
-      margin-bottom: 48px;
+      max-width: 1000px;
+      margin: 0 auto 48px;
     }
 
     .problem-compare {
@@ -180,10 +209,8 @@
     }
 
     .problem-box {
-      padding: 32px;
-      border-radius: 12px;
+      padding: 26px;
       text-align: center;
-      transition: all 0.3s ease;
       cursor: default;
     }
 
@@ -193,8 +220,6 @@
     }
 
     .problem-box--fragmented:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
       border-color: #d8c8c8;
     }
 
@@ -204,14 +229,12 @@
     }
 
     .problem-box--intentional:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
       border-color: #c8d8c8;
     }
 
     .problem-box h3 {
       margin-bottom: 16px;
-      font-size: 1.1rem;
+      font-size: var(--card-title-size);
     }
 
     .problem-icon {
@@ -226,9 +249,10 @@
     }
 
     .problem-list li {
-      padding: 8px 0;
+      padding: 6px 0;
       color: var(--ink-soft);
-      font-size: 0.95rem;
+      font-size: var(--card-body-size);
+      line-height: 1.5;
       border-bottom: 1px dashed var(--border);
     }
 
@@ -252,6 +276,10 @@
 
     .anchor-section h2 {
       margin-bottom: 16px;
+    }
+
+    .anchor-section .container--narrow {
+      max-width: 900px;
     }
 
     .anchor-section .lead {
@@ -290,23 +318,24 @@
       grid-template-columns: repeat(3, 1fr);
       gap: 20px;
       text-align: left;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     .anchor-card {
       background: white;
-      border: 1px solid var(--border);
-      border-radius: 10px;
       padding: 16px 18px;
     }
 
     .anchor-card h3 {
-      font-size: 0.95rem;
+      font-size: var(--card-title-size);
       margin-bottom: 6px;
       white-space: nowrap;
     }
 
     .anchor-card p {
-      font-size: 0.85rem;
+      font-size: var(--card-body-size);
       white-space: nowrap;
     }
 
@@ -329,16 +358,11 @@
 
     .core-card {
       background: white;
-      padding: 32px 24px;
-      border-radius: 10px;
+      padding: 28px 22px;
       text-align: center;
-      border: 1px solid var(--border);
-      transition: all 0.3s ease;
     }
 
     .core-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
       border-color: var(--ink-muted);
     }
 
@@ -357,11 +381,11 @@
 
     .core-card h3 {
       margin-bottom: 10px;
-      font-size: 1.1rem;
+      font-size: var(--card-title-size);
     }
 
     .core-card p {
-      font-size: 0.95rem;
+      font-size: var(--card-body-size);
     }
 
     /* ========== SECTION 5: HOUSE SYSTEM ========== */
@@ -381,7 +405,7 @@
     }
 
     .decision-intro .lead {
-      max-width: 680px;
+      max-width: 620px;
       margin: 0 auto;
       text-align: center;
     }
@@ -395,18 +419,14 @@
     }
 
     .decision-card {
-      border-radius: 16px;
       overflow: hidden;
       display: flex;
       flex-direction: column;
-      transition: all 0.3s ease;
       background: white;
-      border: 1px solid var(--border);
     }
 
     .decision-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
+      border-color: var(--ink-muted);
     }
 
     .decision-header {
@@ -416,14 +436,14 @@
     }
 
     .decision-tagline {
-      font-size: 0.95rem;
+      font-size: var(--card-body-size);
       color: rgba(255, 255, 255, 0.85);
       margin-top: 6px;
       font-style: italic;
     }
 
     .decision-header h3 {
-      font-size: 1.5rem;
+      font-size: var(--card-title-size);
       color: white;
       margin: 0;
     }
@@ -467,16 +487,15 @@
 
     .decision-text {
       color: var(--ink-soft);
-      font-size: 0.95rem;
+      font-size: var(--card-body-size);
       line-height: 1.6;
     }
 
     .decision-question {
       padding: 16px 20px;
-      border-radius: 8px;
       font-family: 'Libre Baskerville', serif;
       font-style: italic;
-      font-size: 1rem;
+      font-size: var(--card-body-size);
       color: var(--ink);
       background: rgba(0, 0, 0, 0.03);
       border-left: 3px solid var(--gold);
@@ -497,7 +516,7 @@
     }
 
     .decision-fit p {
-      font-size: 0.9rem;
+      font-size: var(--card-body-size);
       color: var(--ink);
     }
 
@@ -510,51 +529,45 @@
 
     .house-card {
       background: white;
-      border: 1px solid var(--border);
-      border-radius: 12px;
       padding: 20px;
     }
 
     .house-card h3 {
-      font-size: 1.05rem;
+      font-size: var(--card-title-size);
       margin-bottom: 8px;
     }
 
     .house-anchors {
-      font-size: 0.85rem;
+      font-size: var(--card-caption-size);
       color: var(--ink-muted);
       margin-bottom: 12px;
     }
 
-    .house-bullets {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-    }
-
-    .house-bullets li {
-      font-size: 0.85rem;
-      color: var(--ink-soft);
-      padding: 4px 0;
-      padding-left: 14px;
-      position: relative;
-    }
-
-    .house-bullets li::before {
-      content: '·';
-      position: absolute;
-      left: 0;
-      color: var(--gold);
-      font-weight: bold;
-      font-size: 1.1rem;
-      line-height: 1;
-    }
-
     .house-desc {
       margin: 0;
-      font-size: 0.85rem;
+      font-size: var(--card-body-size);
       color: var(--ink-soft);
       line-height: 1.6;
+    }
+
+    .house-card--abubakr {
+      border-color: rgba(47, 10, 97, 0.28);
+      background: linear-gradient(0deg, rgba(47, 10, 97, 0.06), rgba(47, 10, 97, 0.06)), #ffffff;
+    }
+
+    .house-card--khadijah {
+      border-color: rgba(5, 84, 55, 0.28);
+      background: linear-gradient(0deg, rgba(5, 84, 55, 0.06), rgba(5, 84, 55, 0.06)), #ffffff;
+    }
+
+    .house-card--umar {
+      border-color: rgba(0, 0, 104, 0.28);
+      background: linear-gradient(0deg, rgba(0, 0, 104, 0.06), rgba(0, 0, 104, 0.06)), #ffffff;
+    }
+
+    .house-card--aishah {
+      border-color: rgba(145, 0, 0, 0.28);
+      background: linear-gradient(0deg, rgba(145, 0, 0, 0.06), rgba(145, 0, 0, 0.06)), #ffffff;
     }
 
     .houses-note {
@@ -592,17 +605,12 @@
 
     .app-card {
       background: white;
-      border-radius: 12px;
       padding: 32px 28px;
-      border: 1px solid var(--border);
       text-align: center;
-      transition: all 0.3s ease;
     }
 
     .app-card:hover {
       border-color: var(--ink-muted);
-      transform: translateY(-6px);
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
     }
 
     .app-card:hover .app-icon {
@@ -611,12 +619,10 @@
 
     .app-card--featured {
       border-color: var(--gold);
-      box-shadow: 0 4px 20px rgba(160, 128, 80, 0.1);
     }
 
     .app-card--featured:hover {
       border-color: var(--gold);
-      box-shadow: 0 16px 40px rgba(160, 128, 80, 0.2);
     }
 
     .app-icon {
@@ -629,12 +635,12 @@
 
     .app-card h3 {
       font-family: 'Libre Baskerville', serif;
-      font-size: 1.15rem;
+      font-size: var(--card-title-size);
       margin-bottom: 10px;
     }
 
     .app-desc {
-      font-size: 0.95rem;
+      font-size: var(--card-body-size);
       color: var(--ink-soft);
       margin-bottom: 20px;
     }
@@ -648,7 +654,7 @@
 
     .app-features li {
       padding: 6px 0;
-      font-size: 0.85rem;
+      font-size: var(--card-body-size);
       color: var(--ink-soft);
       border-bottom: 1px dashed var(--border);
     }
@@ -696,7 +702,7 @@
 
     .app-note {
       margin-top: 10px;
-      font-size: 0.8rem;
+      font-size: var(--card-caption-size);
       color: var(--ink-muted);
     }
 
@@ -735,6 +741,15 @@
       background: var(--warm);
       border: 1px solid var(--border);
       text-align: center;
+    }
+
+    .continuity-sub {
+      display: block;
+      font-size: 0.75rem;
+      color: var(--ink-muted);
+      text-transform: none;
+      letter-spacing: 0;
+      margin-top: 4px;
     }
 
     .continuity-row-label {
@@ -794,6 +809,16 @@
       color: white;
     }
 
+    @media (min-width: 1024px) {
+      .hero h1 {
+        font-size: 2.4rem;
+      }
+
+      .problem-section h2 {
+        font-size: 2rem;
+      }
+    }
+
     /* ========== RESPONSIVE ========== */
 
     @media (max-width: 768px) {
@@ -829,10 +854,6 @@
 
       .hero-content {
         max-width: 100%;
-      }
-
-      .hero h1 {
-        white-space: normal;
       }
 
       .btn-group {
@@ -943,7 +964,7 @@
       <h2>Most Schools Have Tarbiyah Activities. Not Tarbiyah Systems.</h2>
 
       <div class="problem-compare">
-        <div class="problem-box problem-box--fragmented">
+        <div class="problem-box problem-box--fragmented card-base" tabindex="0">
           <span class="problem-icon">◇</span>
           <h3>Fragmented Culture</h3>
           <ul class="problem-list">
@@ -956,7 +977,7 @@
 
         <div class="problem-vs">vs</div>
 
-        <div class="problem-box problem-box--intentional">
+        <div class="problem-box problem-box--intentional card-base" tabindex="0">
           <span class="problem-icon">◈</span>
           <h3>Intentional Culture</h3>
           <ul class="problem-list">
@@ -974,7 +995,7 @@
   <section id="framework" class="anchor-section">
     <div class="container container--narrow">
       <p class="eyebrow">What This Is</p>
-      <h2 style="white-space: nowrap;">A School-Wide Formation Framework</h2>
+      <h2>A School-Wide Formation Framework</h2>
       <p class="lead">
         Not a rewards system. Not a curriculum add-on. A daily language for tarbiyah — used in praise, correction, and reflection across the school.
       </p>
@@ -991,15 +1012,15 @@
 
       <div class="anchor-label">The shared language</div>
       <div class="anchor-cards">
-        <div class="anchor-card">
+        <div class="anchor-card card-base" tabindex="0">
           <h3>Respect (Adab)</h3>
           <p>Honouring Others and Community</p>
         </div>
-        <div class="anchor-card">
+        <div class="anchor-card card-base" tabindex="0">
           <h3>Responsibility (Amanah)</h3>
           <p>Taking Ownership and Initiative</p>
         </div>
-        <div class="anchor-card">
+        <div class="anchor-card card-base" tabindex="0">
           <h3>Righteousness (Taqwa)</h3>
           <p>Living Islamic Values</p>
         </div>
@@ -1013,17 +1034,17 @@
       <h2>Culture Shapes Students More Than Rules</h2>
 
       <div class="core-cards">
-        <div class="core-card">
+        <div class="core-card card-base" tabindex="0">
           <span class="core-number">1</span>
-          <h3>Culture Already Exists</h3>
-          <p>Every school has a culture — whether designed or not.</p>
+          <h3>Students follow what we reinforce</h3>
+          <p>They notice what adults reward, ignore, and correct—then that becomes the “real” standard.</p>
         </div>
-        <div class="core-card">
+        <div class="core-card card-base" tabindex="0">
           <span class="core-number">2</span>
           <h3>Culture Shapes Behaviour</h3>
           <p>Students absorb norms, not just rules.</p>
         </div>
-        <div class="core-card">
+        <div class="core-card card-base" tabindex="0">
           <span class="core-number">3</span>
           <h3>Culture Must Be Intentional</h3>
           <p>Formation requires coherence, not just activities.</p>
@@ -1044,7 +1065,7 @@
       </div>
 
       <div class="decision-grid">
-        <div class="decision-card">
+        <div class="decision-card card-base" tabindex="0">
           <div class="decision-header">
             <h3>Champions of Ihsan</h3>
             <p class="decision-tagline">Character that holds under pressure — and shows up in service.</p>
@@ -1079,23 +1100,23 @@
         <div>
           <p class="anchor-label">The four houses</p>
           <div class="houses-grid">
-            <div class="house-card">
-              <h3>House of Abu Bakr</h3>
+            <div class="house-card card-base house-card--abubakr" tabindex="0">
+              <h3>House of Abū Bakr</h3>
               <p class="house-anchors">Anchors: Loyalty</p>
               <p class="house-desc">Rooted in honesty, unwavering in loyalty to faith and community.</p>
             </div>
-            <div class="house-card">
-              <h3>House of Umar</h3>
-              <p class="house-anchors">Anchors: Moral Courage</p>
-              <p class="house-desc">Living with fairness, speaking truth, and acting with courage.</p>
-            </div>
-            <div class="house-card">
-              <h3>House of Khadijah</h3>
+            <div class="house-card card-base house-card--khadijah" tabindex="0">
+              <h3>House of Khadījah</h3>
               <p class="house-anchors">Anchors: Wisdom</p>
               <p class="house-desc">Guided by wisdom, leading with grace and strength.</p>
             </div>
-            <div class="house-card">
-              <h3>House of Aishah</h3>
+            <div class="house-card card-base house-card--umar" tabindex="0">
+              <h3>House of ʿUmar</h3>
+              <p class="house-anchors">Anchors: Moral Courage</p>
+              <p class="house-desc">Living with fairness, speaking truth, and acting with courage.</p>
+            </div>
+            <div class="house-card card-base house-card--aishah" tabindex="0">
+              <h3>House of ʿĀʾishah</h3>
               <p class="house-anchors">Anchors: Creativity</p>
               <p class="house-desc">Igniting creativity that inspires hearts and serves Allah.</p>
             </div>
@@ -1117,7 +1138,7 @@
 
       <div class="apps-grid">
         <!-- Leaderboard -->
-        <div class="app-card">
+        <div class="app-card card-base" tabindex="0">
           <div class="app-icon">◈</div>
           <h3>Leaderboard</h3>
           <p class="app-desc">Public house standings and recognitions — so culture stays visible.</p>
@@ -1133,7 +1154,7 @@
         </div>
 
         <!-- Portal -->
-        <div class="app-card app-card--featured">
+        <div class="app-card app-card--featured card-base" tabindex="0">
           <div class="app-icon">◉</div>
           <h3>Portal (Staff • Students • Parents)</h3>
           <p class="app-desc">One place to track growth, award points, and keep the 3Rs consistent.</p>
@@ -1165,9 +1186,9 @@
 
       <div class="continuity-grid">
         <div></div>
-        <div class="continuity-header">Respect (Adab)</div>
-        <div class="continuity-header">Responsibility (Amanah)</div>
-        <div class="continuity-header">Righteousness (Taqwa)</div>
+        <div class="continuity-header">Respect<span class="continuity-sub">(Adab)</span></div>
+        <div class="continuity-header">Responsibility<span class="continuity-sub">(Amanah)</span></div>
+        <div class="continuity-header">Righteousness<span class="continuity-sub">(Taqwa)</span></div>
 
         <div class="continuity-row-label">Middle School (Guided)</div>
         <div class="continuity-cell">Tone, manners, boundaries — coached daily.</div>
