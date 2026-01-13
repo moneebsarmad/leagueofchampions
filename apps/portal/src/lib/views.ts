@@ -25,4 +25,8 @@ export const TABLES = {
   CATEGORIES: '3r_categories',
   STUDENTS: 'students',
   STAFF: 'staff',
+  DECISION_LOG: 'decision_log',
+  HUDDLE_LOG: 'huddle_log',
+  ACTION_MENU: 'action_menu',
+  ANNOUNCEMENTS: 'announcements',
 } as const

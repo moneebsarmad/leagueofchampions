@@ -84,7 +84,7 @@ export default function AddPointsPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [showSuccess, setShowSuccess] = useState(false)
-  const isReadOnly = true
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   useEffect(() => {
     fetchData()
@@ -136,13 +136,33 @@ export default function AddPointsPage() {
   const handleSubmit = async () => {
     if (!selectedStudent || !selectedCategory) return
 
-    if (isReadOnly) {
-      alert('This demo is read-only. Points cannot be submitted.')
-      return
-    }
-
     setIsSubmitting(true)
+    setErrorMessage(null)
+
     try {
+      const response = await fetch('/api/points', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          student_name: selectedStudent.name,
+          student_id: selectedStudent.id,
+          grade: selectedStudent.grade,
+          section: selectedStudent.section,
+          house: selectedStudent.house,
+          r: selectedCategory.r,
+          subcategory: selectedCategory.subcategory,
+          points: selectedCategory.points,
+          notes: notes || null,
+          date_of_event: eventDate,
+        }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to add points')
+      }
+
       setShowSuccess(true)
       setTimeout(() => {
         setShowSuccess(false)
@@ -150,7 +170,7 @@ export default function AddPointsPage() {
       }, 2000)
     } catch (error) {
       console.error('Error:', error)
-      alert('Failed to add points. Please try again.')
+      setErrorMessage(error instanceof Error ? error.message : 'Failed to add points. Please try again.')
     } finally {
       setIsSubmitting(false)
     }
@@ -391,11 +411,21 @@ export default function AddPointsPage() {
         </div>
       )}
 
+      {/* Error Message */}
+      {errorMessage && (
+        <div className="bg-[var(--danger)]/10 border border-[var(--danger)]/30 text-[var(--danger)] px-5 py-4 rounded-xl mb-6 flex items-center gap-3">
+          <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span className="font-medium">{errorMessage}</span>
+        </div>
+      )}
+
       {/* Submit Button */}
       {selectedStudent && selectedCategory && (
         <button
           onClick={handleSubmit}
-          disabled={isSubmitting || isReadOnly}
+          disabled={isSubmitting}
           className="btn-primary w-full font-medium flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isSubmitting ? (
