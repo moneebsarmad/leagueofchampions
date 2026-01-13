@@ -107,7 +107,7 @@ export default function Sidebar({ role, portalLabel, isSuperAdmin = false }: Sid
       <div className="p-6 border-b border-white/10">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[var(--victory-gold)] to-[var(--victory-gold-dark)] flex items-center justify-center shadow-lg">
-            <span className="text-[var(--midnight-primary)] font-bold text-sm">DA</span>
+            <span className="text-[var(--midnight-primary)] font-bold text-sm">DAAIS</span>
           </div>
           <div>
             <p className="text-base font-bold text-white tracking-tight">Dar al-Arqam</p>

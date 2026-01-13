@@ -201,7 +201,7 @@ export default function Home() {
           <div className="flex items-center gap-4">
             <div className="relative">
               <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-[var(--victory-gold)] to-[var(--victory-gold-dark)] flex items-center justify-center shadow-lg">
-                <span className="text-[var(--midnight-primary)] font-bold text-lg">DA</span>
+                <span className="text-[var(--midnight-primary)] font-bold text-lg">DAAIS</span>
               </div>
               <div className="absolute -inset-0.5 rounded-xl bg-[var(--victory-gold)] opacity-30 blur"></div>
             </div>

@@ -60,7 +60,7 @@ export default function HomeClient() {
         <div className="text-center mb-6">
           <div className="relative inline-block mx-auto mb-4">
             <div className="h-14 w-14 rounded-2xl bg-gradient-to-br from-[var(--midnight-primary)] to-[var(--midnight-secondary)] border-2 border-[var(--victory-gold)] flex items-center justify-center shadow-lg">
-              <span className="text-sm font-bold bg-gradient-to-b from-[var(--victory-gold-light)] to-[var(--victory-gold)] bg-clip-text text-transparent">DA</span>
+              <span className="text-sm font-bold bg-gradient-to-b from-[var(--victory-gold-light)] to-[var(--victory-gold)] bg-clip-text text-transparent">DAAIS</span>
             </div>
             <div className="absolute -inset-0.5 rounded-2xl bg-[var(--victory-gold)] opacity-20 blur"></div>
           </div>
