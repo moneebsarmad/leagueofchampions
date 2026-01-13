@@ -55,24 +55,17 @@ export default function HomeClient() {
   };
 
   return (
-    <div className="auth-page flex items-center justify-center px-4 py-12">
-      {/* Decorative elements */}
-      <div className="auth-orb-purple" style={{ top: '-100px', left: '-100px' }}></div>
-      <div className="auth-orb-gold" style={{ bottom: '10%', right: '5%' }}></div>
-      <div className="auth-star" style={{ top: '15%', left: '20%', animationDelay: '0s' }}></div>
-      <div className="auth-star" style={{ top: '25%', right: '15%', animationDelay: '1s' }}></div>
-      <div className="auth-star" style={{ bottom: '20%', left: '10%', animationDelay: '2s' }}></div>
-
-      <div className="auth-card w-full max-w-md p-8 relative z-10">
+    <div className="min-h-screen app-shell flex items-center justify-center px-4 py-12 victory-pattern">
+      <div className="victory-card w-full max-w-md p-8">
         <div className="text-center mb-6">
           <div className="relative inline-block mx-auto mb-4">
-            <div className="h-14 w-14 rounded-2xl bg-gradient-to-br from-[var(--royal-purple)] to-[var(--royal-purple-light)] border-2 border-[var(--gold)] flex items-center justify-center shadow-lg">
-              <span className="text-sm font-bold text-[var(--gold)]" style={{ fontFamily: 'var(--font-playfair), serif' }}>DA</span>
+            <div className="h-14 w-14 rounded-2xl bg-gradient-to-br from-[var(--midnight-primary)] to-[var(--midnight-secondary)] border-2 border-[var(--victory-gold)] flex items-center justify-center shadow-lg">
+              <span className="text-sm font-bold bg-gradient-to-b from-[var(--victory-gold-light)] to-[var(--victory-gold)] bg-clip-text text-transparent">DA</span>
             </div>
-            <div className="absolute -inset-1 rounded-2xl bg-[var(--gold)] opacity-20 blur"></div>
+            <div className="absolute -inset-0.5 rounded-2xl bg-[var(--victory-gold)] opacity-20 blur"></div>
           </div>
-          <h1 className="text-2xl text-[var(--text)]" style={{ fontFamily: 'var(--font-playfair), serif' }}>League of Champions</h1>
-          <p className="text-[var(--gold-dark)] text-sm mt-1 font-medium">
+          <h1 className="text-2xl font-bold text-[var(--text)]">League of Champions</h1>
+          <p className="text-[var(--victory-gold)] text-sm mt-1 font-medium">
             {selectedRole.title} Portal
           </p>
         </div>
@@ -144,7 +137,7 @@ export default function HomeClient() {
           ) : null}
 
           <button
-            className="btn-regal auth-submit w-full"
+            className="btn-victory w-full"
             type="submit"
             disabled={loading || !email || !password}
           >

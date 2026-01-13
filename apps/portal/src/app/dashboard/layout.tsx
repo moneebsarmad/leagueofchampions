@@ -152,9 +152,9 @@ export default function DashboardLayout({
 
       {/* Main Content */}
       <div className="ml-72">
-        <div className="ink-band px-6 py-4 border-b border-[var(--gold-ring)]">
+        <div className="victory-arena px-6 py-4 border-b-2 border-[var(--victory-gold)]">
           <div className="flex items-center justify-between">
-            <div className="text-lg font-semibold text-white display">{showAdmin ? 'Dashboard' : 'Portal Dashboard'}</div>
+            <div className="text-lg font-bold text-white display">{showAdmin ? 'Dashboard' : 'Portal Dashboard'}</div>
             <span className="champ-badge">
               <span className="champ-dot"></span>
               Season Live
