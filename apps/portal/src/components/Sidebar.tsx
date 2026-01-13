@@ -63,6 +63,7 @@ const superAdminItems: NavItem[] = [
   { id: 'announcements', name: 'Announcements', href: '/dashboard/announcements', icon: 'M7 8h10M7 12h10M7 16h6M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z' },
   { id: 'data-quality', name: 'Data Quality', href: '/dashboard/data-quality', icon: 'M9 12h6m2 9H7a2 2 0 01-2-2V5a2 2 0 012-2h6l4 4v12a2 2 0 01-2 2zM14 3v5h5' },
   { id: 'behaviour', name: 'Behaviour Insights', href: '/dashboard/behaviour', icon: 'M12 3l7 4v6c0 5-3.5 9.5-7 11-3.5-1.5-7-6-7-11V7l7-4zM9 12l2 2 4-4' },
+  { id: 'setup', name: 'Database Setup', href: '/dashboard/setup', icon: 'M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4' },
 ]
 
 // Check if role has admin access
