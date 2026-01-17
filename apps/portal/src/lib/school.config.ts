@@ -77,8 +77,8 @@ export interface SchoolConfig {
 
 const demoConfig: SchoolConfig = {
   // School Identity
-  schoolName: 'Demo Academy',
-  systemName: 'League of Stars',
+  schoolName: 'Dār al-Arqam Islamic School',
+  systemName: 'DAAIS',
   tagline: 'Inspiring Excellence Through Recognition',
 
   // Branding Assets
@@ -165,7 +165,8 @@ const demoConfig: SchoolConfig = {
 
 const bhaConfig: SchoolConfig = {
   ...demoConfig,
-  schoolName: 'Brighter Horizon Academy',
+  schoolName: 'Dār al-Arqam Islamic School',
+  systemName: 'DAAIS',
   tagline: 'Nurturing Leaders of Tomorrow',
   crestLogo: '/crest.png', // BHA-specific crest
 }
