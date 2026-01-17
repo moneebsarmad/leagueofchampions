@@ -1,23 +1,26 @@
 import type { Metadata } from "next";
-import { Montserrat, Amiri } from "next/font/google";
+import { Cinzel, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import AutoRotate from "@/components/AutoRotate";
 
-const montserrat = Montserrat({
+const cinzel = Cinzel({
+  variable: "--font-cinzel",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
-  variable: "--font-montserrat",
+  weight: ["400", "700"],
 });
 
-const amiri = Amiri({
-  subsets: ["arabic", "latin"],
-  weight: ["400", "700"],
-  variable: "--font-amiri",
+const playfair = Playfair_Display({
+  variable: "--font-playfair",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
 });
+
+const systemName = process.env.NEXT_PUBLIC_SYSTEM_NAME || 'League of Stars'
 
 export const metadata: Metadata = {
-  title: "League of Champions Leaderboard",
-  description: "Where Champions Are Made",
+  title: `${systemName} Leaderboard`,
+  description: "Where Stars Are Made",
 };
 
 export default function RootLayout({
@@ -27,7 +30,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${montserrat.variable} ${amiri.variable} ${montserrat.className} antialiased`}>
+      <body className={`${cinzel.variable} ${playfair.variable} antialiased`}>
         <AutoRotate />
         {children}
       </body>

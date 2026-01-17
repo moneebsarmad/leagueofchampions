@@ -50,7 +50,7 @@ struct LandingView: View {
                 .font(AppTheme.Fonts.display(size: 34, weight: .bold))
                 .foregroundColor(AppTheme.Colors.charcoal)
 
-            Text("Dār Al-Arqam Islamic School")
+            Text("Brighter Horizon Academy")
                 .font(AppTheme.Fonts.body(size: 14))
                 .foregroundColor(AppTheme.Colors.charcoal.opacity(0.6))
         }

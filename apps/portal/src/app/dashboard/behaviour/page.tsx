@@ -1,6 +1,10 @@
 'use client'
 
 import { useEffect, useMemo, useState } from 'react'
+import { supabase } from '@/lib/supabaseClient'
+import { AccessDenied, RequireRole } from '@/components/PermissionGate'
+import { ROLES } from '@/lib/permissions'
+import { useSessionStorageState } from '@/hooks/useSessionStorageState'
 
 type UploadRecord = {
   upload_id: string
@@ -24,7 +28,7 @@ f2a6b2e0-0000-0000-0000-000000000002,Adam Bashar,7,B,demerit,2025-01-09,10:30,Sa
 
 export default function BehaviourIntelligencePage() {
   const [file, setFile] = useState<File | null>(null)
-  const [sourceSystem, setSourceSystem] = useState('Manual Upload')
+  const [sourceSystem, setSourceSystem] = useSessionStorageState('admin:behaviour:sourceSystem', 'Manual Upload')
   const [uploading, setUploading] = useState(false)
   const [uploadResponse, setUploadResponse] = useState<UploadResponse | null>(null)
   const [uploadError, setUploadError] = useState<string | null>(null)
@@ -37,7 +41,12 @@ export default function BehaviourIntelligencePage() {
 
   const loadUploads = async () => {
     setRefreshingUploads(true)
-    setRecentUploads([])
+    const { data } = await supabase
+      .from('behaviour_uploads')
+      .select('upload_id,file_name,source_system,created_at')
+      .order('created_at', { ascending: false })
+      .limit(6)
+    setRecentUploads(data || [])
     setRefreshingUploads(false)
   }
 
@@ -62,7 +71,8 @@ export default function BehaviourIntelligencePage() {
 
       const response = await fetch('/api/behaviour/upload', {
         method: 'POST',
-        body: formData})
+        body: formData,
+      })
       const contentType = response.headers.get('content-type') || ''
       const rawBody = (await response.text()).trim()
       let data: UploadResponse
@@ -91,65 +101,67 @@ export default function BehaviourIntelligencePage() {
   }
 
   return (
-    <div>
+    <RequireRole roles={ROLES.SUPER_ADMIN} fallback={<AccessDenied message="Super admin access required." />}>
+      <div>
       <div className="mb-8">
-        <p className="text-xs font-semibold tracking-[0.2em] text-[var(--accent)] mb-2">Behaviour Intelligence</p>
+        <p className="text-xs font-semibold tracking-[0.2em] text-[#c9a227] mb-2">Behaviour Intelligence</p>
         <h1
-          className="text-3xl font-bold text-[var(--text)] mb-2"
+          className="text-3xl font-bold text-[#1a1a2e] mb-2"
+          style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}
         >
           Behaviour Intelligence Console
         </h1>
-        <p className="text-[var(--text-muted)] max-w-2xl">
+        <p className="text-[#1a1a2e]/60 max-w-2xl">
           Upload merit and demerit logs, track ingestion status, and trigger insight recomputation. All logic is rules-based and
           stored in Supabase for transparent auditability.
         </p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-6">
-        <div className="card rounded-2xl p-6">
-          <h2 className="text-xl font-semibold text-[var(--text)] mb-2">
+        <div className="regal-card rounded-2xl p-6">
+          <h2 className="text-xl font-semibold text-[#1a1a2e] mb-2" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
             Analyse Behaviour Data
           </h2>
-          <p className="text-sm text-[var(--text-muted)] mb-6">
+          <p className="text-sm text-[#1a1a2e]/60 mb-6">
             Upload discipline reports to generate insights. The system analyses events in-memory and stores only computed patterns
             and summaries - <span className="font-semibold">no raw event data is retained</span>.
           </p>
 
           <div className="grid gap-5">
-            <div className="border border-dashed border-[var(--border)] rounded-2xl p-5 bg-white/60">
-              <label className="text-xs tracking-[0.2em] text-[var(--text-muted)]">Behaviour file</label>
+            <div className="border border-dashed border-[#c9a227]/40 rounded-2xl p-5 bg-white/60">
+              <label className="text-xs tracking-[0.2em] text-[#1a1a2e]/50">Behaviour file</label>
               <div className="mt-3 flex flex-col gap-3">
                 <input
                   type="file"
                   accept=".csv,.pdf"
                   onChange={(event) => setFile(event.target.files?.[0] || null)}
-                  className="text-sm text-[var(--text-muted)] file:mr-4 file:rounded-xl file:border-0 file:bg-[var(--accent)] file:px-4 file:py-2 file:text-white file:shadow-sm hover:file:bg-[var(--accent)]"
+                  className="text-sm text-[#1a1a2e]/70 file:mr-4 file:rounded-xl file:border-0 file:bg-[#c9a227] file:px-4 file:py-2 file:text-white file:shadow-sm hover:file:bg-[#b08a1f]"
                 />
-                <div className="text-xs text-[var(--text-muted)]">
+                <div className="text-xs text-[#1a1a2e]/50">
                   CSV and PDF reports are supported. PDFs are parsed from the Discipline Event Summary format.
                 </div>
                 <a
                   href={sampleCsvHref}
                   download="behaviour_events_sample.csv"
-                  className="text-xs text-[var(--accent)] font-semibold underline underline-offset-4"
+                  className="text-xs text-[#2f0a61] font-semibold underline underline-offset-4"
                 >
                   Download sample CSV
                 </a>
               </div>
             </div>
 
-            <div className="bg-white rounded-2xl p-4 border border-[var(--border)]">
-              <label className="text-xs tracking-[0.2em] text-[var(--text-muted)]">Source system</label>
+            <div className="bg-white rounded-2xl p-4 border border-[#c9a227]/20">
+              <label className="text-xs tracking-[0.2em] text-[#1a1a2e]/50">Source system</label>
               <input
                 value={sourceSystem}
                 onChange={(event) => setSourceSystem(event.target.value)}
-                className="mt-2 w-full rounded-xl border border-[var(--border)] px-3 py-2 text-sm"
+                className="mt-2 w-full rounded-xl border border-[#1a1a2e]/10 px-3 py-2 text-sm"
                 placeholder="Manual Upload"
               />
             </div>
 
             {uploadError && (
-              <div className="rounded-xl border border-[var(--danger)] bg-[var(--surface-2)] px-4 py-3 text-sm text-[var(--danger)]">
+              <div className="rounded-xl border border-[#910000]/20 bg-[#fff5f5] px-4 py-3 text-sm text-[#910000]">
                 {uploadError}
               </div>
             )}
@@ -157,7 +169,7 @@ export default function BehaviourIntelligencePage() {
             <button
               onClick={handleUpload}
               disabled={uploading}
-              className="btn-primary text-sm font-semibold px-6 py-3 shadow-sm disabled:opacity-60"
+              className="rounded-xl bg-gradient-to-r from-[#2f0a61] to-[#1a0536] px-6 py-3 text-sm font-semibold text-white shadow-sm hover:opacity-90 disabled:opacity-60"
             >
               {uploading ? 'Analysing...' : 'Analyse Behaviour File'}
             </button>
@@ -165,29 +177,29 @@ export default function BehaviourIntelligencePage() {
         </div>
 
         <div className="flex flex-col gap-6">
-          <div className="card rounded-2xl p-6">
-            <h3 className="text-lg font-semibold text-[var(--text)] mb-4">
+          <div className="regal-card rounded-2xl p-6">
+            <h3 className="text-lg font-semibold text-[#1a1a2e] mb-4" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
               Latest Analysis Result
             </h3>
-            {!uploadResponse && <p className="text-sm text-[var(--text-muted)]">No analyses yet.</p>}
+            {!uploadResponse && <p className="text-sm text-[#1a1a2e]/50">No analyses yet.</p>}
             {uploadResponse && (
               <div className="space-y-3 text-sm">
-                {uploadResponse.error && <p className="text-[var(--danger)]">{uploadResponse.error}</p>}
+                {uploadResponse.error && <p className="text-[#910000]">{uploadResponse.error}</p>}
                 <div className="flex items-center justify-between">
-                  <span className="text-[var(--text-muted)]">Upload ID</span>
-                  <span className="font-semibold text-[var(--text)]">{uploadResponse.upload_id || '—'}</span>
+                  <span className="text-[#1a1a2e]/60">Upload ID</span>
+                  <span className="font-semibold text-[#1a1a2e]">{uploadResponse.upload_id || '—'}</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-[var(--text-muted)]">Events analysed</span>
-                  <span className="font-semibold text-[var(--text)]">{uploadResponse.analyzed ?? 0}</span>
+                  <span className="text-[#1a1a2e]/60">Events analysed</span>
+                  <span className="font-semibold text-[#1a1a2e]">{uploadResponse.analyzed ?? 0}</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-[var(--text-muted)]">Students updated</span>
-                  <span className="font-semibold text-[var(--text)]">{uploadResponse.students_updated ?? 0}</span>
+                  <span className="text-[#1a1a2e]/60">Students updated</span>
+                  <span className="font-semibold text-[#1a1a2e]">{uploadResponse.students_updated ?? 0}</span>
                 </div>
                 {uploadResponse.errors && uploadResponse.errors.length > 0 && (
-                  <div className="rounded-xl border border-[var(--border)] bg-[var(--surface-2)] px-4 py-3 text-xs text-[var(--text-muted)]">
-                    <p className="font-semibold text-[var(--text)] mb-2">Row issues</p>
+                  <div className="rounded-xl border border-[#c9a227]/20 bg-[#fffaf0] px-4 py-3 text-xs text-[#1a1a2e]/70">
+                    <p className="font-semibold text-[#1a1a2e] mb-2">Row issues</p>
                     <ul className="space-y-1">
                       {uploadResponse.errors.slice(0, 4).map((item) => (
                         <li key={`${item.row}-${item.message}`}>Row {item.row}: {item.message}</li>
@@ -200,32 +212,32 @@ export default function BehaviourIntelligencePage() {
             )}
           </div>
 
-          <div className="card rounded-2xl p-6">
+          <div className="regal-card rounded-2xl p-6">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-[var(--text)]">
+              <h3 className="text-lg font-semibold text-[#1a1a2e]" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
                 Recent Uploads
               </h3>
               <button
                 onClick={loadUploads}
-                className="text-xs font-semibold text-[var(--accent)] underline underline-offset-4"
+                className="text-xs font-semibold text-[#2f0a61] underline underline-offset-4"
                 disabled={refreshingUploads}
               >
                 {refreshingUploads ? 'Refreshing...' : 'Refresh'}
               </button>
             </div>
             {recentUploads.length === 0 ? (
-              <p className="text-sm text-[var(--text-muted)]">No uploads recorded yet.</p>
+              <p className="text-sm text-[#1a1a2e]/50">No uploads recorded yet.</p>
             ) : (
               <div className="space-y-3 text-sm">
                 {recentUploads.map((upload) => (
                   <div key={upload.upload_id} className="flex items-start justify-between gap-4">
                     <div>
-                      <p className="font-semibold text-[var(--text)]">{upload.file_name || 'Manual upload'}</p>
-                      <p className="text-xs text-[var(--text-muted)]">
+                      <p className="font-semibold text-[#1a1a2e]">{upload.file_name || 'Manual upload'}</p>
+                      <p className="text-xs text-[#1a1a2e]/50">
                         {upload.source_system || 'Unknown source'}
                       </p>
                     </div>
-                    <div className="text-right text-xs text-[var(--text-muted)]">
+                    <div className="text-right text-xs text-[#1a1a2e]/50">
                       {new Date(upload.created_at).toLocaleString()}
                     </div>
                   </div>
@@ -235,6 +247,7 @@ export default function BehaviourIntelligencePage() {
           </div>
         </div>
       </div>
-    </div>
+      </div>
+    </RequireRole>
   )
 }

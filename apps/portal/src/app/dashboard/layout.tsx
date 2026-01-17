@@ -3,27 +3,23 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '../providers'
-import Sidebar, { UserRole } from '../../components/Sidebar'
+import { supabase } from '../../lib/supabaseClient'
+import Sidebar from '../../components/Sidebar'
 import DashboardHeader from '../../components/DashboardHeader'
 import CrestLoader from '../../components/CrestLoader'
-import AnnouncementsPopup from '../../components/AnnouncementsPopup'
+import MobileNav from '@/components/MobileNav'
 
-// All valid roles
-const VALID_ROLES: UserRole[] = ['student', 'parent', 'staff', 'admin', 'super_admin', 'house_mentor', 'teacher', 'support_staff']
+type Role = 'student' | 'parent' | 'staff'
 
-function mapRoleToPortalRole(dbRole: string | null | undefined): UserRole | null {
+// RBAC roles that map to 'staff' portal access
+const STAFF_ROLES = ['staff', 'super_admin', 'admin', 'house_mentor', 'teacher', 'support_staff']
+const ADMIN_ROLES = ['super_admin', 'admin']
+
+function mapRoleToPortalRole(dbRole: string | null): Role | null {
   if (!dbRole) return null
-  // Normalize role: lowercase and trim
-  const normalized = String(dbRole).toLowerCase().trim()
-
-  // Direct match
-  if (VALID_ROLES.includes(normalized as UserRole)) return normalized as UserRole
-
-  // Handle variations
-  if (normalized === 'superadmin' || normalized === 'super-admin') return 'super_admin'
-  if (normalized === 'housementor' || normalized === 'house-mentor') return 'house_mentor'
-  if (normalized === 'supportstaff' || normalized === 'support-staff') return 'support_staff'
-
+  if (dbRole === 'student') return 'student'
+  if (dbRole === 'parent') return 'parent'
+  if (STAFF_ROLES.includes(dbRole)) return 'staff'
   return null
 }
 
@@ -41,131 +37,149 @@ function formatDisplayName(email: string) {
     .join(' ')
 }
 
-function portalLabel(role: UserRole) {
+function portalLabel(role: Role) {
   switch (role) {
     case 'student':
       return 'Student Portal'
     case 'parent':
       return 'Parent Portal'
-    case 'admin':
-    case 'super_admin':
-      return 'Admin Portal'
     case 'staff':
-    case 'teacher':
-    case 'house_mentor':
-    case 'support_staff':
       return 'Staff Portal'
     default:
       return 'Portal'
   }
 }
 
-function isAdminRole(role: UserRole): boolean {
-  return role === 'admin' || role === 'super_admin'
-}
-
 export default function DashboardLayout({
-  children}: {
+  children,
+}: {
   children: React.ReactNode
 }) {
   const router = useRouter()
   const { user, loading } = useAuth()
-  const [role, setRole] = useState<UserRole | null>(null)
+  const [role, setRole] = useState<Role | null>(null)
   const [profileLoading, setProfileLoading] = useState(true)
   const [staffName, setStaffName] = useState<string | null>(null)
+  const [isAdmin, setIsAdmin] = useState(false)
+  const [mobileNavOpen, setMobileNavOpen] = useState(false)
 
   useEffect(() => {
     if (!loading && !user) {
-      console.log('[Dashboard] No user, redirecting to login...')
-      window.location.href = '/'
+      router.replace('/')
     }
-  }, [loading, user])
+  }, [loading, user, router])
+
+  const userId = user?.id ?? null
 
   useEffect(() => {
-    if (!user) return
+    if (!userId) return
 
-    setProfileLoading(true)
-    const userRole = user.user_metadata?.role ?? null
-    console.log('[Dashboard] User metadata:', user.user_metadata)
-    console.log('[Dashboard] Role from metadata:', userRole)
-    const mappedRole = mapRoleToPortalRole(userRole)
-    console.log('[Dashboard] Mapped role:', mappedRole)
-    setRole(mappedRole)
-    setProfileLoading(false)
-  }, [user])
+    const loadProfile = async () => {
+      setProfileLoading(true)
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('role')
+        .eq('id', userId)
+        .maybeSingle()
+
+      if (error) {
+        setRole(null)
+        setIsAdmin(false)
+      } else {
+        const dbRole = data?.role ?? null
+        setRole(mapRoleToPortalRole(dbRole))
+        setIsAdmin(dbRole ? ADMIN_ROLES.includes(dbRole) : false)
+      }
+      setProfileLoading(false)
+    }
+
+    loadProfile()
+  }, [userId])
 
   useEffect(() => {
-    if (!user?.email) return
-    setStaffName(String(user.user_metadata?.staff_name ?? ''))
-  }, [user])
+    const email = user?.email ?? ''
+    if (!email) return
+    const loadStaffName = async () => {
+      const { data, error } = await supabase
+        .from('staff')
+        .select('staff_name')
+        .ilike('email', email)
+        .maybeSingle()
+
+      if (error) {
+        setStaffName(null)
+        return
+      }
+
+      setStaffName(data ? String(data.staff_name ?? '') : null)
+    }
+
+    loadStaffName()
+  }, [user?.email])
 
   if (loading) {
     return (
-      <div className="min-h-screen app-shell">
+      <div className="min-h-screen bg-[#faf9f7] pattern-overlay">
         <CrestLoader label="Loading session..." />
       </div>
     )
   }
 
   if (!user) {
-    return (
-      <div className="min-h-screen app-shell">
-        <CrestLoader label="Redirecting to login..." />
-      </div>
-    )
+    return null
   }
 
   if (profileLoading) {
     return (
-      <div className="min-h-screen app-shell">
+      <div className="min-h-screen bg-[#faf9f7] pattern-overlay">
         <CrestLoader label="Loading profile..." />
       </div>
     )
   }
 
   if (!role) {
-    const rawRole = user.user_metadata?.role
     return (
-      <div className="min-h-screen app-shell flex items-center justify-center">
+      <div className="min-h-screen bg-[#faf9f7] pattern-overlay flex items-center justify-center">
         <div className="text-center max-w-md mx-auto px-4">
-          <div className="w-12 h-12 rounded-xl bg-[var(--danger)] flex items-center justify-center mx-auto mb-4">
+          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#910000] to-[#5a0000] flex items-center justify-center mx-auto mb-4">
             <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
             </svg>
           </div>
-          <p className="text-[var(--text)] font-medium mb-2">Profile role not found</p>
-          <p className="text-[var(--text-muted)] text-sm mb-4">Please contact an administrator.</p>
-          <p className="text-[var(--text-muted)] text-xs">Debug: role="{rawRole ?? 'undefined'}"</p>
+          <p className="text-[#1a1a2e] font-medium mb-2">Profile role not found</p>
+          <p className="text-[#1a1a2e]/50 text-sm">Please contact an administrator.</p>
         </div>
       </div>
     )
   }
 
   const displayName = staffName || formatDisplayName(user.email ?? '')
-  const showAdmin = isAdminRole(role)
-  const isSuperAdmin = role === 'super_admin'
 
   return (
-    <div className="min-h-screen app-shell">
-      <Sidebar role={role} portalLabel={portalLabel(role)} isSuperAdmin={isSuperAdmin} />
-      {showAdmin && <AnnouncementsPopup />}
+    <div className="min-h-screen bg-[#faf9f7] pattern-overlay">
+      <div className="hidden md:block">
+        <Sidebar role={role} portalLabel={portalLabel(role)} showAdmin={isAdmin} />
+      </div>
+      <MobileNav
+        open={mobileNavOpen}
+        onClose={() => setMobileNavOpen(false)}
+        role={role}
+        portalLabel={portalLabel(role)}
+        showAdmin={isAdmin}
+      />
 
       {/* Main Content */}
-      <div className="ml-72">
-        <div className="victory-arena px-6 py-4 border-b-2 border-[var(--victory-gold)]">
-          <div className="flex items-center justify-between">
-            <div className="text-lg font-bold text-white display">{showAdmin ? 'Dashboard' : 'Portal Dashboard'}</div>
-            <span className="champ-badge">
-              <span className="champ-dot"></span>
-              Season Live
-            </span>
-          </div>
-        </div>
+      <div className="md:ml-72">
         {/* Header */}
-        <DashboardHeader userName={displayName} role={role} />
+        <DashboardHeader
+          userName={displayName}
+          role={role}
+          showMenuButton
+          onMenuClick={() => setMobileNavOpen(true)}
+        />
 
         {/* Page Content */}
-        <main className="p-8">
+        <main className="p-4 md:p-8">
           {children}
         </main>
       </div>

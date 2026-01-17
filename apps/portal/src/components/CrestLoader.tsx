@@ -1,5 +1,7 @@
 'use client'
 
+import { schoolConfig } from '@/lib/school.config'
+
 type CrestLoaderProps = {
   label: string
 }
@@ -9,29 +11,21 @@ export default function CrestLoader({ label }: CrestLoaderProps) {
     <div className="flex items-center justify-center h-64 pt-10 md:pt-14 lg:pt-16">
       <div className="text-center">
         <div className="flex items-center justify-center mx-auto mb-5 md:mb-6">
-          <div className="relative">
-            <div className="w-20 h-20 md:w-24 md:h-24 rounded-2xl bg-gradient-to-br from-[var(--midnight-primary)] to-[var(--midnight-secondary)] text-white border-2 border-[var(--victory-gold)] flex items-center justify-center text-lg md:text-xl font-bold shadow-lg">
-              <span className="bg-gradient-to-b from-[var(--victory-gold-light)] to-[var(--victory-gold)] bg-clip-text text-transparent">DAAIS</span>
-            </div>
-            <div className="absolute -inset-1 rounded-2xl bg-gradient-to-br from-[var(--victory-gold)] to-[var(--victory-gold-dark)] opacity-20 blur animate-pulse"></div>
-          </div>
+          <img src={schoolConfig.crestLogo} alt={`${schoolConfig.systemName} crest`} className="w-28 h-28 md:w-36 md:h-36 lg:w-40 lg:h-40 object-contain animate-pulse" />
         </div>
-        <div className="text-xl md:text-2xl font-bold text-[var(--text)]">
-          League of Champions
+        <div className="text-xl md:text-2xl font-semibold text-[#1a1a2e]" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+          {schoolConfig.systemName}
         </div>
-        <div className="mt-1 text-sm text-[var(--victory-gold)] font-medium">
-          Where Champions Are Made
+        <div className="mt-2 md:mt-3 text-[10px] md:text-sm font-semibold uppercase tracking-[0.18em] md:tracking-[0.2em]">
+          <span className="text-[#2f0a61]">Loyalty</span>
+          <span className="text-[#1a1a2e]/40"> | </span>
+          <span className="text-[#055437]">Wisdom</span>
+          <span className="text-[#1a1a2e]/40"> | </span>
+          <span className="text-[#000068]">Moral Courage</span>
+          <span className="text-[#1a1a2e]/40"> | </span>
+          <span className="text-[#910000]">Creativity</span>
         </div>
-        <div className="mt-3 md:mt-4 text-[10px] md:text-xs font-semibold tracking-[0.15em] md:tracking-[0.18em]">
-          <span className="text-[var(--house-abu)]">Loyalty</span>
-          <span className="text-[var(--victory-gold)] mx-1">|</span>
-          <span className="text-[var(--house-khad)]">Wisdom</span>
-          <span className="text-[var(--victory-gold)] mx-1">|</span>
-          <span className="text-[var(--house-umar)]">Courage</span>
-          <span className="text-[var(--victory-gold)] mx-1">|</span>
-          <span className="text-[var(--house-aish)]">Creativity</span>
-        </div>
-        <p className="mt-4 text-[var(--text-muted)] font-medium text-sm">{label}</p>
+        <p className="text-[#1a1a2e]/60 font-medium">{label}</p>
       </div>
     </div>
   )

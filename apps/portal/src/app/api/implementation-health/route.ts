@@ -1,461 +1,389 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { createSupabaseServerClient } from '@/lib/supabase/server'
+import { NextResponse } from 'next/server'
+import { requireRole, RoleSets } from '@/lib/apiAuth'
 
-// Constants
 const MIN_NOTES_CHARS = 10
 const CYCLE_LENGTH_DAYS = 14
 
-// Status thresholds
-const THRESHOLDS = {
-  participationRate: { green: 70, yellow: 50 },
-  avgActiveDays: { green: 4, yellow: 2 },
-  huddlesCount: { green: 3, yellow: 2 },
-  coverageGap: { green: 20, yellow: 40 }, // lower is better
-  otherNotesCompliance: { green: 85, yellow: 70 },
-  rosterIssues: { green: 0, yellow: 5 }, // lower is better
-  decisionsLogged: { green: 3, yellow: 2 },
-  overdueActions: { green: 1, yellow: 3 }, // lower is better
+type MeritRow = {
+  staff_name: string | null
+  student_name: string | null
+  grade: number | null
+  section: string | null
+  house: string | null
+  r: string | null
+  subcategory: string | null
+  notes: string | null
+  date_of_event: string | null
+  timestamp: string | null
 }
 
-type Status = 'green' | 'yellow' | 'red'
-
-function getStatus(value: number, thresholds: { green: number; yellow: number }, lowerIsBetter = false): Status {
-  if (lowerIsBetter) {
-    if (value <= thresholds.green) return 'green'
-    if (value <= thresholds.yellow) return 'yellow'
-    return 'red'
-  }
-  if (value >= thresholds.green) return 'green'
-  if (value >= thresholds.yellow) return 'yellow'
-  return 'red'
+type StaffRow = {
+  staff_name: string | null
+  email: string | null
+  house: string | null
+  grade?: string | null
+  grade_assignment?: string | null
+  department?: string | null
 }
 
-function getOutcomeStatus(statuses: Status[]): Status {
-  if (statuses.includes('red')) return 'red'
-  if (statuses.includes('yellow')) return 'yellow'
-  return 'green'
+type DecisionRow = {
+  cycle_end_date: string | null
+  due_date: string | null
+  status: string | null
 }
 
-function getLast4CycleEndDates(): string[] {
-  const dates: string[] = []
-  const today = new Date()
-
-  // Find the most recent cycle end (Sunday)
-  const daysSinceSunday = today.getDay()
-  const lastSunday = new Date(today)
-  lastSunday.setDate(today.getDate() - daysSinceSunday)
-
-  // Get last 4 cycle end dates (every 14 days)
-  for (let i = 0; i < 4; i++) {
-    const cycleEnd = new Date(lastSunday)
-    cycleEnd.setDate(lastSunday.getDate() - (i * CYCLE_LENGTH_DAYS))
-    dates.push(cycleEnd.toISOString().split('T')[0])
-  }
-
-  return dates
+function toDateString(date: Date) {
+  return date.toISOString().split('T')[0]
 }
 
-function isWeekday(date: Date): boolean {
+function addDays(date: Date, days: number) {
+  const next = new Date(date)
+  next.setDate(next.getDate() + days)
+  return next
+}
+
+function isWeekend(date: Date) {
   const day = date.getDay()
-  return day !== 0 && day !== 6
+  return day === 0 || day === 6
 }
 
-function getUniqueWeekdays(dates: string[]): number {
-  const uniqueDays = new Set<string>()
-  dates.forEach(d => {
-    const date = new Date(d)
-    if (isWeekday(date)) {
-      uniqueDays.add(d)
+function isOtherCategory(row: MeritRow) {
+  const category = String(row.r ?? '').trim().toLowerCase()
+  const subcategory = String(row.subcategory ?? '').trim().toLowerCase()
+  return category === 'other' || category.startsWith('other') || subcategory === 'other' || subcategory.startsWith('other')
+}
+
+function isMeaningfulNote(notes: string | null) {
+  return String(notes ?? '').trim().length >= MIN_NOTES_CHARS
+}
+
+function getEntryDate(row: MeritRow) {
+  if (row.date_of_event) return row.date_of_event
+  if (row.timestamp) return row.timestamp.slice(0, 10)
+  return ''
+}
+
+function getCycleEndDates(endDate: string) {
+  const end = new Date(`${endDate}T00:00:00Z`)
+  return Array.from({ length: 4 }, (_, idx) => toDateString(addDays(end, -(CYCLE_LENGTH_DAYS * idx))))
+}
+
+function getStatus(value: number, thresholds: { green: number; yellow: number }, higherIsBetter = true) {
+  if (higherIsBetter) {
+    if (value >= thresholds.green) return 'Green'
+    if (value >= thresholds.yellow) return 'Yellow'
+    return 'Red'
+  }
+  if (value <= thresholds.green) return 'Green'
+  if (value <= thresholds.yellow) return 'Yellow'
+  return 'Red'
+}
+
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url)
+  const startDate = searchParams.get('startDate') || ''
+  const endDate = searchParams.get('endDate') || ''
+  const detail = searchParams.get('detail') || ''
+  const actionMenu = searchParams.get('actionMenu') || ''
+  const house = searchParams.get('house') || ''
+  const grade = searchParams.get('grade') || ''
+  const section = searchParams.get('section') || ''
+  const staff = searchParams.get('staff') || ''
+
+  const auth = await requireRole(RoleSets.superAdmin)
+  if (auth.error || !auth.supabase) {
+    return auth.error
+  }
+  const supabase = auth.supabase
+
+  if (actionMenu) {
+    const { data, error } = await supabase
+      .from('action_menu')
+      .select('id, title')
+      .order('id', { ascending: true })
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 500 })
     }
+    return NextResponse.json({ menu: data || [] })
+  }
+
+  if (!startDate || !endDate) {
+    return NextResponse.json({ error: 'Missing date range.' }, { status: 400 })
+  }
+
+  const entriesQuery = supabase
+    .from('merit_log')
+    .select('staff_name, student_name, grade, section, house, r, subcategory, notes, date_of_event, timestamp')
+    .gte('date_of_event', startDate)
+    .lte('date_of_event', endDate)
+
+  if (house) entriesQuery.eq('house', house)
+  if (grade) entriesQuery.eq('grade', Number(grade))
+  if (section) entriesQuery.eq('section', section)
+  if (staff) entriesQuery.eq('staff_name', staff)
+
+  const [entriesRes, staffRes, decisionsRes, huddlesRes] = await Promise.all([
+    entriesQuery,
+    supabase.from('staff').select('staff_name, email, house, grade_assignment, grade, department'),
+    supabase.from('decision_log').select('cycle_end_date, due_date, status'),
+    supabase.from('huddle_log').select('cycle_end_date'),
+  ])
+
+  if (entriesRes.error) {
+    return NextResponse.json({ error: entriesRes.error.message }, { status: 500 })
+  }
+  if (staffRes.error) {
+    return NextResponse.json({ error: staffRes.error.message }, { status: 500 })
+  }
+
+  const entries = (entriesRes.data || []) as MeritRow[]
+  const staffRows = (staffRes.data || []) as StaffRow[]
+  const decisions = (decisionsRes.data || []) as DecisionRow[]
+  const huddles = (huddlesRes.data || []) as { cycle_end_date: string | null }[]
+
+  const staffRoster = new Map<string, StaffRow>()
+  staffRows.forEach((row) => {
+    const name = String(row.staff_name ?? '').trim()
+    if (!name) return
+    staffRoster.set(name.toLowerCase(), row)
   })
-  return uniqueDays.size
-}
 
-export async function GET(request: NextRequest) {
-  try {
-    const supabase = await createSupabaseServerClient()
-    const { searchParams } = new URL(request.url)
+  const eligibleStaff = staffRows.filter((row) => {
+    if (!row.staff_name) return false
+    if (house && String(row.house ?? '') !== house) return false
+    return true
+  })
+  const eligibleStaffCount = eligibleStaff.length
 
-    // Check for detail queries
-    const detail = searchParams.get('detail')
-    const actionMenu = searchParams.get('actionMenu')
+  const activeStaffSet = new Set<string>()
+  const activeStaffDates = new Map<string, Set<string>>()
 
-    // Filters
-    const house = searchParams.get('house') || ''
-    const grade = searchParams.get('grade') || ''
-    const section = searchParams.get('section') || ''
-    const staff = searchParams.get('staff') || ''
-    const startDate = searchParams.get('startDate') || ''
-    const endDate = searchParams.get('endDate') || ''
-
-    // Handle action menu request
-    if (actionMenu === '1') {
-      const { data, error } = await supabase
-        .from('action_menu')
-        .select('*')
-        .order('id')
-
-      if (error) {
-        // Table might not exist yet
-        return NextResponse.json({ items: [] })
-      }
-
-      return NextResponse.json({ items: data || [] })
+  entries.forEach((entry) => {
+    const name = String(entry.staff_name ?? '').trim()
+    if (!name) return
+    activeStaffSet.add(name.toLowerCase())
+    const dateStr = getEntryDate(entry)
+    if (!dateStr) return
+    const dateObj = new Date(`${dateStr}T00:00:00Z`)
+    if (isWeekend(dateObj)) return
+    if (!activeStaffDates.has(name)) {
+      activeStaffDates.set(name, new Set())
     }
+    activeStaffDates.get(name)?.add(dateStr)
+  })
 
-    // Handle detail: roster
-    if (detail === 'roster') {
-      // Get staff roster
-      const { data: staffData } = await supabase.from('staff').select('*')
-      const staffList = staffData || []
+  const participationRate = eligibleStaffCount > 0 ? activeStaffSet.size / eligibleStaffCount : null
+  const avgActiveDays = activeStaffSet.size > 0
+    ? Array.from(activeStaffDates.values()).reduce((sum, dates) => sum + dates.size, 0) / activeStaffSet.size
+    : 0
 
-      // Get merit log staff names
-      let meritQuery = supabase.from('merit_log').select('staff_name')
-      if (startDate) meritQuery = meritQuery.gte('date_of_event', startDate)
-      if (endDate) meritQuery = meritQuery.lte('date_of_event', endDate)
+  const otherEntries = entries.filter((entry) => isOtherCategory(entry))
+  const otherTotal = otherEntries.length
+  const otherMeaningful = otherEntries.filter((entry) => isMeaningfulNote(entry.notes)).length
+  const otherCompliance = otherTotal > 0 ? otherMeaningful / otherTotal : null
 
-      const { data: meritData } = await meritQuery
-      const meritStaffNames = new Set((meritData || []).map(m => m.staff_name?.toLowerCase()).filter(Boolean))
+  const unknownStaffEntries = entries.filter((entry) => {
+    const name = String(entry.staff_name ?? '').trim().toLowerCase()
+    return name && !staffRoster.has(name)
+  })
 
-      // Find unknown staff (in merit_log but not in staff table)
-      const knownStaffNames = new Set(staffList.map(s => s.staff_name?.toLowerCase()).filter(Boolean))
-      const unknownStaff = [...meritStaffNames].filter(name => !knownStaffNames.has(name))
+  const missingHouse = staffRows.filter((row) => !String(row.house ?? '').trim())
+  const missingGrade = staffRows.filter((row) => {
+    const value = String(row.grade_assignment ?? row.grade ?? row.department ?? '').trim()
+    return !value
+  })
 
-      // Find staff missing house or grade
-      const missingHouse = staffList.filter(s => !s.house || s.house.trim() === '')
-      const missingGrade = staffList.filter(s => !s.grade_level && !s.subject)
+  const rosterIssuesCount = unknownStaffEntries.length + missingHouse.length + missingGrade.length
 
-      return NextResponse.json({
-        unknownStaff: unknownStaff.map(name => ({ staff_name: name })),
-        missingHouse: missingHouse.map(s => ({ staff_name: s.staff_name, email: s.email })),
-        missingGrade: missingGrade.map(s => ({ staff_name: s.staff_name, email: s.email })),
-        totalIssues: unknownStaff.length + missingHouse.length + missingGrade.length,
-      })
-    }
+  const cycleEndDates = getCycleEndDates(endDate)
+  const huddleCycleSet = new Set(huddles.map((row) => row.cycle_end_date).filter(Boolean))
+  const huddlesCount = cycleEndDates.filter((date) => huddleCycleSet.has(date)).length
 
-    // Handle detail: other-missing-notes
-    if (detail === 'other-missing-notes') {
-      let query = supabase
-        .from('merit_log')
-        .select('*')
-        .or('r.ilike.%other%,subcategory.ilike.%other%')
+  const decisionCycleSet = new Set(decisions.map((row) => row.cycle_end_date).filter(Boolean))
+  const decisionsCount = cycleEndDates.filter((date) => decisionCycleSet.has(date)).length
 
-      if (startDate) query = query.gte('date_of_event', startDate)
-      if (endDate) query = query.lte('date_of_event', endDate)
-      if (house) query = query.eq('house', house)
-      if (grade) query = query.eq('grade', parseInt(grade))
-      if (section) query = query.eq('section', section)
-      if (staff) query = query.eq('staff_name', staff)
+  const coverageGap = participationRate !== null ? 1 - participationRate : null
 
-      const { data } = await query
-      const entries = data || []
+  const overdueActionsCount = decisions.filter((decision) => {
+    if (!decision.due_date) return false
+    if (decision.status === 'Completed') return false
+    return new Date(decision.due_date) < new Date()
+  }).length
 
-      const missingNotes = entries.filter(e => !e.notes || e.notes.length < MIN_NOTES_CHARS)
+  const metrics = {
+    outcomeA: {
+      participationRate,
+      avgActiveDays,
+    },
+    outcomeB: {
+      huddlesCount,
+      coverageGap,
+    },
+    outcomeC: {
+      otherNotesCompliance: otherCompliance,
+      rosterIssuesCount,
+    },
+    outcomeD: {
+      decisionsCount,
+      overdueActionsCount,
+    },
+  }
 
-      return NextResponse.json({
-        entries: missingNotes.map(e => ({
-          id: e.id,
-          staff_name: e.staff_name,
-          student_name: e.student_name,
-          r: e.r,
-          subcategory: e.subcategory,
-          notes: e.notes || '',
-          date_of_event: e.date_of_event,
-        })),
-        totalMissing: missingNotes.length,
-        totalOther: entries.length,
-      })
-    }
+  const statuses = {
+    outcomeA: {
+      participationRate: participationRate === null ? 'Red' : getStatus(participationRate * 100, { green: 70, yellow: 50 }),
+      avgActiveDays: getStatus(avgActiveDays, { green: 4, yellow: 2 }),
+    },
+    outcomeB: {
+      huddles: getStatus(huddlesCount, { green: 3, yellow: 2 }),
+      coverageGap: coverageGap === null ? 'Red' : getStatus(coverageGap * 100, { green: 20, yellow: 40 }, false),
+    },
+    outcomeC: {
+      otherNotes: otherCompliance === null
+        ? 'Green'
+        : getStatus(otherCompliance * 100, { green: 85, yellow: 70 }),
+      rosterIssues: getStatus(rosterIssuesCount, { green: 0, yellow: 5 }, false),
+    },
+    outcomeD: {
+      decisions: getStatus(decisionsCount, { green: 3, yellow: 2 }),
+      overdue: getStatus(overdueActionsCount, { green: 1, yellow: 3 }, false),
+    },
+  }
 
-    // Main metrics calculation
-    // 1. Get staff roster
-    let staffQuery = supabase.from('staff').select('*')
-    if (house) staffQuery = staffQuery.eq('house', house)
-    const { data: staffData } = await staffQuery
-    const eligibleStaff = (staffData || []).length
+  const outcomeStatus = {
+    outcomeA: ['participationRate', 'avgActiveDays'].some((key) => statuses.outcomeA[key as 'participationRate' | 'avgActiveDays'] === 'Red')
+      ? 'Red'
+      : ['participationRate', 'avgActiveDays'].some((key) => statuses.outcomeA[key as 'participationRate' | 'avgActiveDays'] === 'Yellow')
+      ? 'Yellow'
+      : 'Green',
+    outcomeB: ['huddles', 'coverageGap'].some((key) => statuses.outcomeB[key as 'huddles' | 'coverageGap'] === 'Red')
+      ? 'Red'
+      : ['huddles', 'coverageGap'].some((key) => statuses.outcomeB[key as 'huddles' | 'coverageGap'] === 'Yellow')
+      ? 'Yellow'
+      : 'Green',
+    outcomeC: ['otherNotes', 'rosterIssues'].some((key) => statuses.outcomeC[key as 'otherNotes' | 'rosterIssues'] === 'Red')
+      ? 'Red'
+      : ['otherNotes', 'rosterIssues'].some((key) => statuses.outcomeC[key as 'otherNotes' | 'rosterIssues'] === 'Yellow')
+      ? 'Yellow'
+      : 'Green',
+    outcomeD: ['decisions', 'overdue'].some((key) => statuses.outcomeD[key as 'decisions' | 'overdue'] === 'Red')
+      ? 'Red'
+      : ['decisions', 'overdue'].some((key) => statuses.outcomeD[key as 'decisions' | 'overdue'] === 'Yellow')
+      ? 'Yellow'
+      : 'Green',
+  }
 
-    // 2. Get merit log entries in date range
-    let meritQuery = supabase.from('merit_log').select('*')
-    if (startDate) meritQuery = meritQuery.gte('date_of_event', startDate)
-    if (endDate) meritQuery = meritQuery.lte('date_of_event', endDate)
-    if (house) meritQuery = meritQuery.eq('house', house)
-    if (grade) meritQuery = meritQuery.eq('grade', parseInt(grade))
-    if (section) meritQuery = meritQuery.eq('section', section)
-    if (staff) meritQuery = meritQuery.eq('staff_name', staff)
+  const recommendedActions: Record<string, string | null> = {
+    outcomeA: outcomeStatus.outcomeA === 'Red'
+      ? '2-week Participation Reset: 10-minute re-demo + set expectation of 2 recognitions per week for 2 weeks. Review participation rate next huddle.'
+      : null,
+    outcomeB: outcomeStatus.outcomeB === 'Red'
+      ? 'Lock the Rhythm: put biweekly huddle on the calendar (20 min) and assign one owner responsible for logging it.'
+      : null,
+    outcomeC: outcomeStatus.outcomeC === 'Red'
+      ? 'Data Hygiene Reset: enforce "Other requires notes" and clear roster issues before using trends for decisions.'
+      : null,
+    outcomeD: outcomeStatus.outcomeD === 'Red'
+      ? 'Pick One Focus: log 1–2 actions today (owner + due date) and start next huddle by closing the loop.'
+      : null,
+  }
 
-    const { data: meritData } = await meritQuery
-    const meritEntries = meritData || []
-
-    // Calculate active staff and their dates
-    const staffDatesMap = new Map<string, string[]>()
-    meritEntries.forEach(entry => {
-      const staffName = entry.staff_name?.toLowerCase()
-      if (!staffName) return
-
-      if (!staffDatesMap.has(staffName)) {
-        staffDatesMap.set(staffName, [])
-      }
-      if (entry.date_of_event) {
-        staffDatesMap.get(staffName)!.push(entry.date_of_event)
-      }
-    })
-
-    const activeStaff = staffDatesMap.size
-
-    // Calculate average active days per staff
-    let totalActiveDays = 0
-    staffDatesMap.forEach(dates => {
-      totalActiveDays += getUniqueWeekdays(dates)
-    })
-    const avgActiveDays = activeStaff > 0 ? totalActiveDays / activeStaff : 0
-
-    // Participation rate and coverage gap
-    const participationRate = eligibleStaff > 0 ? (activeStaff / eligibleStaff) * 100 : 0
-    const coverageGap = 100 - participationRate
-
-    // 3. Get huddle count (last 4 cycles)
-    const cycleEndDates = getLast4CycleEndDates()
-    let huddlesCount = 0
-    try {
-      const { data: huddleData, error: huddleError } = await supabase
-        .from('huddle_log')
-        .select('*')
-        .in('cycle_end_date', cycleEndDates)
-
-      if (!huddleError) {
-        huddlesCount = (huddleData || []).length
-      }
-    } catch {
-      // Table might not exist
-    }
-
-    // 4. Get decisions logged (last 4 cycles)
-    let decisionsLogged = 0
-    let overdueActions = 0
-    try {
-      const { data: decisionData, error: decisionError } = await supabase
-        .from('decision_log')
-        .select('*')
-        .in('cycle_end_date', cycleEndDates)
-
-      if (!decisionError) {
-        decisionsLogged = (decisionData || []).length
-      }
-
-      // Get overdue actions
-      const today = new Date().toISOString().split('T')[0]
-      const { data: overdueData, error: overdueError } = await supabase
-        .from('decision_log')
-        .select('*')
-        .lt('due_date', today)
-        .neq('status', 'Completed')
-
-      if (!overdueError) {
-        overdueActions = (overdueData || []).length
-      }
-    } catch {
-      // Table might not exist
-    }
-
-    // 5. Other notes compliance
-    const otherEntries = meritEntries.filter(e =>
-      e.r?.toLowerCase().includes('other') ||
-      e.subcategory?.toLowerCase().includes('other')
-    )
-    const otherWithNotes = otherEntries.filter(e => e.notes && e.notes.length >= MIN_NOTES_CHARS)
-    const otherNotesCompliance = otherEntries.length > 0
-      ? (otherWithNotes.length / otherEntries.length) * 100
-      : 100
-
-    // 6. Roster issues
-    const knownStaffNames = new Set((staffData || []).map(s => s.staff_name?.toLowerCase()).filter(Boolean))
-    const meritStaffNames = new Set(meritEntries.map(m => m.staff_name?.toLowerCase()).filter(Boolean))
-    const unknownStaffCount = [...meritStaffNames].filter(name => !knownStaffNames.has(name)).length
-    const missingHouseCount = (staffData || []).filter(s => !s.house || s.house.trim() === '').length
-    const missingGradeCount = (staffData || []).filter(s => !s.grade_level && !s.subject).length
-    const rosterIssues = unknownStaffCount + missingHouseCount + missingGradeCount
-
-    // Calculate statuses
-    const participationRateStatus = getStatus(participationRate, THRESHOLDS.participationRate)
-    const avgActiveDaysStatus = getStatus(avgActiveDays, THRESHOLDS.avgActiveDays)
-    const huddlesCountStatus = getStatus(huddlesCount, THRESHOLDS.huddlesCount)
-    const coverageGapStatus = getStatus(coverageGap, THRESHOLDS.coverageGap, true)
-    const otherNotesComplianceStatus = getStatus(otherNotesCompliance, THRESHOLDS.otherNotesCompliance)
-    const rosterIssuesStatus = getStatus(rosterIssues, THRESHOLDS.rosterIssues, true)
-    const decisionsLoggedStatus = getStatus(decisionsLogged, THRESHOLDS.decisionsLogged)
-    const overdueActionsStatus = getStatus(overdueActions, THRESHOLDS.overdueActions, true)
-
-    // Calculate outcome statuses
-    const outcomeA = getOutcomeStatus([participationRateStatus, avgActiveDaysStatus])
-    const outcomeB = getOutcomeStatus([huddlesCountStatus, coverageGapStatus])
-    const outcomeC = getOutcomeStatus([otherNotesComplianceStatus, rosterIssuesStatus])
-    const outcomeD = getOutcomeStatus([decisionsLoggedStatus, overdueActionsStatus])
-
-    // Recommended actions
-    const recommendedActions: string[] = []
-    if (outcomeA === 'red') recommendedActions.push('Schedule participation reset meeting')
-    if (outcomeB === 'red') recommendedActions.push('Reset huddle cadence')
-    if (outcomeC === 'red') recommendedActions.push('Initiate data hygiene cleanup')
-    if (outcomeD === 'red') recommendedActions.push('Review action logging process')
-
+  if (detail === 'roster') {
     return NextResponse.json({
-      metrics: {
-        participationRate: {
-          value: Math.round(participationRate * 10) / 10,
-          status: participationRateStatus,
-          eligible: eligibleStaff,
-          active: activeStaff,
-        },
-        avgActiveDays: {
-          value: Math.round(avgActiveDays * 10) / 10,
-          status: avgActiveDaysStatus,
-        },
-        huddlesCount: {
-          value: huddlesCount,
-          status: huddlesCountStatus,
-        },
-        coverageGap: {
-          value: Math.round(coverageGap * 10) / 10,
-          status: coverageGapStatus,
-        },
-        otherNotesCompliance: {
-          value: Math.round(otherNotesCompliance * 10) / 10,
-          status: otherNotesComplianceStatus,
-          total: otherEntries.length,
-          compliant: otherWithNotes.length,
-        },
-        rosterIssues: {
-          value: rosterIssues,
-          status: rosterIssuesStatus,
-          unknown: unknownStaffCount,
-          missingHouse: missingHouseCount,
-          missingGrade: missingGradeCount,
-        },
-        decisionsLogged: {
-          value: decisionsLogged,
-          status: decisionsLoggedStatus,
-        },
-        overdueActions: {
-          value: overdueActions,
-          status: overdueActionsStatus,
-        },
-      },
-      outcomes: {
-        A: { name: 'Adoption', status: outcomeA },
-        B: { name: 'Consistency', status: outcomeB },
-        C: { name: 'Governance', status: outcomeC },
-        D: { name: 'Insight & Action', status: outcomeD },
-      },
-      recommendedActions,
-      dateRange: { startDate, endDate },
-      cycleEndDates,
+      unknownStaffEntries: unknownStaffEntries.map((entry) => ({
+        staff_name: entry.staff_name || '',
+        student_name: entry.student_name || '',
+        date: getEntryDate(entry),
+      })),
+      missingHouse: missingHouse.map((row) => ({
+        staff_name: row.staff_name || '',
+        email: row.email || '',
+      })),
+      missingGrade: missingGrade.map((row) => ({
+        staff_name: row.staff_name || '',
+        email: row.email || '',
+      })),
     })
-  } catch (error) {
-    console.error('Implementation health error:', error)
-    return NextResponse.json(
-      { error: 'Failed to calculate implementation health metrics' },
-      { status: 500 }
-    )
   }
+
+  if (detail === 'other-missing-notes') {
+    const missingNotes = otherEntries.filter((entry) => !isMeaningfulNote(entry.notes))
+    return NextResponse.json({
+      entries: missingNotes.map((entry) => ({
+        date: getEntryDate(entry),
+        staff_name: entry.staff_name || '',
+        student_name: entry.student_name || '',
+        category: entry.r || '',
+        subcategory: entry.subcategory || '',
+        notes: entry.notes || '',
+      })),
+    })
+  }
+
+  return NextResponse.json({
+    metrics,
+    statuses,
+    outcomeStatus,
+    recommendedActions,
+  })
 }
 
-export async function POST(request: NextRequest) {
-  try {
-    const supabase = await createSupabaseServerClient()
-    const body = await request.json()
-    const { type } = body
-
-    // Get current user
-    const { data: { user } } = await supabase.auth.getUser()
-
-    if (type === 'huddle') {
-      const { cycle_end_date, notes } = body
-
-      if (!cycle_end_date) {
-        return NextResponse.json(
-          { error: 'cycle_end_date is required' },
-          { status: 400 }
-        )
-      }
-
-      const { data, error } = await supabase
-        .from('huddle_log')
-        .insert({
-          cycle_end_date,
-          notes: notes || '',
-          created_by: user?.id,
-        })
-        .select()
-        .single()
-
-      if (error) {
-        console.error('Huddle insert error:', error)
-        return NextResponse.json(
-          { error: 'Failed to log huddle. Make sure the huddle_log table exists.' },
-          { status: 500 }
-        )
-      }
-
-      return NextResponse.json({ success: true, data })
-    }
-
-    if (type === 'decision') {
-      const {
-        owner,
-        due_date,
-        action_type,
-        cycle_end_date,
-        status = 'Pending',
-        title,
-        outcome_tag,
-        notes,
-        selected_actions
-      } = body
-
-      if (!cycle_end_date || !title) {
-        return NextResponse.json(
-          { error: 'cycle_end_date and title are required' },
-          { status: 400 }
-        )
-      }
-
-      const { data, error } = await supabase
-        .from('decision_log')
-        .insert({
-          cycle_end_date,
-          due_date,
-          status,
-          owner,
-          action_type,
-          title,
-          outcome_tag,
-          notes,
-          selected_actions,
-          created_by: user?.id,
-        })
-        .select()
-        .single()
-
-      if (error) {
-        console.error('Decision insert error:', error)
-        return NextResponse.json(
-          { error: 'Failed to log decision. Make sure the decision_log table exists.' },
-          { status: 500 }
-        )
-      }
-
-      return NextResponse.json({ success: true, data })
-    }
-
-    return NextResponse.json(
-      { error: 'Invalid type. Must be "huddle" or "decision"' },
-      { status: 400 }
-    )
-  } catch (error) {
-    console.error('Implementation health POST error:', error)
-    return NextResponse.json(
-      { error: 'Failed to process request' },
-      { status: 500 }
-    )
+export async function POST(request: Request) {
+  const auth = await requireRole(RoleSets.superAdmin)
+  if (auth.error || !auth.supabase) {
+    return auth.error
   }
+  const supabase = auth.supabase
+
+  const body = await request.json()
+  const type = body?.type
+
+  if (type === 'huddle') {
+    const cycleEndDate = String(body?.cycle_end_date || '')
+    if (!cycleEndDate) {
+      return NextResponse.json({ error: 'Missing cycle_end_date.' }, { status: 400 })
+    }
+    const { error } = await supabase.from('huddle_log').insert([
+      {
+        cycle_end_date: cycleEndDate,
+        notes: body?.notes || null,
+        created_by: authData.user.id,
+      },
+    ])
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 500 })
+    }
+    return NextResponse.json({ ok: true })
+  }
+
+  if (type === 'decision') {
+    const owner = String(body?.owner || '').trim()
+    const dueDate = String(body?.due_date || '').trim()
+    const actionType = String(body?.action_type || '').trim()
+    const cycleEndDate = String(body?.cycle_end_date || '').trim()
+    if (!owner || !dueDate || !actionType || !cycleEndDate) {
+      return NextResponse.json({ error: 'Missing required decision fields.' }, { status: 400 })
+    }
+
+    const { error } = await supabase.from('decision_log').insert([
+      {
+        owner,
+        due_date: dueDate,
+        status: body?.status || 'Planned',
+        title: body?.title || null,
+        outcome_tag: body?.outcome_tag || null,
+        action_type: actionType,
+        cycle_end_date: cycleEndDate,
+        notes: body?.notes || null,
+        selected_actions: body?.selected_actions || [],
+      },
+    ])
+
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 500 })
+    }
+    return NextResponse.json({ ok: true })
+  }
+
+  return NextResponse.json({ error: 'Invalid request.' }, { status: 400 })
 }

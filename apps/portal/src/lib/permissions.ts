@@ -51,8 +51,18 @@ export async function hasPermission(
       data: { user },
     } = await supabase.auth.getUser()
     if (!user) return false
-    const permissions = user.user_metadata?.permissions as string[] | undefined
-    return Array.isArray(permissions) ? permissions.includes(permission) : false
+
+    const { data, error } = await supabase.rpc('has_permission', {
+      user_id: user.id,
+      perm: permission,
+    })
+
+    if (error) {
+      console.error('Permission check error:', error)
+      return false
+    }
+
+    return data === true
   } catch (error) {
     console.error('Error checking permission:', error)
     return false
@@ -66,7 +76,15 @@ export async function getUserRole(supabase: SupabaseClient): Promise<Role | null
       data: { user },
     } = await supabase.auth.getUser()
     if (!user) return null
-    return (user.user_metadata?.role as Role) ?? null
+
+    const { data, error } = await supabase.rpc('get_user_role', { user_id: user.id })
+
+    if (error) {
+      console.error('Error getting user role:', error)
+      return null
+    }
+
+    return data as Role | null
   } catch (error) {
     console.error('Error getting user role:', error)
     return null
@@ -80,7 +98,15 @@ export async function getUserHouse(supabase: SupabaseClient): Promise<string | n
       data: { user },
     } = await supabase.auth.getUser()
     if (!user) return null
-    return (user.user_metadata?.house as string) ?? null
+
+    const { data, error } = await supabase.rpc('get_user_house', { user_id: user.id })
+
+    if (error) {
+      console.error('Error getting user house:', error)
+      return null
+    }
+
+    return data
   } catch (error) {
     console.error('Error getting user house:', error)
     return null
@@ -97,7 +123,14 @@ export async function getUserPermissions(
     } = await supabase.auth.getUser()
     if (!user) return []
 
-    return []
+    const { data, error } = await supabase.rpc('get_user_permissions', { user_id: user.id })
+
+    if (error) {
+      console.error('Error getting user permissions:', error)
+      return []
+    }
+
+    return data || []
   } catch (error) {
     console.error('Error getting user permissions:', error)
     return []
@@ -112,14 +145,18 @@ export async function getUserProfile(supabase: SupabaseClient): Promise<UserProf
     } = await supabase.auth.getUser()
     if (!user) return null
 
-    return {
-      id: user.id,
-      email: user.email ?? '',
-      role: (user.user_metadata?.role as Role) ?? null,
-      full_name: user.user_metadata?.full_name ?? null,
-      student_name: user.user_metadata?.student_name ?? null,
-      assigned_house: user.user_metadata?.house ?? null,
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('id', user.id)
+      .single()
+
+    if (error) {
+      console.error('Error fetching user profile:', error)
+      return null
     }
+
+    return data as UserProfile
   } catch (error) {
     console.error('Error fetching user profile:', error)
     return null

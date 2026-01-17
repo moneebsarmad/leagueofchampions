@@ -1,10 +1,11 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { supabase } from '../../../lib/supabaseClient'
-import { VIEWS } from '../../../lib/views'
 import { useAuth } from '../../providers'
 import CrestLoader from '../../../components/CrestLoader'
+import { getHouseColors, canonicalHouseName, getHouseNames } from '@/lib/school.config'
+import { useUserRole } from '../../../hooks/usePermissions'
 
 interface Student {
   id: string
@@ -21,45 +22,48 @@ interface Category {
   points: number
 }
 
-const houseColors: Record<string, string> = {
-  'House of Abū Bakr': 'var(--house-abu)',
-  'House of Khadījah': 'var(--house-khad)',
-  'House of ʿUmar': 'var(--house-umar)',
-  'House of ʿĀʾishah': 'var(--house-aish)'}
+const houseColors = getHouseColors()
+const DRAFT_STORAGE_KEY = 'portal:add-points:draft'
+const HOUSE_COMPETITION_R = 'House Competition'
 
-const meritCategories: Category[] = [
-  { id: 'r1', r: 'Respect', subcategory: 'Polite Communication', points: 5 },
-  { id: 'r2', r: 'Respect', subcategory: 'Active Listening', points: 5 },
-  { id: 'r3', r: 'Respect', subcategory: 'Helping Others', points: 10 },
-  { id: 'r4', r: 'Respect', subcategory: 'Conflict Resolution', points: 15 },
-  { id: 's1', r: 'Responsibility', subcategory: 'Punctuality', points: 5 },
-  { id: 's2', r: 'Responsibility', subcategory: 'Homework Completion', points: 5 },
-  { id: 's3', r: 'Responsibility', subcategory: 'Leadership', points: 10 },
-  { id: 's4', r: 'Responsibility', subcategory: 'Taking Ownership', points: 15 },
-  { id: 'g1', r: 'Righteousness', subcategory: 'Honesty', points: 10 },
-  { id: 'g2', r: 'Righteousness', subcategory: 'Integrity', points: 10 },
-  { id: 'g3', r: 'Righteousness', subcategory: 'Fairness', points: 10 },
-  { id: 'g4', r: 'Righteousness', subcategory: 'Excellence', points: 15 },
-]
+function readDraft(): string | null {
+  if (typeof window === 'undefined') return null
+  try {
+    const stored = window.localStorage.getItem(DRAFT_STORAGE_KEY)
+    if (stored) return stored
+    const legacy = window.sessionStorage.getItem(DRAFT_STORAGE_KEY)
+    if (legacy) {
+      window.localStorage.setItem(DRAFT_STORAGE_KEY, legacy)
+      window.sessionStorage.removeItem(DRAFT_STORAGE_KEY)
+    }
+    return legacy
+  } catch {
+    return null
+  }
+}
 
-function canonicalHouse(value: string): string {
-  const normalized = value
-    .normalize('NFKD')
-    .replace(/\p{Diacritic}/gu, '')
-    .replace(/[''`]/g, "'")
-    .toLowerCase()
-    .trim()
+function writeDraft(value: string) {
+  if (typeof window === 'undefined') return
+  try {
+    window.localStorage.setItem(DRAFT_STORAGE_KEY, value)
+  } catch {
+    // Ignore storage errors (quota, private mode)
+  }
+}
 
-  if (normalized.includes('bakr') || normalized.includes('abu')) return 'House of Abū Bakr'
-  if (normalized.includes('khadijah') || normalized.includes('khad')) return 'House of Khadījah'
-  if (normalized.includes('umar')) return 'House of ʿUmar'
-  if (normalized.includes('aishah') || normalized.includes('aish')) return 'House of ʿĀʾishah'
-  return value
+function clearDraft() {
+  if (typeof window === 'undefined') return
+  try {
+    window.localStorage.removeItem(DRAFT_STORAGE_KEY)
+    window.sessionStorage.removeItem(DRAFT_STORAGE_KEY)
+  } catch {
+    // Ignore storage errors (quota, private mode)
+  }
 }
 
 function getHouseColor(house: string): string {
-  const canonical = canonicalHouse(house)
-  return houseColors[canonical] || 'var(--text)'
+  const canonical = canonicalHouseName(house)
+  return houseColors[canonical] || '#1a1a2e'
 }
 
 function getInitials(name: string): string {
@@ -72,52 +76,153 @@ function getInitials(name: string): string {
 
 export default function AddPointsPage() {
   const { user } = useAuth()
+  const userId = user?.id ?? null
+  const { role } = useUserRole()
+  const isSuperAdmin = role === 'super_admin'
   const [students, setStudents] = useState<Student[]>([])
   const [categories, setCategories] = useState<Category[]>([])
   const [searchText, setSearchText] = useState('')
-  const [selectedStudent, setSelectedStudent] = useState<Student | null>(null)
+  const [selectedStudents, setSelectedStudents] = useState<Student[]>([])
   const [selectedR, setSelectedR] = useState<string | null>(null)
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null)
   const [notes, setNotes] = useState('')
+  const [houseCompetitionPoints, setHouseCompetitionPoints] = useState('')
+  const [houseCompetitionHouse, setHouseCompetitionHouse] = useState('')
+  const [houseCompetitionNotes, setHouseCompetitionNotes] = useState('')
   const [eventDate, setEventDate] = useState(() => new Date().toISOString().split('T')[0])
-  const [staffName, setStaffName] = useState('')
   const [isLoading, setIsLoading] = useState(true)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [showSuccess, setShowSuccess] = useState(false)
-  const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const [successMessage, setSuccessMessage] = useState('')
+  const [toast, setToast] = useState<{ message: string; type: 'info' | 'success' | 'error' } | null>(null)
+  const toastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const draftCategoryIdRef = useRef<string | null>(null)
+
+  // Bulk selection filters
+  const [filterGrade, setFilterGrade] = useState<string>('')
+  const [filterSection, setFilterSection] = useState<string>('')
+  const [filterHouse, setFilterHouse] = useState<string>('')
+  const houseOptions = getHouseNames()
+  const isHouseCompetition = selectedR === HOUSE_COMPETITION_R
+  const canSubmitHouseCompetition =
+    isHouseCompetition &&
+    isSuperAdmin &&
+    Boolean(houseCompetitionHouse) &&
+    Number(houseCompetitionPoints) > 0
 
   useEffect(() => {
+    if (!userId) return
     fetchData()
-    fetchStaffName()
-  }, [user])
+  }, [userId])
 
-  const fetchStaffName = async () => {
-    if (!user?.email) return
-    setStaffName(user.email || 'Staff')
-  }
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const saved = readDraft()
+    if (!saved) return
+    try {
+      const draft = JSON.parse(saved) as {
+        selectedStudents?: Student[]
+        selectedR?: string | null
+        selectedCategoryId?: string | null
+        notes?: string
+        houseCompetitionPoints?: string
+        houseCompetitionHouse?: string
+        houseCompetitionNotes?: string
+        eventDate?: string
+        searchText?: string
+        filterGrade?: string
+        filterSection?: string
+        filterHouse?: string
+      }
+
+      if (Array.isArray(draft.selectedStudents)) {
+        setSelectedStudents(draft.selectedStudents)
+      }
+      setSelectedR(draft.selectedR ?? null)
+      setNotes(draft.notes ?? '')
+      setHouseCompetitionPoints(draft.houseCompetitionPoints ?? '')
+      setHouseCompetitionHouse(draft.houseCompetitionHouse ?? '')
+      setHouseCompetitionNotes(draft.houseCompetitionNotes ?? '')
+      setEventDate(draft.eventDate ?? new Date().toISOString().split('T')[0])
+      setSearchText(draft.searchText ?? '')
+      setFilterGrade(draft.filterGrade ?? '')
+      setFilterSection(draft.filterSection ?? '')
+      setFilterHouse(draft.filterHouse ?? '')
+      if (draft.selectedCategoryId) {
+        draftCategoryIdRef.current = draft.selectedCategoryId
+      }
+    } catch {
+      window.sessionStorage.removeItem(DRAFT_STORAGE_KEY)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!draftCategoryIdRef.current) return
+    const match = categories.find((category) => category.id === draftCategoryIdRef.current)
+    if (!match) return
+    setSelectedCategory(match)
+    if (!selectedR && match.r) {
+      setSelectedR(match.r)
+    }
+    draftCategoryIdRef.current = null
+  }, [categories, selectedR])
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const draft = {
+      selectedStudents,
+      selectedR,
+      selectedCategoryId: selectedCategory?.id ?? null,
+      notes,
+      houseCompetitionPoints,
+      houseCompetitionHouse,
+      houseCompetitionNotes,
+      eventDate,
+      searchText,
+      filterGrade,
+      filterSection,
+      filterHouse,
+    }
+    writeDraft(JSON.stringify(draft))
+  }, [
+    selectedStudents,
+    selectedR,
+    selectedCategory,
+    notes,
+    houseCompetitionPoints,
+    houseCompetitionHouse,
+    houseCompetitionNotes,
+    eventDate,
+    searchText,
+    filterGrade,
+    filterSection,
+    filterHouse,
+  ])
 
   const fetchData = async () => {
     setIsLoading(true)
     try {
-      const { data, error } = await supabase
-        .from(VIEWS.STUDENT_POINTS)
-        .select('*')
-      if (error) {
-        console.error('Supabase error:', error)
-        setStudents([])
-        setCategories(meritCategories)
-        return
-      }
+      const [studentsRes, categoriesRes] = await Promise.all([
+        supabase.from('students').select('*'),
+        supabase.from('3r_categories').select('*'),
+      ])
 
-      const allStudents: Student[] = (data || []).map((s, index) => ({
+      const allStudents: Student[] = (studentsRes.data || []).map((s, index) => ({
         id: s.id || `${index}`,
-        name: s.student_name || s.name || '',
+        name: s.student_name || '',
         grade: s.grade || 0,
         section: s.section || '',
-        house: s.house || s.house_name || ''}))
+        house: s.house || '',
+      }))
       setStudents(allStudents)
 
-      setCategories(meritCategories)
+      const allCategories: Category[] = (categoriesRes.data || []).map((c) => ({
+        id: c.id,
+        r: c.r || '',
+        subcategory: c.subcategory || '',
+        points: c.points || 0,
+      }))
+      setCategories(allCategories)
     } catch (error) {
       console.error('Error fetching data:', error)
     } finally {
@@ -125,64 +230,165 @@ export default function AddPointsPage() {
     }
   }
 
+  const selectedStudentIds = new Set(selectedStudents.map((student) => student.id))
+
   const filteredStudents = students
-    .filter((s) => searchText && s.name.toLowerCase().includes(searchText.toLowerCase()))
+    .filter((s) => searchText && s.name.toLowerCase().includes(searchText.toLowerCase()) && !selectedStudentIds.has(s.id))
     .sort((a, b) => a.name.localeCompare(b.name))
     .slice(0, 10)
 
   const rOptions = [...new Set(categories.map((c) => c.r))].filter(Boolean)
   const subcategories = selectedR ? categories.filter((c) => c.r === selectedR) : []
 
+  // Get unique values for filters
+  const availableGrades = [...new Set(students.map((s) => s.grade))].sort((a, b) => a - b)
+  const availableSections = [...new Set(
+    students
+      .filter((s) => !filterGrade || s.grade === Number(filterGrade))
+      .map((s) => s.section)
+  )].filter(Boolean).sort()
+  const availableHouses = [...new Set(students.map((s) => s.house))].filter(Boolean).sort()
+
+  // Get students matching bulk filters
+  const bulkFilteredStudents = students.filter((s) => {
+    if (selectedStudentIds.has(s.id)) return false
+    if (filterGrade && s.grade !== Number(filterGrade)) return false
+    if (filterSection && s.section !== filterSection) return false
+    if (filterHouse && canonicalHouseName(s.house) !== filterHouse) return false
+    return true
+  })
+
+  const hasActiveFilters = filterGrade || filterSection || filterHouse
+
+  const handleAddAllFiltered = () => {
+    setSelectedStudents((prev) => [...prev, ...bulkFilteredStudents])
+    setFilterGrade('')
+    setFilterSection('')
+    setFilterHouse('')
+  }
+
+  const clearFilters = () => {
+    setFilterGrade('')
+    setFilterSection('')
+    setFilterHouse('')
+  }
+
+  const showToast = (message: string, type: 'info' | 'success' | 'error', duration = 2500) => {
+    setToast({ message, type })
+    if (toastTimerRef.current) {
+      clearTimeout(toastTimerRef.current)
+    }
+    toastTimerRef.current = setTimeout(() => {
+      setToast(null)
+    }, duration)
+  }
+
   const handleSubmit = async () => {
-    if (!selectedStudent || !selectedCategory) return
-
+    if (!isHouseCompetition && (selectedStudents.length === 0 || !selectedCategory)) return
     setIsSubmitting(true)
-    setErrorMessage(null)
-
+    showToast('Submitting points...', 'info', 4000)
     try {
-      const response = await fetch('/api/points', {
+      if (isHouseCompetition) {
+        if (!isSuperAdmin) {
+          showToast('Only super admins can award house competition points.', 'error', 5000)
+          return
+        }
+
+        const parsedPoints = Number(houseCompetitionPoints)
+        if (!houseCompetitionHouse || !Number.isFinite(parsedPoints) || parsedPoints <= 0) {
+          showToast('Enter points and select a house.', 'error', 5000)
+          return
+        }
+
+        const response = await fetch('/api/points/award', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            mode: 'house_competition',
+            house: canonicalHouseName(houseCompetitionHouse)?.trim() || houseCompetitionHouse?.trim(),
+            points: parsedPoints,
+            notes: houseCompetitionNotes,
+            eventDate,
+          }),
+        })
+
+        if (!response.ok) {
+          const payload = await response.json().catch(() => ({}))
+          showToast(payload.error || 'Failed to add house points.', 'error', 5000)
+          return
+        }
+
+        setSuccessMessage(`Points awarded to ${canonicalHouseName(houseCompetitionHouse) || 'selected house'}!`)
+        setShowSuccess(true)
+        showToast('Points submitted!', 'success')
+        setTimeout(() => {
+          setShowSuccess(false)
+          resetForm()
+        }, 2000)
+        return
+      }
+
+      const response = await fetch('/api/points/award', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          student_name: selectedStudent.name,
-          student_id: selectedStudent.id,
-          grade: selectedStudent.grade,
-          section: selectedStudent.section,
-          house: selectedStudent.house,
-          r: selectedCategory.r,
-          subcategory: selectedCategory.subcategory,
-          points: selectedCategory.points,
-          notes: notes || null,
-          date_of_event: eventDate,
+          mode: 'students',
+          categoryId: selectedCategory?.id,
+          students: selectedStudents.map((student) => ({
+            name: student.name,
+            grade: student.grade,
+            section: student.section,
+            house: canonicalHouseName(student.house)?.trim() || student.house?.trim(),
+          })),
+          notes,
+          eventDate,
         }),
       })
 
-      const data = await response.json()
-
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to add points')
+        const payload = await response.json().catch(() => ({}))
+        showToast(payload.error || 'Failed to add points.', 'error', 5000)
+        return
       }
 
+      setSuccessMessage(
+        `Points awarded to ${selectedStudents.length || 'selected'} student${selectedStudents.length === 1 ? '' : 's'}!`
+      )
       setShowSuccess(true)
+      showToast('Points submitted!', 'success')
       setTimeout(() => {
         setShowSuccess(false)
         resetForm()
       }, 2000)
     } catch (error) {
       console.error('Error:', error)
-      setErrorMessage(error instanceof Error ? error.message : 'Failed to add points. Please try again.')
+      showToast('Failed to add points. Please try again.', 'error', 5000)
     } finally {
       setIsSubmitting(false)
     }
   }
 
   const resetForm = () => {
-    setSelectedStudent(null)
+    setSelectedStudents([])
     setSelectedR(null)
     setSelectedCategory(null)
     setNotes('')
+    setHouseCompetitionPoints('')
+    setHouseCompetitionHouse('')
+    setHouseCompetitionNotes('')
     setEventDate(new Date().toISOString().split('T')[0])
     setSearchText('')
+    clearDraft()
+  }
+
+  const handleAddStudent = (student: Student) => {
+    if (selectedStudentIds.has(student.id)) return
+    setSelectedStudents((prev) => [...prev, student])
+    setSearchText('')
+  }
+
+  const handleRemoveStudent = (studentId: string) => {
+    setSelectedStudents((prev) => prev.filter((student) => student.id !== studentId))
   }
 
   if (isLoading) {
@@ -195,110 +401,205 @@ export default function AddPointsPage() {
     <div className="max-w-3xl mx-auto">
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-[var(--text)] mb-2">
+        <h1 className="text-3xl font-bold text-[#1a1a2e] mb-2" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
           Add Points
         </h1>
         <div className="flex items-center gap-3">
-          <div className="h-1 w-16 bg-[var(--accent)] rounded-full"></div>
-          <p className="text-[var(--text-muted)] text-sm font-medium">Award merit points to students</p>
+          <div className="h-1 w-16 bg-gradient-to-r from-[#c9a227] to-[#e8d48b] rounded-full"></div>
+          <p className="text-[#1a1a2e]/50 text-sm font-medium">Award merit points to students</p>
         </div>
       </div>
 
       {/* Success Message */}
       {showSuccess && (
-        <div className="bg-[var(--house-khad)]/10 border border-[var(--border)] text-[var(--house-khad)] px-5 py-4 rounded-xl mb-6 flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-[var(--house-khad)] flex items-center justify-center">
+        <div className="bg-[#055437]/10 border border-[#055437]/20 text-[#055437] px-5 py-4 rounded-xl mb-6 flex items-center gap-3">
+          <div className="w-8 h-8 rounded-full bg-[#055437] flex items-center justify-center">
             <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <span className="font-medium">Points awarded successfully!</span>
+          <span className="font-medium">
+            {successMessage || 'Points submitted!'}
+          </span>
+        </div>
+      )}
+
+      {toast && (
+        <div
+          className={`fixed bottom-6 right-6 z-50 rounded-xl px-4 py-3 text-sm font-medium shadow-lg border ${
+            toast.type === 'success'
+              ? 'bg-[#055437] text-white border-[#055437]/80'
+              : toast.type === 'error'
+              ? 'bg-[#910000] text-white border-[#910000]/80'
+              : 'bg-[#1a1a2e] text-white border-[#1a1a2e]/80'
+          }`}
+        >
+          {toast.message}
         </div>
       )}
 
       {/* Step 1: Select Student */}
-      <div className="card rounded-2xl p-6 mb-6">
+      <div className="bg-white rounded-2xl p-6 shadow-sm border border-[#c9a227]/10 mb-6">
         <div className="flex items-center gap-3 mb-5">
-          <span className="w-8 h-8 bg-[var(--accent)] text-white rounded-full flex items-center justify-center font-bold text-sm">1</span>
-          <h2 className="text-lg font-semibold text-[var(--text)]">Select Student</h2>
+          <span className="w-8 h-8 bg-gradient-to-br from-[#c9a227] to-[#9a7b1a] text-white rounded-full flex items-center justify-center font-bold text-sm">1</span>
+          <h2 className="text-lg font-semibold text-[#1a1a2e]">Select Students</h2>
         </div>
 
-        {selectedStudent ? (
-          <div className="flex items-center gap-4 p-4 bg-[var(--bg)] rounded-xl border border-[var(--border)]">
-            <div
-              className="w-12 h-12 rounded-xl flex items-center justify-center text-sm font-bold"
-              style={{
-                backgroundColor: `${getHouseColor(selectedStudent.house)}15`,
-                color: getHouseColor(selectedStudent.house)}}
-            >
-              {getInitials(selectedStudent.name)}
-            </div>
-            <div className="flex-1">
-              <p className="font-medium text-[var(--text)]">{selectedStudent.name}</p>
-              <p className="text-sm text-[var(--text-muted)]">
-                Grade {selectedStudent.grade}{selectedStudent.section} • {canonicalHouse(selectedStudent.house)}
-              </p>
-            </div>
-            <button
-              onClick={() => setSelectedStudent(null)}
-              className="text-[var(--accent)] hover:text-[var(--accent)] font-medium text-sm transition-colors"
-            >
-              Change
-            </button>
-          </div>
-        ) : (
-          <div>
-            <input
-              type="text"
-              placeholder="Search for a student..."
-              value={searchText}
-              onChange={(e) => setSearchText(e.target.value)}
-              className="w-full px-4 py-3 border border-[var(--border)] rounded-xl focus:ring-2 focus:ring-[var(--accent)] focus:border-[var(--border)] outline-none mb-3 transition-all"
-            />
-            {filteredStudents.length > 0 && (
-              <div className="border border-[var(--border)] rounded-xl overflow-hidden">
-                {filteredStudents.map((student, index) => (
+        <div>
+          {selectedStudents.length > 0 && (
+            <div className="mb-4">
+              <div className="flex items-center justify-between mb-2">
+                <p className="text-sm font-medium text-[#1a1a2e]/70">
+                  Selected ({selectedStudents.length})
+                </p>
+                <button
+                  onClick={() => setSelectedStudents([])}
+                  className="text-[#c9a227] hover:text-[#9a7b1a] font-medium text-sm transition-colors"
+                >
+                  Clear all
+                </button>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {selectedStudents.map((student) => (
                   <button
                     key={student.id}
-                    onClick={() => {
-                      setSelectedStudent(student)
-                      setSearchText('')
-                    }}
-                    className={`w-full flex items-center gap-4 p-3.5 hover:bg-[var(--bg)] transition-colors ${
-                      index !== filteredStudents.length - 1 ? 'border-b border-[var(--border)]' : ''
-                    }`}
+                    onClick={() => handleRemoveStudent(student.id)}
+                    className="flex items-center gap-2 px-3 py-2 rounded-full bg-[#faf9f7] border border-[#c9a227]/20 text-sm text-[#1a1a2e] hover:border-[#c9a227]/50 transition-colors"
                   >
-                    <div
-                      className="w-10 h-10 rounded-xl flex items-center justify-center text-sm font-bold"
+                    <span
+                      className="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold"
                       style={{
                         backgroundColor: `${getHouseColor(student.house)}15`,
-                        color: getHouseColor(student.house)}}
+                        color: getHouseColor(student.house),
+                      }}
                     >
                       {getInitials(student.name)}
-                    </div>
-                    <div className="text-left">
-                      <p className="font-medium text-[var(--text)]">{student.name}</p>
-                      <p className="text-sm text-[var(--text-muted)]">
-                        Grade {student.grade}{student.section} • {canonicalHouse(student.house)?.replace('House of ', '')}
-                      </p>
-                    </div>
+                    </span>
+                    <span>{student.name}</span>
+                    <span className="text-[#1a1a2e]/30">×</span>
                   </button>
                 ))}
               </div>
+            </div>
+          )}
+
+          {/* Bulk Selection Filters */}
+          <div className="mb-4 p-4 bg-[#faf9f7] rounded-xl border border-[#1a1a2e]/5">
+            <div className="flex items-center justify-between mb-3">
+              <p className="text-sm font-medium text-[#1a1a2e]/70">Bulk Select</p>
+              {hasActiveFilters && (
+                <button
+                  onClick={clearFilters}
+                  className="text-[#c9a227] hover:text-[#9a7b1a] font-medium text-xs transition-colors"
+                >
+                  Clear filters
+                </button>
+              )}
+            </div>
+            <div className="grid grid-cols-3 gap-2 mb-3">
+              <select
+                value={filterGrade}
+                onChange={(e) => {
+                  setFilterGrade(e.target.value)
+                  setFilterSection('')
+                }}
+                className="px-3 py-2 border border-[#1a1a2e]/10 rounded-lg text-sm focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227] outline-none bg-white"
+              >
+                <option value="">All Grades</option>
+                {availableGrades.map((grade) => (
+                  <option key={grade} value={grade}>Grade {grade}</option>
+                ))}
+              </select>
+              <select
+                value={filterSection}
+                onChange={(e) => setFilterSection(e.target.value)}
+                className="px-3 py-2 border border-[#1a1a2e]/10 rounded-lg text-sm focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227] outline-none bg-white"
+              >
+                <option value="">All Sections</option>
+                {availableSections.map((section) => (
+                  <option key={section} value={section}>Section {section}</option>
+                ))}
+              </select>
+              <select
+                value={filterHouse}
+                onChange={(e) => setFilterHouse(e.target.value)}
+                className="px-3 py-2 border border-[#1a1a2e]/10 rounded-lg text-sm focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227] outline-none bg-white"
+              >
+                <option value="">All Houses</option>
+                {availableHouses.map((house) => (
+                  <option key={house} value={canonicalHouseName(house)}>{canonicalHouseName(house)?.replace('House of ', '')}</option>
+                ))}
+              </select>
+            </div>
+            {hasActiveFilters && (
+              <button
+                onClick={handleAddAllFiltered}
+                disabled={bulkFilteredStudents.length === 0}
+                className="w-full py-2 px-4 bg-[#c9a227]/10 hover:bg-[#c9a227]/20 text-[#9a7b1a] rounded-lg text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Add {bulkFilteredStudents.length} student{bulkFilteredStudents.length === 1 ? '' : 's'}
+              </button>
             )}
           </div>
-        )}
+
+          {/* Or search individually */}
+          <div className="relative mb-3">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-[#1a1a2e]/10"></div>
+            </div>
+            <div className="relative flex justify-center text-xs">
+              <span className="px-2 bg-white text-[#1a1a2e]/40">or search individually</span>
+            </div>
+          </div>
+
+          <input
+            type="text"
+            placeholder="Search for a student..."
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+            className="w-full px-4 py-3 border border-[#1a1a2e]/10 rounded-xl focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227] outline-none mb-3 transition-all"
+          />
+          {filteredStudents.length > 0 && (
+            <div className="border border-[#1a1a2e]/10 rounded-xl overflow-hidden">
+              {filteredStudents.map((student, index) => (
+                <button
+                  key={student.id}
+                  onClick={() => handleAddStudent(student)}
+                  className={`w-full flex items-center gap-4 p-3.5 hover:bg-[#faf9f7] transition-colors ${
+                    index !== filteredStudents.length - 1 ? 'border-b border-[#1a1a2e]/5' : ''
+                  }`}
+                >
+                  <div
+                    className="w-10 h-10 rounded-xl flex items-center justify-center text-sm font-bold"
+                    style={{
+                      backgroundColor: `${getHouseColor(student.house)}15`,
+                      color: getHouseColor(student.house),
+                    }}
+                  >
+                    {getInitials(student.name)}
+                  </div>
+                  <div className="text-left">
+                    <p className="font-medium text-[#1a1a2e]">{student.name}</p>
+                    <p className="text-sm text-[#1a1a2e]/50">
+                      Grade {student.grade}{student.section} • {canonicalHouseName(student.house)?.replace('House of ', '')}
+                    </p>
+                  </div>
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Step 2: Select Category */}
-      <div className="card rounded-2xl p-6 mb-6">
+      <div className="bg-white rounded-2xl p-6 shadow-sm border border-[#c9a227]/10 mb-6">
         <div className="flex items-center gap-3 mb-5">
           <span className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${
-            selectedStudent
-              ? 'bg-[var(--accent)] text-white'
-              : 'bg-[var(--surface-2)] text-[var(--text-muted)]'
+            selectedStudents.length > 0
+              ? 'bg-gradient-to-br from-[#c9a227] to-[#9a7b1a] text-white'
+              : 'bg-[#1a1a2e]/10 text-[#1a1a2e]/40'
           }`}>2</span>
-          <h2 className={`text-lg font-semibold ${selectedStudent ? 'text-[var(--text)]' : 'text-[var(--text-muted)]'}`}>
+          <h2 className={`text-lg font-semibold ${selectedStudents.length > 0 ? 'text-[#1a1a2e]' : 'text-[#1a1a2e]/40'}`}>
             Select Category
           </h2>
         </div>
@@ -316,19 +617,19 @@ export default function AddPointsPage() {
                   setSelectedR(r)
                   setSelectedCategory(null)
                 }}
-                disabled={!selectedStudent}
+                disabled={selectedStudents.length === 0}
                 className={`w-full flex items-center gap-4 p-4 rounded-xl border-2 transition-all ${
                   selectedR === r
-                    ? 'border-[var(--border)] bg-[var(--accent)]/5'
-                    : 'border-[var(--border)] hover:border-[var(--border)]'
-                } ${!selectedStudent ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    ? 'border-[#c9a227] bg-[#c9a227]/5'
+                    : 'border-[#1a1a2e]/10 hover:border-[#c9a227]/30'
+                } ${selectedStudents.length === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
               >
                 <span className="text-2xl">{icon}</span>
                 <div className="text-left flex-1">
-                  <p className="font-medium text-[var(--text)]">{r}</p>
+                  <p className="font-medium text-[#1a1a2e]">{r}</p>
                 </div>
                 {selectedR === r && (
-                  <div className="w-6 h-6 rounded-full bg-[var(--accent)] flex items-center justify-center">
+                  <div className="w-6 h-6 rounded-full bg-[#c9a227] flex items-center justify-center">
                     <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
@@ -337,15 +638,42 @@ export default function AddPointsPage() {
               </button>
             )
           })}
+          {isSuperAdmin && (
+            <button
+              onClick={() => {
+                setSelectedR(HOUSE_COMPETITION_R)
+                setSelectedCategory(null)
+                setSelectedStudents([])
+              }}
+              className={`w-full flex items-center gap-4 p-4 rounded-xl border-2 transition-all ${
+                selectedR === HOUSE_COMPETITION_R
+                  ? 'border-[#c9a227] bg-[#c9a227]/5'
+                  : 'border-[#1a1a2e]/10 hover:border-[#c9a227]/30'
+              }`}
+            >
+              <span className="text-2xl">🏆</span>
+              <div className="text-left flex-1">
+                <p className="font-medium text-[#1a1a2e]">House Competition</p>
+                <p className="text-xs text-[#1a1a2e]/50">Award points to a full house</p>
+              </div>
+              {selectedR === HOUSE_COMPETITION_R && (
+                <div className="w-6 h-6 rounded-full bg-[#c9a227] flex items-center justify-center">
+                  <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+              )}
+            </button>
+          )}
         </div>
       </div>
 
       {/* Step 3: Select Reason */}
-      {selectedR && (
-        <div className="card rounded-2xl p-6 mb-6">
+      {selectedR && !isHouseCompetition && (
+        <div className="bg-white rounded-2xl p-6 shadow-sm border border-[#c9a227]/10 mb-6">
           <div className="flex items-center gap-3 mb-5">
-            <span className="w-8 h-8 bg-[var(--accent)] text-white rounded-full flex items-center justify-center font-bold text-sm">3</span>
-            <h2 className="text-lg font-semibold text-[var(--text)]">Select Reason</h2>
+            <span className="w-8 h-8 bg-gradient-to-br from-[#c9a227] to-[#9a7b1a] text-white rounded-full flex items-center justify-center font-bold text-sm">3</span>
+            <h2 className="text-lg font-semibold text-[#1a1a2e]">Select Reason</h2>
           </div>
 
           <div className="space-y-2">
@@ -355,16 +683,16 @@ export default function AddPointsPage() {
                 onClick={() => setSelectedCategory(sub)}
                 className={`w-full flex items-center gap-4 p-4 rounded-xl border-2 transition-all ${
                   selectedCategory?.id === sub.id
-                    ? 'border-[var(--border)] bg-[var(--accent)]/5'
-                    : 'border-[var(--border)] hover:border-[var(--border)]'
+                    ? 'border-[#c9a227] bg-[#c9a227]/5'
+                    : 'border-[#1a1a2e]/10 hover:border-[#c9a227]/30'
                 }`}
               >
                 <div className="text-left flex-1">
-                  <p className="font-medium text-[var(--text)]">{sub.subcategory}</p>
+                  <p className="font-medium text-[#1a1a2e]">{sub.subcategory}</p>
                 </div>
-                <span className="font-bold text-[var(--house-khad)]">+{sub.points}</span>
+                <span className="font-bold text-[#055437]">+{sub.points}</span>
                 {selectedCategory?.id === sub.id && (
-                  <div className="w-6 h-6 rounded-full bg-[var(--accent)] flex items-center justify-center">
+                  <div className="w-6 h-6 rounded-full bg-[#c9a227] flex items-center justify-center">
                     <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
@@ -376,57 +704,95 @@ export default function AddPointsPage() {
         </div>
       )}
 
-      {/* Step 4: Date of Event */}
-      {selectedCategory && (
-        <div className="card rounded-2xl p-6 mb-6">
+      {isHouseCompetition && (
+        <div className="bg-white rounded-2xl p-6 shadow-sm border border-[#c9a227]/10 mb-6">
           <div className="flex items-center gap-3 mb-5">
-            <span className="w-8 h-8 bg-[var(--accent)] text-white rounded-full flex items-center justify-center font-bold text-sm">4</span>
-            <h2 className="text-lg font-semibold text-[var(--text)]">Date of Event</h2>
+            <span className="w-8 h-8 bg-gradient-to-br from-[#c9a227] to-[#9a7b1a] text-white rounded-full flex items-center justify-center font-bold text-sm">3</span>
+            <h2 className="text-lg font-semibold text-[#1a1a2e]">House Competition Details</h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label className="block text-sm font-medium text-[#1a1a2e]/70 mb-2">Points</label>
+              <input
+                type="number"
+                min={1}
+                step={1}
+                value={houseCompetitionPoints}
+                onChange={(e) => setHouseCompetitionPoints(e.target.value)}
+                placeholder="Enter points"
+                className="w-full px-4 py-3 border border-[#1a1a2e]/10 rounded-xl focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227] outline-none transition-all"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-[#1a1a2e]/70 mb-2">House</label>
+              <select
+                value={houseCompetitionHouse}
+                onChange={(e) => setHouseCompetitionHouse(e.target.value)}
+                className="w-full px-4 py-3 border border-[#1a1a2e]/10 rounded-xl focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227] outline-none transition-all bg-white"
+              >
+                <option value="">Select house</option>
+                {houseOptions.map((house) => (
+                  <option key={house} value={house}>{house}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-[#1a1a2e]/70 mb-2">Competition Note</label>
+            <textarea
+              placeholder="Describe the competition..."
+              value={houseCompetitionNotes}
+              onChange={(e) => setHouseCompetitionNotes(e.target.value)}
+              className="w-full px-4 py-3 border border-[#1a1a2e]/10 rounded-xl focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227] outline-none resize-none transition-all"
+              rows={3}
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Step 4: Date of Event */}
+      {(selectedCategory || isHouseCompetition) && (
+        <div className="bg-white rounded-2xl p-6 shadow-sm border border-[#c9a227]/10 mb-6">
+          <div className="flex items-center gap-3 mb-5">
+            <span className="w-8 h-8 bg-gradient-to-br from-[#c9a227] to-[#9a7b1a] text-white rounded-full flex items-center justify-center font-bold text-sm">4</span>
+            <h2 className="text-lg font-semibold text-[#1a1a2e]">Date of Event</h2>
           </div>
 
           <input
             type="date"
             value={eventDate}
             onChange={(e) => setEventDate(e.target.value)}
-            className="w-full px-4 py-3 border border-[var(--border)] rounded-xl focus:ring-2 focus:ring-[var(--accent)] focus:border-[var(--border)] outline-none transition-all"
+            className="w-full px-4 py-3 border border-[#1a1a2e]/10 rounded-xl focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227] outline-none transition-all"
           />
         </div>
       )}
 
       {/* Step 5: Notes */}
-      {selectedCategory && (
-        <div className="card rounded-2xl p-6 mb-6">
+      {selectedCategory && !isHouseCompetition && (
+        <div className="bg-white rounded-2xl p-6 shadow-sm border border-[#c9a227]/10 mb-6">
           <div className="flex items-center gap-3 mb-5">
-            <span className="w-8 h-8 bg-[var(--accent)] text-white rounded-full flex items-center justify-center font-bold text-sm">5</span>
-            <h2 className="text-lg font-semibold text-[var(--text)]">Add Notes (Optional)</h2>
+            <span className="w-8 h-8 bg-gradient-to-br from-[#c9a227] to-[#9a7b1a] text-white rounded-full flex items-center justify-center font-bold text-sm">5</span>
+            <h2 className="text-lg font-semibold text-[#1a1a2e]">Add Notes (Optional)</h2>
           </div>
 
           <textarea
             placeholder="Add any additional notes..."
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
-            className="w-full px-4 py-3 border border-[var(--border)] rounded-xl focus:ring-2 focus:ring-[var(--accent)] focus:border-[var(--border)] outline-none resize-none transition-all"
+            className="w-full px-4 py-3 border border-[#1a1a2e]/10 rounded-xl focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227] outline-none resize-none transition-all"
             rows={3}
           />
         </div>
       )}
 
-      {/* Error Message */}
-      {errorMessage && (
-        <div className="bg-[var(--danger)]/10 border border-[var(--danger)]/30 text-[var(--danger)] px-5 py-4 rounded-xl mb-6 flex items-center gap-3">
-          <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          <span className="font-medium">{errorMessage}</span>
-        </div>
-      )}
-
       {/* Submit Button */}
-      {selectedStudent && selectedCategory && (
+      {((selectedStudents.length > 0 && selectedCategory) || canSubmitHouseCompetition) && (
         <button
           onClick={handleSubmit}
-          disabled={isSubmitting}
-          className="btn-primary w-full font-medium flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
+          disabled={isSubmitting || (isHouseCompetition && !canSubmitHouseCompetition)}
+          className="w-full bg-gradient-to-r from-[#c9a227] to-[#9a7b1a] text-white py-4 px-6 rounded-xl font-medium hover:from-[#9a7b1a] hover:to-[#7a5f14] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 shadow-lg"
         >
           {isSubmitting ? (
             <>
@@ -435,7 +801,12 @@ export default function AddPointsPage() {
             </>
           ) : (
             <>
-              <span>Award {selectedCategory.points} points to {selectedStudent.name}</span>
+              <span>
+                {isHouseCompetition
+                  ? `Award ${houseCompetitionPoints || 0} points to ${canonicalHouseName(houseCompetitionHouse) || 'house'}`
+                  : `Award ${selectedCategory?.points} points to ${selectedStudents.length} student${selectedStudents.length === 1 ? '' : 's'}`
+                }
+              </span>
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
               </svg>
@@ -446,3 +817,4 @@ export default function AddPointsPage() {
     </div>
   )
 }
+// Force rebuild 1767720489

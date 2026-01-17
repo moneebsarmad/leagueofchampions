@@ -5,9 +5,10 @@ import {
   useContext,
   useEffect,
   useMemo,
-  useState} from "react";
+  useState,
+} from "react";
 import type { Session, User } from "@supabase/supabase-js";
-import { isDemo, supabase } from "../lib/supabaseClient";
+import { supabase } from "../lib/supabaseClient";
 
 type AuthContextValue = {
   session: Session | null;
@@ -28,39 +29,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     let isMounted = true;
 
     const initSession = async () => {
-      console.log('[Auth] Initializing session...')
-      if (isDemo) {
-        console.log('[Auth] Demo mode, skipping auth')
-        if (isMounted) {
-          setSession(null);
-          setUser(null);
-          setLoading(false);
-        }
-        return;
+      const { data, error } = await supabase.auth.getSession();
+      if (!isMounted) return;
+      if (error) {
+        console.error("Supabase session error", error.message);
       }
-      try {
-        const { data, error } = await supabase.auth.getSession();
-        console.log('[Auth] getSession result:', { hasSession: !!data.session, error: error?.message })
-        if (!isMounted) return;
-        if (error) {
-          console.error("[Auth] Supabase session error", error.message);
-        }
-        setSession(data.session ?? null);
-        setUser(data.session?.user ?? null);
-        console.log('[Auth] User set:', data.session?.user?.email ?? 'no user')
-      } catch (err) {
-        console.error('[Auth] Error getting session:', err)
-      }
+      setSession(data.session ?? null);
+      setUser(data.session?.user ?? null);
       setLoading(false);
     };
 
     initSession();
-
-    if (isDemo) {
-      return () => {
-        isMounted = false;
-      };
-    }
 
     const { data: authListener } = supabase.auth.onAuthStateChange(
       (_event, nextSession) => {
@@ -83,7 +62,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       signIn: async (email, password) => {
         const { error } = await supabase.auth.signInWithPassword({
           email,
-          password});
+          password,
+        });
         return error ? error.message : null;
       },
       signOut: async () => {
@@ -91,7 +71,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         if (error) {
           console.error("Supabase sign out error", error.message);
         }
-      }}),
+      },
+    }),
     [session, user, loading]
   );
 

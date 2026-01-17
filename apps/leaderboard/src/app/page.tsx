@@ -1,104 +1,86 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/lib/supabase";
-import { VIEWS } from "@/lib/views";
-import PodiumRow from "@/components/PodiumRow";
-import CrestLoader from "@/components/CrestLoader";
+import HouseCard from "@/components/HouseCard";
+import { schoolConfig, canonicalHouseName } from "@/lib/school.config";
 
 interface House {
-  rank: number;
-  name: string;
-  virtue: string;
-  description: string;
-  points: number;
-  color: string;
-  bgColor: string;
-  logo?: string | null;
-}
+    rank: number;
+    name: string;
+    virtue: string;
+    description: string;
+    points: number;
+    color: string;
+    bgColor: string;
+    logo?: string | null;
+  }
 
-function canonicalHouse(value: string): string {
-  const normalized = value
-    .normalize("NFKD")
-    .replace(/\p{Diacritic}/gu, "")
-    .replace(/[''`]/g, "'")
-    .toLowerCase()
-    .trim()
-    .replace(/\s+/g, " ");
-
-  if (normalized.includes("bakr") || normalized.includes("abu")) {
-    return "House of Abu Bakr";
-  }
-  if (normalized.includes("khadijah") || normalized.includes("khad")) {
-    return "House of Khadijah";
-  }
-  if (normalized.includes("umar")) {
-    return "House of 'Umar";
-  }
-  if (normalized.includes("aishah") || normalized.includes("aish")) {
-    return "House of 'A'ishah";
-  }
-  return value.trim();
-}
-
-const houseConfig: Record<string, Omit<House, "rank" | "points" | "name">> = {
-  "House of Abu Bakr": {
+// Build house config from school config with leaderboard-specific properties
+const houseVirtues: Record<string, { virtue: string; description: string; bgColor: string }> = {
+  "House of Abū Bakr": {
     virtue: "Loyalty",
     description: "Rooted in honesty, unwavering in loyalty to faith and community.",
-    color: "var(--house-abu)",
-    bgColor: "var(--surface-2)",
-    logo: "/house_of_abubakr.png",
+    bgColor: "#f6f1fb",
   },
-  "House of 'Umar": {
+  "House of ʿUmar": {
     virtue: "Moral Courage",
     description: "Living with fairness, speaking truth, and acting with courage.",
-    color: "var(--house-umar)",
-    bgColor: "var(--surface-2)",
-    logo: "/house_of_umar.png",
+    bgColor: "#f2f3fb",
   },
-  "House of 'A'ishah": {
+  "House of ʿĀʾishah": {
     virtue: "Creativity",
     description: "Igniting creativity that inspires hearts and serves Allah.",
-    color: "var(--house-aish)",
-    bgColor: "var(--surface-2)",
-    logo: "/house_of_aishah.png",
+    bgColor: "#fdf1f1",
   },
-  "House of Khadijah": {
+  "House of Khadījah": {
     virtue: "Wisdom",
     description: "Guided by wisdom, leading with grace and strength.",
-    color: "var(--house-khad)",
-    bgColor: "var(--surface-2)",
-    logo: "/house_of_khadijah.png",
+    bgColor: "#f1fbf6",
   },
 };
 
+const houseConfig: Record<string, Omit<House, "rank" | "points" | "name">> =
+  schoolConfig.houses.reduce((acc, house) => {
+    const virtueInfo = houseVirtues[house.name] || { virtue: "", description: "", bgColor: "#f5f5f5" };
+    acc[house.name] = {
+      virtue: virtueInfo.virtue,
+      description: virtueInfo.description,
+      color: house.color,
+      bgColor: virtueInfo.bgColor,
+      logo: house.logo,
+    };
+    return acc;
+  }, {} as Record<string, Omit<House, "rank" | "points" | "name">>);
+
 const fallbackHouses: House[] = [
-  {
-    rank: 1,
-    name: "House of Abu Bakr",
-    points: 4985,
-    ...houseConfig["House of Abu Bakr"],
-  },
-  {
-    rank: 2,
-    name: "House of 'Umar",
-    points: 4175,
-    ...houseConfig["House of 'Umar"],
-  },
-  {
-    rank: 3,
-    name: "House of 'A'ishah",
-    points: 3995,
-    ...houseConfig["House of 'A'ishah"],
-  },
-  {
-    rank: 4,
-    name: "House of Khadijah",
-    points: 3480,
-    ...houseConfig["House of Khadijah"],
-  },
-];
+    {
+      rank: 1,
+      name: "House of Abū Bakr",
+      points: 4985,
+      ...houseConfig["House of Abū Bakr"],
+    },
+    {
+      rank: 2,
+      name: "House of ʿUmar",
+      points: 4175,
+      ...houseConfig["House of ʿUmar"],
+    },
+    {
+      rank: 3,
+      name: "House of ʿĀʾishah",
+      points: 3995,
+      ...houseConfig["House of ʿĀʾishah"],
+    },
+    {
+      rank: 4,
+      name: "House of Khadījah",
+      points: 3480,
+      ...houseConfig["House of Khadījah"],
+    },
+  ];
 
 export default function Home() {
   const [houses, setHouses] = useState<House[]>(fallbackHouses);
@@ -113,7 +95,7 @@ export default function Home() {
       fetchingRef.current = true;
       try {
         const { data, error } = await supabase
-          .from(VIEWS.HOUSE_STANDINGS)
+          .from("house_standings_view")
           .select("*")
           .order("total_points", { ascending: false });
 
@@ -123,26 +105,31 @@ export default function Home() {
           return;
         }
 
-        const mapped =
-          data?.map((row: Record<string, unknown>, index: number) => {
-            const houseNameRaw = row.house_name ?? row.house ?? row.name ?? "";
-            const houseName = canonicalHouse(String(houseNameRaw ?? ""));
-            const config = houseConfig[houseName];
-            if (!config) {
-              return null;
-            }
-            const pointsValue =
-              Number(row.total_points ?? row.points ?? 0) || 0;
-            return {
-              rank: index + 1,
-              name: houseName,
-              points: pointsValue,
-              ...config,
-            };
-          }) ?? [];
+        const pointsByHouse = new Map<string, number>();
 
-        const valid = mapped.filter(Boolean) as House[];
-        setHouses(valid.length > 0 ? valid : fallbackHouses);
+        (data ?? []).forEach((row: Record<string, unknown>) => {
+          const houseNameRaw = row.house_name ?? row.house ?? row.name ?? "";
+          const houseName = canonicalHouseName(String(houseNameRaw ?? ""));
+          if (!houseConfig[houseName]) {
+            return;
+          }
+          const pointsValue = Number(row.total_points ?? row.points ?? 0) || 0;
+          pointsByHouse.set(houseName, (pointsByHouse.get(houseName) || 0) + pointsValue);
+        });
+
+        const nextHouses = schoolConfig.houses
+          .map((house) => ({
+            name: house.name,
+            points: pointsByHouse.get(house.name) || 0,
+            ...houseConfig[house.name],
+          }))
+          .sort((a, b) => b.points - a.points)
+          .map((house, index) => ({
+            ...house,
+            rank: index + 1,
+          }));
+
+        setHouses(nextHouses.length > 0 ? nextHouses : fallbackHouses);
       } catch (err) {
         console.error("Error fetching houses:", err);
         setHouses(fallbackHouses);
@@ -187,120 +174,82 @@ export default function Home() {
     };
   }, []);
 
-  const [first, second, third] = houses;
-  const updatedLabel = new Date().toLocaleTimeString([], {
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-
   return (
-    <div className="min-h-screen app-shell flex flex-col">
-      {/* Championship Header Banner */}
-      <div className="victory-arena border-b-2 border-[var(--victory-gold)]">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex items-center justify-between gap-4">
-          <div className="flex items-center gap-4">
-            <div className="relative">
-              <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-[var(--victory-gold)] to-[var(--victory-gold-dark)] flex items-center justify-center shadow-lg">
-                <span className="text-[var(--midnight-primary)] font-bold text-lg">DAAIS</span>
-              </div>
-              <div className="absolute -inset-0.5 rounded-xl bg-[var(--victory-gold)] opacity-30 blur"></div>
-            </div>
-            <div>
-              <div className="display text-2xl sm:text-3xl font-bold text-white">League of Champions</div>
-              <div className="text-sm text-[var(--victory-gold)] font-medium">Dār al-Arqam Islamic School</div>
-            </div>
-          </div>
-          <span className="champ-badge">
-            <span className="champ-dot"></span>
-            Weekly Standings
-          </span>
-        </div>
+    <div className="h-screen py-4 px-4 sm:px-6 lg:px-8 starry-bg flex flex-col" style={{ background: "#1a1a2e" }}>
+      {/* School Branding */}
+      <div
+        className="absolute top-4 left-6 text-sm tracking-wide"
+        style={{
+          color: "#c9a227",
+          fontFamily: "var(--font-cinzel), 'Cinzel', sans-serif"
+        }}
+      >
+        {schoolConfig.schoolName}
+      </div>
+      <div className="absolute top-4 right-6 flex items-center gap-2">
+        <Link
+          href="/house-mvps"
+          className="inline-flex items-center gap-2 rounded-full border border-[#c9a227] px-4 py-2 text-xs uppercase tracking-[0.2em] text-[#c9a227] transition hover:bg-[#c9a227] hover:text-[#1a1a2e]"
+          style={{ fontFamily: "var(--font-cinzel), 'Cinzel', sans-serif" }}
+        >
+          House MVPs
+        </Link>
+        <Link
+          href="/hall-of-fame"
+          className="inline-flex items-center gap-2 rounded-full border border-[#c9a227] px-4 py-2 text-xs uppercase tracking-[0.2em] text-[#c9a227] transition hover:bg-[#c9a227] hover:text-[#1a1a2e]"
+          style={{ fontFamily: "var(--font-cinzel), 'Cinzel', sans-serif" }}
+        >
+          Hall of Fame
+        </Link>
       </div>
 
-      <div className="w-full flex-1 py-6 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto w-full flex flex-col flex-1">
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h1 className="text-2xl sm:text-3xl font-bold text-[var(--text)]">Weekly Standings</h1>
-              <p className="text-sm text-[var(--victory-gold)] font-medium">Where Champions Are Made</p>
-            </div>
-            <div className="flex items-center gap-2">
-              <Link href="/house-mvps" className="btn-secondary text-xs">
-                House MVPs
-              </Link>
-              <Link href="/hall-of-fame" className="btn-secondary text-xs">
-                Hall of Fame
-              </Link>
-            </div>
+      <div className="max-w-6xl mx-auto w-full flex flex-col flex-1">
+        {/* Header with Crest */}
+        <header className="text-center mb-4">
+          {/* Crest */}
+          <div className="flex justify-center mb-2">
+            <Image
+              src={schoolConfig.crestLogo}
+              alt={`${schoolConfig.systemName} Crest`}
+              width={100}
+              height={100}
+              className="drop-shadow-lg"
+              priority
+            />
           </div>
 
+          {/* Title */}
+          <h1
+            className="italic text-3xl sm:text-4xl md:text-5xl text-white mb-2 gold-underline pb-1"
+            style={{ fontFamily: "var(--font-playfair), 'Playfair Display', Georgia, serif" }}
+          >
+            {schoolConfig.systemName} Leaderboard
+          </h1>
+
+          {/* Tagline */}
+          <p
+            className="italic text-lg sm:text-xl mt-3"
+            style={{
+              color: "#c9a227",
+              fontFamily: "var(--font-playfair), 'Playfair Display', Georgia, serif"
+            }}
+          >
+            {schoolConfig.tagline}
+          </p>
+
+        </header>
+
+        {/* Leaderboard Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
           {loading ? (
-            <CrestLoader label="Loading standings..." />
-          ) : first && second && third ? (
-            <PodiumRow
-              first={{
-                id: first.name,
-                name: first.name,
-                points: first.points,
-                subtitle: first.virtue,
-                accentVar: first.color,
-              }}
-              second={{
-                id: second.name,
-                name: second.name,
-                points: second.points,
-                subtitle: second.virtue,
-                accentVar: second.color,
-              }}
-              third={{
-                id: third.name,
-                name: third.name,
-                points: third.points,
-                subtitle: third.virtue,
-                accentVar: third.color,
-              }}
-              metaLeft="Week of Jan 11"
-              metaRight={`Updated ${updatedLabel}`}
-            />
-          ) : null}
-
-          {!loading ? (
-            <div className="mt-6">
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th>Rank</th>
-                    <th>House</th>
-                    <th>Virtue</th>
-                    <th>Points</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {houses.map((house) => {
-                    const isFirst = house.rank === 1;
-                    const isSecond = house.rank === 2;
-                    const isThird = house.rank === 3;
-                    const rowStyle = isFirst
-                      ? { borderLeft: "3px solid var(--gold)", background: "var(--gold-soft)" }
-                      : isSecond
-                        ? { borderLeft: "3px solid rgba(139, 148, 158, 0.6)" }
-                        : isThird
-                          ? { borderLeft: "3px solid rgba(138, 90, 68, 0.6)" }
-                          : { borderLeft: "3px solid transparent" };
-
-                    return (
-                      <tr key={house.name} style={rowStyle}>
-                        <td className="score">{house.rank}</td>
-                        <td className="font-semibold">{house.name}</td>
-                        <td className="muted">{house.virtue}</td>
-                        <td className="score">{house.points.toLocaleString()}</td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
+            <div className="col-span-2 flex items-center justify-center py-12">
+              <p className="text-white text-lg">Loading...</p>
             </div>
-          ) : null}
+          ) : (
+            houses.map((house) => (
+              <HouseCard key={house.name} house={house} />
+            ))
+          )}
         </div>
       </div>
     </div>
