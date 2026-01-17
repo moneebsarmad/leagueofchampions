@@ -9,7 +9,7 @@ import { useSessionStorageState } from '../../../hooks/useSessionStorageState'
 type Role = 'student' | 'parent' | 'staff'
 
 // RBAC roles that map to 'staff' portal access
-const STAFF_ROLES = ['staff', 'super_admin', 'admin', 'house_mentor', 'teacher', 'support_staff']
+const STAFF_ROLES = ['staff', 'admin']
 
 function mapRoleToPortalRole(dbRole: string | null): Role | null {
   if (!dbRole) return null
@@ -194,7 +194,6 @@ export default function SettingsPage() {
       .upsert({
         user_id: user?.id,
         settings: newToggles,
-        updated_at: new Date().toISOString(),
       }, { onConflict: 'user_id' })
     setSaving(false)
   }

@@ -32,22 +32,22 @@ const sections: HallSection[] = [
     icon: "100",
   },
   {
-    id: "hijrah",
-    title: "Hijrah Club",
-    subtitle: "Students with 300+ individual points",
-    view: "hijrah_club",
-    accent: "#3b4a6b",
-    tint: "#eef1f7",
-    icon: "🧭",
-  },
-  {
     id: "badr",
     title: "Badr Club",
-    subtitle: "Students with 700+ individual points",
+    subtitle: "Students with 300+ individual points",
     view: "badr_club",
     accent: "#23523b",
     tint: "#eef7f2",
     icon: "🌙",
+  },
+  {
+    id: "fath",
+    title: "Fath Club",
+    subtitle: "Students with 700+ individual points",
+    view: "fath_club",
+    accent: "#3b4a6b",
+    tint: "#eef1f7",
+    icon: "🏆",
   },
 ];
 

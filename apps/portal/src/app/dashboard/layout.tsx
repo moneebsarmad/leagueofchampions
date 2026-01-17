@@ -12,8 +12,8 @@ import MobileNav from '@/components/MobileNav'
 type Role = 'student' | 'parent' | 'staff'
 
 // RBAC roles that map to 'staff' portal access
-const STAFF_ROLES = ['staff', 'super_admin', 'admin', 'house_mentor', 'teacher', 'support_staff']
-const ADMIN_ROLES = ['super_admin', 'admin']
+const STAFF_ROLES = ['staff', 'admin']
+const ADMIN_ROLES = ['admin']
 
 function mapRoleToPortalRole(dbRole: string | null): Role | null {
   if (!dbRole) return null
@@ -62,6 +62,7 @@ export default function DashboardLayout({
   const [staffName, setStaffName] = useState<string | null>(null)
   const [isAdmin, setIsAdmin] = useState(false)
   const [mobileNavOpen, setMobileNavOpen] = useState(false)
+  const [linkedStaffId, setLinkedStaffId] = useState<string | null>(null)
 
   useEffect(() => {
     if (!loading && !user) {
@@ -78,17 +79,19 @@ export default function DashboardLayout({
       setProfileLoading(true)
       const { data, error } = await supabase
         .from('profiles')
-        .select('role')
+        .select('role, linked_staff_id')
         .eq('id', userId)
         .maybeSingle()
 
       if (error) {
         setRole(null)
         setIsAdmin(false)
+        setLinkedStaffId(null)
       } else {
         const dbRole = data?.role ?? null
         setRole(mapRoleToPortalRole(dbRole))
         setIsAdmin(dbRole ? ADMIN_ROLES.includes(dbRole) : false)
+        setLinkedStaffId(data?.linked_staff_id ?? null)
       }
       setProfileLoading(false)
     }
@@ -97,13 +100,15 @@ export default function DashboardLayout({
   }, [userId])
 
   useEffect(() => {
-    const email = user?.email ?? ''
-    if (!email) return
+    if (!linkedStaffId) {
+      setStaffName(null)
+      return
+    }
     const loadStaffName = async () => {
       const { data, error } = await supabase
         .from('staff')
         .select('staff_name')
-        .ilike('email', email)
+        .eq('id', linkedStaffId)
         .maybeSingle()
 
       if (error) {
@@ -115,7 +120,7 @@ export default function DashboardLayout({
     }
 
     loadStaffName()
-  }, [user?.email])
+  }, [linkedStaffId])
 
   if (loading) {
     return (

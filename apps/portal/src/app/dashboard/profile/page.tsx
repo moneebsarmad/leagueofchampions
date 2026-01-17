@@ -48,40 +48,43 @@ export default function MyPointsPage() {
 
     const loadProfile = async () => {
       setLoading(true)
-      const { data, error } = await supabase
+      const { data: profileData, error } = await supabase
         .from('profiles')
-        .select('*')
+        .select('linked_student_id')
         .eq('id', userId)
         .maybeSingle()
 
-      if (error || !data) {
+      if (error || !profileData?.linked_student_id) {
         setProfile(null)
         setMerits([])
         setLoading(false)
         return
       }
 
-      const name = String(data.student_name ?? data.full_name ?? data.name ?? '').trim()
-      const grade = Number(data.grade ?? 0)
-      const section = String(data.section ?? '')
-      const house = String(data.house ?? '')
+      const { data: student, error: studentError } = await supabase
+        .from('students')
+        .select('student_name, grade, section, house')
+        .eq('student_id', profileData.linked_student_id)
+        .maybeSingle()
 
-      if (!name) {
+      if (studentError || !student?.student_name) {
         setProfile(null)
         setMerits([])
         setLoading(false)
         return
       }
+
+      const name = String(student.student_name ?? '').trim()
+      const grade = Number(student.grade ?? 0)
+      const section = String(student.section ?? '')
+      const house = String(student.house ?? '')
 
       setProfile({ name, grade, section, house })
 
       let query = supabase
         .from('merit_log')
         .select('*')
-        .eq('student_name', name)
-
-      if (grade) query = query.eq('grade', grade)
-      if (section) query = query.eq('section', section)
+        .eq('student_id', profileData.linked_student_id)
 
       const { data: meritData } = await query.order('timestamp', { ascending: false })
 

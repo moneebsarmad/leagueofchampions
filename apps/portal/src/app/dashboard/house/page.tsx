@@ -34,19 +34,29 @@ export default function MyHousePage() {
       setLoading(true)
       const { data, error } = await supabase
         .from('profiles')
-        .select('*')
+        .select('linked_student_id')
         .eq('id', userId)
         .maybeSingle()
 
-      const name = String(data?.student_name ?? data?.full_name ?? data?.name ?? '').trim()
-      const grade = Number(data?.grade ?? 0)
-      const section = String(data?.section ?? '')
-      const house = String(data?.house ?? '')
-
-      if (error || !name || !house) {
+      if (error || !data?.linked_student_id) {
         setProfile(null)
       } else {
-        setProfile({ name, grade, section, house })
+        const { data: student } = await supabase
+          .from('students')
+          .select('student_name, grade, section, house')
+          .eq('student_id', data.linked_student_id)
+          .maybeSingle()
+
+        const name = String(student?.student_name ?? '').trim()
+        const grade = Number(student?.grade ?? 0)
+        const section = String(student?.section ?? '')
+        const house = String(student?.house ?? '')
+
+        if (!name || !house) {
+          setProfile(null)
+        } else {
+          setProfile({ name, grade, section, house })
+        }
       }
 
       const { data: standingsData } = await supabase

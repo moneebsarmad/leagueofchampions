@@ -74,43 +74,36 @@ interface MissingNotesEntry {
 }
 
 interface HouseSpiritRow {
-  month_start: string
   house: string
-  staff_count: number
-  total_points: number
-  rank: number
+  staff_count?: number
+  participating_staff?: number
+  total_points?: number
 }
 
 interface AllStarRow {
-  month_start: string
   staff_name: string
-  categories: number
-  total_points: number
-  rank: number
+  categories?: number
+  r_diversity?: number
+  total_points?: number
 }
 
 interface SteadyHandRow {
-  month_start: string
   staff_name: string
-  active_days: number
-  awards: number
-  rank: number
+  active_days?: number
+  awards?: number
 }
 
 interface DiamondFinderRow {
-  month_start: string
   staff_name: string
-  students: number
-  total_points: number
-  rank: number
+  students?: number
+  unique_students?: number
+  total_points?: number
 }
 
 interface HouseChampionRow {
-  month_start: string
   house: string
   staff_name: string
-  total_points: number
-  rank: number
+  total_points?: number
 }
 
 type SortKey = 'active_days' | 'consistency_pct' | 'notes_compliance_pct' | 'entries_count'
@@ -312,7 +305,6 @@ export default function StaffPage() {
 
   const fetchMonthlyAwardViews = async (monthKey: string) => {
     if (!monthKey) return
-    const monthStart = `${monthKey}-01`
     try {
       const [
         houseSpiritRes,
@@ -321,11 +313,11 @@ export default function StaffPage() {
         diamondFinderRes,
         houseChampionRes,
       ] = await Promise.all([
-        supabase.from('staff_house_spirit_monthly').select('*').eq('month_start', monthStart).eq('rank', 1),
-        supabase.from('staff_3r_all_star_monthly').select('*').eq('month_start', monthStart).eq('rank', 1),
-        supabase.from('staff_steady_hand_monthly').select('*').eq('month_start', monthStart).eq('rank', 1),
-        supabase.from('staff_diamond_finder_monthly').select('*').eq('month_start', monthStart).eq('rank', 1),
-        supabase.from('staff_house_champion_monthly').select('*').eq('month_start', monthStart).eq('rank', 1),
+        supabase.from('staff_house_spirit_monthly').select('*'),
+        supabase.from('staff_3r_all_star_monthly').select('*'),
+        supabase.from('staff_steady_hand_monthly').select('*'),
+        supabase.from('staff_diamond_finder_monthly').select('*'),
+        supabase.from('staff_house_champion_monthly').select('*'),
       ])
 
       if (houseSpiritRes.error) console.error('House spirit view error:', houseSpiritRes.error)
@@ -559,29 +551,29 @@ export default function StaffPage() {
       houseSpirit: houseSpiritRow
         ? {
           house: houseSpiritRow.house,
-          staffCount: houseSpiritRow.staff_count,
-          points: houseSpiritRow.total_points,
+          staffCount: houseSpiritRow.staff_count ?? houseSpiritRow.participating_staff ?? 0,
+          points: houseSpiritRow.total_points ?? 0,
         }
         : null,
       allStar: allStarRow
         ? {
           name: allStarRow.staff_name,
-          categories: allStarRow.categories,
-          points: allStarRow.total_points,
+          categories: allStarRow.categories ?? allStarRow.r_diversity ?? 0,
+          points: allStarRow.total_points ?? 0,
         }
         : null,
       steadyHand: steadyHandRow
         ? {
           name: steadyHandRow.staff_name,
-          days: steadyHandRow.active_days,
-          awards: steadyHandRow.awards,
+          days: steadyHandRow.active_days ?? 0,
+          awards: steadyHandRow.awards ?? 0,
         }
         : null,
       diamondFinder: diamondFinderRow
         ? {
           name: diamondFinderRow.staff_name,
-          students: diamondFinderRow.students,
-          points: diamondFinderRow.total_points,
+          students: diamondFinderRow.students ?? diamondFinderRow.unique_students ?? 0,
+          points: diamondFinderRow.total_points ?? 0,
         }
         : null,
       houseChampions,
@@ -597,7 +589,7 @@ export default function StaffPage() {
   }
 
   return (
-    <RequireRole roles={[ROLES.SUPER_ADMIN, ROLES.ADMIN]} fallback={<AccessDenied message="Admin access required." />}>
+    <RequireRole roles={[ROLES.ADMIN]} fallback={<AccessDenied message="Admin access required." />}>
       <div>
       {/* Header */}
       <div className="mb-8">

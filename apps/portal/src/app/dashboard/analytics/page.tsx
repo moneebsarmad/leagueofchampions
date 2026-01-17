@@ -193,54 +193,32 @@ export default function AnalyticsPage() {
     }
   }, [])
 
-  const fetchStats = useCallback(async () => {
-    try {
-      const { data, error } = await supabase.rpc('get_analytics_stats', {
-        p_house: appliedFilters.house || null,
-        p_grade: appliedFilters.grade ? Number(appliedFilters.grade) : null,
-        p_section: appliedFilters.section || null,
-        p_staff: appliedFilters.staff || null,
-        p_category: appliedFilters.category || null,
-        p_subcategory: appliedFilters.subcategory || null,
-        p_start_date: appliedFilters.startDate || null,
-        p_end_date: appliedFilters.endDate || null,
-      })
-
-      if (error) {
-        console.error('Error fetching analytics stats:', error)
-        return
-      }
-
-      const row = Array.isArray(data) ? data[0] : data
-      if (!row) return
-
-      setStats({
-        totalPoints: Number(row.total_points) || 0,
-        totalRecords: Number(row.total_records) || 0,
-        uniqueStudents: Number(row.unique_students) || 0,
-        activeStaff: Number(row.active_staff) || 0,
-        avgPerStudent: row.avg_per_student !== null ? Number(row.avg_per_student).toFixed(1) : '0',
-        avgPerAward: row.avg_per_award !== null ? Number(row.avg_per_award).toFixed(1) : '0',
-      })
-    } catch (error) {
-      console.error('Error fetching analytics stats:', error)
-    }
-  }, [appliedFilters])
-
   useEffect(() => {
     fetchData()
   }, [fetchData])
 
   useEffect(() => {
-    fetchStats()
-  }, [fetchStats])
+    const totalPoints = filteredEntries.reduce((sum, entry) => sum + entry.points, 0)
+    const totalRecords = filteredEntries.length
+    const uniqueStudents = new Set(
+      filteredEntries.map((entry) => `${entry.studentName}|${entry.grade}|${entry.section}`)
+    ).size
+    const activeStaff = new Set(filteredEntries.map((entry) => entry.staffName).filter(Boolean)).size
+    setStats({
+      totalPoints,
+      totalRecords,
+      uniqueStudents,
+      activeStaff,
+      avgPerStudent: uniqueStudents ? (totalPoints / uniqueStudents).toFixed(1) : '0',
+      avgPerAward: totalRecords ? (totalPoints / totalRecords).toFixed(1) : '0',
+    })
+  }, [filteredEntries])
 
   useEffect(() => {
     const channel = supabase
       .channel('analytics-realtime')
       .on('postgres_changes', { event: '*', schema: 'public', table: Tables.meritLog }, () => {
         fetchData()
-        fetchStats()
       })
       .subscribe()
 

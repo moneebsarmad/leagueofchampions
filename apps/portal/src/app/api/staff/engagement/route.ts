@@ -67,11 +67,21 @@ async function fetchCalendarDates(
     .lte('school_date', endDate)
     .eq('is_school_day', true)
 
-  if (error) {
+  if (!error && data) {
+    return (data || []).map((row) => String(row.school_date))
+  }
+
+  const { data: fallbackData, error: fallbackError } = await supabase
+    .from('valid_school_days')
+    .select('d')
+    .gte('d', startDate)
+    .lte('d', endDate)
+
+  if (fallbackError) {
     return []
   }
 
-  return (data || []).map((row) => String(row.school_date))
+  return (fallbackData || []).map((row) => String(row.d))
 }
 
 function getThreeRCategory(value: string) {
@@ -245,7 +255,7 @@ export async function GET(request: Request) {
     })
   }
 
-  const [staffRes, baselineRes] = await Promise.all([
+  const [staffRes, baselineResRaw] = await Promise.all([
     supabase.from('staff').select('*'),
     supabase.from('baseline_config').select('start_date, end_date').order('created_at', { ascending: false }).limit(1),
   ])
@@ -253,6 +263,7 @@ export async function GET(request: Request) {
   if (staffRes.error) {
     return NextResponse.json({ error: staffRes.error.message }, { status: 500 })
   }
+  const baselineRes = baselineResRaw.error ? { data: [] as { start_date: string; end_date: string }[] } : baselineResRaw
 
   let entriesQuery = supabase
     .from('merit_log')

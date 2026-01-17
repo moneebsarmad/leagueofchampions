@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server'
 import { createSupabaseServerClient } from '@/lib/supabase/server'
 
-const ADMIN_ROLES = ['admin', 'super_admin'] as const
-const SUPER_ADMIN_ROLES = ['super_admin'] as const
+const ADMIN_ROLES = ['admin'] as const
+const SUPER_ADMIN_ROLES = ['admin'] as const
 
 export type AllowedRole = (typeof ADMIN_ROLES)[number] | (typeof SUPER_ADMIN_ROLES)[number]
 
@@ -22,14 +22,17 @@ export async function requireRole(roles: AllowedRole[]) {
     return auth
   }
 
-  const { data: role, error: roleError } = await auth.supabase.rpc('get_user_role', {
-    user_id: auth.user.id,
-  })
+  const { data: profile, error: roleError } = await auth.supabase
+    .from('profiles')
+    .select('role')
+    .eq('id', auth.user.id)
+    .maybeSingle()
 
   if (roleError) {
     return { error: NextResponse.json({ error: 'Unauthorized.' }, { status: 401 }) }
   }
 
+  const role = profile?.role ?? null
   if (!role || !roles.includes(role as AllowedRole)) {
     return { error: NextResponse.json({ error: 'Forbidden.' }, { status: 403 }) }
   }

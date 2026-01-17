@@ -3,6 +3,8 @@
 :root {
   --background: #faf9f7;
   --foreground: #1a1a2e;
+  --font-body: "Cormorant Garamond", Georgia, serif;
+  --font-playfair: "Playfair Display", Georgia, serif;
 
   /* Regal Color Palette */
   --royal-purple: #2f0a61;

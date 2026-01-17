@@ -63,7 +63,7 @@ interface RequireStaffProps {
 export function RequireStaff({ children, fallback = null, loadingComponent = null }: RequireStaffProps) {
   return (
     <RequireRole
-      roles={[ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.HOUSE_MENTOR, ROLES.TEACHER, ROLES.SUPPORT_STAFF]}
+      roles={[ROLES.ADMIN, ROLES.STAFF]}
       fallback={fallback}
       loadingComponent={loadingComponent}
     >

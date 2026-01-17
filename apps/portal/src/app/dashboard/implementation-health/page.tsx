@@ -476,7 +476,7 @@ export default function ImplementationHealthPage() {
   }, [metrics])
 
   return (
-    <RequireRole roles={ROLES.SUPER_ADMIN} fallback={<AccessDenied message="Super admin access required." />}>
+    <RequireRole roles={ROLES.ADMIN} fallback={<AccessDenied message="Admin access required." />}>
       <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold text-[#1a1a2e]" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>

@@ -78,7 +78,7 @@ export default function AddPointsPage() {
   const { user } = useAuth()
   const userId = user?.id ?? null
   const { role } = useUserRole()
-  const isSuperAdmin = role === 'super_admin'
+  const isSuperAdmin = role === 'admin'
   const [students, setStudents] = useState<Student[]>([])
   const [categories, setCategories] = useState<Category[]>([])
   const [searchText, setSearchText] = useState('')
@@ -103,7 +103,8 @@ export default function AddPointsPage() {
   const [filterSection, setFilterSection] = useState<string>('')
   const [filterHouse, setFilterHouse] = useState<string>('')
   const houseOptions = getHouseNames()
-  const isHouseCompetition = selectedR === HOUSE_COMPETITION_R
+  const houseCompetitionEnabled = false
+  const isHouseCompetition = houseCompetitionEnabled && selectedR === HOUSE_COMPETITION_R
   const canSubmitHouseCompetition =
     isHouseCompetition &&
     isSuperAdmin &&
@@ -138,7 +139,8 @@ export default function AddPointsPage() {
       if (Array.isArray(draft.selectedStudents)) {
         setSelectedStudents(draft.selectedStudents)
       }
-      setSelectedR(draft.selectedR ?? null)
+      const nextSelectedR = draft.selectedR === HOUSE_COMPETITION_R ? null : draft.selectedR ?? null
+      setSelectedR(nextSelectedR)
       setNotes(draft.notes ?? '')
       setHouseCompetitionPoints(draft.houseCompetitionPoints ?? '')
       setHouseCompetitionHouse(draft.houseCompetitionHouse ?? '')
@@ -208,7 +210,7 @@ export default function AddPointsPage() {
       ])
 
       const allStudents: Student[] = (studentsRes.data || []).map((s, index) => ({
-        id: s.id || `${index}`,
+        id: s.student_id || s.id || `${index}`,
         name: s.student_name || '',
         grade: s.grade || 0,
         section: s.section || '',
@@ -638,7 +640,7 @@ export default function AddPointsPage() {
               </button>
             )
           })}
-          {isSuperAdmin && (
+          {isSuperAdmin && houseCompetitionEnabled && (
             <button
               onClick={() => {
                 setSelectedR(HOUSE_COMPETITION_R)

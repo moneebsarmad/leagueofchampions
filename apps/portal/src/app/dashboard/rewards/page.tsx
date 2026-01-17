@@ -94,8 +94,8 @@ interface GradeChampionEntry {
 // Hall of Fame tiers
 const hallOfFameTiers = [
   { name: 'Century Club', points: 100, icon: '💯', color: 'from-[#6b4a1a] to-[#b08a2e]', view: 'century_club' },
-  { name: 'Hijrah Club', points: 300, icon: '🧭', color: 'from-[#1f2a44] to-[#3b537a]', view: 'hijrah_club' },
-  { name: 'Badr Club', points: 700, icon: '🌙', color: 'from-[#23523b] to-[#3a7b59]', view: 'badr_club' },
+  { name: 'Badr Club', points: 300, icon: '🌙', color: 'from-[#23523b] to-[#3a7b59]', view: 'badr_club' },
+  { name: 'Fath Club', points: 700, icon: '🏆', color: 'from-[#1f2a44] to-[#3b537a]', view: 'fath_club' },
 ]
 
 // Quarterly badges
@@ -399,7 +399,7 @@ export default function RewardsPage() {
   const fetchBadgeLeaders = async () => {
     try {
       const { data, error } = await supabase
-        .from('quarterly_badge_leaderboard')
+        .from('quarterly_badge_leaders')
         .select('*')
         .eq('rank', 1)
 
@@ -447,7 +447,29 @@ export default function RewardsPage() {
         return
       }
 
-      setApproachingRows((data || []) as ApproachingRow[])
+      const mapped = (data || []).map((row: Record<string, unknown>) => {
+        const nextMilestone = Number(row.next_milestone ?? row.tier_points ?? row.tierPoints ?? 0)
+        const tierName = nextMilestone === 100
+          ? 'Century Club'
+          : nextMilestone === 300
+            ? 'Badr Club'
+            : nextMilestone === 700
+              ? 'Fath Club'
+              : 'Milestone'
+
+        return {
+          tier: String(row.tier ?? tierName),
+          tier_points: Number(row.tier_points ?? row.tierPoints ?? nextMilestone),
+          student_name: String(row.student_name ?? row.studentName ?? ''),
+          grade: Number(row.grade ?? 0),
+          section: String(row.section ?? ''),
+          house: String(row.house ?? ''),
+          total_points: Number(row.total_points ?? row.totalPoints ?? 0),
+          points_needed: Number(row.points_needed ?? row.pointsRemaining ?? row.points_remaining ?? 0),
+        } satisfies ApproachingRow
+      })
+
+      setApproachingRows(mapped)
     } catch (error) {
       console.error('Error fetching approaching milestones:', error)
       setApproachingRows([])
@@ -546,8 +568,6 @@ export default function RewardsPage() {
       const { data, error } = await supabase
         .from('grade_champions')
         .select('*')
-        .eq('month_start', getCurrentMonthStart())
-        .eq('rank', 1)
 
       if (error) {
         console.error('Error fetching grade champions:', error)

@@ -91,18 +91,19 @@ export default function Sidebar() {
 
       const { data } = await supabase
         .from('nav_preferences')
-        .select('*')
-        .eq('auth_user_id', authData.user.id)
+        .select('collapsed_sections')
+        .eq('user_id', authData.user.id)
         .maybeSingle()
 
-      if (data) {
-        const savedOrder = (data.order || defaultOrder).filter((id: string) => defaultOrder.includes(id))
+      if (data?.collapsed_sections) {
+        const stored = data.collapsed_sections as Record<string, unknown>
+        const savedOrder = ((stored.order as string[]) || defaultOrder).filter((id) => defaultOrder.includes(id))
         const mergedOrder = [...savedOrder, ...defaultOrder.filter((id) => !savedOrder.includes(id))]
-        const mergedGroups = { ...defaultGroups, ...(data.groups || {}) }
+        const mergedGroups = { ...defaultGroups, ...((stored.groups as Record<string, 'Primary' | 'Admin'>) || {}) }
         setOrder(mergedOrder)
-        setHidden((data.hidden || []).filter((id: string) => defaultOrder.includes(id)))
-        setFavorites((data.favorites || []).filter((id: string) => defaultOrder.includes(id)))
-        setCompact(Boolean(data.compact))
+        setHidden((((stored.hidden as string[]) || []).filter((id) => defaultOrder.includes(id))))
+        setFavorites((((stored.favorites as string[]) || []).filter((id) => defaultOrder.includes(id))))
+        setCompact(Boolean(stored.compact))
         setGroups(mergedGroups)
       }
     }
@@ -111,7 +112,7 @@ export default function Sidebar() {
   }, [])
 
   // Filter out super admin only items if user is not super_admin
-  const isSuperAdmin = userRole === 'super_admin'
+  const isSuperAdmin = userRole === 'admin'
   const visibleOrder = order.filter((id) => {
     if (hidden.includes(id)) return false
     if (SUPER_ADMIN_ONLY_ITEMS.includes(id) && !isSuperAdmin) return false
@@ -160,14 +161,15 @@ export default function Sidebar() {
     await supabase
       .from('nav_preferences')
       .upsert({
-        auth_user_id: authData.user.id,
-        order,
-        hidden,
-        favorites,
-        compact,
-        groups,
-        updated_at: new Date().toISOString(),
-      })
+        user_id: authData.user.id,
+        collapsed_sections: {
+          order,
+          hidden,
+          favorites,
+          compact,
+          groups,
+        },
+      }, { onConflict: 'user_id' })
     setSaving(false)
   }
 

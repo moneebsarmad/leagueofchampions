@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { supabase } from '@/lib/supabaseClient'
-import { Tables } from '@/lib/supabaseClient/tables'
+import { Tables } from '@/lib/supabase/tables'
 import CrestLoader from '@/components/CrestLoader'
 import { getHouseColors, canonicalHouseName } from '@/lib/school.config'
 
@@ -122,6 +122,7 @@ export default function AddPointsClient() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [showSuccess, setShowSuccess] = useState(false)
   const [adminName, setAdminName] = useState('')
+  const [adminStaffId, setAdminStaffId] = useState<string | null>(null)
   const [toast, setToast] = useState<{ message: string; type: 'info' | 'success' | 'error' } | null>(null)
   const toastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const draftCategoryIdRef = useRef<string | null>(null)
@@ -221,7 +222,7 @@ export default function AddPointsClient() {
       .on('postgres_changes', { event: '*', schema: 'public', table: Tables.students }, () => {
         fetchStudents()
       })
-      .on('postgres_changes', { event: '*', schema: 'public', table: Tables.admins }, () => {
+      .on('postgres_changes', { event: '*', schema: 'public', table: Tables.staff }, () => {
         fetchAdminName()
       })
       .subscribe()
@@ -236,18 +237,28 @@ export default function AddPointsClient() {
       const { data: authData } = await supabase.auth.getUser()
       if (!authData.user) return
 
-      const { data: admin } = await supabase
-        .from(Tables.admins)
-        .select('*')
-        .eq('auth_user_id', authData.user.id)
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('linked_staff_id')
+        .eq('id', authData.user.id)
         .maybeSingle()
 
-      if (admin?.staff_name) {
-        setAdminName(admin.staff_name)
-        return
+      const linkedStaffId = profile?.linked_staff_id ?? null
+      setAdminStaffId(linkedStaffId)
+      if (linkedStaffId) {
+        const { data: staff } = await supabase
+          .from('staff')
+          .select('staff_name')
+          .eq('id', linkedStaffId)
+          .maybeSingle()
+
+        if (staff?.staff_name) {
+          setAdminName(staff.staff_name)
+          return
+        }
       }
 
-      setAdminName(authData.user.email || 'Admin')
+      setAdminName(authData.user.email || 'Staff')
     } catch (error) {
       console.error('Error fetching admin name:', error)
     }
@@ -258,7 +269,7 @@ export default function AddPointsClient() {
     try {
       const { data } = await supabase.from(Tables.students).select('*')
       const allStudents: Student[] = (data || []).map((s, index) => ({
-        id: s.id || `${index}`,
+        id: s.student_id || s.id || `${index}`,
         name: s.student_name || '',
         grade: s.grade || 0,
         section: s.section || '',
@@ -338,6 +349,10 @@ export default function AddPointsClient() {
       showToast('Your staff name is not set. Please contact an admin.', 'error', 5000)
       return
     }
+    if (!adminStaffId) {
+      showToast('Your staff account is not linked. Please contact an admin.', 'error', 5000)
+      return
+    }
 
     setIsSubmitting(true)
     showToast('Submitting points...', 'info', 4000)
@@ -347,6 +362,8 @@ export default function AddPointsClient() {
 
       for (const student of selectedStudents) {
         const meritEntry = {
+          student_id: student.id,
+          staff_id: adminStaffId,
           timestamp: now,
           date_of_event: eventDate || new Date().toISOString().split('T')[0],
           student_name: student.name,

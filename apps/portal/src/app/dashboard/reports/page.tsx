@@ -1086,7 +1086,7 @@ export default function ReportsPage() {
   }
 
   return (
-    <RequireRole roles={[ROLES.SUPER_ADMIN, ROLES.ADMIN]} fallback={<AccessDenied message="Admin access required." />}>
+    <RequireRole roles={[ROLES.ADMIN]} fallback={<AccessDenied message="Admin access required." />}>
       <div>
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-[#1a1a2e] mb-2" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>

@@ -504,7 +504,7 @@ export default function DashboardPage() {
     return <CrestLoader label="Loading dashboard..." />
   }
 
-  if (role === 'admin' || role === 'super_admin') {
+  if (role === 'admin') {
     return <AdminOverviewDashboard />
   }
 

@@ -63,7 +63,7 @@ interface RequireAdminProps {
 export function RequireAdmin({ children, fallback = null, loadingComponent = null }: RequireAdminProps) {
   return (
     <RequireRole
-      roles={[ROLES.SUPER_ADMIN, ROLES.ADMIN]}
+      roles={[ROLES.ADMIN]}
       fallback={fallback}
       loadingComponent={loadingComponent}
     >
@@ -85,7 +85,7 @@ export function RequireSuperAdmin({
   loadingComponent = null,
 }: RequireSuperAdminProps) {
   return (
-    <RequireRole roles={ROLES.SUPER_ADMIN} fallback={fallback} loadingComponent={loadingComponent}>
+    <RequireRole roles={ROLES.ADMIN} fallback={fallback} loadingComponent={loadingComponent}>
       {children}
     </RequireRole>
   )

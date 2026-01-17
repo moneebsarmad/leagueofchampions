@@ -78,7 +78,7 @@ export default function StudentsPage() {
     try {
       const { data: studentData } = await supabase.from('students').select('*')
       const allStudents: Student[] = (studentData || []).map((s, index) => ({
-        id: s.id || `${index}`,
+        id: s.student_id || s.id || `${index}`,
         name: s.student_name || '',
         grade: s.grade || 0,
         section: s.section || '',

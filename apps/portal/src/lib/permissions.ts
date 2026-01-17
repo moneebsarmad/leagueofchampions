@@ -22,11 +22,8 @@ export type Permission = (typeof PERMISSIONS)[keyof typeof PERMISSIONS]
 
 // Role constants
 export const ROLES = {
-  SUPER_ADMIN: 'super_admin',
   ADMIN: 'admin',
-  HOUSE_MENTOR: 'house_mentor',
-  TEACHER: 'teacher',
-  SUPPORT_STAFF: 'support_staff',
+  STAFF: 'staff',
 } as const
 
 export type Role = (typeof ROLES)[keyof typeof ROLES]
@@ -34,11 +31,44 @@ export type Role = (typeof ROLES)[keyof typeof ROLES]
 // Profile with relations
 export interface UserProfile {
   id: string
-  email: string
   role: Role | null
-  assigned_house: string | null
-  full_name?: string | null
-  student_name?: string | null
+  linked_student_id?: string | null
+  linked_staff_id?: string | null
+}
+
+async function fetchProfileRole(supabase: SupabaseClient): Promise<Role | null> {
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) return null
+
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('role')
+    .eq('id', user.id)
+    .maybeSingle()
+
+  if (error) {
+    console.error('Error getting user role:', error)
+    return null
+  }
+
+  const role = data?.role ?? null
+  if (role === ROLES.ADMIN || role === ROLES.STAFF) return role
+  return null
+}
+
+function roleHasPermission(role: Role | null, permission: Permission): boolean {
+  if (!role) return false
+  if (role === ROLES.ADMIN) return true
+
+  const staffPermissions = new Set<Permission>([
+    PERMISSIONS.POINTS_AWARD,
+    PERMISSIONS.POINTS_DEDUCT,
+    PERMISSIONS.STUDENTS_VIEW_ALL,
+  ])
+
+  return staffPermissions.has(permission)
 }
 
 // Check if user has a specific permission
@@ -47,22 +77,8 @@ export async function hasPermission(
   permission: Permission
 ): Promise<boolean> {
   try {
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-    if (!user) return false
-
-    const { data, error } = await supabase.rpc('has_permission', {
-      user_id: user.id,
-      perm: permission,
-    })
-
-    if (error) {
-      console.error('Permission check error:', error)
-      return false
-    }
-
-    return data === true
+    const role = await fetchProfileRole(supabase)
+    return roleHasPermission(role, permission)
   } catch (error) {
     console.error('Error checking permission:', error)
     return false
@@ -72,19 +88,7 @@ export async function hasPermission(
 // Get user's role
 export async function getUserRole(supabase: SupabaseClient): Promise<Role | null> {
   try {
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-    if (!user) return null
-
-    const { data, error } = await supabase.rpc('get_user_role', { user_id: user.id })
-
-    if (error) {
-      console.error('Error getting user role:', error)
-      return null
-    }
-
-    return data as Role | null
+    return await fetchProfileRole(supabase)
   } catch (error) {
     console.error('Error getting user role:', error)
     return null
@@ -94,19 +98,8 @@ export async function getUserRole(supabase: SupabaseClient): Promise<Role | null
 // Get user's assigned house (for house mentors)
 export async function getUserHouse(supabase: SupabaseClient): Promise<string | null> {
   try {
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-    if (!user) return null
-
-    const { data, error } = await supabase.rpc('get_user_house', { user_id: user.id })
-
-    if (error) {
-      console.error('Error getting user house:', error)
-      return null
-    }
-
-    return data
+    await supabase.auth.getUser()
+    return null
   } catch (error) {
     console.error('Error getting user house:', error)
     return null
@@ -118,19 +111,13 @@ export async function getUserPermissions(
   supabase: SupabaseClient
 ): Promise<{ permission_name: string; description: string; category: string }[]> {
   try {
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-    if (!user) return []
-
-    const { data, error } = await supabase.rpc('get_user_permissions', { user_id: user.id })
-
-    if (error) {
-      console.error('Error getting user permissions:', error)
-      return []
-    }
-
-    return data || []
+    const role = await fetchProfileRole(supabase)
+    const permissions = Object.values(PERMISSIONS).filter((perm) => roleHasPermission(role, perm))
+    return permissions.map((permission_name) => ({
+      permission_name,
+      description: '',
+      category: permission_name.split('.')[0] || '',
+    }))
   } catch (error) {
     console.error('Error getting user permissions:', error)
     return []
@@ -166,21 +153,21 @@ export async function getUserProfile(supabase: SupabaseClient): Promise<UserProf
 // Check if role has elevated access (admin or above)
 export function isElevatedRole(role: Role | null): boolean {
   if (!role) return false
-  return role === ROLES.SUPER_ADMIN || role === ROLES.ADMIN
+  return role === ROLES.ADMIN
 }
 
 // Check if role is super admin
 export function isSuperAdmin(role: Role | null): boolean {
-  return role === ROLES.SUPER_ADMIN
+  return role === ROLES.ADMIN
 }
 
 // Check if role can view all data (not house-restricted)
 export function canViewAllData(role: Role | null): boolean {
   if (!role) return false
-  return role === ROLES.SUPER_ADMIN || role === ROLES.ADMIN
+  return role === ROLES.ADMIN
 }
 
 // Check if role is house-restricted
 export function isHouseRestricted(role: Role | null): boolean {
-  return role === ROLES.HOUSE_MENTOR
+  return false
 }

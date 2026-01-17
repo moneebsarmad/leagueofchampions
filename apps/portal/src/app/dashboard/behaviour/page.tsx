@@ -101,7 +101,7 @@ export default function BehaviourIntelligencePage() {
   }
 
   return (
-    <RequireRole roles={ROLES.SUPER_ADMIN} fallback={<AccessDenied message="Super admin access required." />}>
+    <RequireRole roles={ROLES.ADMIN} fallback={<AccessDenied message="Admin access required." />}>
       <div>
       <div className="mb-8">
         <p className="text-xs font-semibold tracking-[0.2em] text-[#c9a227] mb-2">Behaviour Intelligence</p>

@@ -79,6 +79,11 @@ function getStatus(value: number, thresholds: { green: number; yellow: number },
   return 'Red'
 }
 
+function isMissingRelationError(message?: string | null) {
+  if (!message) return false
+  return message.includes('does not exist')
+}
+
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
   const startDate = searchParams.get('startDate') || ''
@@ -102,6 +107,9 @@ export async function GET(request: Request) {
       .select('id, title')
       .order('id', { ascending: true })
     if (error) {
+      if (isMissingRelationError(error.message)) {
+        return NextResponse.json({ menu: [] })
+      }
       return NextResponse.json({ error: error.message }, { status: 500 })
     }
     return NextResponse.json({ menu: data || [] })
@@ -136,10 +144,17 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: staffRes.error.message }, { status: 500 })
   }
 
+  if (decisionsRes.error && !isMissingRelationError(decisionsRes.error.message)) {
+    return NextResponse.json({ error: decisionsRes.error.message }, { status: 500 })
+  }
+  if (huddlesRes.error && !isMissingRelationError(huddlesRes.error.message)) {
+    return NextResponse.json({ error: huddlesRes.error.message }, { status: 500 })
+  }
+
   const entries = (entriesRes.data || []) as MeritRow[]
   const staffRows = (staffRes.data || []) as StaffRow[]
-  const decisions = (decisionsRes.data || []) as DecisionRow[]
-  const huddles = (huddlesRes.data || []) as { cycle_end_date: string | null }[]
+  const decisions = (decisionsRes.error ? [] : decisionsRes.data || []) as DecisionRow[]
+  const huddles = (huddlesRes.error ? [] : huddlesRes.data || []) as { cycle_end_date: string | null }[]
 
   const staffRoster = new Map<string, StaffRow>()
   staffRows.forEach((row) => {
