@@ -34,6 +34,7 @@ export default function BehaviourIntelligencePage() {
   const [uploadError, setUploadError] = useState<string | null>(null)
   const [recentUploads, setRecentUploads] = useState<UploadRecord[]>([])
   const [refreshingUploads, setRefreshingUploads] = useState(false)
+  const [behaviourAvailable, setBehaviourAvailable] = useState(true)
 
   const sampleCsvHref = useMemo(() => {
     return `data:text/csv;charset=utf-8,${encodeURIComponent(sampleCsv)}`
@@ -41,12 +42,19 @@ export default function BehaviourIntelligencePage() {
 
   const loadUploads = async () => {
     setRefreshingUploads(true)
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from('behaviour_uploads')
       .select('upload_id,file_name,source_system,created_at')
       .order('created_at', { ascending: false })
       .limit(6)
-    setRecentUploads(data || [])
+    if (error) {
+      if (error.message?.includes('does not exist')) {
+        setBehaviourAvailable(false)
+      }
+      setRecentUploads([])
+    } else {
+      setRecentUploads(data || [])
+    }
     setRefreshingUploads(false)
   }
 
@@ -117,6 +125,12 @@ export default function BehaviourIntelligencePage() {
         </p>
       </div>
 
+      {!behaviourAvailable && (
+        <div className="mb-6 bg-[#c9a227]/10 border border-[#c9a227]/30 text-[#1a1a2e] px-5 py-4 rounded-xl">
+          Behaviour Intelligence tables are not available in this demo database yet.
+        </div>
+      )}
+
       <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-6">
         <div className="regal-card rounded-2xl p-6">
           <h2 className="text-xl font-semibold text-[#1a1a2e] mb-2" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
@@ -134,6 +148,7 @@ export default function BehaviourIntelligencePage() {
                 <input
                   type="file"
                   accept=".csv,.pdf"
+                  disabled={!behaviourAvailable}
                   onChange={(event) => setFile(event.target.files?.[0] || null)}
                   className="text-sm text-[#1a1a2e]/70 file:mr-4 file:rounded-xl file:border-0 file:bg-[#c9a227] file:px-4 file:py-2 file:text-white file:shadow-sm hover:file:bg-[#b08a1f]"
                 />
@@ -155,6 +170,7 @@ export default function BehaviourIntelligencePage() {
               <input
                 value={sourceSystem}
                 onChange={(event) => setSourceSystem(event.target.value)}
+                disabled={!behaviourAvailable}
                 className="mt-2 w-full rounded-xl border border-[#1a1a2e]/10 px-3 py-2 text-sm"
                 placeholder="Manual Upload"
               />
@@ -168,7 +184,7 @@ export default function BehaviourIntelligencePage() {
 
             <button
               onClick={handleUpload}
-              disabled={uploading}
+              disabled={uploading || !behaviourAvailable}
               className="rounded-xl bg-gradient-to-r from-[#2f0a61] to-[#1a0536] px-6 py-3 text-sm font-semibold text-white shadow-sm hover:opacity-90 disabled:opacity-60"
             >
               {uploading ? 'Analysing...' : 'Analyse Behaviour File'}

@@ -158,6 +158,11 @@ function normalizeValue(value: string): string {
   return value.trim().toLowerCase()
 }
 
+function isMissingRelation(error: { message?: string | null } | null) {
+  const message = error?.message || ''
+  return message.includes('does not exist')
+}
+
 function buildStudentKey(name: string, grade: number, section: string): string {
   return `${normalizeValue(name)}|${grade}|${normalizeValue(section || '')}`
 }
@@ -488,6 +493,10 @@ export default function RewardsPage() {
         .select('*')
 
       if (error) {
+        if (isMissingRelation(error)) {
+          setConsistencyLeaders([])
+          return
+        }
         console.error('Error fetching consistency crown:', error)
         setConsistencyLeaders([])
         return
@@ -512,6 +521,10 @@ export default function RewardsPage() {
         .select('*')
 
       if (error) {
+        if (isMissingRelation(error)) {
+          setRisingStarLeaders([])
+          return
+        }
         console.error('Error fetching rising stars:', error)
         setRisingStarLeaders([])
         return
@@ -541,6 +554,10 @@ export default function RewardsPage() {
         .eq('rank', 1)
 
       if (error) {
+        if (isMissingRelation(error)) {
+          setHouseMvpLeaders([])
+          return
+        }
         console.error('Error fetching house MVPs:', error)
         setHouseMvpLeaders([])
         return
