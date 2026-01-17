@@ -78,7 +78,7 @@ export interface SchoolConfig {
 const demoConfig: SchoolConfig = {
   // School Identity
   schoolName: 'Dār al-Arqam Islamic School',
-  systemName: 'DAAIS',
+  systemName: 'League of Champions',
   tagline: 'Inspiring Excellence Through Recognition',
 
   // Branding Assets
@@ -166,7 +166,7 @@ const demoConfig: SchoolConfig = {
 const bhaConfig: SchoolConfig = {
   ...demoConfig,
   schoolName: 'Dār al-Arqam Islamic School',
-  systemName: 'DAAIS',
+  systemName: 'League of Champions',
   tagline: 'Nurturing Leaders of Tomorrow',
   crestLogo: '/crest.png', // BHA-specific crest
 }

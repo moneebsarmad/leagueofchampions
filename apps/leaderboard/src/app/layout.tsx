@@ -16,7 +16,7 @@ const playfair = Playfair_Display({
   style: ["normal", "italic"],
 });
 
-const systemName = process.env.NEXT_PUBLIC_SYSTEM_NAME || 'DAAIS'
+const systemName = process.env.NEXT_PUBLIC_SYSTEM_NAME || 'League of Champions'
 
 export const metadata: Metadata = {
   title: `${systemName} Leaderboard`,
