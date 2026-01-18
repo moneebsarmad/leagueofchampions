@@ -36,6 +36,7 @@ type StudentRow = {
   student_name: string
   grade: number | null
   section: string | null
+  parent_code?: string | null
 }
 
 function generateCode(length: number) {
@@ -57,7 +58,7 @@ async function main() {
 
   const { data: students, error: studentsError } = await supabase
     .from('students')
-    .select('student_id, student_name, grade, section')
+    .select('student_id, student_name, grade, section, parent_code')
     .order('grade', { ascending: true })
     .order('section', { ascending: true })
     .order('student_name', { ascending: true })
@@ -66,22 +67,12 @@ async function main() {
     throw new Error(`Error fetching students: ${studentsError.message}`)
   }
 
-  const { data: existingCodes, error: existingError } = await supabase
-    .from('student_invite_codes')
-    .select('student_id')
-
-  if (existingError) {
-    throw new Error(`Error fetching existing codes: ${existingError.message}`)
-  }
-
-  const existingSet = new Set((existingCodes || []).map((row) => row.student_id))
-
   const rows: Array<Record<string, string | number>> = []
   let created = 0
   let skipped = 0
 
   for (const student of (students || []) as StudentRow[]) {
-    const hasExisting = existingSet.has(student.student_id)
+    const hasExisting = Boolean(student.parent_code)
     if (hasExisting && !OVERWRITE) {
       skipped += 1
       continue
@@ -90,16 +81,13 @@ async function main() {
     const code = generateCode(CODE_LENGTH)
     const codeHash = hashCode(code)
 
-    const { error: upsertError } = await supabase
-      .from('student_invite_codes')
-      .upsert({
-        student_id: student.student_id,
-        code_hash: codeHash,
-        active: true,
-      })
+    const { error: updateError } = await supabase
+      .from('students')
+      .update({ parent_code: codeHash })
+      .eq('student_id', student.student_id)
 
-    if (upsertError) {
-      throw new Error(`Error upserting code for ${student.student_id}: ${upsertError.message}`)
+    if (updateError) {
+      throw new Error(`Error updating code for ${student.student_id}: ${updateError.message}`)
     }
 
     rows.push({
