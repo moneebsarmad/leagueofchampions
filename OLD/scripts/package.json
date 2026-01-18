@@ -5,7 +5,9 @@
   "description": "Admin scripts for League of Stars suite",
   "scripts": {
     "setup-staff": "tsx setup-staff-accounts.ts",
-    "setup-parents-students": "tsx setup-parent-student-accounts.ts"
+    "setup-parents-students": "tsx setup-parent-student-accounts.ts",
+    "export-parent-credentials": "tsx export-parent-credentials.ts",
+    "generate-student-codes": "tsx generate-student-invite-codes.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.45.0"

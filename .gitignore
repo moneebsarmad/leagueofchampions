@@ -1,9 +1,21 @@
+# Local env files
+apps/portal/.env.local
+apps/leaderboard/.env.local
+
+# Local exports / credentials
+OLD/scripts/parent-demo-accounts.csv
+OLD/scripts/student-invite-codes.csv
+
+# Local docs
+/docs/
+
+# OS / tooling
 .DS_Store
-Screenshot 2025-12-24 at 22.01.47.png
-node_modules
-.next
-.env
-.env.*
-__MACOSX
-scripts/staff-credentials-*.txt
-scripts/admin-credentials.txt
+**/.DS_Store
+node_modules/
+**/node_modules/
+.next/
+**/.next/
+
+# Legacy env files
+OLD/**/.env.local

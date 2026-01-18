@@ -15,7 +15,7 @@
 import { createClient } from '@supabase/supabase-js'
 
 // Configuration
-const SUPABASE_URL = 'https://bvohvpwptmibveegccgf.supabase.co'
+const SUPABASE_URL = process.env.SUPABASE_URL || 'https://ssmoznrefecxcuglubuu.supabase.co'
 const SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY
 
 if (!SERVICE_ROLE_KEY) {

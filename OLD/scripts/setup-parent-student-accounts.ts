@@ -2,9 +2,8 @@
  * LEAGUE OF STARS - Demo Parent + Student Account Setup Script
  *
  * Creates:
- * - 150 student auth accounts linked to existing students
  * - 150 families with 2 parent accounts each (dad + mom)
- * - parent_students links for each parent to their child
+ * - parent_students links for each parent to an existing student
  *
  * Prerequisites:
  * 1. SUPABASE_SERVICE_ROLE_KEY from Supabase Dashboard > Settings > API
@@ -16,7 +15,7 @@
 
 import { createClient } from '@supabase/supabase-js'
 
-const SUPABASE_URL = 'https://bvohvpwptmibveegccgf.supabase.co'
+const SUPABASE_URL = process.env.SUPABASE_URL || 'https://ssmoznrefecxcuglubuu.supabase.co'
 const SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY
 
 if (!SERVICE_ROLE_KEY) {
@@ -45,7 +44,7 @@ type StudentRow = {
 type CreatedAccount = {
   email: string
   password: string
-  role: 'student' | 'parent'
+  role: 'parent'
   status: 'created' | 'skipped' | 'error'
   error?: string
 }
@@ -123,14 +122,14 @@ async function main() {
   console.log('🔍 Loading existing profiles...')
   const { data: profiles, error: profilesError } = await supabase
     .from('profiles')
-    .select('id, email')
+    .select('id')
 
   if (profilesError) {
     console.error('❌ Error fetching profiles:', profilesError.message)
     process.exit(1)
   }
 
-  const profileByEmail = new Map((profiles || []).map((p) => [String(p.email || '').toLowerCase(), p.id]))
+  const profileIds = new Set((profiles || []).map((p) => p.id))
   console.log(`   Found ${profiles?.length ?? 0} profiles.\n`)
 
   const results: CreatedAccount[] = []
@@ -139,14 +138,12 @@ async function main() {
     const student = students[i] as StudentRow
     const tag = familyTag(i + 1)
 
-    const studentEmail = `family${tag}.student@demo.los`
     const dadEmail = `family${tag}.dad@demo.los`
     const momEmail = `family${tag}.mom@demo.los`
 
     const studentName = String(student.student_name || `Student ${tag}`)
 
     const accounts = [
-      { email: studentEmail, role: 'student' as const, name: studentName },
       { email: dadEmail, role: 'parent' as const, name: `Family ${tag} - Dad` },
       { email: momEmail, role: 'parent' as const, name: `Family ${tag} - Mom` },
     ]
@@ -154,9 +151,8 @@ async function main() {
     for (const account of accounts) {
       const emailKey = account.email.toLowerCase()
       const hasAuth = authByEmail.has(emailKey)
-      const hasProfile = profileByEmail.has(emailKey)
-
       let userId = hasAuth ? authByEmail.get(emailKey) : null
+      const hasProfile = userId ? profileIds.has(userId) : false
 
       try {
         if (!userId) {
@@ -170,25 +166,24 @@ async function main() {
             .from('profiles')
             .insert({
               id: userId,
-              email: account.email,
               role: account.role,
-              linked_student_id: account.role === 'student' ? student.student_id : null,
+              linked_student_id: null,
             })
 
           if (profileError) {
             throw new Error(`Profile creation failed: ${profileError.message}`)
           }
 
-          profileByEmail.set(emailKey, userId)
+          profileIds.add(userId)
           console.log(`   📝 Created profile for ${account.email} (${account.role})`)
         } else if (userId) {
           const { error: updateError } = await supabase
             .from('profiles')
             .update({
               role: account.role,
-              linked_student_id: account.role === 'student' ? student.student_id : null,
+              linked_student_id: null,
             })
-            .eq('email', account.email)
+            .eq('id', userId)
 
           if (updateError) {
             throw new Error(`Profile update failed: ${updateError.message}`)
@@ -216,7 +211,7 @@ async function main() {
       await new Promise((resolve) => setTimeout(resolve, 50))
     }
 
-    const parentIds = [profileByEmail.get(dadEmail.toLowerCase()), profileByEmail.get(momEmail.toLowerCase())]
+    const parentIds = [authByEmail.get(dadEmail.toLowerCase()), authByEmail.get(momEmail.toLowerCase())]
       .filter(Boolean) as string[]
 
     for (const parentId of parentIds) {
@@ -252,7 +247,6 @@ async function main() {
     console.log('=========================================')
     console.log(`All new demo accounts share the same password: ${DEMO_PASSWORD}`)
     console.log('Examples:')
-    console.log('  family001.student@demo.los')
     console.log('  family001.dad@demo.los')
     console.log('  family001.mom@demo.los')
     console.log('---')

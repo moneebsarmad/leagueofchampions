@@ -84,6 +84,9 @@ export default function SettingsPage() {
   const [toggles, setToggles] = useSessionStorageState<Record<string, boolean>>('portal:settings:toggles', {})
   const [saving, setSaving] = useState(false)
   const [resetting, setResetting] = useState(false)
+  const [inviteCode, setInviteCode] = useState('')
+  const [inviteStatus, setInviteStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null)
+  const [redeeming, setRedeeming] = useState(false)
 
   useEffect(() => {
     if (!userId) return
@@ -216,6 +219,26 @@ export default function SettingsPage() {
     setResetting(false)
   }
 
+  const handleRedeemInvite = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    if (!inviteCode.trim()) return
+    setRedeeming(true)
+    setInviteStatus(null)
+
+    const { error } = await supabase.rpc('redeem_student_invite_code', {
+      code_text: inviteCode.trim(),
+    })
+
+    if (error) {
+      setInviteStatus({ type: 'error', message: error.message })
+    } else {
+      setInviteStatus({ type: 'success', message: 'Student linked successfully.' })
+      setInviteCode('')
+    }
+
+    setRedeeming(false)
+  }
+
   if (loading || !role) {
     return (
       <CrestLoader label="Loading settings..." />
@@ -248,6 +271,38 @@ export default function SettingsPage() {
             </div>
           </div>
         </div>
+
+        {role === 'parent' ? (
+          <div className="bg-white rounded-2xl p-6 shadow-sm border border-[#c9a227]/10">
+            <div className="mb-4">
+              <h2 className="text-lg font-semibold text-[#1a1a2e]">Link a Student</h2>
+              <p className="text-sm text-[#1a1a2e]/50">Enter the student code emailed to you to connect your account.</p>
+            </div>
+            <form onSubmit={handleRedeemInvite} className="flex flex-col gap-3 sm:flex-row sm:items-center">
+              <input
+                type="text"
+                value={inviteCode}
+                onChange={(event) => setInviteCode(event.target.value)}
+                placeholder="Enter student code"
+                className="flex-1 px-4 py-2.5 border border-[#1a1a2e]/10 rounded-xl focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227] outline-none transition-all"
+              />
+              <button
+                type="submit"
+                disabled={redeeming || !inviteCode.trim()}
+                className="px-5 py-2.5 rounded-xl bg-[#c9a227] text-white font-semibold shadow-sm hover:bg-[#b58f20] transition-colors disabled:opacity-60"
+              >
+                {redeeming ? 'Linking...' : 'Link Student'}
+              </button>
+            </form>
+            {inviteStatus ? (
+              <p
+                className={`text-sm mt-3 ${inviteStatus.type === 'success' ? 'text-[#0b6b3a]' : 'text-[#910000]'}`}
+              >
+                {inviteStatus.message}
+              </p>
+            ) : null}
+          </div>
+        ) : null}
 
         {/* Toggle Sections */}
         {sections.map((section) => (

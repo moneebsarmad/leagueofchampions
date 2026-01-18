@@ -13,7 +13,7 @@ ON CONFLICT (role_name) DO NOTHING;
 CREATE TABLE IF NOT EXISTS parent_students (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   parent_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
-  student_id TEXT NOT NULL REFERENCES students(student_id) ON DELETE CASCADE,
+  student_id UUID NOT NULL REFERENCES students(student_id) ON DELETE CASCADE,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   UNIQUE (parent_id, student_id)
 );
