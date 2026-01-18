@@ -274,16 +274,26 @@ export async function calculatePointEconomy(
   const [entriesRes, studentsRes, staffRes] = await Promise.all([
     supabase
       .from(Tables.meritLog)
-      .select('points, student_name, staff_name, date_of_event, timestamp')
+      .select('*')
       .gte('date_of_event', startDate)
       .lte('date_of_event', endDate),
-    supabase.from(Tables.students).select('id'),
-    supabase.from(Tables.staff).select('staff_name'),
+    supabase.from(Tables.students).select('*'),
+    supabase.from(Tables.staff).select('*'),
   ])
 
-  if (entriesRes.error) throw entriesRes.error
-  if (studentsRes.error) throw studentsRes.error
-  if (staffRes.error) throw staffRes.error
+  if (entriesRes.error) {
+    console.error('Merit log error:', entriesRes.error)
+    throw entriesRes.error
+  }
+  // Students table may not exist - handle gracefully
+  if (studentsRes.error && studentsRes.error.code !== '42P01') {
+    console.error('Students error:', studentsRes.error)
+    throw studentsRes.error
+  }
+  if (staffRes.error) {
+    console.error('Staff error:', staffRes.error)
+    throw staffRes.error
+  }
 
   const entries = (entriesRes.data || []) as MeritRow[]
   const studentCount = studentsRes.data?.length || 0
@@ -341,7 +351,7 @@ export async function calculateCategoryBalance(
 
   const { data, error } = await supabase
     .from(Tables.meritLog)
-    .select('r, points')
+    .select('*')
     .gte('date_of_event', startDate)
     .lte('date_of_event', endDate)
 
@@ -422,7 +432,7 @@ export async function calculateHouseDistribution(
 
   const { data, error } = await supabase
     .from(Tables.meritLog)
-    .select('house, points')
+    .select('*')
     .gte('date_of_event', startDate)
     .lte('date_of_event', endDate)
 
@@ -506,7 +516,7 @@ export async function calculateConsistencyScore(
 
   const { data, error } = await supabase
     .from(Tables.meritLog)
-    .select('date_of_event, timestamp')
+    .select('*')
     .gte('date_of_event', startDate)
     .lte('date_of_event', endDate)
 
