@@ -555,34 +555,46 @@ export async function getAlertSummary(): Promise<{
 }> {
   const supabase = getSupabaseAdmin()
 
-  const [activeRes, redRes, amberRes, recentRes] = await Promise.all([
-    supabase
-      .from(Tables.alertHistory)
-      .select('id', { count: 'exact' })
-      .eq('status', 'ACTIVE'),
-    supabase
-      .from(Tables.alertHistory)
-      .select('id', { count: 'exact' })
-      .eq('status', 'ACTIVE')
-      .eq('severity', 'RED'),
-    supabase
-      .from(Tables.alertHistory)
-      .select('id', { count: 'exact' })
-      .eq('status', 'ACTIVE')
-      .eq('severity', 'AMBER'),
-    supabase
-      .from(Tables.alertHistory)
-      .select('*')
-      .eq('status', 'ACTIVE')
-      .order('created_at', { ascending: false })
-      .limit(5),
-  ])
+  try {
+    const [activeRes, redRes, amberRes, recentRes] = await Promise.all([
+      supabase
+        .from(Tables.alertHistory)
+        .select('id', { count: 'exact' })
+        .eq('status', 'ACTIVE'),
+      supabase
+        .from(Tables.alertHistory)
+        .select('id', { count: 'exact' })
+        .eq('status', 'ACTIVE')
+        .eq('severity', 'RED'),
+      supabase
+        .from(Tables.alertHistory)
+        .select('id', { count: 'exact' })
+        .eq('status', 'ACTIVE')
+        .eq('severity', 'AMBER'),
+      supabase
+        .from(Tables.alertHistory)
+        .select('*')
+        .eq('status', 'ACTIVE')
+        .order('created_at', { ascending: false })
+        .limit(5),
+    ])
 
-  return {
-    activeCount: activeRes.count || 0,
-    redCount: redRes.count || 0,
-    amberCount: amberRes.count || 0,
-    recentAlerts: (recentRes.data || []) as Alert[],
+    // Check if table doesn't exist (error code 42P01)
+    if (activeRes.error?.code === '42P01') {
+      console.warn('alert_history table does not exist - run migration 007_tier2_analytics.sql')
+      return { activeCount: 0, redCount: 0, amberCount: 0, recentAlerts: [] }
+    }
+
+    return {
+      activeCount: activeRes.count || 0,
+      redCount: redRes.count || 0,
+      amberCount: amberRes.count || 0,
+      recentAlerts: (recentRes.data || []) as Alert[],
+    }
+  } catch (error) {
+    // Gracefully handle missing table
+    console.warn('Alert summary failed (table may not exist):', error)
+    return { activeCount: 0, redCount: 0, amberCount: 0, recentAlerts: [] }
   }
 }
 
