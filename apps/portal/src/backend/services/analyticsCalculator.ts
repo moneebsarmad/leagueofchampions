@@ -165,10 +165,10 @@ export async function calculateStaffParticipation(
   const supabase = getSupabaseAdmin()
 
   const [staffRes, entriesRes] = await Promise.all([
-    supabase.from(Tables.staff).select('staff_name, email, house, grade_assignment'),
+    supabase.from(Tables.staff).select('*'),
     supabase
       .from(Tables.meritLog)
-      .select('staff_name, points, date_of_event, timestamp')
+      .select('*')
       .gte('date_of_event', startDate)
       .lte('date_of_event', endDate),
   ])

@@ -291,10 +291,10 @@ export async function generateStaffAnalytics(
   const supabase = getSupabaseAdmin()
 
   const [staffRes, entriesRes] = await Promise.all([
-    supabase.from(Tables.staff).select('staff_name, email, house'),
+    supabase.from(Tables.staff).select('*'),
     supabase
       .from(Tables.meritLog)
-      .select('staff_name, house, r, points, date_of_event')
+      .select('*')
       .gte('date_of_event', startDate)
       .lte('date_of_event', endDate),
   ])
