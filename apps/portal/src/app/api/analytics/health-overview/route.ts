@@ -64,15 +64,44 @@ export async function GET(request: Request) {
       return NextResponse.json({ snapshot })
     }
 
-    // Calculate live metrics
-    const [participation, economy, categoryBalance, houseDistribution, alertSummary] =
-      await Promise.all([
-        calculateStaffParticipation(effectiveStartDate, effectiveEndDate),
-        calculatePointEconomy(effectiveStartDate, effectiveEndDate),
-        calculateCategoryBalance(effectiveStartDate, effectiveEndDate),
-        calculateHouseDistribution(effectiveStartDate, effectiveEndDate),
-        getAlertSummary(),
-      ])
+    // Calculate live metrics with individual error handling
+    let participation, economy, categoryBalance, houseDistribution, alertSummary
+
+    try {
+      participation = await calculateStaffParticipation(effectiveStartDate, effectiveEndDate)
+    } catch (e) {
+      console.error('Staff participation error:', e)
+      throw new Error(`Staff participation: ${e instanceof Error ? e.message : 'unknown error'}`)
+    }
+
+    try {
+      economy = await calculatePointEconomy(effectiveStartDate, effectiveEndDate)
+    } catch (e) {
+      console.error('Point economy error:', e)
+      throw new Error(`Point economy: ${e instanceof Error ? e.message : 'unknown error'}`)
+    }
+
+    try {
+      categoryBalance = await calculateCategoryBalance(effectiveStartDate, effectiveEndDate)
+    } catch (e) {
+      console.error('Category balance error:', e)
+      throw new Error(`Category balance: ${e instanceof Error ? e.message : 'unknown error'}`)
+    }
+
+    try {
+      houseDistribution = await calculateHouseDistribution(effectiveStartDate, effectiveEndDate)
+    } catch (e) {
+      console.error('House distribution error:', e)
+      throw new Error(`House distribution: ${e instanceof Error ? e.message : 'unknown error'}`)
+    }
+
+    try {
+      alertSummary = await getAlertSummary()
+    } catch (e) {
+      console.error('Alert summary error:', e)
+      // Don't throw - use empty alerts
+      alertSummary = { activeCount: 0, redCount: 0, amberCount: 0, recentAlerts: [] }
+    }
 
     // Calculate composite score
     const participationScore =
