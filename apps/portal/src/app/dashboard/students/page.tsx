@@ -6,6 +6,9 @@ import { supabase } from '../../../lib/supabaseClient'
 import CrestLoader from '../../../components/CrestLoader'
 import { getHouseColors, canonicalHouseName } from '@/lib/school.config'
 import { useSessionStorageState } from '../../../hooks/useSessionStorageState'
+import { Tables } from '../../../lib/supabase/tables'
+import { ROLES } from '../../../lib/permissions'
+import { useUserRole } from '../../../hooks/usePermissions'
 
 interface Student {
   id: string
@@ -44,6 +47,8 @@ function getInitials(name: string): string {
 
 export default function StudentsPage() {
   const router = useRouter()
+  const { role, loading: roleLoading } = useUserRole()
+  const isParent = role === ROLES.PARENT
   const [students, setStudents] = useState<Student[]>([])
   const [meritEntries, setMeritEntries] = useState<MeritEntry[]>([])
   const [searchText, setSearchText] = useSessionStorageState('portal:students:searchText', '')
@@ -64,14 +69,16 @@ export default function StudentsPage() {
   }
 
   useEffect(() => {
-    fetchData()
-  }, [])
+    if (!roleLoading) {
+      fetchData()
+    }
+  }, [roleLoading, role])
 
   useEffect(() => {
     if (selectedStaff) {
       setSelectedStaff(null)
     }
-  }, [selectedStudent])
+  }, [selectedStudent, isParent])
 
   const fetchData = async () => {
     setIsLoading(true)
@@ -86,8 +93,9 @@ export default function StudentsPage() {
         points: 0,
       }))
 
+      const meritTable = isParent ? Tables.meritLogParent : Tables.meritLog
       const { data: meritData } = await supabase
-        .from('merit_log')
+        .from(meritTable)
         .select('*')
         .order('timestamp', { ascending: false })
 
@@ -98,7 +106,7 @@ export default function StudentsPage() {
           r: m.r || '',
           subcategory: m.subcategory || '',
           dateOfEvent: m.date_of_event || '',
-          staffName: m.staff_name || '',
+          staffName: isParent ? '' : (m.staff_name || ''),
           grade: m.grade || 0,
           section: m.section || '',
         }))
@@ -156,7 +164,7 @@ export default function StudentsPage() {
         e.section.toLowerCase() === selectedStudent.section.toLowerCase()
       )
     : []
-  const filteredStudentMerits = selectedStaff
+  const filteredStudentMerits = selectedStaff && !isParent
     ? studentMerits.filter((e) => e.staffName === selectedStaff)
     : studentMerits
 
@@ -173,11 +181,13 @@ export default function StudentsPage() {
         {/* Header */}
         <div className="mb-6">
           <h1 className="text-3xl font-bold text-[#1a1a2e] mb-2" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
-            Students
+            {isParent ? 'My Children' : 'Students'}
           </h1>
           <div className="flex items-center gap-3">
             <div className="h-1 w-16 bg-gradient-to-r from-[#c9a227] to-[#e8d48b] rounded-full"></div>
-            <p className="text-[#1a1a2e]/50 text-sm font-medium">{students.length} students enrolled</p>
+            <p className="text-[#1a1a2e]/50 text-sm font-medium">
+              {isParent ? `${students.length} linked student${students.length === 1 ? '' : 's'}` : `${students.length} students enrolled`}
+            </p>
           </div>
         </div>
 
@@ -395,7 +405,7 @@ export default function StudentsPage() {
             <div className="p-6">
               <div className="flex items-center justify-between mb-3">
                 <h3 className="text-xs font-semibold text-[#1a1a2e]/40 uppercase tracking-wider">Recent Activity</h3>
-                {selectedStaff ? (
+                {selectedStaff && !isParent ? (
                   <button
                     type="button"
                     onClick={() => setSelectedStaff(null)}
@@ -415,13 +425,17 @@ export default function StudentsPage() {
                         <p className="text-sm font-medium text-[#1a1a2e]">
                           {merit.subcategory || merit.r?.split(' – ')[0]}
                         </p>
-                        <button
-                          type="button"
-                          onClick={() => pushAnalyticsFilters({ staff: merit.staffName })}
-                          className="text-xs text-[#2f0a61] underline underline-offset-2 decoration-[#c9a227] decoration-2 hover:text-[#1a1a2e] transition-colors"
-                        >
-                          {merit.staffName}
-                        </button>
+                        {!isParent ? (
+                          <button
+                            type="button"
+                            onClick={() => pushAnalyticsFilters({ staff: merit.staffName })}
+                            className="text-xs text-[#2f0a61] underline underline-offset-2 decoration-[#c9a227] decoration-2 hover:text-[#1a1a2e] transition-colors"
+                          >
+                            {merit.staffName}
+                          </button>
+                        ) : (
+                          <p className="text-xs text-[#1a1a2e]/40">Staff hidden for parent accounts</p>
+                        )}
                       </div>
                       <span className="text-[#055437] font-semibold">+{merit.points}</span>
                     </div>

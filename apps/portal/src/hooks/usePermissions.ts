@@ -215,6 +215,8 @@ export function useAuth() {
     isTeacher: role === 'staff',
     isSupportStaff: false,
     isStaff: role === 'staff' || role === 'admin',
+    isParent: role === 'parent',
+    isStudent: role === 'student',
     assignedHouse: null,
   }
 }

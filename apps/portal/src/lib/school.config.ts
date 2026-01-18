@@ -79,7 +79,7 @@ const demoConfig: SchoolConfig = {
   // School Identity
   schoolName: 'Dār al-Arqam Islamic School',
   systemName: 'League of Champions',
-  tagline: 'Inspiring Excellence Through Recognition',
+  tagline: 'Where champions are made',
 
   // Branding Assets
   crestLogo: '/demo-crest.svg',
@@ -167,7 +167,7 @@ const bhaConfig: SchoolConfig = {
   ...demoConfig,
   schoolName: 'Dār al-Arqam Islamic School',
   systemName: 'League of Champions',
-  tagline: 'Nurturing Leaders of Tomorrow',
+  tagline: 'Where champions are made',
   crestLogo: '/crest.png', // BHA-specific crest
 }
 

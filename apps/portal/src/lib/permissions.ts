@@ -24,6 +24,8 @@ export type Permission = (typeof PERMISSIONS)[keyof typeof PERMISSIONS]
 export const ROLES = {
   ADMIN: 'admin',
   STAFF: 'staff',
+  PARENT: 'parent',
+  STUDENT: 'student',
 } as const
 
 export type Role = (typeof ROLES)[keyof typeof ROLES]
@@ -54,13 +56,22 @@ async function fetchProfileRole(supabase: SupabaseClient): Promise<Role | null> 
   }
 
   const role = data?.role ?? null
-  if (role === ROLES.ADMIN || role === ROLES.STAFF) return role
+
+  if (role === ROLES.ADMIN || role === ROLES.STAFF || role === ROLES.PARENT || role === ROLES.STUDENT) {
+    return role
+  }
+
+  // Map legacy RBAC roles into portal roles
+  if (role === 'super_admin' || role === 'admin') return ROLES.ADMIN
+  if (role === 'teacher' || role === 'support_staff' || role === 'house_mentor') return ROLES.STAFF
+
   return null
 }
 
 function roleHasPermission(role: Role | null, permission: Permission): boolean {
   if (!role) return false
   if (role === ROLES.ADMIN) return true
+  if (role === ROLES.PARENT || role === ROLES.STUDENT) return false
 
   const staffPermissions = new Set<Permission>([
     PERMISSIONS.POINTS_AWARD,
