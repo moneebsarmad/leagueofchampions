@@ -1,10 +1,24 @@
-import { createBrowserClient } from '@supabase/ssr'
+import { createBrowserClient, SupabaseClient } from '@supabase/ssr'
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+let supabaseInstance: SupabaseClient | null = null
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error('Missing Supabase environment variables')
+export const getSupabase = () => {
+  if (supabaseInstance) return supabaseInstance
+
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+  if (!supabaseUrl || !supabaseAnonKey) {
+    throw new Error('Missing Supabase environment variables')
+  }
+
+  supabaseInstance = createBrowserClient(supabaseUrl, supabaseAnonKey)
+  return supabaseInstance
 }
 
-export const supabase = createBrowserClient(supabaseUrl, supabaseAnonKey)
+// Lazy getter for backwards compatibility
+export const supabase = new Proxy({} as SupabaseClient, {
+  get(_, prop) {
+    return Reflect.get(getSupabase(), prop)
+  },
+})
