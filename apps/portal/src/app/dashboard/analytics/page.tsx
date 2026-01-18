@@ -225,7 +225,7 @@ export default function AnalyticsPage() {
     return () => {
       supabase.removeChannel(channel)
     }
-  }, [fetchData, fetchStats])
+  }, [fetchData])
 
   useEffect(() => {
     if (paramsApplied.current) return
