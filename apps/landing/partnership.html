@@ -6,29 +6,24 @@
   <title>Partnership Levels | League of Champions</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --ink: #2c2c2c;
-      --ink-soft: #5a5a5a;
-      --ink-muted: #8a8a8a;
-      --cream: #faf9f7;
-      --warm: #f3f1ed;
-      --warm-dark: #e8e4dc;
-      --gold: #a08050;
-      --border: #e0ddd6;
-
+      --ink: #1a1a1a;
+      --ink-soft: #4a4a4a;
+      --ink-muted: #7a7a7a;
+      --cream: #fdfcfa;
+      --warm: #f7f5f2;
+      --warm-dark: #ebe8e3;
+      --gold: #b8986c;
+      --gold-dark: #9a7b52;
+      --border: #e5e2dc;
+      --success: #2d7a4f;
+      --success-soft: #e8f5ed;
     }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
 
     body {
       font-family: 'Inter', -apple-system, sans-serif;
@@ -38,30 +33,25 @@
       font-size: 16px;
     }
 
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 32px; }
+    section { padding: 100px 0; }
+
     h1, h2, h3, h4 {
       font-family: 'Libre Baskerville', Georgia, serif;
       font-weight: 400;
-      line-height: 1.3;
+      line-height: 1.25;
     }
 
-    p {
-      color: var(--ink-soft);
-    }
+    h1 { font-size: clamp(2rem, 4vw, 2.8rem); }
+    h2 { font-size: clamp(1.6rem, 3vw, 2.2rem); }
+    h3 { font-size: 1.2rem; }
 
-    .container {
-      max-width: 1000px;
-      margin: 0 auto;
-      padding: 0 24px;
-    }
-
-    .container--narrow {
-      max-width: 720px;
-    }
+    p { color: var(--ink-soft); }
 
     .eyebrow {
       font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 0.2em;
+      font-weight: 700;
+      letter-spacing: 0.25em;
       text-transform: uppercase;
       color: var(--gold);
       margin-bottom: 16px;
@@ -70,497 +60,41 @@
     .lead {
       font-size: 1.15rem;
       color: var(--ink-soft);
-      max-width: 580px;
+      max-width: 560px;
+      line-height: 1.7;
     }
 
     /* Back Link */
     .back-link {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      padding: 16px 0;
+      gap: 10px;
       text-decoration: none;
       color: var(--ink-soft);
       font-size: 0.9rem;
       font-weight: 500;
       transition: all 0.25s ease;
+      margin-bottom: 32px;
     }
 
     .back-link:hover {
       color: var(--ink);
-      gap: 12px;
+      gap: 14px;
     }
 
-    .back-link span {
-      transition: transform 0.25s ease;
-    }
-
-    .back-link:hover span {
-      transform: translateX(-4px);
-    }
-
-    /* Hero */
-    .hero {
-      background: linear-gradient(180deg, var(--warm) 0%, var(--cream) 100%);
-      border-bottom: 1px solid var(--border);
-      padding: 40px 0 100px;
-    }
-
-    .hero h1 {
-      font-size: clamp(2rem, 4vw, 2.6rem);
-      margin-bottom: 16px;
-    }
-
-    .hero .lead {
-      margin-bottom: 0;
-    }
-
-    /* Intro Section */
-    .intro {
-      padding: 80px 0;
-      background: var(--cream);
-    }
-
-    .intro-content {
-      max-width: 680px;
-      margin: 0 auto;
-      text-align: center;
-    }
-
-    .intro h2 {
-      font-size: 1.6rem;
-      margin-bottom: 20px;
-    }
-
-    .intro p {
-      margin-bottom: 16px;
-    }
-
-    .intro-note {
-      margin-top: 32px;
-      padding: 24px 32px;
-      background: var(--warm);
-      border-radius: 8px;
-      border-left: 3px solid var(--gold);
-      text-align: left;
-    }
-
-    .intro-note p {
-      font-size: 0.95rem;
-      margin: 0;
-      font-style: italic;
-    }
-
-    /* Partnership Tiers */
-    .tiers {
-      padding: 80px 0;
-      background: var(--warm);
-    }
-
-    .tiers-header {
-      text-align: center;
-      margin-bottom: 56px;
-    }
-
-    .tiers-header h2 {
-      font-size: 1.8rem;
-      margin-bottom: 12px;
-    }
-
-    .tiers-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 24px;
-    }
-
-    .tier-card {
-      background: white;
-      border-radius: 16px;
-      overflow: hidden;
-      border: 1px solid var(--border);
-      display: flex;
-      flex-direction: column;
-      transition: all 0.3s ease;
-    }
-
-    .tier-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
-    }
-
-    .tier-card--featured {
-      border-color: var(--gold);
-      box-shadow: 0 4px 24px rgba(160, 128, 80, 0.12);
-    }
-
-    .tier-card--featured:hover {
-      box-shadow: 0 16px 40px rgba(160, 128, 80, 0.2);
-    }
-
-    .tier-header {
-      padding: 28px 24px;
-      text-align: center;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .tier-badge {
-      display: inline-block;
-      padding: 4px 12px;
-      border-radius: 100px;
-      font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      margin-bottom: 12px;
-      background: var(--warm);
-      color: var(--ink);
-    }
-
-    .tier-header h3 {
-      font-size: 1.3rem;
-      margin-bottom: 6px;
-    }
-
-    .tier-tagline {
-      font-size: 0.9rem;
-      color: var(--ink-soft);
-      margin: 0;
-    }
-
-    .tier-body {
-      padding: 28px 24px;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .tier-description {
-      font-size: 0.95rem;
-      margin-bottom: 24px;
-      line-height: 1.6;
-    }
-
-    .tier-section {
-      margin-bottom: 20px;
-    }
-
-    .tier-section:last-of-type {
-      margin-bottom: 0;
-    }
-
-    .tier-label {
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--ink-muted);
-      font-weight: 600;
-      margin-bottom: 10px;
-    }
-
-    .tier-list {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-    }
-
-    .tier-list li {
-      font-size: 0.9rem;
-      color: var(--ink-soft);
-      padding: 6px 0;
-      padding-left: 20px;
-      position: relative;
-    }
-
-    .tier-list li::before {
-      content: '✓';
-      position: absolute;
-      left: 0;
-      color: var(--gold);
-      font-size: 0.85rem;
-    }
-
-    .tier-note {
-      margin-top: auto;
-      padding-top: 20px;
-      border-top: 1px dashed var(--border);
-      font-size: 0.85rem;
-      color: var(--ink-muted);
-      font-style: italic;
-    }
-
-    .featured-label {
-      background: var(--gold);
-      color: white;
-      text-align: center;
-      padding: 8px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-    }
-
-    /* Pricing Section */
-    .pricing {
-      padding: 80px 0;
-      background: var(--cream);
-    }
-
-    .pricing .container {
-      max-width: 1100px;
-    }
-
-    .pricing-header {
-      text-align: center;
-      margin-bottom: 48px;
-    }
-
-    .pricing-header h2 {
-      font-size: 1.6rem;
-      margin-bottom: 12px;
-    }
-
-    .pricing-intro {
-      max-width: 600px;
-      margin: 0 auto 16px;
-      text-align: center;
-    }
-
-    .pricing-table-wrapper {
-      overflow-x: auto;
-    }
-
-    .pricing-table {
-      width: 100%;
-      border-collapse: collapse;
-      background: white;
-      border-radius: 12px;
-      overflow: hidden;
-      border: 1px solid var(--border);
-      min-width: 720px;
-    }
-
-    .pricing-table th,
-    .pricing-table td {
-      padding: 14px 18px;
-      text-align: left;
-      border-bottom: 1px solid var(--border);
-      white-space: nowrap;
-    }
-
-    .pricing-table th {
-      background: var(--warm);
-      font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--ink-muted);
-    }
-
-    .pricing-table td {
-      font-size: 0.9rem;
-      color: var(--ink-soft);
-    }
-
-    .pricing-table tr:last-child td {
-      border-bottom: none;
-    }
-
-    .pricing-table tbody tr {
-      transition: background 0.2s ease;
-    }
-
-    .pricing-table tbody tr:hover {
-      background: rgba(243, 241, 237, 0.5);
-    }
-
-    .pricing-table .tier-name {
-      font-family: 'Libre Baskerville', serif;
-      font-weight: 400;
-      color: var(--ink);
-      font-size: 1rem;
-      vertical-align: middle;
-    }
-
-    .pricing-table .price {
-      font-weight: 600;
-      color: var(--ink);
-    }
-
-    .pricing-footnote {
-      margin-top: 24px;
-      text-align: center;
-    }
-
-    .pricing-footnote p {
-      font-size: 0.85rem;
-      color: var(--ink-muted);
-      font-style: italic;
-    }
-
-    /* What's Included Breakdown */
-    .breakdown {
-      padding: 80px 0;
-      background: var(--warm);
-    }
-
-    .breakdown-header {
-      text-align: center;
-      margin-bottom: 48px;
-    }
-
-    .breakdown-header h2 {
-      font-size: 1.6rem;
-      margin-bottom: 12px;
-    }
-
-    .breakdown-block {
-      margin-bottom: 40px;
-    }
-
-    .breakdown-block:last-child {
-      margin-bottom: 0;
-    }
-
-    .breakdown-block h3 {
-      font-size: 1.3rem;
-      margin-bottom: 16px;
-      text-align: center;
-    }
-
-    .breakdown-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 24px;
-    }
-
-    .breakdown-card {
-      background: white;
-      border-radius: 12px;
-      padding: 24px;
-      border: 1px solid var(--border);
-      transition: all 0.3s ease;
-    }
-
-    .breakdown-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
-      border-color: var(--ink-muted);
-    }
-
-    .breakdown-card h4 {
-      font-size: 1rem;
-      margin-bottom: 10px;
-      color: var(--ink);
-    }
-
-    .breakdown-card p {
-      font-size: 0.9rem;
-      line-height: 1.6;
-    }
-
-    .breakdown-card .link-note {
-      margin-top: 12px;
-      font-size: 0.85rem;
-      color: var(--ink-muted);
-    }
-
-    .breakdown-link {
-      display: inline-block;
-      margin-top: 12px;
-      color: var(--ink);
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 0.9rem;
-    }
-
-    .breakdown-link:hover {
-      text-decoration: underline;
-    }
-
-    /* Decision Help */
-    .decision {
-      padding: 80px 0;
-      background: var(--cream);
-    }
-
-    .decision-content {
-      max-width: 720px;
-      margin: 0 auto;
-    }
-
-    .decision h2 {
-      font-size: 1.6rem;
-      margin-bottom: 32px;
-      text-align: center;
-    }
-
-    .decision-item {
-      padding: 24px 0;
-      border-bottom: 1px solid var(--border);
-      transition: all 0.2s ease;
-    }
-
-    .decision-item:hover {
-      padding-left: 12px;
-    }
-
-    .decision-item:hover .decision-answer {
-      border-left-color: var(--ink);
-    }
-
-    .decision-item:last-child {
-      border-bottom: none;
-    }
-
-    .decision-question {
-      font-family: 'Libre Baskerville', serif;
-      font-size: 1.05rem;
-      color: var(--ink);
-      margin-bottom: 8px;
-    }
-
-    .decision-answer {
-      font-size: 0.95rem;
-      color: var(--ink-soft);
-      padding-left: 20px;
-      border-left: 2px solid var(--gold);
-      transition: border-left-color 0.2s ease;
-    }
-
-    /* CTA */
-    .cta {
-      padding: 80px 0;
-      background: var(--ink);
-      text-align: center;
-    }
-
-    .cta h2 {
-      color: white;
-      font-size: 1.6rem;
-      margin-bottom: 16px;
-    }
-
-    .cta p {
-      color: rgba(255,255,255,0.7);
-      max-width: 480px;
-      margin: 0 auto 32px;
-    }
-
-    .btn-group {
-      display: flex;
-      gap: 12px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
+    /* Buttons */
+    .btn-group { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 40px; }
 
     .btn {
-      display: inline-block;
-      padding: 14px 28px;
-      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 16px 32px;
+      border-radius: 8px;
       text-decoration: none;
-      font-weight: 500;
+      font-weight: 600;
       font-size: 0.95rem;
-      transition: all 0.2s ease;
+      transition: all 0.3s ease;
     }
 
     .btn--primary {
@@ -571,160 +105,723 @@
     .btn--primary:hover {
       background: var(--cream);
       transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 24px rgba(255,255,255,0.15);
     }
 
     .btn--secondary {
       background: transparent;
       color: white;
-      border: 1px solid rgba(255,255,255,0.3);
+      border: 1.5px solid rgba(255,255,255,0.3);
     }
 
     .btn--secondary:hover {
-      border-color: rgba(255,255,255,0.5);
+      border-color: rgba(255,255,255,0.6);
       transform: translateY(-2px);
-      background: rgba(255,255,255,0.05);
     }
 
-    /* Responsive */
-    @media (max-width: 900px) {
-      .tiers-grid {
-        grid-template-columns: 1fr;
-        max-width: 480px;
-        margin: 0 auto;
-      }
+    /* ========== HERO ========== */
+    .hero {
+      background: linear-gradient(170deg, var(--warm) 0%, var(--cream) 60%);
+      padding: 60px 0 100px;
+      position: relative;
+    }
 
-      .breakdown-grid {
-        grid-template-columns: 1fr;
-      }
+    .hero h1 { margin-bottom: 16px; }
+
+    /* ========== THREE COMPONENTS ========== */
+    .components-section {
+      background: var(--cream);
+      padding: 100px 0;
+    }
+
+    .components-header {
+      text-align: center;
+      max-width: 640px;
+      margin: 0 auto 64px;
+    }
+
+    .components-header h2 { margin-bottom: 16px; }
+
+    .components-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .component-card {
+      background: white;
+      border-radius: 16px;
+      padding: 32px 28px;
+      border: 1px solid var(--border);
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .component-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.06);
+    }
+
+    .component-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      background: var(--warm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin: 0 auto 20px;
+    }
+
+    .component-card h3 { margin-bottom: 8px; }
+
+    .component-card p {
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    /* ========== TIERS SECTION ========== */
+    .tiers-section {
+      background: var(--warm);
+      padding: 120px 0;
+    }
+
+    .tiers-header {
+      text-align: center;
+      max-width: 640px;
+      margin: 0 auto 64px;
+    }
+
+    .tiers-header h2 { margin-bottom: 16px; }
+
+    .tiers-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 32px;
+    }
+
+    .tier-card {
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      transition: all 0.3s ease;
+    }
+
+    .tier-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.08);
+    }
+
+    .tier-card--featured {
+      border-color: var(--gold);
+      box-shadow: 0 8px 32px rgba(184, 152, 108, 0.15);
+    }
+
+    .tier-card--featured:hover {
+      box-shadow: 0 20px 48px rgba(184, 152, 108, 0.25);
+    }
+
+    .tier-featured-label {
+      background: var(--gold);
+      color: white;
+      text-align: center;
+      padding: 10px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .tier-header {
+      padding: 36px 32px 28px;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .tier-badge {
+      display: inline-block;
+      padding: 6px 16px;
+      border-radius: 100px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      background: var(--warm);
+      color: var(--ink-muted);
+    }
+
+    .tier-header h3 {
+      font-size: 1.4rem;
+      margin-bottom: 8px;
+    }
+
+    .tier-tagline {
+      font-size: 0.95rem;
+      color: var(--ink-soft);
+      font-style: italic;
+    }
+
+    .tier-purpose {
+      padding: 20px 32px;
+      background: var(--warm);
+      font-size: 0.9rem;
+      color: var(--ink);
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .tier-body {
+      padding: 32px;
+      flex: 1;
+    }
+
+    .tier-section {
+      margin-bottom: 28px;
+    }
+
+    .tier-section:last-child { margin-bottom: 0; }
+
+    .tier-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--ink-muted);
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    .tier-list {
+      list-style: none;
+    }
+
+    .tier-list li {
+      font-size: 0.9rem;
+      color: var(--ink-soft);
+      padding: 8px 0;
+      padding-left: 24px;
+      position: relative;
+    }
+
+    .tier-list li::before {
+      content: '>';
+      position: absolute;
+      left: 0;
+      color: var(--gold);
+      font-weight: 700;
+    }
+
+    .tier-analytics {
+      background: var(--success-soft);
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 20px;
+    }
+
+    .tier-analytics-title {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--success);
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .tier-analytics-list {
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+
+    .tier-analytics-list li {
+      font-size: 0.85rem;
+      color: var(--ink-soft);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tier-analytics-list li::before {
+      content: '???';
+      color: var(--success);
+      font-size: 0.9rem;
+    }
+
+    .tier-note {
+      margin-top: auto;
+      padding: 20px 32px;
+      border-top: 1px dashed var(--border);
+      font-size: 0.85rem;
+      color: var(--ink-muted);
+      font-style: italic;
+      text-align: center;
+    }
+
+    /* ========== PRICING SECTION ========== */
+    .pricing-section {
+      background: var(--cream);
+      padding: 100px 0;
+    }
+
+    .pricing-header {
+      text-align: center;
+      max-width: 560px;
+      margin: 0 auto 56px;
+    }
+
+    .pricing-header h2 { margin-bottom: 16px; }
+
+    .pricing-table-wrapper {
+      max-width: 900px;
+      margin: 0 auto;
+      overflow-x: auto;
+    }
+
+    .pricing-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .pricing-table th,
+    .pricing-table td {
+      padding: 20px 24px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .pricing-table th {
+      background: var(--warm);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+    }
+
+    .pricing-table td {
+      font-size: 0.95rem;
+      color: var(--ink-soft);
+    }
+
+    .pricing-table tr:last-child td { border-bottom: none; }
+
+    .pricing-table tbody tr {
+      transition: background 0.2s ease;
+    }
+
+    .pricing-table tbody tr:hover {
+      background: rgba(247, 245, 242, 0.5);
+    }
+
+    .pricing-table .tier-name {
+      font-family: 'Libre Baskerville', serif;
+      font-weight: 400;
+      color: var(--ink);
+      font-size: 1rem;
+    }
+
+    .pricing-table .price {
+      font-weight: 700;
+      color: var(--ink);
+      font-size: 1.1rem;
+    }
+
+    .pricing-note {
+      text-align: center;
+      margin-top: 32px;
+      font-size: 0.9rem;
+      color: var(--ink-muted);
+    }
+
+    /* ========== ONBOARDING SECTION ========== */
+    .onboarding-section {
+      background: var(--warm);
+      padding: 100px 0;
+    }
+
+    .onboarding-header {
+      text-align: center;
+      max-width: 560px;
+      margin: 0 auto 56px;
+    }
+
+    .onboarding-header h2 { margin-bottom: 16px; }
+
+    .onboarding-timeline {
+      max-width: 800px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .onboarding-timeline::before {
+      content: '';
+      position: absolute;
+      left: 20px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(180deg, var(--gold) 0%, var(--success) 100%);
+    }
+
+    .onboarding-step {
+      display: flex;
+      gap: 32px;
+      margin-bottom: 24px;
+      position: relative;
+    }
+
+    .onboarding-step:last-child { margin-bottom: 0; }
+
+    .onboarding-marker {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: white;
+      border: 3px solid var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .onboarding-content {
+      background: white;
+      border-radius: 16px;
+      padding: 24px 28px;
+      border: 1px solid var(--border);
+      flex: 1;
+      transition: all 0.3s ease;
+    }
+
+    .onboarding-content:hover {
+      transform: translateX(4px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    }
+
+    .onboarding-content h4 {
+      font-size: 1.1rem;
+      margin-bottom: 8px;
+    }
+
+    .onboarding-meta {
+      font-size: 0.8rem;
+      color: var(--gold-dark);
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .onboarding-content p {
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    /* ========== RESPONSIBILITIES SECTION ========== */
+    .responsibilities-section {
+      background: var(--cream);
+      padding: 100px 0;
+    }
+
+    .responsibilities-header {
+      text-align: center;
+      max-width: 560px;
+      margin: 0 auto 56px;
+    }
+
+    .responsibilities-header h2 { margin-bottom: 16px; }
+
+    .responsibilities-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 32px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .responsibility-card {
+      background: white;
+      border-radius: 16px;
+      padding: 32px;
+      border: 1px solid var(--border);
+    }
+
+    .responsibility-card h3 {
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .responsibility-card h3::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--gold);
+    }
+
+    .responsibility-list {
+      list-style: none;
+    }
+
+    .responsibility-list li {
+      padding: 10px 0;
+      font-size: 0.9rem;
+      color: var(--ink-soft);
+      border-bottom: 1px dashed var(--border);
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .responsibility-list li:last-child { border-bottom: none; }
+
+    .responsibility-list li::before {
+      content: '>';
+      color: var(--gold);
+      font-weight: 700;
+      margin-top: 2px;
+    }
+
+    /* ========== DECISION HELP ========== */
+    .decision-section {
+      background: var(--warm);
+      padding: 100px 0;
+    }
+
+    .decision-header {
+      text-align: center;
+      max-width: 560px;
+      margin: 0 auto 56px;
+    }
+
+    .decision-header h2 { margin-bottom: 16px; }
+
+    .decision-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .decision-card {
+      background: white;
+      border-radius: 16px;
+      padding: 28px;
+      border: 1px solid var(--border);
+      transition: all 0.3s ease;
+    }
+
+    .decision-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.06);
+      border-color: var(--gold);
+    }
+
+    .decision-question {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 1rem;
+      color: var(--ink);
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+
+    .decision-answer {
+      font-size: 0.9rem;
+      color: var(--ink-soft);
+      padding-left: 16px;
+      border-left: 3px solid var(--gold);
+    }
+
+    .decision-answer strong {
+      color: var(--gold-dark);
+    }
+
+    /* ========== CTA SECTION ========== */
+    .cta-section {
+      background: linear-gradient(135deg, var(--ink) 0%, #2a2a2a 100%);
+      padding: 100px 0;
+      text-align: center;
+    }
+
+    .cta-section h2 {
+      color: white;
+      margin-bottom: 16px;
+    }
+
+    .cta-section p {
+      color: rgba(255,255,255,0.7);
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    .cta-section .btn-group {
+      justify-content: center;
+    }
+
+    /* ========== RESPONSIVE ========== */
+    @media (max-width: 900px) {
+      .container { padding: 0 24px; }
+      section { padding: 80px 0; }
+
+      .components-grid { grid-template-columns: 1fr; }
+      .tiers-grid { grid-template-columns: 1fr; max-width: 500px; margin: 0 auto; }
+      .responsibilities-grid { grid-template-columns: 1fr; }
+      .decision-grid { grid-template-columns: 1fr; }
+      .tier-analytics-list { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 600px) {
-      .pricing-table th,
-      .pricing-table td {
-        padding: 12px 14px;
-        font-size: 0.8rem;
-      }
+      h1 { font-size: 1.8rem; }
+      h2 { font-size: 1.5rem; }
+      .btn-group { flex-direction: column; }
+      .btn { width: 100%; justify-content: center; }
+      .onboarding-step { flex-direction: column; gap: 16px; }
+      .onboarding-timeline::before { display: none; }
     }
   </style>
 </head>
 <body>
-  <!-- LEADERBOARD_DEMO = https://leagueofchampions-leaderboard.vercel.app/ -->
-  <!-- PORTAL_DEMO = https://leagueofchampions-portal.vercel.app/ -->
-  <!-- ADMIN_DEMO = (unknown / restricted) — do not link publicly unless confirmed -->
 
-  <!-- Hero -->
+  <!-- HERO -->
   <section class="hero">
     <div class="container">
       <a href="landing-v3.html" class="back-link">
-        <span>&larr;</span> Back to Overview
+        <span>???</span> Back to Overview
       </a>
-      <p class="eyebrow">Partnership Levels</p>
+      <p class="eyebrow">Partnership</p>
       <h1>Support That Matches Your Intent</h1>
       <p class="lead">
-        Schools differ in size, structure, and readiness. Our partnership levels reflect how much ongoing alignment and guidance a school wants during the year — not just access to tools.
+        Every school gets the full platform. What differs is the rhythm of alignment and the depth of stewardship throughout the year.
       </p>
     </div>
   </section>
 
-  <!-- Intro -->
-  <section class="intro">
+  <!-- THREE COMPONENTS -->
+  <section class="components-section">
     <div class="container">
-      <div class="intro-content">
-      <h2>Three Components, One Partnership</h2>
-      <p>
-        League of Champions is not just software access. It’s a culture partnership with three parts:
-      </p>
-      <p>
-        • Onboarding (setup + staff alignment)<br>
-        • Ongoing stewardship (touchpoints that keep consistency alive)<br>
-        • LOC App suite (daily visibility for students, staff, and families)
-      </p>
-      <div class="intro-note">
-        <p>
-          Most schools don’t need more initiatives. They need alignment that survives the semester.
-        </p>
+      <div class="components-header">
+        <p class="eyebrow">The Partnership</p>
+        <h2>Three Components, One System</h2>
+        <p class="lead">League of Champions is not just software. It's a culture partnership.</p>
       </div>
+
+      <div class="components-grid">
+        <div class="component-card">
+          <div class="component-icon">???</div>
+          <h3>Onboarding</h3>
+          <p>Setup, staff training, and alignment so you launch with clarity and confidence.</p>
+        </div>
+        <div class="component-card">
+          <div class="component-icon">???</div>
+          <h3>Stewardship</h3>
+          <p>Ongoing touchpoints that prevent drift and keep expectations consistent across classrooms.</p>
+        </div>
+        <div class="component-card">
+          <div class="component-icon">???</div>
+          <h3>Platform</h3>
+          <p>Daily visibility for students, staff, parents, and administrators through connected apps.</p>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Partnership Tiers -->
-  <section class="tiers">
+  <!-- TIERS -->
+  <section class="tiers-section">
     <div class="container">
       <div class="tiers-header">
         <p class="eyebrow">Two Levels</p>
-        <h2>Choose Based on Stewardship</h2>
-        <p class="lead" style="margin: 0 auto;">Every level includes the full platform. What differs is the rhythm of alignment.</p>
+        <h2>Choose Based on Stewardship Needs</h2>
+        <p class="lead">Both include full platform access. The difference is how much alignment support you want throughout the year.</p>
       </div>
 
       <div class="tiers-grid">
-        <!-- Tier 1 -->
+        <!-- Tier 1: Core Stewardship -->
         <div class="tier-card">
           <div class="tier-header">
             <span class="tier-badge">Tier 1</span>
-            <h3>Onboarding + Light Stewardship</h3>
-            <p class="tier-tagline">Launch the system. Keep it steady.</p>
+            <h3>Core Stewardship</h3>
+            <p class="tier-tagline">Launch cleanly. Establish stable habits.</p>
+          </div>
+          <div class="tier-purpose">
+            Launch cleanly, establish stable habits, then transfer ownership to your internal team.
           </div>
           <div class="tier-body">
-            <p class="tier-description">
-              For schools that want a clear launch, a shared staff language, and a small number of touchpoints to prevent drift.
-            </p>
             <div class="tier-section">
-              <p class="tier-label">What’s Included</p>
+              <p class="tier-label">What's Included</p>
               <ul class="tier-list">
-                <li>Onboarding package (setup + staff training)</li>
-                <li>2 leadership check-ins (year)</li>
+                <li>Full onboarding package</li>
+                <li>2 leadership check-ins per year</li>
                 <li>1 staff calibration session (mid-year)</li>
-                <li>2 implementation reviews (brief + action notes)</li>
+                <li>2 implementation reviews with notes</li>
+                <li>Email support for questions</li>
               </ul>
             </div>
-            <p class="tier-note">
-              Best when you have an internal culture lead who can carry the weekly rhythm.
-            </p>
+          </div>
+          <div class="tier-note">
+            Best when you have an internal culture lead who can carry the weekly rhythm.
           </div>
         </div>
 
-        <!-- Tier 2 -->
+        <!-- Tier 2: Strategic Stewardship -->
         <div class="tier-card tier-card--featured">
-          <div class="featured-label">Most Common</div>
+          <div class="tier-featured-label">Recommended</div>
           <div class="tier-header">
             <span class="tier-badge">Tier 2</span>
-            <h3>Onboarding + Active Stewardship</h3>
-            <p class="tier-tagline">More touchpoints. More consistency.</p>
+            <h3>Strategic Stewardship</h3>
+            <p class="tier-tagline">More touchpoints. Board-ready reporting.</p>
+          </div>
+          <div class="tier-purpose">
+            Prevent drift, enable governance, and provide board-ready reporting throughout the year.
           </div>
           <div class="tier-body">
-            <p class="tier-description">
-              For schools that want tighter alignment across teachers, stronger follow-through, and more structured reinforcement as the year unfolds.
-            </p>
             <div class="tier-section">
-              <p class="tier-label">What’s Included</p>
+              <p class="tier-label">Everything in Tier 1, Plus</p>
               <ul class="tier-list">
-                <li>Everything in Tier 1</li>
-                <li>4 leadership check-ins (year)</li>
+                <li>4 leadership check-ins per year</li>
                 <li>2 staff follow-up sessions</li>
-                <li>2 data reviews + action plan</li>
-                <li>1 targeted team session (Deans / Advisors / Grade team)</li>
+                <li>2 data reviews with action plans</li>
+                <li>1 targeted team session (Deans/Advisors)</li>
+                <li>Priority support</li>
               </ul>
             </div>
-            <p class="tier-note">
-              Best when consistency is a priority across many classrooms or rapid growth.
-            </p>
+            <div class="tier-analytics">
+              <p class="tier-analytics-title">Enhanced Analytics Included</p>
+              <ul class="tier-analytics-list">
+                <li>Staff Participation Dashboard</li>
+                <li>Point Economy Health</li>
+                <li>Bias Detection Alerts</li>
+                <li>Category Mix Analysis</li>
+              </ul>
+            </div>
+          </div>
+          <div class="tier-note">
+            Best when consistency across many classrooms is the priority.
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Pricing Table -->
-  <section class="pricing">
+  <!-- PRICING -->
+  <section class="pricing-section">
     <div class="container">
       <div class="pricing-header">
         <p class="eyebrow">Investment</p>
-        <h2>Clear, Predictable Pricing</h2>
-        <p class="pricing-intro">
-          Annual partnership covers culture design and advisory support. Per-student pricing covers platform access and scales with your enrollment.
-        </p>
+        <h2>Transparent, Predictable Pricing</h2>
+        <p class="lead">Annual partnership for culture alignment. Per-student pricing scales with your enrollment.</p>
       </div>
 
       <div class="pricing-table-wrapper">
@@ -732,179 +829,151 @@
           <thead>
             <tr>
               <th>Tier</th>
-              <th>Onboarding (one-time)</th>
-              <th>Annual stewardship</th>
-              <th>Apps (per student)</th>
-              <th>Typical live hours / year</th>
+              <th>Onboarding (One-Time)</th>
+              <th>Annual Stewardship</th>
+              <th>Platform License (Per Student)</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td class="tier-name">Tier 1</td>
-              <td class="price">$3,500</td>
+              <td class="tier-name">Core Stewardship</td>
+              <td class="price">$1,500</td>
               <td class="price">$3,000</td>
-              <td class="price">$5</td>
-              <td>~14–18 hours</td>
+              <td class="price">$4</td>
             </tr>
             <tr>
-              <td class="tier-name">Tier 2</td>
-              <td class="price">$4,500</td>
-              <td class="price">$5,000</td>
-              <td class="price">$8</td>
-              <td>~22–26 hours</td>
+              <td class="tier-name">Strategic Stewardship</td>
+              <td class="price">$1,500</td>
+              <td class="price">$4,000</td>
+              <td class="price">$6</td>
             </tr>
           </tbody>
         </table>
       </div>
 
-      <div class="pricing-footnote">
-        <p>Apps pricing covers platform access. Stewardship covers alignment and advisory. (Adjust the billing interval label if your pricing is monthly instead of annual.)</p>
-      </div>
+      <p class="pricing-note">
+        Stewardship covers alignment, advisory, and check-ins. Platform license covers app access for students, staff, and parents.
+      </p>
     </div>
   </section>
 
-  <!-- What's Included Breakdown -->
-  <section class="breakdown">
+  <!-- ONBOARDING -->
+  <section class="onboarding-section">
     <div class="container">
-      <div class="breakdown-header">
-        <p class="eyebrow">What You're Getting</p>
-        <h2>Understanding the Components</h2>
+      <div class="onboarding-header">
+        <p class="eyebrow">Getting Started</p>
+        <h2>The Onboarding Journey</h2>
+        <p class="lead">Both tiers include the same comprehensive onboarding experience.</p>
       </div>
 
-      <div class="breakdown-block">
-        <h3>Onboarding (included in both tiers)</h3>
-        <div class="breakdown-grid">
-          <div class="breakdown-card">
-            <h4>Discovery + Culture Map (90 min)</h4>
-            <p>
-              Clarify the 3Rs language, staff habits to reinforce, and what consistency should look like across classrooms.
-            </p>
-          </div>
-          <div class="breakdown-card">
-            <h4>Platform Setup + Roster Import (3–5 hours)</h4>
-            <p>
-              Accounts, roles, house assignment, categories, and launch configuration.
-            </p>
-          </div>
-          <div class="breakdown-card">
-            <h4>Staff Orientation (3 hours)</h4>
-            <p>
-              Practice awarding, calibrate scenarios, and align on how praise/correction will sound.
-            </p>
-          </div>
-          <div class="breakdown-card">
-            <h4>Launch Support (2 hours)</h4>
-            <p>
-              Week 1 check-in, adjustments, and staff follow-through plan.
-            </p>
+      <div class="onboarding-timeline">
+        <div class="onboarding-step">
+          <div class="onboarding-marker">1</div>
+          <div class="onboarding-content">
+            <div class="onboarding-meta">90 minutes</div>
+            <h4>Discovery + Culture Map</h4>
+            <p>Clarify the 3Rs language, identify staff habits to reinforce, and define what consistency should look like across your classrooms.</p>
           </div>
         </div>
-      </div>
 
-      <div class="breakdown-block">
-        <h3>Tier 1 stewardship (annual)</h3>
-        <div class="breakdown-grid">
-          <div class="breakdown-card">
-            <h4>Leadership check-ins (2 × 60 min)</h4>
-            <p>
-              Surface drift early, remove obstacles, and keep expectations stable.
-            </p>
-          </div>
-          <div class="breakdown-card">
-            <h4>Staff calibration (1 × 120 min)</h4>
-            <p>
-              Re-align language, address inconsistencies, and reset norms mid-year.
-            </p>
-          </div>
-          <div class="breakdown-card">
-            <h4>Implementation reviews (2 × 60 min)</h4>
-            <p>
-              Short written notes: what’s working, what’s drifting, what to reinforce next.
-            </p>
+        <div class="onboarding-step">
+          <div class="onboarding-marker">2</div>
+          <div class="onboarding-content">
+            <div class="onboarding-meta">3-5 hours</div>
+            <h4>Platform Setup + Roster Import</h4>
+            <p>Accounts, roles, house assignments, merit categories, and full launch configuration tailored to your school.</p>
           </div>
         </div>
-      </div>
 
-      <div class="breakdown-block">
-        <h3>Tier 2 stewardship (annual)</h3>
-        <div class="breakdown-grid">
-          <div class="breakdown-card">
-            <h4>Leadership check-ins (4 × 60 min)</h4>
-          </div>
-          <div class="breakdown-card">
-            <h4>Staff follow-ups (2 × 120 min)</h4>
-          </div>
-          <div class="breakdown-card">
-            <h4>Data review + action plan (2 × 90 min)</h4>
-            <p>
-              Patterns by grade/house/categories + next-step plan for staff consistency.
-            </p>
-          </div>
-          <div class="breakdown-card">
-            <h4>Targeted team session (1 × 120 min)</h4>
-            <p>
-              Deans, Advisors, or a grade team — focus on one pressure-point.
-            </p>
+        <div class="onboarding-step">
+          <div class="onboarding-marker">3</div>
+          <div class="onboarding-content">
+            <div class="onboarding-meta">3 hours</div>
+            <h4>Staff Orientation</h4>
+            <p>Practice awarding points, calibrate with real scenarios, and align on how praise and coaching will sound schoolwide.</p>
           </div>
         </div>
-      </div>
 
-      <div class="breakdown-block">
-        <h3>LOC App suite (included)</h3>
-        <div class="breakdown-grid">
-          <div class="breakdown-card">
-            <h4>Leaderboard (public display)</h4>
-            <a class="breakdown-link" href="https://leagueofchampions-leaderboard.vercel.app/">View leaderboard demo</a>
-          </div>
-          <div class="breakdown-card">
-            <h4>Portal (students • parents • staff)</h4>
-            <a class="breakdown-link" href="https://leagueofchampions-portal.vercel.app/">View portal demo</a>
-          </div>
-          <div class="breakdown-card">
-            <h4>Admin tools (inside the Portal)</h4>
-            <p class="link-note">Admin views are permission-based. Walkthrough available on request.</p>
+        <div class="onboarding-step">
+          <div class="onboarding-marker">4</div>
+          <div class="onboarding-content">
+            <div class="onboarding-meta">2 hours</div>
+            <h4>Launch Support</h4>
+            <p>Week 1 check-in, early adjustments, and staff follow-through plan to ensure strong momentum.</p>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Decision Help -->
-  <section class="decision">
+  <!-- RESPONSIBILITIES -->
+  <section class="responsibilities-section">
     <div class="container">
-      <div class="decision-content">
+      <div class="responsibilities-header">
+        <p class="eyebrow">Shared Success</p>
+        <h2>What We Each Bring</h2>
+        <p class="lead">A partnership means shared ownership of the outcome.</p>
+      </div>
+
+      <div class="responsibilities-grid">
+        <div class="responsibility-card">
+          <h3>What We Provide</h3>
+          <ul class="responsibility-list">
+            <li>Full platform access and configuration</li>
+            <li>Staff training and calibration sessions</li>
+            <li>Leadership check-ins and alignment calls</li>
+            <li>Data reviews and actionable insights</li>
+            <li>Ongoing support and troubleshooting</li>
+          </ul>
+        </div>
+        <div class="responsibility-card">
+          <h3>What Your School Owns</h3>
+          <ul class="responsibility-list">
+            <li>Designate a culture point-person</li>
+            <li>Communicate expectations to staff</li>
+            <li>Ensure consistent daily usage</li>
+            <li>Participate in scheduled check-ins</li>
+            <li>Celebrate wins publicly with students</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DECISION HELP -->
+  <section class="decision-section">
+    <div class="container">
+      <div class="decision-header">
+        <p class="eyebrow">Still Deciding?</p>
         <h2>How Schools Choose</h2>
+      </div>
 
-        <div class="decision-item">
+      <div class="decision-grid">
+        <div class="decision-card">
           <p class="decision-question">"We have a strong culture lead and want a clean launch."</p>
-          <p class="decision-answer">Start with Tier 1. You’ll get the system, staff alignment, and a few touchpoints to prevent drift.</p>
+          <p class="decision-answer">Start with <strong>Core Stewardship</strong>. You'll get the system, training, and enough touchpoints to prevent drift.</p>
         </div>
-
-        <div class="decision-item">
+        <div class="decision-card">
           <p class="decision-question">"Consistency across teachers is our biggest gap."</p>
-          <p class="decision-answer">Tier 2 adds the touchpoints that keep language and expectations from fragmenting by classroom.</p>
+          <p class="decision-answer"><strong>Strategic Stewardship</strong> adds the touchpoints that keep language from fragmenting by classroom.</p>
         </div>
-
-        <div class="decision-item">
-          <p class="decision-question">"We’ve tried initiatives that faded by November."</p>
-          <p class="decision-answer">Tier 2 is designed to survive the semester — follow-ups, reviews, and leadership rhythm.</p>
+        <div class="decision-card">
+          <p class="decision-question">"We've tried initiatives that faded by November."</p>
+          <p class="decision-answer"><strong>Strategic Stewardship</strong> is designed to survive the semester with follow-ups, reviews, and leadership rhythm.</p>
         </div>
-
-        <div class="decision-item">
-          <p class="decision-question">"We're not sure yet."</p>
-          <p class="decision-answer">That’s normal. We’ll ask a few questions about staffing, student culture, and your current pain points — then recommend what fits.</p>
+        <div class="decision-card">
+          <p class="decision-question">"We need board-ready reporting on culture."</p>
+          <p class="decision-answer"><strong>Strategic Stewardship</strong> includes enhanced analytics and structured data reviews you can share with governance.</p>
         </div>
       </div>
     </div>
   </section>
 
   <!-- CTA -->
-  <section class="cta">
+  <section class="cta-section">
     <div class="container">
-      <h2>Start with a conversation.</h2>
-      <p>
-        We’ll help you choose the level of stewardship that matches your school’s reality — staffing, readiness, and goals.
-      </p>
+      <h2>Ready to start the conversation?</h2>
+      <p>We'll help you choose the level of stewardship that matches your school's reality and goals.</p>
       <div class="btn-group">
         <a href="mailto:contact@leagueofchampions.com" class="btn btn--primary">Start a Conversation</a>
         <a href="landing-v3.html#framework" class="btn btn--secondary">Review the Framework</a>
