@@ -83,15 +83,46 @@ export default function StudentsPage() {
   const fetchData = async () => {
     setIsLoading(true)
     try {
-      const { data: studentData } = await supabase.from('students').select('*')
-      const allStudents: Student[] = (studentData || []).map((s, index) => ({
-        id: s.student_id || s.id || `${index}`,
-        name: s.student_name || '',
-        grade: s.grade || 0,
-        section: s.section || '',
-        house: s.house || '',
-        points: 0,
-      }))
+      let allStudents: Student[] = []
+
+      if (isParent) {
+        const { data: linkedStudents, error } = await supabase
+          .from('parent_students')
+          .select('student:students(*)')
+
+        if (error) {
+          throw error
+        }
+
+        allStudents = (linkedStudents || [])
+          .map((row, index) => {
+            const s = (row as { student: any }).student
+            if (!s) return null
+            return {
+              id: s.student_id || s.id || `${index}`,
+              name: s.student_name || '',
+              grade: s.grade || 0,
+              section: s.section || '',
+              house: s.house || '',
+              points: 0,
+            } as Student
+          })
+          .filter(Boolean) as Student[]
+      } else {
+        const { data: studentData, error } = await supabase.from('students').select('*')
+        if (error) {
+          throw error
+        }
+
+        allStudents = (studentData || []).map((s, index) => ({
+          id: s.student_id || s.id || `${index}`,
+          name: s.student_name || '',
+          grade: s.grade || 0,
+          section: s.section || '',
+          house: s.house || '',
+          points: 0,
+        }))
+      }
 
       const meritTable = isParent ? Tables.meritLogParent : Tables.meritLog
       const { data: meritData } = await supabase
