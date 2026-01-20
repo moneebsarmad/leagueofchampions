@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>League of Champions | A School-Wide Tarbiyah Framework</title>
+  <title>League of Champions | The Only Islamic Character System That Makes Behavior Measurable</title>
+  <meta name="description" content="Operationalize Islamic character development through the 3Rs framework. Track behavior, prove impact, and build culture that students can feel.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -17,18 +18,30 @@
       --warm-dark: #ebe8e3;
       --gold: #b8986c;
       --gold-dark: #9a7b52;
+      --gold-light: #d4c4a8;
       --border: #e5e2dc;
       --success: #2d7a4f;
       --success-soft: #e8f5ed;
+      --danger-soft: #fef5f5;
+      --danger: #c45c5c;
 
       --house-abubakr: #4a1f7c;
       --house-khadijah: #0d6b4a;
       --house-umar: #1a3a8f;
       --house-aishah: #a81c1c;
+
+      --nav-height: 72px;
+      --section-padding: 120px;
+      --container-max: 1200px;
+      --transition-smooth: cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: var(--nav-height);
+    }
 
     body {
       font-family: 'Inter', -apple-system, sans-serif;
@@ -38,50 +51,207 @@
       font-size: 16px;
     }
 
-    .container { max-width: 1100px; margin: 0 auto; padding: 0 32px; }
-    section { padding: 100px 0; }
+    .container {
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: 0 32px;
+    }
 
-    h1, h2, h3 {
+    section {
+      padding: var(--section-padding) 0;
+    }
+
+    h1, h2, h3, h4 {
       font-family: 'Libre Baskerville', Georgia, serif;
       font-weight: 400;
       line-height: 1.25;
     }
 
-    h1 { font-size: clamp(2.2rem, 4.5vw, 3.2rem); }
-    h2 { font-size: clamp(1.8rem, 3.5vw, 2.4rem); }
-    h3 { font-size: 1.15rem; }
+    h1 { font-size: clamp(2.2rem, 5vw, 3.4rem); }
+    h2 { font-size: clamp(1.8rem, 3.5vw, 2.6rem); }
+    h3 { font-size: 1.25rem; }
+    h4 { font-size: 1.1rem; }
 
     p { color: var(--ink-soft); }
 
     .eyebrow {
-      font-size: 0.7rem;
+      font-size: 0.75rem;
       font-weight: 700;
-      letter-spacing: 0.25em;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
       color: var(--gold);
       margin-bottom: 16px;
+      display: inline-block;
     }
 
     .lead {
       font-size: 1.2rem;
       color: var(--ink-soft);
-      max-width: 560px;
+      max-width: 600px;
       line-height: 1.7;
     }
 
-    /* Buttons */
-    .btn-group { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 40px; }
+    /* ========== NAVIGATION ========== */
+    .main-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: var(--nav-height);
+      background: rgba(253, 252, 250, 0.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid transparent;
+      z-index: 1000;
+      transition: all 0.3s var(--transition-smooth);
+    }
+
+    .main-nav.scrolled {
+      border-bottom-color: var(--border);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+    }
+
+    .nav-container {
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: 0 32px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--ink-soft);
+      text-decoration: none;
+      transition: color 0.2s ease;
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--gold);
+      transition: width 0.2s ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--ink);
+    }
+
+    .nav-links a.active::after {
+      width: 100%;
+    }
+
+    .nav-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      background: var(--ink);
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .nav-cta:hover {
+      background: #000;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+
+    .nav-mobile-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      padding: 8px;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    .nav-mobile-toggle span {
+      width: 24px;
+      height: 2px;
+      background: var(--ink);
+      transition: all 0.3s ease;
+    }
+
+    .nav-mobile-menu {
+      display: none;
+      position: fixed;
+      top: var(--nav-height);
+      left: 0;
+      right: 0;
+      background: var(--cream);
+      border-bottom: 1px solid var(--border);
+      padding: 24px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    }
+
+    .nav-mobile-menu.open {
+      display: block;
+    }
+
+    .nav-mobile-menu a {
+      display: block;
+      padding: 16px 0;
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--ink);
+      text-decoration: none;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-mobile-menu a:last-child {
+      border-bottom: none;
+    }
+
+    /* ========== BUTTONS ========== */
+    .btn-group {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
 
     .btn {
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 8px;
       padding: 16px 32px;
       border-radius: 8px;
       text-decoration: none;
       font-weight: 600;
-      font-size: 0.95rem;
-      transition: all 0.3s ease;
+      font-size: 1rem;
+      transition: all 0.3s var(--transition-smooth);
+      border: none;
+      cursor: pointer;
     }
 
     .btn--primary {
@@ -92,13 +262,13 @@
     .btn--primary:hover {
       background: #000;
       transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
     }
 
     .btn--secondary {
       background: white;
       color: var(--ink);
-      border: 1.5px solid var(--border);
+      border: 2px solid var(--border);
     }
 
     .btn--secondary:hover {
@@ -106,12 +276,25 @@
       transform: translateY(-2px);
     }
 
-    /* ========== HERO ========== */
+    .btn--gold {
+      background: var(--gold);
+      color: white;
+    }
+
+    .btn--gold:hover {
+      background: var(--gold-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(184, 152, 108, 0.3);
+    }
+
+    /* ========== HERO SECTION ========== */
     .hero {
-      min-height: 90vh;
+      min-height: 100vh;
       display: flex;
       align-items: center;
-      background: linear-gradient(170deg, var(--warm) 0%, var(--cream) 60%);
+      padding-top: calc(var(--nav-height) + 60px);
+      padding-bottom: 80px;
+      background: linear-gradient(170deg, var(--warm) 0%, var(--cream) 50%);
       position: relative;
       overflow: hidden;
     }
@@ -119,334 +302,597 @@
     .hero::before {
       content: '';
       position: absolute;
-      top: -50%;
-      right: -20%;
-      width: 80%;
-      height: 200%;
-      background: radial-gradient(ellipse, rgba(184, 152, 108, 0.08) 0%, transparent 70%);
+      top: -30%;
+      right: -15%;
+      width: 70%;
+      height: 160%;
+      background: radial-gradient(ellipse, rgba(184, 152, 108, 0.1) 0%, transparent 60%);
       pointer-events: none;
     }
 
     .hero-content {
       position: relative;
       z-index: 1;
-      max-width: 720px;
+      max-width: 800px;
     }
 
-    .hero h1 { margin-bottom: 24px; letter-spacing: -0.02em; }
+    .hero h1 {
+      margin-bottom: 24px;
+      letter-spacing: -0.02em;
+    }
 
-    .hero-stats {
+    .hero .lead {
+      margin-bottom: 40px;
+      font-size: 1.25rem;
+    }
+
+    .hero .btn-group {
+      margin-bottom: 56px;
+    }
+
+    .hero-proof {
       display: flex;
       gap: 48px;
-      margin-top: 56px;
-      padding-top: 40px;
+      padding-top: 48px;
       border-top: 1px solid var(--border);
     }
 
-    .hero-stat {
+    .proof-item {
       display: flex;
       flex-direction: column;
     }
 
-    .hero-stat-number {
-      font-family: 'Libre Baskerville', serif;
-      font-size: 2rem;
-      color: var(--gold-dark);
-      line-height: 1;
-    }
-
-    .hero-stat-label {
-      font-size: 0.85rem;
-      color: var(--ink-muted);
-      margin-top: 8px;
-    }
-
-    /* ========== PROBLEM SECTION ========== */
-    .problem-section {
-      background: var(--cream);
-      padding: 120px 0;
-    }
-
-    .problem-header {
-      text-align: center;
-      max-width: 700px;
-      margin: 0 auto 64px;
-    }
-
-    .problem-header h2 { margin-bottom: 16px; }
-
-    .problem-grid {
-      display: grid;
-      grid-template-columns: 1fr 80px 1fr;
-      gap: 32px;
-      align-items: stretch;
-    }
-
-    .problem-card {
-      background: white;
-      border-radius: 16px;
-      padding: 40px 32px;
-      border: 1px solid var(--border);
-      transition: all 0.3s ease;
-    }
-
-    .problem-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 32px rgba(0,0,0,0.06);
-    }
-
-    .problem-card--before {
-      background: linear-gradient(180deg, #fef8f8 0%, white 100%);
-      border-color: #f0e0e0;
-    }
-
-    .problem-card--after {
-      background: linear-gradient(180deg, #f5faf7 0%, white 100%);
-      border-color: #d8e8dc;
-    }
-
-    .problem-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.5rem;
-      margin-bottom: 20px;
-    }
-
-    .problem-card--before .problem-icon {
-      background: #fef0f0;
-    }
-
-    .problem-card--after .problem-icon {
-      background: var(--success-soft);
-    }
-
-    .problem-card h3 {
-      margin-bottom: 20px;
-      font-size: 1.2rem;
-    }
-
-    .problem-list {
-      list-style: none;
-    }
-
-    .problem-list li {
-      padding: 10px 0;
-      color: var(--ink-soft);
-      font-size: 0.95rem;
-      border-bottom: 1px dashed var(--border);
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .problem-list li:last-child { border-bottom: none; }
-
-    .problem-list li::before {
-      content: '';
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
-
-    .problem-card--before .problem-list li::before { background: #d88; }
-    .problem-card--after .problem-list li::before { background: var(--success); }
-
-    .problem-vs {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .problem-vs span {
-      font-family: 'Libre Baskerville', serif;
-      font-style: italic;
-      color: var(--ink-muted);
-      font-size: 1.1rem;
-    }
-
-    /* ========== 3Rs SECTION ========== */
-    .threeRs-section {
-      background: var(--warm);
-      padding: 120px 0;
-    }
-
-    .threeRs-header {
-      text-align: center;
-      max-width: 640px;
-      margin: 0 auto 64px;
-    }
-
-    .threeRs-header h2 { margin-bottom: 16px; }
-    .threeRs-header .lead { margin: 0 auto; text-align: center; }
-
-    .threeRs-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-    }
-
-    .threeR-card {
-      background: white;
-      border-radius: 16px;
-      padding: 32px 28px;
-      border: 1px solid var(--border);
-      transition: all 0.3s ease;
-    }
-
-    .threeR-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 32px rgba(0,0,0,0.06);
-      border-color: var(--gold);
-    }
-
-    .threeR-header {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      margin-bottom: 20px;
-      padding-bottom: 20px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .threeR-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 12px;
-      background: var(--warm);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.4rem;
-    }
-
-    .threeR-title h3 { margin-bottom: 4px; }
-
-    .threeR-title span {
-      font-size: 0.8rem;
-      color: var(--ink-muted);
-    }
-
-    .threeR-behaviors {
-      list-style: none;
-    }
-
-    .threeR-behaviors li {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 0;
-      border-bottom: 1px dashed var(--border);
-      font-size: 0.9rem;
-    }
-
-    .threeR-behaviors li:last-child { border-bottom: none; }
-
-    .threeR-behaviors .behavior-name { color: var(--ink-soft); }
-
-    .threeR-behaviors .behavior-points {
-      background: var(--warm);
-      padding: 4px 10px;
-      border-radius: 100px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      color: var(--gold-dark);
-    }
-
-    /* ========== STAFF TIME SECTION ========== */
-    .time-section {
-      background: var(--cream);
-      padding: 100px 0;
-    }
-
-    .time-header {
-      text-align: center;
-      max-width: 560px;
-      margin: 0 auto 56px;
-    }
-
-    .time-header h2 { margin-bottom: 16px; }
-
-    .time-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-      max-width: 900px;
-      margin: 0 auto;
-    }
-
-    .time-card {
-      background: white;
-      border-radius: 16px;
-      padding: 36px 28px;
-      text-align: center;
-      border: 1px solid var(--border);
-      transition: all 0.3s ease;
-    }
-
-    .time-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 32px rgba(0,0,0,0.06);
-    }
-
-    .time-duration {
+    .proof-number {
       font-family: 'Libre Baskerville', serif;
       font-size: 2.5rem;
       color: var(--gold-dark);
       line-height: 1;
     }
 
-    .time-unit {
-      font-size: 1rem;
-      color: var(--ink-muted);
-      margin-top: 4px;
-    }
-
-    .time-frequency {
-      font-weight: 600;
-      color: var(--ink);
-      margin-top: 16px;
-      font-size: 1rem;
-    }
-
-    .time-desc {
+    .proof-label {
       font-size: 0.9rem;
       color: var(--ink-muted);
       margin-top: 8px;
     }
 
+    /* ========== INSIGHT SECTION ========== */
+    .insight-section {
+      background: var(--cream);
+      position: relative;
+    }
+
+    .insight-header {
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto 64px;
+    }
+
+    .insight-header h2 {
+      margin-bottom: 20px;
+    }
+
+    .insight-comparison {
+      display: grid;
+      grid-template-columns: 1fr 60px 1fr;
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .comparison-card {
+      background: white;
+      border-radius: 20px;
+      padding: 40px 36px;
+      border: 2px solid var(--border);
+      transition: all 0.3s ease;
+    }
+
+    .comparison-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.06);
+    }
+
+    .comparison-card--before {
+      background: linear-gradient(180deg, var(--danger-soft) 0%, white 100%);
+      border-color: #f0e0e0;
+    }
+
+    .comparison-card--after {
+      background: linear-gradient(180deg, var(--success-soft) 0%, white 100%);
+      border-color: #c8e0d0;
+    }
+
+    .comparison-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 24px;
+    }
+
+    .comparison-card--before .comparison-icon {
+      background: #feeaea;
+    }
+
+    .comparison-card--after .comparison-icon {
+      background: #e0f5e8;
+    }
+
+    .comparison-card h3 {
+      margin-bottom: 20px;
+      font-size: 1.3rem;
+    }
+
+    .comparison-list {
+      list-style: none;
+    }
+
+    .comparison-list li {
+      padding: 12px 0;
+      color: var(--ink-soft);
+      font-size: 1rem;
+      border-bottom: 1px dashed var(--border);
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .comparison-list li:last-child {
+      border-bottom: none;
+    }
+
+    .comparison-list li::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 8px;
+    }
+
+    .comparison-card--before .comparison-list li::before {
+      background: var(--danger);
+    }
+
+    .comparison-card--after .comparison-list li::before {
+      background: var(--success);
+    }
+
+    .comparison-vs {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .comparison-vs span {
+      font-family: 'Libre Baskerville', serif;
+      font-style: italic;
+      color: var(--ink-muted);
+      font-size: 1.2rem;
+    }
+
+    /* ========== FRAMEWORK SECTION (3Rs) ========== */
+    .framework-section {
+      background: var(--warm);
+    }
+
+    .framework-header {
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto 64px;
+    }
+
+    .framework-header h2 {
+      margin-bottom: 16px;
+    }
+
+    .framework-tagline {
+      font-family: 'Libre Baskerville', serif;
+      font-style: italic;
+      font-size: 1.1rem;
+      color: var(--gold-dark);
+      margin-bottom: 16px;
+    }
+
+    .framework-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
+
+    .framework-card {
+      background: white;
+      border-radius: 20px;
+      padding: 36px 32px;
+      border: 1px solid var(--border);
+      transition: all 0.3s ease;
+    }
+
+    .framework-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.08);
+      border-color: var(--gold);
+    }
+
+    .framework-card-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .framework-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      background: var(--warm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+    }
+
+    .framework-title h3 {
+      margin-bottom: 4px;
+    }
+
+    .framework-title span {
+      font-size: 0.85rem;
+      color: var(--ink-muted);
+    }
+
+    .framework-behaviors {
+      list-style: none;
+    }
+
+    .framework-behaviors li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px dashed var(--border);
+      font-size: 0.95rem;
+    }
+
+    .framework-behaviors li:last-child {
+      border-bottom: none;
+    }
+
+    .behavior-name {
+      color: var(--ink-soft);
+    }
+
+    .behavior-points {
+      background: var(--warm);
+      padding: 4px 12px;
+      border-radius: 100px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--gold-dark);
+    }
+
+    .framework-cta {
+      text-align: center;
+      margin-top: 48px;
+      padding-top: 48px;
+      border-top: 1px solid var(--border);
+    }
+
+    .framework-cta p {
+      font-family: 'Libre Baskerville', serif;
+      font-style: italic;
+      font-size: 1.1rem;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+
+    /* ========== DOMAINS SECTION ========== */
+    .domains-section {
+      background: var(--cream);
+    }
+
+    .domains-header {
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto 64px;
+    }
+
+    .domains-header h2 {
+      margin-bottom: 16px;
+    }
+
+    .domains-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      margin-bottom: 48px;
+    }
+
+    .domain-card {
+      background: white;
+      border-radius: 20px;
+      padding: 32px 24px;
+      border: 1px solid var(--border);
+      text-align: center;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .domain-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.08);
+      border-color: var(--gold);
+    }
+
+    .domain-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 20px;
+      background: var(--warm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      margin: 0 auto 20px;
+      transition: all 0.3s ease;
+    }
+
+    .domain-card:hover .domain-icon {
+      background: var(--gold);
+      transform: scale(1.1);
+    }
+
+    .domain-card h3 {
+      font-size: 1.1rem;
+      margin-bottom: 8px;
+    }
+
+    .domain-card p {
+      font-size: 0.9rem;
+      color: var(--ink-muted);
+    }
+
+    .domains-matrix {
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .matrix-row {
+      display: grid;
+      grid-template-columns: 180px repeat(4, 1fr);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .matrix-row:last-child {
+      border-bottom: none;
+    }
+
+    .matrix-cell {
+      padding: 20px 16px;
+      font-size: 0.9rem;
+      color: var(--ink-soft);
+      border-right: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .matrix-cell:last-child {
+      border-right: none;
+    }
+
+    .matrix-row--header {
+      background: var(--warm);
+    }
+
+    .matrix-row--header .matrix-cell {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+    }
+
+    .matrix-label {
+      background: var(--warm);
+      font-family: 'Libre Baskerville', serif;
+      font-size: 0.95rem;
+      color: var(--ink);
+      text-align: left;
+      display: flex;
+      align-items: center;
+    }
+
+    /* ========== PLATFORM SECTION ========== */
+    .platform-section {
+      background: var(--ink);
+      color: white;
+    }
+
+    .platform-header {
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto 64px;
+    }
+
+    .platform-header .eyebrow {
+      color: var(--gold);
+    }
+
+    .platform-header h2 {
+      color: white;
+      margin-bottom: 16px;
+    }
+
+    .platform-header p {
+      color: rgba(255,255,255,0.7);
+      font-size: 1.15rem;
+    }
+
+    .platform-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 32px;
+      margin-bottom: 64px;
+    }
+
+    .platform-card {
+      background: rgba(255,255,255,0.05);
+      border-radius: 20px;
+      padding: 36px;
+      border: 1px solid rgba(255,255,255,0.1);
+      transition: all 0.3s ease;
+    }
+
+    .platform-card:hover {
+      background: rgba(255,255,255,0.08);
+      transform: translateY(-4px);
+      border-color: rgba(255,255,255,0.2);
+    }
+
+    .platform-badge {
+      display: inline-block;
+      padding: 6px 14px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 100px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--gold);
+      margin-bottom: 20px;
+    }
+
+    .platform-card h3 {
+      color: white;
+      font-size: 1.4rem;
+      margin-bottom: 12px;
+    }
+
+    .platform-card > p {
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 24px;
+    }
+
+    .platform-features {
+      list-style: none;
+      margin-bottom: 28px;
+    }
+
+    .platform-features li {
+      padding: 10px 0;
+      color: rgba(255,255,255,0.8);
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .platform-features li::before {
+      content: '>';
+      color: var(--gold);
+      font-weight: 700;
+    }
+
+    .platform-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      background: white;
+      color: var(--ink);
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+    }
+
+    .platform-cta:hover {
+      background: var(--cream);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(255,255,255,0.15);
+    }
+
+    .platform-capabilities {
+      background: rgba(255,255,255,0.05);
+      border-radius: 20px;
+      padding: 40px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .capabilities-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 28px;
+      text-align: center;
+    }
+
+    .capabilities-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+
+    .capability-item {
+      text-align: center;
+    }
+
+    .capability-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin: 0 auto 16px;
+    }
+
+    .capability-item h4 {
+      color: white;
+      font-size: 1rem;
+      margin-bottom: 8px;
+    }
+
+    .capability-item p {
+      color: rgba(255,255,255,0.5);
+      font-size: 0.85rem;
+    }
+
     /* ========== HOUSES SECTION ========== */
     .houses-section {
-      background: var(--ink);
-      padding: 120px 0;
-      color: white;
+      background: var(--warm);
     }
 
     .houses-header {
       text-align: center;
-      max-width: 640px;
+      max-width: 700px;
       margin: 0 auto 64px;
     }
 
-    .houses-header .eyebrow { color: var(--gold); }
-    .houses-header h2 { color: white; margin-bottom: 16px; }
-    .houses-header p { color: rgba(255,255,255,0.7); }
+    .houses-header h2 {
+      margin-bottom: 16px;
+    }
 
     .houses-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 20px;
+      gap: 24px;
     }
 
     .house-card {
-      background: rgba(255,255,255,0.05);
-      border-radius: 16px;
-      padding: 28px 24px;
-      border: 1px solid rgba(255,255,255,0.1);
+      background: white;
+      border-radius: 20px;
+      padding: 32px 24px;
+      border: 1px solid var(--border);
+      text-align: center;
       transition: all 0.3s ease;
       position: relative;
       overflow: hidden;
@@ -467,13 +913,13 @@
     .house-card--aishah::before { background: var(--house-aishah); }
 
     .house-card:hover {
-      transform: translateY(-4px);
-      background: rgba(255,255,255,0.08);
+      transform: translateY(-6px);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.08);
     }
 
     .house-virtue {
       font-size: 0.7rem;
-      font-weight: 600;
+      font-weight: 700;
       letter-spacing: 0.15em;
       text-transform: uppercase;
       color: var(--gold);
@@ -481,59 +927,83 @@
     }
 
     .house-card h3 {
-      color: white;
-      font-size: 1.1rem;
+      font-size: 1.15rem;
       margin-bottom: 12px;
     }
 
     .house-desc {
       font-size: 0.9rem;
-      color: rgba(255,255,255,0.6);
+      color: var(--ink-muted);
       line-height: 1.6;
+    }
+
+    .houses-stat {
+      text-align: center;
+      margin-top: 48px;
+      padding: 32px;
+      background: white;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+    }
+
+    .houses-stat-number {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 3rem;
+      color: var(--success);
+      line-height: 1;
+    }
+
+    .houses-stat-label {
+      font-size: 1rem;
+      color: var(--ink-soft);
+      margin-top: 12px;
     }
 
     .houses-note {
       text-align: center;
-      margin-top: 40px;
-      font-size: 0.85rem;
-      color: rgba(255,255,255,0.5);
+      margin-top: 32px;
+      font-size: 0.9rem;
+      color: var(--ink-muted);
     }
 
     /* ========== RESULTS SECTION ========== */
     .results-section {
-      background: var(--warm);
-      padding: 120px 0;
+      background: var(--cream);
     }
 
     .results-header {
       text-align: center;
-      max-width: 640px;
+      max-width: 700px;
       margin: 0 auto 64px;
     }
 
-    .results-header h2 { margin-bottom: 16px; }
+    .results-header h2 {
+      margin-bottom: 16px;
+    }
 
     .results-timeline {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 32px;
       position: relative;
+      margin-bottom: 64px;
     }
 
     .results-timeline::before {
       content: '';
       position: absolute;
-      top: 40px;
+      top: 50px;
       left: 16.67%;
       right: 16.67%;
-      height: 2px;
+      height: 3px;
       background: linear-gradient(90deg, var(--gold) 0%, var(--success) 100%);
+      border-radius: 2px;
     }
 
     .result-card {
       background: white;
-      border-radius: 16px;
-      padding: 32px 28px;
+      border-radius: 20px;
+      padding: 36px 28px;
       border: 1px solid var(--border);
       text-align: center;
       position: relative;
@@ -541,29 +1011,32 @@
 
     .result-phase {
       position: absolute;
-      top: -16px;
+      top: -18px;
       left: 50%;
       transform: translateX(-50%);
       background: var(--gold);
       color: white;
-      padding: 8px 20px;
+      padding: 10px 24px;
       border-radius: 100px;
-      font-size: 0.75rem;
-      font-weight: 600;
+      font-size: 0.8rem;
+      font-weight: 700;
       letter-spacing: 0.08em;
       text-transform: uppercase;
+      white-space: nowrap;
     }
 
     .result-metric {
       font-family: 'Libre Baskerville', serif;
-      font-size: 2.2rem;
+      font-size: 2.8rem;
       color: var(--success);
-      margin: 24px 0 8px;
+      margin: 32px 0 12px;
+      line-height: 1;
     }
 
     .result-label {
       font-weight: 600;
       color: var(--ink);
+      font-size: 1.1rem;
       margin-bottom: 12px;
     }
 
@@ -572,177 +1045,156 @@
       color: var(--ink-muted);
     }
 
-    /* ========== APPS SECTION ========== */
-    .apps-section {
-      background: var(--cream);
-      padding: 100px 0;
+    .results-board {
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      border: 1px solid var(--border);
     }
 
-    .apps-header {
+    .results-board-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
       text-align: center;
-      max-width: 560px;
-      margin: 0 auto 56px;
+      margin-bottom: 32px;
     }
 
-    .apps-header h2 { margin-bottom: 16px; }
-
-    .apps-grid {
+    .results-metrics {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 24px;
     }
 
-    .app-card {
+    .metric-item {
+      text-align: center;
+      padding: 24px 16px;
+      border-radius: 12px;
+      background: var(--warm);
+    }
+
+    .metric-value {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 1.8rem;
+      color: var(--ink);
+      line-height: 1;
+    }
+
+    .metric-label {
+      font-size: 0.85rem;
+      color: var(--ink-muted);
+      margin-top: 8px;
+    }
+
+    /* ========== PARTNERSHIP SECTION ========== */
+    .partnership-section {
+      background: linear-gradient(180deg, var(--warm) 0%, var(--cream) 100%);
+    }
+
+    .partnership-header {
+      text-align: center;
+      max-width: 600px;
+      margin: 0 auto 64px;
+    }
+
+    .partnership-header h2 {
+      margin-bottom: 16px;
+    }
+
+    .partnership-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 32px;
+      max-width: 900px;
+      margin: 0 auto 48px;
+    }
+
+    .partnership-card {
       background: white;
-      border-radius: 16px;
-      padding: 36px 32px;
+      border-radius: 20px;
+      padding: 36px;
       border: 1px solid var(--border);
-      display: flex;
-      flex-direction: column;
       transition: all 0.3s ease;
     }
 
-    .app-card:hover {
+    .partnership-card:hover {
       transform: translateY(-4px);
-      box-shadow: 0 12px 32px rgba(0,0,0,0.06);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.06);
     }
 
-    .app-card--featured {
+    .partnership-card--featured {
       border-color: var(--gold);
-      box-shadow: 0 4px 24px rgba(184, 152, 108, 0.12);
+      box-shadow: 0 8px 32px rgba(184, 152, 108, 0.15);
     }
 
-    .app-badge {
-      display: inline-block;
-      padding: 6px 14px;
-      background: var(--warm);
-      border-radius: 100px;
+    .partnership-tier {
       font-size: 0.75rem;
-      font-weight: 600;
-      color: var(--ink-muted);
-      margin-bottom: 20px;
-      width: fit-content;
-    }
-
-    .app-card h3 {
-      font-size: 1.3rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
       margin-bottom: 12px;
     }
 
-    .app-desc {
-      font-size: 0.95rem;
-      color: var(--ink-soft);
+    .partnership-card h3 {
+      font-size: 1.3rem;
+      margin-bottom: 8px;
+    }
+
+    .partnership-card > p {
+      font-style: italic;
+      color: var(--ink-muted);
       margin-bottom: 24px;
     }
 
-    .app-features {
+    .partnership-price {
+      padding: 20px;
+      background: var(--warm);
+      border-radius: 12px;
+      margin-bottom: 24px;
+    }
+
+    .partnership-price-main {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 2rem;
+      color: var(--ink);
+    }
+
+    .partnership-price-sub {
+      font-size: 0.85rem;
+      color: var(--ink-muted);
+      margin-top: 4px;
+    }
+
+    .partnership-list {
       list-style: none;
-      margin-bottom: 24px;
-      flex: 1;
     }
 
-    .app-features li {
-      padding: 8px 0;
+    .partnership-list li {
+      padding: 10px 0;
       font-size: 0.9rem;
       color: var(--ink-soft);
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       gap: 12px;
     }
 
-    .app-features li::before {
+    .partnership-list li::before {
       content: '>';
       color: var(--gold);
-      font-weight: 600;
+      font-weight: 700;
     }
 
-    .app-cta {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 14px 24px;
-      background: var(--ink);
-      color: white;
-      text-decoration: none;
-      border-radius: 8px;
-      font-weight: 500;
-      font-size: 0.9rem;
-      transition: all 0.3s ease;
-      width: fit-content;
-    }
-
-    .app-cta:hover {
-      background: #000;
-      transform: translateY(-2px);
-    }
-
-    /* ========== CONTINUITY SECTION ========== */
-    .continuity-section {
-      background: var(--warm);
-      padding: 100px 0;
-    }
-
-    .continuity-header {
+    .partnership-cta {
       text-align: center;
-      max-width: 560px;
-      margin: 0 auto 56px;
     }
 
-    .continuity-header h2 { margin-bottom: 16px; }
-
-    .continuity-table {
-      background: white;
-      border-radius: 16px;
-      overflow: hidden;
-      border: 1px solid var(--border);
-      max-width: 900px;
-      margin: 0 auto;
-    }
-
-    .continuity-row {
-      display: grid;
-      grid-template-columns: 160px repeat(3, 1fr);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .continuity-row:last-child { border-bottom: none; }
-
-    .continuity-row--header {
-      background: var(--warm);
-    }
-
-    .continuity-cell {
-      padding: 20px 24px;
-      font-size: 0.9rem;
+    .partnership-cta p {
+      font-size: 1rem;
       color: var(--ink-soft);
-      border-right: 1px solid var(--border);
-    }
-
-    .continuity-cell:last-child { border-right: none; }
-
-    .continuity-row--header .continuity-cell {
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--ink-muted);
-      text-align: center;
-    }
-
-    .continuity-label {
-      font-family: 'Libre Baskerville', serif;
-      font-size: 0.95rem;
-      color: var(--ink);
-      display: flex;
-      align-items: center;
-      background: var(--warm);
-    }
-
-    .continuity-note {
-      text-align: center;
-      margin-top: 32px;
-      font-size: 0.9rem;
-      color: var(--ink-muted);
+      margin-bottom: 24px;
     }
 
     /* ========== CTA SECTION ========== */
@@ -759,8 +1211,9 @@
 
     .cta-section p {
       color: rgba(255,255,255,0.7);
-      max-width: 480px;
-      margin: 0 auto;
+      max-width: 520px;
+      margin: 0 auto 40px;
+      font-size: 1.15rem;
     }
 
     .cta-section .btn-group {
@@ -788,122 +1241,190 @@
     }
 
     /* ========== RESPONSIVE ========== */
-    @media (max-width: 900px) {
-      .container { padding: 0 24px; }
-      section { padding: 80px 0; }
+    @media (max-width: 1024px) {
+      .nav-links { display: none; }
+      .nav-cta { display: none; }
+      .nav-mobile-toggle { display: flex; }
 
-      .hero-stats { flex-direction: column; gap: 24px; }
-      .problem-grid { grid-template-columns: 1fr; }
-      .problem-vs { display: none; }
-      .threeRs-grid { grid-template-columns: 1fr; }
-      .time-grid { grid-template-columns: 1fr; }
+      .domains-grid { grid-template-columns: repeat(2, 1fr); }
+      .capabilities-grid { grid-template-columns: repeat(2, 1fr); }
+      .results-metrics { grid-template-columns: repeat(2, 1fr); }
+
+      .matrix-row { grid-template-columns: 140px repeat(4, 1fr); }
+      .matrix-cell { padding: 16px 12px; font-size: 0.8rem; }
+    }
+
+    @media (max-width: 900px) {
+      :root {
+        --section-padding: 80px;
+      }
+
+      .container { padding: 0 24px; }
+
+      .hero-proof { flex-direction: column; gap: 24px; }
+      .insight-comparison { grid-template-columns: 1fr; gap: 24px; }
+      .comparison-vs { display: none; }
+      .framework-grid { grid-template-columns: 1fr; }
+      .domains-grid { grid-template-columns: 1fr; }
+      .platform-grid { grid-template-columns: 1fr; }
       .houses-grid { grid-template-columns: repeat(2, 1fr); }
-      .results-timeline { grid-template-columns: 1fr; }
+      .results-timeline { grid-template-columns: 1fr; gap: 48px; }
       .results-timeline::before { display: none; }
-      .apps-grid { grid-template-columns: 1fr; }
-      .continuity-row { grid-template-columns: 1fr; }
-      .continuity-cell { border-right: none; border-bottom: 1px solid var(--border); }
-      .continuity-row--header { display: none; }
-      .continuity-label { padding: 16px 24px; background: var(--gold); color: white; }
+      .partnership-grid { grid-template-columns: 1fr; }
+      .capabilities-grid { grid-template-columns: 1fr; }
+      .results-metrics { grid-template-columns: 1fr; }
+
+      .domains-matrix { display: none; }
     }
 
     @media (max-width: 600px) {
       h1 { font-size: 1.8rem; }
       h2 { font-size: 1.5rem; }
+
       .houses-grid { grid-template-columns: 1fr; }
       .btn-group { flex-direction: column; }
-      .btn { width: 100%; justify-content: center; }
+      .btn { width: 100%; }
+
+      .result-phase { font-size: 0.7rem; padding: 8px 16px; }
+    }
+
+    /* ========== ANIMATIONS ========== */
+    @media (prefers-reduced-motion: no-preference) {
+      .fade-in {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.6s ease, transform 0.6s ease;
+      }
+
+      .fade-in.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
   </style>
 </head>
 <body>
 
-  <!-- HERO -->
-  <section class="hero">
+  <!-- NAVIGATION -->
+  <nav class="main-nav" id="main-nav">
+    <div class="nav-container">
+      <a href="#" class="nav-logo">League of Champions</a>
+      <ul class="nav-links">
+        <li><a href="#insight">Insight</a></li>
+        <li><a href="#framework">Framework</a></li>
+        <li><a href="#domains">Domains</a></li>
+        <li><a href="#platform">Platform</a></li>
+        <li><a href="#houses">Houses</a></li>
+        <li><a href="#results">Results</a></li>
+        <li><a href="#partnership">Partnership</a></li>
+      </ul>
+      <a href="#platform" class="nav-cta">See It In Action</a>
+      <button class="nav-mobile-toggle" id="nav-toggle" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="nav-mobile-menu" id="nav-mobile">
+    <a href="#insight">The Insight</a>
+    <a href="#framework">The Framework</a>
+    <a href="#domains">The Domains</a>
+    <a href="#platform">The Platform</a>
+    <a href="#houses">The Houses</a>
+    <a href="#results">Results</a>
+    <a href="#partnership">Partnership</a>
+  </div>
+
+  <!-- HERO SECTION -->
+  <section class="hero" id="hero">
     <div class="container">
       <div class="hero-content">
         <p class="eyebrow">League of Champions</p>
-        <h1>Culture That Students Can Feel</h1>
+        <h1>The Only Islamic Character System That Makes Behavior Measurable</h1>
         <p class="lead">
-          A unified tarbiyah framework for Islamic schools. One shared language for praise, correction, and growth — used daily by every adult in your building.
+          Operationalize the 3Rs through specific daily behaviors. Track what works. Prove the impact to your board, parents, and community.
         </p>
         <div class="btn-group">
-          <a href="#framework" class="btn btn--primary">See How It Works</a>
-          <a href="partnership.html" class="btn btn--secondary">View Partnership</a>
+          <a href="#platform" class="btn btn--primary">See It In Action</a>
+          <a href="#partnership" class="btn btn--secondary">View Partnership Options</a>
         </div>
-        <div class="hero-stats">
-          <div class="hero-stat">
-            <span class="hero-stat-number">70%</span>
-            <span class="hero-stat-label">Staff participation by Month 1</span>
+        <div class="hero-proof">
+          <div class="proof-item">
+            <span class="proof-number">70%+</span>
+            <span class="proof-label">Staff participation in Month 1</span>
           </div>
-          <div class="hero-stat">
-            <span class="hero-stat-number">3x</span>
-            <span class="hero-stat-label">More positive recognition</span>
+          <div class="proof-item">
+            <span class="proof-number">3x</span>
+            <span class="proof-label">More positive recognition</span>
           </div>
-          <div class="hero-stat">
-            <span class="hero-stat-number">15%</span>
-            <span class="hero-stat-label">Fewer discipline referrals</span>
+          <div class="proof-item">
+            <span class="proof-number">15%</span>
+            <span class="proof-label">Fewer discipline referrals</span>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- PROBLEM -->
-  <section id="problem" class="problem-section">
+  <!-- INSIGHT SECTION -->
+  <section class="insight-section" id="insight">
     <div class="container">
-      <div class="problem-header">
-        <p class="eyebrow">The Challenge</p>
-        <h2>Most Schools Have Activities. Not Systems.</h2>
+      <div class="insight-header">
+        <p class="eyebrow">The Insight</p>
+        <h2>Most Schools Build Culture in Assemblies. We Build It in Hallways.</h2>
+        <p class="lead">Islamic schools excel at Islamic studies but struggle with consistent character development across all spaces.</p>
       </div>
 
-      <div class="problem-grid">
-        <div class="problem-card problem-card--before">
-          <div class="problem-icon">???</div>
-          <h3>Fragmented Culture</h3>
-          <ul class="problem-list">
-            <li>Expectations reset every classroom</li>
-            <li>Correction feels like enforcement</li>
-            <li>Character programs stay isolated</li>
-            <li>Students don't know what "good" looks like</li>
+      <div class="insight-comparison">
+        <div class="comparison-card comparison-card--before">
+          <div class="comparison-icon">?</div>
+          <h3>Traditional Approach</h3>
+          <ul class="comparison-list">
+            <li>Values remain abstract and aspirational</li>
+            <li>Expectations vary teacher to teacher</li>
+            <li>Impact is impossible to measure</li>
+            <li>Initiatives fade by November</li>
           </ul>
         </div>
 
-        <div class="problem-vs"><span>vs</span></div>
+        <div class="comparison-vs"><span>vs</span></div>
 
-        <div class="problem-card problem-card--after">
-          <div class="problem-icon">???</div>
-          <h3>Intentional Culture</h3>
-          <ul class="problem-list">
-            <li>One framework across all spaces</li>
-            <li>Correction becomes coaching</li>
-            <li>Formation reinforced daily</li>
-            <li>A shared language everyone speaks</li>
+        <div class="comparison-card comparison-card--after">
+          <div class="comparison-icon">?</div>
+          <h3>League of Champions</h3>
+          <ul class="comparison-list">
+            <li>Behaviors are specific and observable</li>
+            <li>Consistent language everywhere</li>
+            <li>Data-driven insights for leadership</li>
+            <li>Systems that survive the semester</li>
           </ul>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- THE 3Rs -->
-  <section id="framework" class="threeRs-section">
+  <!-- FRAMEWORK SECTION (3Rs) -->
+  <section class="framework-section" id="framework">
     <div class="container">
-      <div class="threeRs-header">
+      <div class="framework-header">
         <p class="eyebrow">The Framework</p>
         <h2>The 3Rs: One Language for Growth</h2>
-        <p class="lead">Every interaction becomes formative when adults share the same vocabulary for praise and coaching.</p>
+        <p class="framework-tagline">One Framework. One Language. Everywhere.</p>
+        <p class="lead">Every interaction becomes formative when adults share the same vocabulary for praise, correction, and coaching.</p>
       </div>
 
-      <div class="threeRs-grid">
-        <div class="threeR-card">
-          <div class="threeR-header">
-            <div class="threeR-icon">???</div>
-            <div class="threeR-title">
+      <div class="framework-grid">
+        <div class="framework-card">
+          <div class="framework-card-header">
+            <div class="framework-icon">?</div>
+            <div class="framework-title">
               <h3>Respect</h3>
               <span>Adab</span>
             </div>
           </div>
-          <ul class="threeR-behaviors">
+          <ul class="framework-behaviors">
             <li>
               <span class="behavior-name">Polite language & greetings</span>
               <span class="behavior-points">+5</span>
@@ -923,15 +1444,15 @@
           </ul>
         </div>
 
-        <div class="threeR-card">
-          <div class="threeR-header">
-            <div class="threeR-icon">???</div>
-            <div class="threeR-title">
+        <div class="framework-card">
+          <div class="framework-card-header">
+            <div class="framework-icon">?</div>
+            <div class="framework-title">
               <h3>Responsibility</h3>
               <span>Amanah</span>
             </div>
           </div>
-          <ul class="threeR-behaviors">
+          <ul class="framework-behaviors">
             <li>
               <span class="behavior-name">On-time arrival</span>
               <span class="behavior-points">+5</span>
@@ -951,15 +1472,15 @@
           </ul>
         </div>
 
-        <div class="threeR-card">
-          <div class="threeR-header">
-            <div class="threeR-icon">???</div>
-            <div class="threeR-title">
+        <div class="framework-card">
+          <div class="framework-card-header">
+            <div class="framework-icon">?</div>
+            <div class="framework-title">
               <h3>Righteousness</h3>
               <span>Taqwa</span>
             </div>
           </div>
-          <ul class="threeR-behaviors">
+          <ul class="framework-behaviors">
             <li>
               <span class="behavior-name">Honesty (even when hard)</span>
               <span class="behavior-points">+15</span>
@@ -979,48 +1500,150 @@
           </ul>
         </div>
       </div>
+
+      <div class="framework-cta">
+        <p>Applied across four high-impact spaces where culture actually lives...</p>
+      </div>
     </div>
   </section>
 
-  <!-- STAFF TIME -->
-  <section class="time-section">
+  <!-- DOMAINS SECTION -->
+  <section class="domains-section" id="domains">
     <div class="container">
-      <div class="time-header">
-        <p class="eyebrow">Staff Commitment</p>
-        <h2>Designed for Busy Educators</h2>
-        <p class="lead">No new meetings. No curriculum changes. Just a shared lens for what you already do.</p>
+      <div class="domains-header">
+        <p class="eyebrow">The Domains</p>
+        <h2>Where Culture Actually Lives</h2>
+        <p class="lead">Character shows up in specific spaces. We track behavior where it matters most.</p>
       </div>
 
-      <div class="time-grid">
-        <div class="time-card">
-          <div class="time-duration">2-3</div>
-          <div class="time-unit">minutes</div>
-          <div class="time-frequency">Daily</div>
-          <div class="time-desc">Quick point awards during class</div>
+      <div class="domains-grid">
+        <div class="domain-card">
+          <div class="domain-icon">?</div>
+          <h3>Prayer Space</h3>
+          <p>Training inner discipline</p>
         </div>
-        <div class="time-card">
-          <div class="time-duration">5-10</div>
-          <div class="time-unit">minutes</div>
-          <div class="time-frequency">Weekly</div>
-          <div class="time-desc">Review student progress</div>
+        <div class="domain-card">
+          <div class="domain-icon">?</div>
+          <h3>Hallways & Transitions</h3>
+          <p>Order without supervision</p>
         </div>
-        <div class="time-card">
-          <div class="time-duration">15-20</div>
-          <div class="time-unit">minutes</div>
-          <div class="time-frequency">Monthly</div>
-          <div class="time-desc">Team calibration check-in</div>
+        <div class="domain-card">
+          <div class="domain-icon">?</div>
+          <h3>Lunch & Unstructured</h3>
+          <p>Social character under pressure</p>
+        </div>
+        <div class="domain-card">
+          <div class="domain-icon">?</div>
+          <h3>Classroom & Learning</h3>
+          <p>Character that sustains learning</p>
+        </div>
+      </div>
+
+      <div class="domains-matrix">
+        <div class="matrix-row matrix-row--header">
+          <div class="matrix-cell"></div>
+          <div class="matrix-cell">Prayer Space</div>
+          <div class="matrix-cell">Hallways</div>
+          <div class="matrix-cell">Lunch</div>
+          <div class="matrix-cell">Classroom</div>
+        </div>
+        <div class="matrix-row">
+          <div class="matrix-cell matrix-label">Respect (Adab)</div>
+          <div class="matrix-cell">Quiet entry, space for others</div>
+          <div class="matrix-cell">Greetings, making room</div>
+          <div class="matrix-cell">Including others, table manners</div>
+          <div class="matrix-cell">Listening, raising hands</div>
+        </div>
+        <div class="matrix-row">
+          <div class="matrix-cell matrix-label">Responsibility (Amanah)</div>
+          <div class="matrix-cell">Wudu care, arriving early</div>
+          <div class="matrix-cell">Moving efficiently, timing</div>
+          <div class="matrix-cell">Cleaning up, returning items</div>
+          <div class="matrix-cell">Preparedness, homework</div>
+        </div>
+        <div class="matrix-row">
+          <div class="matrix-cell matrix-label">Righteousness (Taqwa)</div>
+          <div class="matrix-cell">Khushu, sincere intention</div>
+          <div class="matrix-cell">Honesty when unseen</div>
+          <div class="matrix-cell">Fair sharing, truthfulness</div>
+          <div class="matrix-cell">Academic integrity</div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- HOUSES -->
-  <section class="houses-section">
+  <!-- PLATFORM SECTION -->
+  <section class="platform-section" id="platform">
+    <div class="container">
+      <div class="platform-header">
+        <p class="eyebrow">The Platform</p>
+        <h2>We Don't Just Build Culture. We Prove It.</h2>
+        <p>Connected apps that make character visible to students, parents, staff, and your board.</p>
+      </div>
+
+      <div class="platform-grid">
+        <div class="platform-card">
+          <span class="platform-badge">Public Display</span>
+          <h3>Leaderboard</h3>
+          <p>House standings and recognitions visible to the whole school. Culture stays public and celebrated.</p>
+          <ul class="platform-features">
+            <li>Live house rankings</li>
+            <li>Hall of Fame recognition</li>
+            <li>House MVP highlights</li>
+            <li>Display-optimized for lobbies</li>
+          </ul>
+          <a href="https://leagueofchampions-leaderboard.vercel.app/" class="platform-cta" target="_blank">View Live Demo ?</a>
+        </div>
+
+        <div class="platform-card">
+          <span class="platform-badge">Staff + Students + Parents</span>
+          <h3>Portal</h3>
+          <p>One place to track growth, award points, and keep the 3Rs consistent across everyone.</p>
+          <ul class="platform-features">
+            <li>Quick point awarding (2-3 min/day)</li>
+            <li>Student progress & milestones</li>
+            <li>Parent visibility dashboard</li>
+            <li>Admin analytics & configuration</li>
+          </ul>
+          <a href="https://leagueofchampions-portal.vercel.app/" class="platform-cta" target="_blank">View Live Demo ?</a>
+        </div>
+      </div>
+
+      <div class="platform-capabilities">
+        <p class="capabilities-title">Board-Ready Measurement Capabilities</p>
+        <div class="capabilities-grid">
+          <div class="capability-item">
+            <div class="capability-icon">?</div>
+            <h4>Staff Participation</h4>
+            <p>Track who's using the system daily</p>
+          </div>
+          <div class="capability-item">
+            <div class="capability-icon">?</div>
+            <h4>Point Economy Health</h4>
+            <p>Balanced recognition across 3Rs</p>
+          </div>
+          <div class="capability-item">
+            <div class="capability-icon">?</div>
+            <h4>Bias Detection</h4>
+            <p>Fair distribution across students</p>
+          </div>
+          <div class="capability-item">
+            <div class="capability-icon">?</div>
+            <h4>Category Mix</h4>
+            <p>Coverage across all domains</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOUSES SECTION -->
+  <section class="houses-section" id="houses">
     <div class="container">
       <div class="houses-header">
-        <p class="eyebrow">The House System</p>
+        <p class="eyebrow">The Houses</p>
         <h2>Belonging That Builds Character</h2>
-        <p>Every student belongs to a house. Every house embodies a virtue rooted in our tradition.</p>
+        <p class="lead">Every student belongs to a house. Every house embodies a virtue rooted in our tradition.</p>
       </div>
 
       <div class="houses-grid">
@@ -1046,17 +1669,22 @@
         </div>
       </div>
 
-      <p class="houses-note">House names can be adapted to fit your school's tradition. The structure remains the same.</p>
+      <div class="houses-stat">
+        <div class="houses-stat-number">89%</div>
+        <div class="houses-stat-label">of students can name their house virtue and what it means</div>
+      </div>
+
+      <p class="houses-note">House names adapt to your school's tradition. The structure remains the same.</p>
     </div>
   </section>
 
-  <!-- RESULTS TIMELINE -->
-  <section class="results-section">
+  <!-- RESULTS SECTION -->
+  <section class="results-section" id="results">
     <div class="container">
       <div class="results-header">
-        <p class="eyebrow">Measurable Impact</p>
-        <h2>What Schools Experience</h2>
-        <p class="lead">Defendable outcomes that boards and parents can see.</p>
+        <p class="eyebrow">Results</p>
+        <h2>Measurable Impact You Can Defend</h2>
+        <p class="lead">Outcomes that boards and parents can see. Progress you can prove.</p>
       </div>
 
       <div class="results-timeline">
@@ -1075,96 +1703,180 @@
         <div class="result-card">
           <div class="result-phase">Year End</div>
           <div class="result-metric">80%+</div>
-          <div class="result-label">House Awareness</div>
+          <div class="result-label">Culture Awareness</div>
           <div class="result-desc">Students can name their virtue and what it means</div>
         </div>
       </div>
+
+      <div class="results-board">
+        <p class="results-board-title">Additional Board-Ready Metrics</p>
+        <div class="results-metrics">
+          <div class="metric-item">
+            <div class="metric-value">15%</div>
+            <div class="metric-label">Fewer discipline referrals</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-value">95%</div>
+            <div class="metric-label">Staff retention after Year 1</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-value">4.2/5</div>
+            <div class="metric-label">Parent satisfaction score</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-value">12+</div>
+            <div class="metric-label">Partner schools</div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- APPS -->
-  <section class="apps-section">
+  <!-- PARTNERSHIP SECTION -->
+  <section class="partnership-section" id="partnership">
     <div class="container">
-      <div class="apps-header">
-        <p class="eyebrow">The Platform</p>
-        <h2>Tools That Make It Visible</h2>
-        <p class="lead">Connected apps for students, parents, staff, and administrators.</p>
+      <div class="partnership-header">
+        <p class="eyebrow">Partnership</p>
+        <h2>Choose Based on Your Stewardship Needs</h2>
+        <p class="lead">Both tiers include the full platform. The difference is how much alignment support you want.</p>
       </div>
 
-      <div class="apps-grid">
-        <div class="app-card">
-          <span class="app-badge">Public Display</span>
-          <h3>Leaderboard</h3>
-          <p class="app-desc">House standings and recognitions visible to the whole school. Culture stays public.</p>
-          <ul class="app-features">
-            <li>Live house rankings</li>
-            <li>Hall of Fame recognition</li>
-            <li>House MVP highlights</li>
+      <div class="partnership-grid">
+        <div class="partnership-card">
+          <div class="partnership-tier">Tier 1</div>
+          <h3>Core Stewardship</h3>
+          <p>Launch cleanly. Establish stable habits.</p>
+          <div class="partnership-price">
+            <div class="partnership-price-main">$1,500 + $3,000/yr</div>
+            <div class="partnership-price-sub">+ $4 per student annually</div>
+          </div>
+          <ul class="partnership-list">
+            <li>Full onboarding package</li>
+            <li>2 leadership check-ins per year</li>
+            <li>1 staff calibration session</li>
+            <li>Email support</li>
           </ul>
-          <a href="https://leagueofchampions-leaderboard.vercel.app/" class="app-cta">View Demo ???</a>
         </div>
 
-        <div class="app-card app-card--featured">
-          <span class="app-badge">Staff + Students + Parents</span>
-          <h3>Portal</h3>
-          <p class="app-desc">One place to track growth, award points, and keep the 3Rs consistent across everyone.</p>
-          <ul class="app-features">
-            <li>Student progress & milestones</li>
-            <li>Quick point awarding</li>
-            <li>Parent visibility</li>
-            <li>Admin analytics & configuration</li>
+        <div class="partnership-card partnership-card--featured">
+          <div class="partnership-tier">Tier 2 - Recommended</div>
+          <h3>Strategic Stewardship</h3>
+          <p>More touchpoints. Board-ready reporting.</p>
+          <div class="partnership-price">
+            <div class="partnership-price-main">$1,500 + $4,000/yr</div>
+            <div class="partnership-price-sub">+ $6 per student annually</div>
+          </div>
+          <ul class="partnership-list">
+            <li>Everything in Tier 1</li>
+            <li>4 leadership check-ins per year</li>
+            <li>2 staff follow-up sessions</li>
+            <li>Enhanced analytics dashboard</li>
+            <li>Priority support</li>
           </ul>
-          <a href="https://leagueofchampions-portal.vercel.app/" class="app-cta">View Demo ???</a>
         </div>
+      </div>
+
+      <div class="partnership-cta">
+        <p>Not sure which tier? We'll help you decide in a quick conversation.</p>
+        <a href="partnership.html" class="btn btn--gold">View Full Partnership Details</a>
       </div>
     </div>
   </section>
 
-  <!-- MS/HS CONTINUITY -->
-  <section class="continuity-section">
-    <div class="container">
-      <div class="continuity-header">
-        <p class="eyebrow">Grades 6-12</p>
-        <h2>Same Framework. Deeper Expectations.</h2>
-        <p class="lead">Middle school is guided practice. High school is owned character.</p>
-      </div>
-
-      <div class="continuity-table">
-        <div class="continuity-row continuity-row--header">
-          <div class="continuity-cell"></div>
-          <div class="continuity-cell">Respect (Adab)</div>
-          <div class="continuity-cell">Responsibility (Amanah)</div>
-          <div class="continuity-cell">Righteousness (Taqwa)</div>
-        </div>
-        <div class="continuity-row">
-          <div class="continuity-cell continuity-label">Middle School</div>
-          <div class="continuity-cell">Tone, manners, boundaries — coached daily</div>
-          <div class="continuity-cell">Preparedness, follow-through, small commitments</div>
-          <div class="continuity-cell">Daily choices; sincerity; avoiding harm</div>
-        </div>
-        <div class="continuity-row">
-          <div class="continuity-cell continuity-label">High School</div>
-          <div class="continuity-cell">Disagreement with dignity; protecting others' honor</div>
-          <div class="continuity-cell">Owning outcomes; leading; accountability</div>
-          <div class="continuity-cell">Principle under pressure; self-correction; service</div>
-        </div>
-      </div>
-
-      <p class="continuity-note">The 3Rs stay constant. What shifts is the depth of ownership.</p>
-    </div>
-  </section>
-
-  <!-- CTA -->
+  <!-- CTA SECTION -->
   <section class="cta-section">
     <div class="container">
-      <h2>Ready to build culture that lasts?</h2>
-      <p>A coherent tarbiyah system — so expectations, praise, and correction stay consistent across your school.</p>
+      <h2>Ready to make character measurable?</h2>
+      <p>Join the schools building culture that students can feel and boards can see.</p>
       <div class="btn-group">
-        <a href="partnership.html" class="btn btn--primary">View Partnership Levels</a>
-        <a href="mailto:contact@leagueofchampions.com" class="btn btn--secondary">Start a Conversation</a>
+        <a href="mailto:contact@leagueofchampions.com" class="btn btn--primary">Start a Conversation</a>
+        <a href="#platform" class="btn btn--secondary">See It In Action</a>
       </div>
     </div>
   </section>
+
+  <script>
+    // Sticky navigation scroll effect
+    const nav = document.getElementById('main-nav');
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-links a');
+
+    window.addEventListener('scroll', () => {
+      // Add scrolled class to nav
+      if (window.scrollY > 50) {
+        nav.classList.add('scrolled');
+      } else {
+        nav.classList.remove('scrolled');
+      }
+
+      // Update active nav link
+      let current = '';
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop - 100;
+        if (window.scrollY >= sectionTop) {
+          current = section.getAttribute('id');
+        }
+      });
+
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${current}`) {
+          link.classList.add('active');
+        }
+      });
+    });
+
+    // Mobile menu toggle
+    const navToggle = document.getElementById('nav-toggle');
+    const navMobile = document.getElementById('nav-mobile');
+
+    navToggle.addEventListener('click', () => {
+      navMobile.classList.toggle('open');
+    });
+
+    // Close mobile menu on link click
+    document.querySelectorAll('.nav-mobile-menu a').forEach(link => {
+      link.addEventListener('click', () => {
+        navMobile.classList.remove('open');
+      });
+    });
+
+    // Intersection Observer for fade-in animations
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // Keyboard navigation for demo mode
+    document.addEventListener('keydown', (e) => {
+      const sectionIds = ['hero', 'insight', 'framework', 'domains', 'platform', 'houses', 'results', 'partnership'];
+      const currentSection = Array.from(sections).find(s => {
+        const rect = s.getBoundingClientRect();
+        return rect.top <= 100 && rect.bottom > 100;
+      });
+      const currentIndex = currentSection ? sectionIds.indexOf(currentSection.id) : 0;
+
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+        e.preventDefault();
+        const nextIndex = Math.min(currentIndex + 1, sectionIds.length - 1);
+        document.getElementById(sectionIds[nextIndex]).scrollIntoView({ behavior: 'smooth' });
+      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        const prevIndex = Math.max(currentIndex - 1, 0);
+        document.getElementById(sectionIds[prevIndex]).scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  </script>
 
 </body>
 </html>
