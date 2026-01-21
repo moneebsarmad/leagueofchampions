@@ -16,4 +16,12 @@ export const Tables = {
   interventionPlaybooks: 'intervention_playbooks',
   emailTemplates: 'email_templates',
   emailQueue: 'email_queue',
+  // A/B/C Student Intervention Framework Tables
+  behavioralDomains: 'behavioral_domains',
+  levelAInterventions: 'level_a_interventions',
+  levelBInterventions: 'level_b_interventions',
+  levelCCases: 'level_c_cases',
+  reentryProtocols: 'reentry_protocols',
+  studentInterventionThresholds: 'student_intervention_thresholds',
+  interventionAnalytics: 'intervention_analytics',
 }
