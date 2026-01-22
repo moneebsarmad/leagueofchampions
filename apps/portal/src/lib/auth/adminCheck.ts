@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { createServerClient } from '@/lib/supabase/server'
+import { createSupabaseServerClient } from '@/lib/supabase/server'
 
 const ADMIN_ROLES = ['admin', 'super_admin']
 
@@ -16,7 +16,7 @@ export interface AdminCheckResult {
  */
 export async function checkAdminAccess(): Promise<AdminCheckResult> {
   try {
-    const supabase = await createServerClient()
+    const supabase = await createSupabaseServerClient()
     const {
       data: { user },
     } = await supabase.auth.getUser()

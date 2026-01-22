@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createServerClient } from '@/lib/supabase/server'
+import { createSupabaseServerClient } from '@/lib/supabase/server'
 import { checkAdminAccess } from '@/lib/auth/adminCheck'
 import {
   getReentryProtocolById,
@@ -70,7 +70,7 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
 
     switch (action) {
       case 'update_checklist': {
-        const supabase = await createServerClient()
+        const supabase = await createSupabaseServerClient()
         const {
           data: { user },
         } = await supabase.auth.getUser()
@@ -111,7 +111,7 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
       }
 
       case 'log_daily': {
-        const supabase = await createServerClient()
+        const supabase = await createSupabaseServerClient()
         const {
           data: { user },
         } = await supabase.auth.getUser()

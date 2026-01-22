@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createServerClient } from '@/lib/supabase/server'
+import { createSupabaseServerClient } from '@/lib/supabase/server'
 import { checkAdminAccess } from '@/lib/auth/adminCheck'
 import {
   createLevelAIntervention,
@@ -91,7 +91,7 @@ export async function POST(request: NextRequest) {
       return adminCheck.error
     }
 
-    const supabase = await createServerClient()
+    const supabase = await createSupabaseServerClient()
     const {
       data: { user },
     } = await supabase.auth.getUser()

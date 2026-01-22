@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Partnership Levels | League of Champions</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #2c2c2c;
+      --ink-soft: #5a5a5a;
+      --ink-muted: #8a8a8a;
+      --cream: #faf9f7;
+      --warm: #f3f1ed;
+      --warm-dark: #e8e4dc;
+      --gold: #a08050;
+      --border: #e0ddd6;
+
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      color: var(--ink);
+      background: var(--cream);
+      line-height: 1.7;
+      font-size: 16px;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Libre Baskerville', Georgia, serif;
+      font-weight: 400;
+      line-height: 1.3;
+    }
+
+    p {
+      color: var(--ink-soft);
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .container--narrow {
+      max-width: 720px;
+    }
+
+    .eyebrow {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+
+    .lead {
+      font-size: 1.15rem;
+      color: var(--ink-soft);
+      max-width: 580px;
+    }
+
+    /* Back Link */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 16px 0;
+      text-decoration: none;
+      color: var(--ink-soft);
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: all 0.25s ease;
+    }
+
+    .back-link:hover {
+      color: var(--ink);
+      gap: 12px;
+    }
+
+    .back-link span {
+      transition: transform 0.25s ease;
+    }
+
+    .back-link:hover span {
+      transform: translateX(-4px);
+    }
+
+    /* Hero */
+    .hero {
+      background: linear-gradient(180deg, var(--warm) 0%, var(--cream) 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 40px 0 100px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 4vw, 2.6rem);
+      margin-bottom: 16px;
+    }
+
+    .hero .lead {
+      margin-bottom: 0;
+    }
+
+    /* Intro Section */
+    .intro {
+      padding: 80px 0;
+      background: var(--cream);
+    }
+
+    .intro-content {
+      max-width: 680px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .intro h2 {
+      font-size: 1.6rem;
+      margin-bottom: 20px;
+    }
+
+    .intro p {
+      margin-bottom: 16px;
+    }
+
+    .intro-note {
+      margin-top: 32px;
+      padding: 24px 32px;
+      background: var(--warm);
+      border-radius: 8px;
+      border-left: 3px solid var(--gold);
+      text-align: left;
+    }
+
+    .intro-note p {
+      font-size: 0.95rem;
+      margin: 0;
+      font-style: italic;
+    }
+
+    /* Partnership Tiers */
+    .tiers {
+      padding: 80px 0;
+      background: var(--warm);
+    }
+
+    .tiers-header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    .tiers-header h2 {
+      font-size: 1.8rem;
+      margin-bottom: 12px;
+    }
+
+    .tiers-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+
+    .tier-card {
+      background: white;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      transition: all 0.3s ease;
+    }
+
+    .tier-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+    }
+
+    .tier-card--featured {
+      border-color: var(--gold);
+      box-shadow: 0 4px 24px rgba(160, 128, 80, 0.12);
+    }
+
+    .tier-card--featured:hover {
+      box-shadow: 0 16px 40px rgba(160, 128, 80, 0.2);
+    }
+
+    .tier-header {
+      padding: 28px 24px;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .tier-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 100px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      background: var(--warm);
+      color: var(--ink);
+    }
+
+    .tier-header h3 {
+      font-size: 1.3rem;
+      margin-bottom: 6px;
+    }
+
+    .tier-tagline {
+      font-size: 0.9rem;
+      color: var(--ink-soft);
+      margin: 0;
+    }
+
+    .tier-body {
+      padding: 28px 24px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .tier-description {
+      font-size: 0.95rem;
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+
+    .tier-section {
+      margin-bottom: 20px;
+    }
+
+    .tier-section:last-of-type {
+      margin-bottom: 0;
+    }
+
+    .tier-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--ink-muted);
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .tier-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .tier-list li {
+      font-size: 0.9rem;
+      color: var(--ink-soft);
+      padding: 6px 0;
+      padding-left: 20px;
+      position: relative;
+    }
+
+    .tier-list li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: var(--gold);
+      font-size: 0.85rem;
+    }
+
+    .tier-note {
+      margin-top: auto;
+      padding-top: 20px;
+      border-top: 1px dashed var(--border);
+      font-size: 0.85rem;
+      color: var(--ink-muted);
+      font-style: italic;
+    }
+
+    .featured-label {
+      background: var(--gold);
+      color: white;
+      text-align: center;
+      padding: 8px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    /* Pricing Section */
+    .pricing {
+      padding: 80px 0;
+      background: var(--cream);
+    }
+
+    .pricing .container {
+      max-width: 1100px;
+    }
+
+    .pricing-header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .pricing-header h2 {
+      font-size: 1.6rem;
+      margin-bottom: 12px;
+    }
+
+    .pricing-intro {
+      max-width: 600px;
+      margin: 0 auto 16px;
+      text-align: center;
+    }
+
+    .pricing-table-wrapper {
+      overflow-x: auto;
+    }
+
+    .pricing-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      min-width: 720px;
+    }
+
+    .pricing-table th,
+    .pricing-table td {
+      padding: 14px 18px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+
+    .pricing-table th {
+      background: var(--warm);
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+    }
+
+    .pricing-table td {
+      font-size: 0.9rem;
+      color: var(--ink-soft);
+    }
+
+    .pricing-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .pricing-table tbody tr {
+      transition: background 0.2s ease;
+    }
+
+    .pricing-table tbody tr:hover {
+      background: rgba(243, 241, 237, 0.5);
+    }
+
+    .pricing-table .tier-name {
+      font-family: 'Libre Baskerville', serif;
+      font-weight: 400;
+      color: var(--ink);
+      font-size: 1rem;
+      vertical-align: middle;
+    }
+
+    .pricing-table .price {
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    .pricing-footnote {
+      margin-top: 24px;
+      text-align: center;
+    }
+
+    .pricing-footnote p {
+      font-size: 0.85rem;
+      color: var(--ink-muted);
+      font-style: italic;
+    }
+
+    /* What's Included Breakdown */
+    .breakdown {
+      padding: 80px 0;
+      background: var(--warm);
+    }
+
+    .breakdown-header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .breakdown-header h2 {
+      font-size: 1.6rem;
+      margin-bottom: 12px;
+    }
+
+    .breakdown-block {
+      margin-bottom: 40px;
+    }
+
+    .breakdown-block:last-child {
+      margin-bottom: 0;
+    }
+
+    .breakdown-block h3 {
+      font-size: 1.3rem;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+
+    .breakdown-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+
+    .breakdown-card {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      border: 1px solid var(--border);
+      transition: all 0.3s ease;
+    }
+
+    .breakdown-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+      border-color: var(--ink-muted);
+    }
+
+    .breakdown-card h4 {
+      font-size: 1rem;
+      margin-bottom: 10px;
+      color: var(--ink);
+    }
+
+    .breakdown-card p {
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    .breakdown-card .link-note {
+      margin-top: 12px;
+      font-size: 0.85rem;
+      color: var(--ink-muted);
+    }
+
+    .breakdown-link {
+      display: inline-block;
+      margin-top: 12px;
+      color: var(--ink);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .breakdown-link:hover {
+      text-decoration: underline;
+    }
+
+    /* Decision Help */
+    .decision {
+      padding: 80px 0;
+      background: var(--cream);
+    }
+
+    .decision-content {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .decision h2 {
+      font-size: 1.6rem;
+      margin-bottom: 32px;
+      text-align: center;
+    }
+
+    .decision-item {
+      padding: 24px 0;
+      border-bottom: 1px solid var(--border);
+      transition: all 0.2s ease;
+    }
+
+    .decision-item:hover {
+      padding-left: 12px;
+    }
+
+    .decision-item:hover .decision-answer {
+      border-left-color: var(--ink);
+    }
+
+    .decision-item:last-child {
+      border-bottom: none;
+    }
+
+    .decision-question {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 1.05rem;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+
+    .decision-answer {
+      font-size: 0.95rem;
+      color: var(--ink-soft);
+      padding-left: 20px;
+      border-left: 2px solid var(--gold);
+      transition: border-left-color 0.2s ease;
+    }
+
+    /* CTA */
+    .cta {
+      padding: 80px 0;
+      background: var(--ink);
+      text-align: center;
+    }
+
+    .cta h2 {
+      color: white;
+      font-size: 1.6rem;
+      margin-bottom: 16px;
+    }
+
+    .cta p {
+      color: rgba(255,255,255,0.7);
+      max-width: 480px;
+      margin: 0 auto 32px;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 14px 28px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: all 0.2s ease;
+    }
+
+    .btn--primary {
+      background: white;
+      color: var(--ink);
+    }
+
+    .btn--primary:hover {
+      background: var(--cream);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+    }
+
+    .btn--secondary {
+      background: transparent;
+      color: white;
+      border: 1px solid rgba(255,255,255,0.3);
+    }
+
+    .btn--secondary:hover {
+      border-color: rgba(255,255,255,0.5);
+      transform: translateY(-2px);
+      background: rgba(255,255,255,0.05);
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .tiers-grid {
+        grid-template-columns: 1fr;
+        max-width: 480px;
+        margin: 0 auto;
+      }
+
+      .breakdown-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .pricing-table th,
+      .pricing-table td {
+        padding: 12px 14px;
+        font-size: 0.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- LEADERBOARD_DEMO = https://leagueofchampions-leaderboard.vercel.app/ -->
+  <!-- PORTAL_DEMO = https://leagueofchampions-portal.vercel.app/ -->
+  <!-- ADMIN_DEMO = (unknown / restricted) — do not link publicly unless confirmed -->
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <a href="landing-v3-tiers.html" class="back-link">
+        <span>&larr;</span> Back to Overview
+      </a>
+      <p class="eyebrow">Partnership Levels</p>
+      <h1>Support That Matches Your Intent</h1>
+      <p class="lead">
+        Schools differ in size, structure, and readiness. Our partnership levels reflect how much ongoing alignment and guidance a school wants during the year — not just access to tools.
+        Stewardship means we don’t just hand over software — we guide, measure, correct, and sustain implementation until it becomes self-running.
+      </p>
+    </div>
+  </section>
+
+  <!-- Intro -->
+  <section class="intro">
+    <div class="container">
+      <div class="intro-content">
+      <h2>Three Components, One Partnership</h2>
+      <p>
+        League of Champions is not just software access. It’s a culture partnership with three parts:
+      </p>
+      <p>
+        • Onboarding (setup + staff alignment)<br>
+        • Ongoing stewardship (touchpoints that keep consistency alive)<br>
+        • LOC App suite (daily visibility for students, staff, and families)
+      </p>
+      <p>
+        The shared language is the 3Rs — Respect, Responsibility, and Righteousness — used to name behavior, reinforce growth, and keep expectations consistent across classrooms.
+      </p>
+      <div class="intro-note">
+        <p>
+          Most schools don’t need more initiatives. They need alignment that survives the semester.
+        </p>
+      </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Partnership Tiers -->
+  <section class="tiers">
+    <div class="container">
+      <div class="tiers-header">
+        <p class="eyebrow">Two Levels</p>
+        <h2>Choose Based on Stewardship</h2>
+        <p class="lead" style="margin: 0 auto;">Every level includes the full platform. What differs is the rhythm of alignment.</p>
+      </div>
+
+      <div class="tiers-grid">
+        <!-- Tier 1 -->
+        <div class="tier-card">
+          <div class="tier-header">
+            <span class="tier-badge">Tier 1</span>
+            <h3>Core Stewardship</h3>
+            <p class="tier-tagline">Launch cleanly. Stabilize habits. Hand it off.</p>
+          </div>
+          <div class="tier-body">
+            <p class="tier-description">
+              For schools that want a clear launch, a shared staff language, and a small number of touchpoints to prevent drift.
+            </p>
+            <div class="tier-section">
+              <p class="tier-label">What’s Included</p>
+              <ul class="tier-list">
+                <li>4-hour max onboarding (async pre-work + live training)</li>
+                <li>Leadership kickoff, implementation team setup, staff micro-training</li>
+                <li>Launch kit templates + basic weekly digest + monthly snapshot</li>
+                <li>Week 2 + Week 4 check-ins + 30-day health check</li>
+                <li>Bounded async support</li>
+              </ul>
+            </div>
+            <p class="tier-note">
+              Excludes: monthly meetings, board reports, integrations, parent comms modules, staff evaluation feeds.
+            </p>
+          </div>
+        </div>
+
+        <!-- Tier 2 -->
+        <div class="tier-card tier-card--featured">
+          <div class="featured-label">Most Common</div>
+          <div class="tier-header">
+            <span class="tier-badge">Tier 2</span>
+            <h3>Strategic Stewardship</h3>
+            <p class="tier-tagline">Prevent drift with governance and analytics.</p>
+          </div>
+          <div class="tier-body">
+            <p class="tier-description">
+              For schools that want tighter alignment across teachers, proactive drift detection, and board-ready reporting without endless meetings.
+            </p>
+            <div class="tier-section">
+              <p class="tier-label">What’s Included</p>
+              <ul class="tier-list">
+                <li>Everything in Tier 1</li>
+                <li>Participation, point economy, bias, and 3Rs mix analytics</li>
+                <li>Enhanced weekly digest + amber/red alerts + playbooks</li>
+                <li>Quarterly decision session + board-ready insight brief</li>
+                <li>Mid-cycle audit + bounded calibration reset</li>
+              </ul>
+            </div>
+            <p class="tier-note">
+              Excludes (unless sold separately): parent comms blasting, SIS/LMS integrations, staff evaluation feeds, unlimited calls.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing Table -->
+  <section class="pricing">
+    <div class="container">
+      <div class="pricing-header">
+        <p class="eyebrow">Investment</p>
+        <h2>Clear, Predictable Pricing</h2>
+        <p class="pricing-intro">
+          Annual partnership covers culture design and advisory support. Per-student pricing covers platform access and scales with your enrollment.
+        </p>
+      </div>
+
+      <div class="pricing-table-wrapper">
+        <table class="pricing-table">
+          <thead>
+            <tr>
+              <th>Tier</th>
+              <th>Onboarding (one-time)</th>
+              <th>Annual stewardship</th>
+              <th>App license (per student / year)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="tier-name">Tier 1</td>
+              <td class="price">$1,500</td>
+              <td class="price">$3,000</td>
+              <td class="price">$4</td>
+            </tr>
+            <tr>
+              <td class="tier-name">Tier 2</td>
+              <td class="price">$1,500</td>
+              <td class="price">$4,000</td>
+              <td class="price">$6 (+$2 enhanced analytics)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="pricing-footnote">
+        <p>Apps pricing covers platform access. Stewardship covers alignment and advisory. All pricing shown is annual.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- What's Included Breakdown -->
+  <section class="breakdown">
+    <div class="container">
+      <div class="breakdown-header">
+        <p class="eyebrow">What You're Getting</p>
+        <h2>Understanding the Components</h2>
+      </div>
+
+      <div class="breakdown-block">
+        <h3>Onboarding (included in both tiers)</h3>
+        <div class="breakdown-grid">
+          <div class="breakdown-card">
+            <h4>Pre-work (async)</h4>
+            <p>
+              Roster import, roles, houses, point rules, and rewards configured in advance.
+            </p>
+          </div>
+          <div class="breakdown-card">
+            <h4>Leadership kickoff</h4>
+            <p>
+              Expectations, timeline, launch strategy, and communication plan.
+            </p>
+          </div>
+          <div class="breakdown-card">
+            <h4>Implementation team setup</h4>
+            <p>
+              System rules, guardrails, admin dashboard walkthrough, and calibration protocols.
+            </p>
+          </div>
+          <div class="breakdown-card">
+            <h4>Staff micro-training + launch readiness</h4>
+            <p>
+              Point → category → note workflow, 3Rs examples, and go-live checklist.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="breakdown-block">
+        <h3>Tier 1 stewardship (annual)</h3>
+        <div class="breakdown-grid">
+          <div class="breakdown-card">
+            <h4>Week 2 + Week 4 check-ins</h4>
+            <p>
+              Short sessions to correct early drift and stabilize habits.
+            </p>
+          </div>
+          <div class="breakdown-card">
+            <h4>30-day health check</h4>
+            <p>
+              Data review with a brief call only if intervention is needed.
+            </p>
+          </div>
+          <div class="breakdown-card">
+            <h4>Weekly digest + monthly snapshot</h4>
+            <p>
+              Internal leadership highlights, adoption trends, and baseline health indicators.
+            </p>
+          </div>
+          <div class="breakdown-card">
+            <h4>Bounded async support</h4>
+            <p>
+              Email/ticket support with clear response boundaries.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="breakdown-block">
+        <h3>Tier 2 stewardship (annual)</h3>
+        <div class="breakdown-grid">
+          <div class="breakdown-card">
+            <h4>Enhanced analytics dashboard</h4>
+            <p>
+              Participation, point economy, bias flags, and 3Rs category mix.
+            </p>
+          </div>
+          <div class="breakdown-card">
+            <h4>Proactive digests + alert system</h4>
+            <p>
+              Weekly digest with next actions, plus amber/red alerts and playbooks.
+            </p>
+          </div>
+          <div class="breakdown-card">
+            <h4>Quarterly decision session</h4>
+            <p>
+              Leadership review, risk assessment, decisions, and owners assigned.
+            </p>
+          </div>
+          <div class="breakdown-card">
+            <h4>Board-ready insight brief</h4>
+            <p>
+              Executive summary + appendix charts for governance use.
+            </p>
+          </div>
+          <div class="breakdown-card">
+            <h4>Mid-cycle audit + calibration reset</h4>
+            <p>
+              Async audit walkthrough; live reset session if amber/red triggers.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="breakdown-block">
+        <h3>LOC App suite (included)</h3>
+        <div class="breakdown-grid">
+          <div class="breakdown-card">
+            <h4>Leaderboard (public display)</h4>
+            <a class="breakdown-link" href="https://leagueofchampions-leaderboard.vercel.app/">View leaderboard demo</a>
+          </div>
+          <div class="breakdown-card">
+            <h4>Portal (students • parents • staff)</h4>
+            <a class="breakdown-link" href="https://leagueofchampions-portal.vercel.app/">View portal demo</a>
+          </div>
+          <div class="breakdown-card">
+            <h4>Admin tools (inside the Portal)</h4>
+            <p class="link-note">Admin views are permission-based. Walkthrough available on request.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Decision Help -->
+  <section class="decision">
+    <div class="container">
+      <div class="decision-content">
+        <h2>How Schools Choose</h2>
+
+        <div class="decision-item">
+          <p class="decision-question">"We have a strong culture lead and want a clean launch."</p>
+          <p class="decision-answer">Start with Tier 1. You’ll get the system, staff alignment, and a few touchpoints to prevent drift.</p>
+        </div>
+
+        <div class="decision-item">
+          <p class="decision-question">"Consistency across teachers is our biggest gap."</p>
+          <p class="decision-answer">Tier 2 adds the touchpoints that keep language and expectations from fragmenting by classroom.</p>
+        </div>
+
+        <div class="decision-item">
+          <p class="decision-question">"We’ve tried initiatives that faded by November."</p>
+          <p class="decision-answer">Tier 2 is designed to survive the semester — follow-ups, reviews, and leadership rhythm.</p>
+        </div>
+
+        <div class="decision-item">
+          <p class="decision-question">"We're not sure yet."</p>
+          <p class="decision-answer">That’s normal. We’ll ask a few questions about staffing, student culture, and your current pain points — then recommend what fits.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta">
+    <div class="container">
+      <h2>Start with a conversation.</h2>
+      <p>
+        We’ll help you choose the level of stewardship that matches your school’s reality — staffing, readiness, and goals.
+      </p>
+      <div class="btn-group">
+        <a href="mailto:contact@leagueofchampions.com" class="btn btn--primary">Start a Conversation</a>
+        <a href="landing-v3.html#framework" class="btn btn--secondary">Review the Framework</a>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>
