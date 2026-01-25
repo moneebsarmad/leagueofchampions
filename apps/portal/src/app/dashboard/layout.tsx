@@ -8,6 +8,7 @@ import Sidebar from '../../components/Sidebar'
 import DashboardHeader from '../../components/DashboardHeader'
 import CrestLoader from '../../components/CrestLoader'
 import MobileNav from '@/components/MobileNav'
+import StudentNotificationProvider from '../../components/StudentNotificationProvider'
 
 type Role = 'student' | 'parent' | 'staff'
 
@@ -185,7 +186,9 @@ export default function DashboardLayout({
 
         {/* Page Content */}
         <main className="p-4 md:p-8">
-          {children}
+          <StudentNotificationProvider>
+            {children}
+          </StudentNotificationProvider>
         </main>
       </div>
     </div>
