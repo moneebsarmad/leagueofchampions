@@ -27,8 +27,33 @@ interface Domain {
   display_name: string
 }
 
+interface BadgeLeader {
+  quarter: string
+  category: string
+  totalPoints: number
+}
+
+interface HouseMvpEntry {
+  house: string
+  points: number
+}
+
 const GOALS_STORAGE_KEY = 'portal:student-goals'
 const DEFAULT_WEEKLY_GOAL = 100
+const MILESTONE_CLOSE_GAP = 20
+const MVP_CLOSE_GAP = 20
+
+const quarterlyBadges = [
+  { name: 'The Honour Guard', category: 'Respect', icon: '🛡️', description: 'Most points in Respect category' },
+  { name: 'The Keeper', category: 'Responsibility', icon: '🔑', description: 'Most points in Responsibility category' },
+  { name: 'The Light Bearer', category: 'Righteousness', icon: '🕯️', description: 'Most points in Righteousness category' },
+]
+
+const milestones = [
+  { name: 'Century Club', points: 100, icon: '💯' },
+  { name: 'Badr Club', points: 300, icon: '🌙' },
+  { name: 'Fath Club', points: 700, icon: '🏆' },
+]
 
 function getFirstName(fullName: string): string {
   return fullName.trim().split(' ')[0] || fullName
@@ -63,12 +88,30 @@ function saveGoals(goals: { weekly: number; monthly: number; quarterly: number }
   }
 }
 
+function getCurrentQuarterRange() {
+  const today = new Date()
+  const year = today.getFullYear()
+  const q1 = {
+    start: new Date(year, 0, 6),
+    end: new Date(year, 2, 6, 23, 59, 59, 999),
+  }
+  const q2 = {
+    start: new Date(year, 2, 9),
+    end: new Date(year, 4, 21, 23, 59, 59, 999),
+  }
+  if (today >= q1.start && today <= q1.end) return { ...q1, id: 'q1' as const }
+  if (today >= q2.start && today <= q2.end) return { ...q2, id: 'q2' as const }
+  return { ...q2, id: 'q2' as const }
+}
+
 export default function MyPointsPage() {
   const { user } = useAuth()
   const userId = user?.id ?? null
   const [profile, setProfile] = useState<StudentProfile | null>(null)
   const [merits, setMerits] = useState<MeritEntry[]>([])
   const [domains, setDomains] = useState<Domain[]>([])
+  const [badgeLeaders, setBadgeLeaders] = useState<BadgeLeader[]>([])
+  const [houseMvp, setHouseMvp] = useState<HouseMvpEntry | null>(null)
   const [loading, setLoading] = useState(true)
   const [goals, setGoals] = useState(loadGoals)
   const [showGoalModal, setShowGoalModal] = useState(false)
@@ -145,6 +188,66 @@ export default function MyPointsPage() {
     loadProfile()
   }, [userId])
 
+  useEffect(() => {
+    if (!profile?.house) return
+
+    const fetchHouseMvp = async () => {
+      const { data, error } = await supabase
+        .from('house_mvp_monthly')
+        .select('house, points')
+
+      if (error) {
+        console.error('Error fetching house MVP:', error)
+        setHouseMvp(null)
+        return
+      }
+
+      const row = (data || []).find((entry: Record<string, unknown>) => String(entry.house ?? '') === profile.house)
+      if (!row) {
+        setHouseMvp(null)
+        return
+      }
+      setHouseMvp({
+        house: String(row.house ?? ''),
+        points: Number(row.points ?? 0),
+      })
+    }
+
+    const fetchBadgeLeaders = async () => {
+      const { data, error } = await supabase
+        .from('quarterly_badge_leaders')
+        .select('*')
+        .eq('rank', 1)
+
+      if (error) {
+        console.error('Error fetching badge leaders:', error)
+        setBadgeLeaders([])
+        return
+      }
+
+      const normalizeQuarter = (value: string) => {
+        const raw = value.toLowerCase().replace(/\s+/g, '')
+        if (raw.startsWith('q1')) return 'q1'
+        if (raw.startsWith('q2')) return 'q2'
+        return raw
+      }
+
+      const currentQuarter = getCurrentQuarterRange()
+      const leaders: BadgeLeader[] = (data || [])
+        .map((row: Record<string, unknown>) => ({
+          quarter: String(row.quarter ?? ''),
+          category: String(row.category ?? ''),
+          totalPoints: Number(row.total_points ?? row.totalPoints ?? 0),
+        }))
+        .filter((row) => normalizeQuarter(row.quarter) === currentQuarter.id)
+
+      setBadgeLeaders(leaders)
+    }
+
+    fetchHouseMvp()
+    fetchBadgeLeaders()
+  }, [profile?.house])
+
   const totalPoints = useMemo(
     () => merits.reduce((sum, entry) => sum + entry.points, 0),
     [merits]
@@ -154,6 +257,29 @@ export default function MyPointsPage() {
     const weekStart = getStartOfWeek()
     return merits
       .filter((m) => new Date(m.timestamp) >= weekStart)
+      .reduce((sum, m) => sum + m.points, 0)
+  }, [merits])
+
+  const quarterRange = useMemo(getCurrentQuarterRange, [])
+
+  const quarterMerits = useMemo(
+    () => merits.filter((m) => {
+      const date = new Date(m.timestamp)
+      return date >= quarterRange.start && date <= quarterRange.end
+    }),
+    [merits, quarterRange]
+  )
+
+  const quarterPoints = useMemo(
+    () => quarterMerits.reduce((sum, entry) => sum + entry.points, 0),
+    [quarterMerits]
+  )
+
+  const monthPoints = useMemo(() => {
+    const now = new Date()
+    const monthStart = new Date(now.getFullYear(), now.getMonth(), 1)
+    return merits
+      .filter((m) => new Date(m.timestamp) >= monthStart)
       .reduce((sum, m) => sum + m.points, 0)
   }, [merits])
 
@@ -173,6 +299,61 @@ export default function MyPointsPage() {
     setShowGoalModal(false)
   }
 
+  const categoryTotals = useMemo(() => {
+    const totals = new Map<string, number>()
+    merits.forEach((entry) => {
+      const key = String(entry.r || '').trim() || 'Other'
+      totals.set(key, (totals.get(key) || 0) + entry.points)
+    })
+    return totals
+  }, [merits])
+
+  const quarterCategoryTotals = useMemo(() => {
+    const totals = new Map<string, number>()
+    quarterMerits.forEach((entry) => {
+      const key = String(entry.r || '').trim() || 'Other'
+      totals.set(key, (totals.get(key) || 0) + entry.points)
+    })
+    return totals
+  }, [quarterMerits])
+
+  const domainTotals = useMemo(() => {
+    const totals = new Map<string, number>()
+    merits.forEach((entry) => {
+      const name = getDomainName(entry.domain_id)
+      totals.set(name, (totals.get(name) || 0) + entry.points)
+    })
+    return Array.from(totals.entries())
+      .map(([name, points]) => ({ name, points }))
+      .sort((a, b) => b.points - a.points)
+  }, [merits, domains])
+
+  const badgeLeaderMap = useMemo(() => {
+    const map = new Map<string, number>()
+    badgeLeaders.forEach((leader) => {
+      if (!leader.category) return
+      map.set(leader.category, leader.totalPoints)
+    })
+    return map
+  }, [badgeLeaders])
+
+  const milestoneStatus = useMemo(() => {
+    return milestones.map((milestone) => {
+      const pointsNeeded = Math.max(0, milestone.points - quarterPoints)
+      return {
+        ...milestone,
+        pointsNeeded,
+        achieved: pointsNeeded === 0,
+        close: pointsNeeded > 0 && pointsNeeded <= MILESTONE_CLOSE_GAP,
+      }
+    })
+  }, [quarterPoints])
+
+  const houseMvpGap = useMemo(() => {
+    if (!houseMvp) return null
+    return Math.max(0, houseMvp.points - monthPoints)
+  }, [houseMvp, monthPoints])
+
   if (loading) {
     return <CrestLoader label="Loading your profile..." />
   }
@@ -189,7 +370,7 @@ export default function MyPointsPage() {
   const progressPercent = Math.min(100, (weeklyPoints / goals.weekly) * 100)
 
   return (
-    <div className="max-w-md mx-auto">
+    <div className="max-w-3xl mx-auto">
       {/* Avatar Section */}
       <div className="flex flex-col items-center mb-8">
         <div className="w-32 h-32 rounded-full bg-[#2D5016] flex items-center justify-center mb-4 shadow-lg" style={{ border: '4px solid #3d6b1e' }}>
@@ -237,6 +418,28 @@ export default function MyPointsPage() {
         </div>
       )}
 
+      {/* Quick Stats */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <div className="bg-white rounded-2xl p-5 shadow-sm border border-[#B8860B]/10 text-center">
+          <p className="text-xs text-[#1a1a1a]/50 mb-1">Total Points (All Time)</p>
+          <p className="text-2xl font-bold text-[#2D5016]" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+            {totalPoints}
+          </p>
+        </div>
+        <div className="bg-white rounded-2xl p-5 shadow-sm border border-[#B8860B]/10 text-center">
+          <p className="text-xs text-[#1a1a1a]/50 mb-1">Points This Quarter</p>
+          <p className="text-2xl font-bold text-[#2D5016]" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+            {quarterPoints}
+          </p>
+        </div>
+        <div className="bg-white rounded-2xl p-5 shadow-sm border border-[#B8860B]/10 text-center">
+          <p className="text-xs text-[#1a1a1a]/50 mb-1">Points This Month</p>
+          <p className="text-2xl font-bold text-[#2D5016]" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+            {monthPoints}
+          </p>
+        </div>
+      </div>
+
       {/* Weekly Progress */}
       <div className="bg-white rounded-2xl p-6 shadow-sm border border-[#B8860B]/10 mb-6">
         <div className="flex items-center justify-between mb-4">
@@ -274,13 +477,125 @@ export default function MyPointsPage() {
         )}
       </div>
 
-      {/* Total Points Summary */}
-      <div className="bg-white rounded-2xl p-6 shadow-sm border border-[#B8860B]/10">
-        <div className="text-center">
-          <p className="text-sm text-[#1a1a1a]/50 mb-1">Total Points Earned</p>
-          <p className="text-4xl font-bold text-[#2D5016]" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
-            {totalPoints}
+      {/* 3Rs Summary */}
+      <div className="bg-white rounded-2xl p-6 shadow-sm border border-[#B8860B]/10 mb-6">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="font-semibold text-[#1a1a1a]">Your 3R Totals</h3>
+          <p className="text-xs text-[#1a1a1a]/45">All time</p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {['Respect', 'Responsibility', 'Righteousness'].map((category) => (
+            <div key={category} className="rounded-xl border border-[#1a1a1a]/10 p-4 bg-[#fdfbf6]">
+              <p className="text-xs uppercase tracking-wide text-[#1a1a1a]/50">{category}</p>
+              <p className="text-2xl font-bold text-[#2D5016] mt-2">
+                {(categoryTotals.get(category) || 0).toLocaleString()} pts
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Points by Domain */}
+      <div className="bg-white rounded-2xl p-6 shadow-sm border border-[#B8860B]/10 mb-6">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="font-semibold text-[#1a1a1a]">Points by Domain</h3>
+          <p className="text-xs text-[#1a1a1a]/45">All time</p>
+        </div>
+        {domainTotals.length === 0 ? (
+          <p className="text-sm text-[#1a1a1a]/45">No domain points yet.</p>
+        ) : (
+          <div className="space-y-3">
+            {domainTotals.map((domain) => (
+              <div key={domain.name} className="flex items-center justify-between rounded-xl border border-[#1a1a1a]/10 px-4 py-3">
+                <span className="text-sm font-medium text-[#1a1a1a] capitalize">{domain.name}</span>
+                <span className="text-sm font-semibold text-[#2D5016]">{domain.points.toLocaleString()} pts</span>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Milestones */}
+      <div className="bg-white rounded-2xl p-6 shadow-sm border border-[#B8860B]/10 mb-6">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="font-semibold text-[#1a1a1a]">Milestones This Quarter</h3>
+          <p className="text-xs text-[#1a1a1a]/45">Based on {quarterPoints} pts</p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {milestoneStatus.map((milestone) => (
+            <div key={milestone.name} className="rounded-xl border border-[#1a1a1a]/10 p-4 bg-white">
+              <div className="flex items-center gap-2">
+                <span className="text-2xl">{milestone.icon}</span>
+                <div>
+                  <p className="text-sm font-semibold text-[#1a1a1a]">{milestone.name}</p>
+                  <p className="text-xs text-[#1a1a1a]/50">{milestone.points} pts</p>
+                </div>
+              </div>
+              <div className="mt-3 text-sm">
+                {milestone.achieved ? (
+                  <span className="text-[#055437] font-semibold">Unlocked</span>
+                ) : milestone.close ? (
+                  <span className="text-[#B8860B] font-semibold">{milestone.pointsNeeded} pts to go</span>
+                ) : (
+                  <span className="text-[#1a1a1a]/50">{milestone.pointsNeeded} pts to go</span>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* MVP Tracker */}
+      <div className="bg-white rounded-2xl p-6 shadow-sm border border-[#B8860B]/10 mb-6">
+        <h3 className="font-semibold text-[#1a1a1a] mb-2">House MVP Chase</h3>
+        {!houseMvp ? (
+          <p className="text-sm text-[#1a1a1a]/45">House MVP data not available yet.</p>
+        ) : houseMvpGap === 0 ? (
+          <p className="text-sm text-[#055437] font-semibold">You are currently your house MVP this month.</p>
+        ) : (
+          <p className="text-sm text-[#1a1a1a]/70">
+            You are {houseMvpGap} pts behind the top score in {canonicalHouseName(profile.house)} this month.
+            {houseMvpGap !== null && houseMvpGap <= MVP_CLOSE_GAP && (
+              <span className="text-[#B8860B] font-semibold"> You are close!</span>
+            )}
           </p>
+        )}
+      </div>
+
+      {/* Badge Chase */}
+      <div className="bg-white rounded-2xl p-6 shadow-sm border border-[#B8860B]/10">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="font-semibold text-[#1a1a1a]">Quarterly Badge Chase</h3>
+          <p className="text-xs text-[#1a1a1a]/45">Based on this quarter</p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {quarterlyBadges.map((badge) => {
+            const studentPoints = quarterCategoryTotals.get(badge.category) || 0
+            const leaderPoints = badgeLeaderMap.get(badge.category) ?? null
+            const pointsNeeded = leaderPoints === null ? null : Math.max(0, leaderPoints - studentPoints)
+            return (
+              <div key={badge.name} className="rounded-xl border border-[#1a1a1a]/10 p-4 bg-[#fdfbf6]">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-2xl">{badge.icon}</span>
+                  <div>
+                    <p className="text-sm font-semibold text-[#1a1a1a]">{badge.name}</p>
+                    <p className="text-xs text-[#1a1a1a]/50">{badge.category}</p>
+                  </div>
+                </div>
+                <p className="text-sm text-[#1a1a1a]/70">{studentPoints} pts in {badge.category}</p>
+                {pointsNeeded === null ? (
+                  <p className="text-xs text-[#1a1a1a]/45 mt-2">Leaderboard data unavailable.</p>
+                ) : pointsNeeded === 0 ? (
+                  <p className="text-xs text-[#055437] font-semibold mt-2">You are leading this badge.</p>
+                ) : (
+                  <p className="text-xs text-[#1a1a1a]/50 mt-2">
+                    {pointsNeeded} pts to catch the top score.
+                    {pointsNeeded <= MILESTONE_CLOSE_GAP && <span className="text-[#B8860B] font-semibold"> Close!</span>}
+                  </p>
+                )}
+              </div>
+            )
+          })}
         </div>
       </div>
 
