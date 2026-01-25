@@ -22,6 +22,13 @@ interface Category {
   points: number
 }
 
+interface Domain {
+  id: number
+  domain_key: string
+  display_name: string
+  color: string
+}
+
 const houseColors = getHouseColors()
 const DRAFT_STORAGE_KEY = 'portal:add-points:draft'
 const HOUSE_COMPETITION_R = 'House Competition'
@@ -81,8 +88,10 @@ export default function AddPointsPage() {
   const isSuperAdmin = role === 'admin'
   const [students, setStudents] = useState<Student[]>([])
   const [categories, setCategories] = useState<Category[]>([])
+  const [domains, setDomains] = useState<Domain[]>([])
   const [searchText, setSearchText] = useState('')
   const [selectedStudents, setSelectedStudents] = useState<Student[]>([])
+  const [selectedDomain, setSelectedDomain] = useState<Domain | null>(null)
   const [selectedR, setSelectedR] = useState<string | null>(null)
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null)
   const [notes, setNotes] = useState('')
@@ -97,6 +106,7 @@ export default function AddPointsPage() {
   const [toast, setToast] = useState<{ message: string; type: 'info' | 'success' | 'error' } | null>(null)
   const toastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const draftCategoryIdRef = useRef<string | null>(null)
+  const draftDomainIdRef = useRef<number | null>(null)
 
   // Bulk selection filters
   const [filterGrade, setFilterGrade] = useState<string>('')
@@ -123,6 +133,7 @@ export default function AddPointsPage() {
     try {
       const draft = JSON.parse(saved) as {
         selectedStudents?: Student[]
+        selectedDomainId?: number | null
         selectedR?: string | null
         selectedCategoryId?: string | null
         notes?: string
@@ -153,6 +164,9 @@ export default function AddPointsPage() {
       if (draft.selectedCategoryId) {
         draftCategoryIdRef.current = draft.selectedCategoryId
       }
+      if (draft.selectedDomainId) {
+        draftDomainIdRef.current = draft.selectedDomainId
+      }
     } catch {
       window.sessionStorage.removeItem(DRAFT_STORAGE_KEY)
     }
@@ -170,9 +184,18 @@ export default function AddPointsPage() {
   }, [categories, selectedR])
 
   useEffect(() => {
+    if (!draftDomainIdRef.current) return
+    const match = domains.find((domain) => domain.id === draftDomainIdRef.current)
+    if (!match) return
+    setSelectedDomain(match)
+    draftDomainIdRef.current = null
+  }, [domains])
+
+  useEffect(() => {
     if (typeof window === 'undefined') return
     const draft = {
       selectedStudents,
+      selectedDomainId: selectedDomain?.id ?? null,
       selectedR,
       selectedCategoryId: selectedCategory?.id ?? null,
       notes,
@@ -188,6 +211,7 @@ export default function AddPointsPage() {
     writeDraft(JSON.stringify(draft))
   }, [
     selectedStudents,
+    selectedDomain,
     selectedR,
     selectedCategory,
     notes,
@@ -204,9 +228,10 @@ export default function AddPointsPage() {
   const fetchData = async () => {
     setIsLoading(true)
     try {
-      const [studentsRes, categoriesRes] = await Promise.all([
+      const [studentsRes, categoriesRes, domainsRes] = await Promise.all([
         supabase.from('students').select('*'),
         supabase.from('3r_categories').select('*'),
+        supabase.from('merit_domains').select('*').eq('is_active', true).order('display_order'),
       ])
 
       const allStudents: Student[] = (studentsRes.data || []).map((s, index) => ({
@@ -225,6 +250,14 @@ export default function AddPointsPage() {
         points: c.points || 0,
       }))
       setCategories(allCategories)
+
+      const allDomains: Domain[] = (domainsRes.data || []).map((d) => ({
+        id: d.id,
+        domain_key: d.domain_key || '',
+        display_name: d.display_name || '',
+        color: d.color || '#2D5016',
+      }))
+      setDomains(allDomains)
     } catch (error) {
       console.error('Error fetching data:', error)
     } finally {
@@ -336,6 +369,7 @@ export default function AddPointsPage() {
         body: JSON.stringify({
           mode: 'students',
           categoryId: selectedCategory?.id,
+          domainId: selectedDomain?.id,
           students: selectedStudents.map((student) => ({
             name: student.name,
             grade: student.grade,
@@ -372,6 +406,7 @@ export default function AddPointsPage() {
 
   const resetForm = () => {
     setSelectedStudents([])
+    setSelectedDomain(null)
     setSelectedR(null)
     setSelectedCategory(null)
     setNotes('')
@@ -593,7 +628,7 @@ export default function AddPointsPage() {
         </div>
       </div>
 
-      {/* Step 2: Select Category */}
+      {/* Step 2: Select Domain */}
       <div className="bg-white rounded-2xl p-6 shadow-sm border border-[#B8860B]/10 mb-6">
         <div className="flex items-center gap-3 mb-5">
           <span className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${
@@ -602,6 +637,44 @@ export default function AddPointsPage() {
               : 'bg-[#1a1a1a]/10 text-[#1a1a1a]/40'
           }`}>2</span>
           <h2 className={`text-lg font-semibold ${selectedStudents.length > 0 ? 'text-[#1a1a1a]' : 'text-[#1a1a1a]/40'}`}>
+            Where did this happen?
+          </h2>
+        </div>
+
+        <p className="text-sm text-[#1a1a1a]/50 mb-4">Select the domain where the behavior was observed</p>
+
+        <div className="grid grid-cols-2 gap-3">
+          {domains.map((domain) => (
+            <button
+              key={domain.id}
+              onClick={() => setSelectedDomain(domain)}
+              disabled={selectedStudents.length === 0}
+              className={`px-4 py-3 rounded-xl font-medium text-sm transition-all flex items-center justify-center gap-2 ${
+                selectedDomain?.id === domain.id
+                  ? 'bg-[#2D5016] text-white border-2 border-[#2D5016]'
+                  : 'bg-white text-[#1a1a1a] border-2 border-[#1a1a1a]/10 hover:border-[#2D5016]/30'
+              } ${selectedStudents.length === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+            >
+              {selectedDomain?.id === domain.id && (
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+              )}
+              {domain.display_name}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Step 3: Select Category */}
+      <div className="bg-white rounded-2xl p-6 shadow-sm border border-[#B8860B]/10 mb-6">
+        <div className="flex items-center gap-3 mb-5">
+          <span className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${
+            selectedDomain
+              ? 'bg-gradient-to-br from-[#B8860B] to-[#8b6508] text-white'
+              : 'bg-[#1a1a1a]/10 text-[#1a1a1a]/40'
+          }`}>3</span>
+          <h2 className={`text-lg font-semibold ${selectedDomain ? 'text-[#1a1a1a]' : 'text-[#1a1a1a]/40'}`}>
             Select Category
           </h2>
         </div>
@@ -619,12 +692,12 @@ export default function AddPointsPage() {
                   setSelectedR(r)
                   setSelectedCategory(null)
                 }}
-                disabled={selectedStudents.length === 0}
+                disabled={!selectedDomain}
                 className={`w-full flex items-center gap-4 p-4 rounded-xl border-2 transition-all ${
                   selectedR === r
                     ? 'border-[#B8860B] bg-[#B8860B]/5'
                     : 'border-[#1a1a1a]/10 hover:border-[#B8860B]/30'
-                } ${selectedStudents.length === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+                } ${!selectedDomain ? 'opacity-50 cursor-not-allowed' : ''}`}
               >
                 <span className="text-2xl">{icon}</span>
                 <div className="text-left flex-1">
@@ -670,11 +743,11 @@ export default function AddPointsPage() {
         </div>
       </div>
 
-      {/* Step 3: Select Reason */}
+      {/* Step 4: Select Reason */}
       {selectedR && !isHouseCompetition && (
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-[#B8860B]/10 mb-6">
           <div className="flex items-center gap-3 mb-5">
-            <span className="w-8 h-8 bg-gradient-to-br from-[#B8860B] to-[#8b6508] text-white rounded-full flex items-center justify-center font-bold text-sm">3</span>
+            <span className="w-8 h-8 bg-gradient-to-br from-[#B8860B] to-[#8b6508] text-white rounded-full flex items-center justify-center font-bold text-sm">4</span>
             <h2 className="text-lg font-semibold text-[#1a1a1a]">Select Reason</h2>
           </div>
 
@@ -709,7 +782,7 @@ export default function AddPointsPage() {
       {isHouseCompetition && (
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-[#B8860B]/10 mb-6">
           <div className="flex items-center gap-3 mb-5">
-            <span className="w-8 h-8 bg-gradient-to-br from-[#B8860B] to-[#8b6508] text-white rounded-full flex items-center justify-center font-bold text-sm">3</span>
+            <span className="w-8 h-8 bg-gradient-to-br from-[#B8860B] to-[#8b6508] text-white rounded-full flex items-center justify-center font-bold text-sm">4</span>
             <h2 className="text-lg font-semibold text-[#1a1a1a]">House Competition Details</h2>
           </div>
 
@@ -754,11 +827,11 @@ export default function AddPointsPage() {
         </div>
       )}
 
-      {/* Step 4: Date of Event */}
+      {/* Step 5: Date of Event */}
       {(selectedCategory || isHouseCompetition) && (
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-[#B8860B]/10 mb-6">
           <div className="flex items-center gap-3 mb-5">
-            <span className="w-8 h-8 bg-gradient-to-br from-[#B8860B] to-[#8b6508] text-white rounded-full flex items-center justify-center font-bold text-sm">4</span>
+            <span className="w-8 h-8 bg-gradient-to-br from-[#B8860B] to-[#8b6508] text-white rounded-full flex items-center justify-center font-bold text-sm">5</span>
             <h2 className="text-lg font-semibold text-[#1a1a1a]">Date of Event</h2>
           </div>
 
@@ -771,11 +844,11 @@ export default function AddPointsPage() {
         </div>
       )}
 
-      {/* Step 5: Notes */}
+      {/* Step 6: Notes */}
       {selectedCategory && !isHouseCompetition && (
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-[#B8860B]/10 mb-6">
           <div className="flex items-center gap-3 mb-5">
-            <span className="w-8 h-8 bg-gradient-to-br from-[#B8860B] to-[#8b6508] text-white rounded-full flex items-center justify-center font-bold text-sm">5</span>
+            <span className="w-8 h-8 bg-gradient-to-br from-[#B8860B] to-[#8b6508] text-white rounded-full flex items-center justify-center font-bold text-sm">6</span>
             <h2 className="text-lg font-semibold text-[#1a1a1a]">Add Notes (Optional)</h2>
           </div>
 

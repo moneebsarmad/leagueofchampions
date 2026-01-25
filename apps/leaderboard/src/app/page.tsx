@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/lib/supabase";
@@ -8,15 +7,22 @@ import HouseCard from "@/components/HouseCard";
 import { schoolConfig, canonicalHouseName } from "@/lib/school.config";
 
 interface House {
-    rank: number;
-    name: string;
-    virtue: string;
-    description: string;
-    points: number;
-    color: string;
-    bgColor: string;
-    logo?: string | null;
-  }
+  rank: number;
+  name: string;
+  virtue: string;
+  description: string;
+  points: number;
+  color: string;
+  bgColor: string;
+  logo?: string | null;
+  todayPoints?: number;
+}
+
+interface RecentAchievement {
+  studentName: string;
+  points: number;
+  domain: string;
+}
 
 // Build house config from school config with leaderboard-specific properties
 const houseVirtues: Record<string, { virtue: string; description: string; bgColor: string }> = {
@@ -42,7 +48,7 @@ const houseVirtues: Record<string, { virtue: string; description: string; bgColo
   },
 };
 
-const houseConfig: Record<string, Omit<House, "rank" | "points" | "name">> =
+const houseConfig: Record<string, Omit<House, "rank" | "points" | "name" | "todayPoints">> =
   schoolConfig.houses.reduce((acc, house) => {
     const virtueInfo = houseVirtues[house.name] || { virtue: "", description: "", bgColor: "#f5f5f5" };
     acc[house.name] = {
@@ -53,39 +59,61 @@ const houseConfig: Record<string, Omit<House, "rank" | "points" | "name">> =
       logo: house.logo,
     };
     return acc;
-  }, {} as Record<string, Omit<House, "rank" | "points" | "name">>);
+  }, {} as Record<string, Omit<House, "rank" | "points" | "name" | "todayPoints">>);
 
 const fallbackHouses: House[] = [
-    {
-      rank: 1,
-      name: "House of Abū Bakr",
-      points: 4985,
-      ...houseConfig["House of Abū Bakr"],
-    },
-    {
-      rank: 2,
-      name: "House of ʿUmar",
-      points: 4175,
-      ...houseConfig["House of ʿUmar"],
-    },
-    {
-      rank: 3,
-      name: "House of ʿĀʾishah",
-      points: 3995,
-      ...houseConfig["House of ʿĀʾishah"],
-    },
-    {
-      rank: 4,
-      name: "House of Khadījah",
-      points: 3480,
-      ...houseConfig["House of Khadījah"],
-    },
-  ];
+  {
+    rank: 1,
+    name: "House of Abū Bakr",
+    points: 4985,
+    todayPoints: 0,
+    ...houseConfig["House of Abū Bakr"],
+  },
+  {
+    rank: 2,
+    name: "House of ʿUmar",
+    points: 4175,
+    todayPoints: 0,
+    ...houseConfig["House of ʿUmar"],
+  },
+  {
+    rank: 3,
+    name: "House of ʿĀʾishah",
+    points: 3995,
+    todayPoints: 0,
+    ...houseConfig["House of ʿĀʾishah"],
+  },
+  {
+    rank: 4,
+    name: "House of Khadījah",
+    points: 3480,
+    todayPoints: 0,
+    ...houseConfig["House of Khadījah"],
+  },
+];
+
+function getAcademicWeek(): number {
+  const now = new Date();
+  const year = now.getMonth() >= 7 ? now.getFullYear() : now.getFullYear() - 1;
+  const academicStart = new Date(year, 7, 15); // Aug 15
+  const diffTime = now.getTime() - academicStart.getTime();
+  const diffWeeks = Math.floor(diffTime / (7 * 24 * 60 * 60 * 1000)) + 1;
+  return Math.max(1, diffWeeks);
+}
+
+function getTodayDateString(): string {
+  return new Date().toISOString().split('T')[0];
+}
 
 export default function Home() {
   const [houses, setHouses] = useState<House[]>(fallbackHouses);
   const [loading, setLoading] = useState(true);
+  const [recentAchievement, setRecentAchievement] = useState<RecentAchievement | null>(null);
+  const [maxPoints, setMaxPoints] = useState(1);
   const fetchingRef = useRef(false);
+  const achievementTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const weekNumber = getAcademicWeek();
 
   useEffect(() => {
     async function fetchHouses() {
@@ -94,6 +122,7 @@ export default function Home() {
       }
       fetchingRef.current = true;
       try {
+        // Fetch house standings
         const { data, error } = await supabase
           .from("house_standings_view")
           .select("*")
@@ -104,6 +133,21 @@ export default function Home() {
           setHouses(fallbackHouses);
           return;
         }
+
+        // Fetch today's points per house
+        const todayDate = getTodayDateString();
+        const { data: todayData } = await supabase
+          .from("merit_log")
+          .select("house, points")
+          .eq("date_of_event", todayDate);
+
+        const todayPointsByHouse = new Map<string, number>();
+        (todayData ?? []).forEach((row) => {
+          const houseName = canonicalHouseName(String(row.house ?? ""));
+          if (houseName) {
+            todayPointsByHouse.set(houseName, (todayPointsByHouse.get(houseName) || 0) + (row.points || 0));
+          }
+        });
 
         const pointsByHouse = new Map<string, number>();
 
@@ -121,6 +165,7 @@ export default function Home() {
           .map((house) => ({
             name: house.name,
             points: pointsByHouse.get(house.name) || 0,
+            todayPoints: todayPointsByHouse.get(house.name) || 0,
             ...houseConfig[house.name],
           }))
           .sort((a, b) => b.points - a.points)
@@ -129,6 +174,8 @@ export default function Home() {
             rank: index + 1,
           }));
 
+        const max = Math.max(...nextHouses.map(h => h.points), 1);
+        setMaxPoints(max);
         setHouses(nextHouses.length > 0 ? nextHouses : fallbackHouses);
       } catch (err) {
         console.error("Error fetching houses:", err);
@@ -143,6 +190,33 @@ export default function Home() {
 
     const channel = supabase
       .channel("leaderboard-changes")
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "merit_log" },
+        (payload) => {
+          // Show recent achievement
+          const newRow = payload.new as Record<string, unknown>;
+          const studentName = String(newRow.student_name ?? "Student").split(" ")[0];
+          const points = Number(newRow.points ?? 0);
+          const subcategory = String(newRow.subcategory ?? "achievement");
+
+          setRecentAchievement({
+            studentName,
+            points,
+            domain: subcategory,
+          });
+
+          // Clear after 5 seconds
+          if (achievementTimeoutRef.current) {
+            clearTimeout(achievementTimeoutRef.current);
+          }
+          achievementTimeoutRef.current = setTimeout(() => {
+            setRecentAchievement(null);
+          }, 5000);
+
+          fetchHouses();
+        }
+      )
       .on(
         "postgres_changes",
         { event: "*", schema: "public", table: "merit_log" },
@@ -171,21 +245,15 @@ export default function Home() {
       supabase.removeChannel(channel);
       clearInterval(refreshInterval);
       document.removeEventListener("visibilitychange", handleVisibility);
+      if (achievementTimeoutRef.current) {
+        clearTimeout(achievementTimeoutRef.current);
+      }
     };
   }, []);
 
   return (
-    <div className="h-screen py-4 px-4 sm:px-6 lg:px-8 starry-bg flex flex-col" style={{ background: "var(--color-soft-gray)" }}>
-      {/* School Branding */}
-      <div
-        className="absolute top-4 left-6 text-sm tracking-wide"
-        style={{
-          color: "var(--color-forest)",
-          fontFamily: "var(--font-source-sans), 'Source Sans 3', sans-serif"
-        }}
-      >
-        {schoolConfig.schoolName}
-      </div>
+    <div className="min-h-screen py-6 px-4 sm:px-6 lg:px-8 flex flex-col" style={{ background: "#faf9f7" }}>
+      {/* Navigation Links */}
       <div className="absolute top-4 right-6 flex items-center gap-2">
         <Link
           href="/house-mvps"
@@ -203,62 +271,49 @@ export default function Home() {
         </Link>
       </div>
 
-      <div className="max-w-6xl mx-auto w-full flex flex-col flex-1">
-        {/* Header with Crest */}
-        <header className="text-center mb-4">
-          {/* Crest */}
-          <div className="flex justify-center mb-2">
-            <Image
-              src={schoolConfig.crestLogo}
-              alt={`${schoolConfig.systemName} Crest`}
-              width={100}
-              height={100}
-              className="drop-shadow-lg"
-              priority
-            />
-          </div>
-
-          {/* Title */}
+      <div className="max-w-2xl mx-auto w-full flex flex-col flex-1">
+        {/* Header */}
+        <header className="text-center mb-6 mt-8">
           <h1
-            className="text-3xl sm:text-4xl md:text-5xl text-[#1a1a1a] mb-2 gold-underline pb-1"
+            className="text-3xl sm:text-4xl font-bold text-[#1a1a1a] mb-2"
             style={{ fontFamily: "var(--font-poppins), 'Poppins', sans-serif" }}
           >
-            {schoolConfig.systemName} Leaderboard
+            House Standings
           </h1>
-
-          {/* Tagline */}
           <p
-            className="text-lg sm:text-xl mt-3"
-            style={{
-              color: "var(--color-forest)",
-              fontFamily: "var(--font-poppins), 'Poppins', sans-serif"
-            }}
+            className="text-sm text-[#1a1a1a]/50"
+            style={{ fontFamily: "var(--font-source-sans), 'Source Sans 3', sans-serif" }}
           >
-            {schoolConfig.tagline}
+            Week {weekNumber} - Live Leaderboard
           </p>
-          <p
-            className="text-xs sm:text-sm mt-2"
-            style={{
-              color: "var(--color-muted)",
-              fontFamily: "var(--font-source-sans), 'Source Sans 3', sans-serif"
-            }}
-          >
-            Powered by Nama Learning Systems
-          </p>
-
         </header>
 
-        {/* Leaderboard Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+        {/* House Cards */}
+        <div className="space-y-4">
           {loading ? (
-            <div className="col-span-2 flex items-center justify-center py-12">
+            <div className="flex items-center justify-center py-12">
               <p className="text-[#1a1a1a] text-lg">Loading...</p>
             </div>
           ) : (
-            houses.map((house) => (
-              <HouseCard key={house.name} house={house} />
+            houses.map((house, index) => (
+              <HouseCard
+                key={house.name}
+                house={house}
+                maxPoints={maxPoints}
+                recentAchievement={index === 0 ? recentAchievement : null}
+              />
             ))
           )}
+        </div>
+
+        {/* Attribution */}
+        <div className="mt-8 text-center">
+          <p
+            className="text-xs text-[#1a1a1a]/40"
+            style={{ fontFamily: "var(--font-source-sans), 'Source Sans 3', sans-serif" }}
+          >
+            Powered by Nama Learning Systems
+          </p>
         </div>
       </div>
     </div>

@@ -12,6 +12,7 @@ type AwardPayload =
   | {
       mode: 'students'
       categoryId: string
+      domainId?: number
       students: StudentPayload[]
       notes?: string
       eventDate?: string
@@ -135,6 +136,7 @@ export async function POST(request: Request) {
         points: category.points,
         notes: payload.notes || '',
         staff_name: staff.staffName,
+        domain_id: payload.domainId || null,
       })
     }
 

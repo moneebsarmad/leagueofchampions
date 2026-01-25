@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useAuth } from '../../providers'
 import { supabase } from '../../../lib/supabaseClient'
 import CrestLoader from '../../../components/CrestLoader'
-import { getHouseColors, canonicalHouseName } from '@/lib/school.config'
+import { canonicalHouseName } from '@/lib/school.config'
 
 interface StudentProfile {
   name: string
@@ -19,21 +19,48 @@ interface MeritEntry {
   subcategory: string
   timestamp: string
   staffName: string
+  domain_id: number | null
 }
 
-const houseColors = getHouseColors()
-
-function getHouseColor(house: string): string {
-  const canonical = canonicalHouseName(house)
-  return houseColors[canonical] || '#1a1a1a'
+interface Domain {
+  id: number
+  display_name: string
 }
 
-function getInitials(name: string): string {
-  const parts = name.trim().split(' ')
-  if (parts.length >= 2) {
-    return (parts[0][0] + parts[1][0]).toUpperCase()
+const GOALS_STORAGE_KEY = 'portal:student-goals'
+const DEFAULT_WEEKLY_GOAL = 100
+
+function getFirstName(fullName: string): string {
+  return fullName.trim().split(' ')[0] || fullName
+}
+
+function getStartOfWeek(): Date {
+  const now = new Date()
+  const day = now.getDay()
+  const diff = now.getDate() - day + (day === 0 ? -6 : 1) // Adjust when day is Sunday
+  return new Date(now.setDate(diff))
+}
+
+function loadGoals(): { weekly: number; monthly: number; quarterly: number } {
+  if (typeof window === 'undefined') return { weekly: DEFAULT_WEEKLY_GOAL, monthly: 400, quarterly: 1200 }
+  try {
+    const stored = localStorage.getItem(GOALS_STORAGE_KEY)
+    if (stored) {
+      return JSON.parse(stored)
+    }
+  } catch {
+    // Ignore
   }
-  return name.slice(0, 2).toUpperCase()
+  return { weekly: DEFAULT_WEEKLY_GOAL, monthly: 400, quarterly: 1200 }
+}
+
+function saveGoals(goals: { weekly: number; monthly: number; quarterly: number }) {
+  if (typeof window === 'undefined') return
+  try {
+    localStorage.setItem(GOALS_STORAGE_KEY, JSON.stringify(goals))
+  } catch {
+    // Ignore
+  }
 }
 
 export default function MyPointsPage() {
@@ -41,7 +68,11 @@ export default function MyPointsPage() {
   const userId = user?.id ?? null
   const [profile, setProfile] = useState<StudentProfile | null>(null)
   const [merits, setMerits] = useState<MeritEntry[]>([])
+  const [domains, setDomains] = useState<Domain[]>([])
   const [loading, setLoading] = useState(true)
+  const [goals, setGoals] = useState(loadGoals)
+  const [showGoalModal, setShowGoalModal] = useState(false)
+  const [editingGoal, setEditingGoal] = useState(goals.weekly.toString())
 
   useEffect(() => {
     if (!userId) return
@@ -61,42 +92,53 @@ export default function MyPointsPage() {
         return
       }
 
-      const { data: student, error: studentError } = await supabase
-        .from('students')
-        .select('student_name, grade, section, house')
-        .eq('student_id', profileData.linked_student_id)
-        .maybeSingle()
+      // Fetch student, merits, and domains in parallel
+      const [studentRes, meritRes, domainsRes] = await Promise.all([
+        supabase
+          .from('students')
+          .select('student_name, grade, section, house')
+          .eq('student_id', profileData.linked_student_id)
+          .maybeSingle(),
+        supabase
+          .from('merit_log')
+          .select('*')
+          .eq('student_id', profileData.linked_student_id)
+          .order('timestamp', { ascending: false }),
+        supabase
+          .from('merit_domains')
+          .select('id, display_name')
+          .eq('is_active', true),
+      ])
 
-      if (studentError || !student?.student_name) {
+      const student = studentRes.data
+      if (!student?.student_name) {
         setProfile(null)
         setMerits([])
         setLoading(false)
         return
       }
 
-      const name = String(student.student_name ?? '').trim()
-      const grade = Number(student.grade ?? 0)
-      const section = String(student.section ?? '')
-      const house = String(student.house ?? '')
+      setProfile({
+        name: String(student.student_name ?? '').trim(),
+        grade: Number(student.grade ?? 0),
+        section: String(student.section ?? ''),
+        house: String(student.house ?? ''),
+      })
 
-      setProfile({ name, grade, section, house })
-
-      let query = supabase
-        .from('merit_log')
-        .select('*')
-        .eq('student_id', profileData.linked_student_id)
-
-      const { data: meritData } = await query.order('timestamp', { ascending: false })
-
-      const entries: MeritEntry[] = (meritData || []).map((m) => ({
+      setMerits((meritRes.data || []).map((m) => ({
         points: m.points || 0,
         r: m.r || '',
         subcategory: m.subcategory || '',
         timestamp: m.timestamp || '',
         staffName: m.staff_name || '',
-      }))
+        domain_id: m.domain_id || null,
+      })))
 
-      setMerits(entries)
+      setDomains((domainsRes.data || []).map((d) => ({
+        id: d.id,
+        display_name: d.display_name || '',
+      })))
+
       setLoading(false)
     }
 
@@ -108,26 +150,31 @@ export default function MyPointsPage() {
     [merits]
   )
 
-  const categoryTotals = useMemo(() => {
-    return ['Respect', 'Responsibility', 'Righteousness'].map((category) => {
-      const points = merits
-        .filter((entry) => entry.r.toLowerCase().includes(category.toLowerCase()))
-        .reduce((sum, entry) => sum + entry.points, 0)
-
-      const color = category === 'Respect'
-        ? '#1f4e79'
-        : category === 'Responsibility'
-          ? '#8a6a1e'
-          : '#6b2f8a'
-
-      return { category, points, color }
-    })
+  const weeklyPoints = useMemo(() => {
+    const weekStart = getStartOfWeek()
+    return merits
+      .filter((m) => new Date(m.timestamp) >= weekStart)
+      .reduce((sum, m) => sum + m.points, 0)
   }, [merits])
 
+  const mostRecentMerit = merits[0] || null
+
+  const getDomainName = (domainId: number | null): string => {
+    if (!domainId) return 'achievement'
+    const domain = domains.find((d) => d.id === domainId)
+    return domain?.display_name?.toLowerCase() || 'achievement'
+  }
+
+  const handleSaveGoal = () => {
+    const newWeekly = Math.max(1, parseInt(editingGoal) || DEFAULT_WEEKLY_GOAL)
+    const newGoals = { ...goals, weekly: newWeekly }
+    setGoals(newGoals)
+    saveGoals(newGoals)
+    setShowGoalModal(false)
+  }
+
   if (loading) {
-    return (
-      <CrestLoader label="Loading your points..." />
-    )
+    return <CrestLoader label="Loading your profile..." />
   }
 
   if (!profile) {
@@ -139,90 +186,134 @@ export default function MyPointsPage() {
     )
   }
 
+  const progressPercent = Math.min(100, (weeklyPoints / goals.weekly) * 100)
+
   return (
-    <div className="max-w-4xl mx-auto">
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold text-[#1a1a1a] mb-2" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
-          My Points
-        </h1>
-        <div className="flex items-center gap-3">
-          <div className="h-1 w-16 bg-gradient-to-r from-[#B8860B] to-[#d4a017] rounded-full"></div>
-          <p className="text-[#1a1a1a]/50 text-sm font-medium">Your merit summary and recent activity.</p>
+    <div className="max-w-md mx-auto">
+      {/* Avatar Section */}
+      <div className="flex flex-col items-center mb-8">
+        <div className="w-32 h-32 rounded-full bg-[#2D5016] flex items-center justify-center mb-4 shadow-lg" style={{ border: '4px solid #3d6b1e' }}>
+          <svg className="w-16 h-16 text-white" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+          </svg>
         </div>
+        <h1 className="text-2xl font-bold text-[#1a1a1a]" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+          {profile.name}
+        </h1>
+        <p className="text-[#1a1a1a]/50">{canonicalHouseName(profile.house)}</p>
       </div>
 
-      <div className="bg-white rounded-2xl shadow-sm border border-[#B8860B]/10 overflow-hidden">
-        <div className="p-6 border-b border-[#1a1a1a]/5">
-          <div className="flex items-center gap-4">
-            <div
-              className="w-16 h-16 rounded-xl flex items-center justify-center text-xl font-bold"
-              style={{
-                backgroundColor: `${getHouseColor(profile.house)}15`,
-                color: getHouseColor(profile.house),
-              }}
-            >
-              {getInitials(profile.name)}
+      {/* Recent Recognition Card */}
+      {mostRecentMerit && (
+        <div className="bg-white rounded-2xl p-6 shadow-sm border border-[#B8860B]/10 mb-6">
+          <div className="flex items-start gap-4">
+            {/* Hexagon Icon */}
+            <div className="w-12 h-12 rounded-xl bg-[#2D5016]/10 flex items-center justify-center flex-shrink-0">
+              <svg className="w-6 h-6 text-[#2D5016]" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2L3 7v10l9 5 9-5V7l-9-5zm0 2.18l6 3.33v6.98l-6 3.33-6-3.33V7.51l6-3.33z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
             </div>
-            <div>
-              <p className="text-xl font-bold text-[#1a1a1a]" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
-                {profile.name}
+            <div className="flex-1">
+              <p className="font-semibold text-[#1a1a1a] text-lg">
+                Great {getDomainName(mostRecentMerit.domain_id)} adab, {getFirstName(profile.name)}!
               </p>
-              <p className="text-[#1a1a1a]/50">
-                Grade {profile.grade}{profile.section}
-                <span className="text-[#1a1a1a]/20"> • </span>
-                {canonicalHouseName(profile.house)}
+              <p className="text-sm text-[#1a1a1a]/50 mt-1">
+                {mostRecentMerit.subcategory || mostRecentMerit.r}
               </p>
             </div>
           </div>
-        </div>
 
-        <div className="p-6 border-b border-[#1a1a1a]/5 text-center bg-gradient-to-br from-[#faf9f7] to-white">
-          <p className="text-sm text-[#1a1a1a]/50 mb-1">Total Points</p>
-          <p
-            className="text-4xl font-bold"
+          {/* Points Badge */}
+          <div className="mt-4 flex justify-center">
+            <div className="inline-flex items-center gap-2 bg-[#B8860B]/10 px-4 py-2 rounded-full">
+              <svg className="w-5 h-5 text-[#B8860B]" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2L9.19 8.63L2 9.24l5.46 4.73L5.82 21L12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2z" />
+              </svg>
+              <span className="font-bold text-[#B8860B]">+{mostRecentMerit.points} Points</span>
+              <span className="text-[#1a1a1a]/50">for {canonicalHouseName(profile.house)?.replace('House of ', '')}</span>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Weekly Progress */}
+      <div className="bg-white rounded-2xl p-6 shadow-sm border border-[#B8860B]/10 mb-6">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="font-semibold text-[#1a1a1a]">Weekly Progress</h3>
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-[#1a1a1a]/50">{weeklyPoints} / {goals.weekly} pts</span>
+            <button
+              onClick={() => {
+                setEditingGoal(goals.weekly.toString())
+                setShowGoalModal(true)
+              }}
+              className="text-[#B8860B] hover:text-[#8b6508] transition-colors"
+              title="Set goal"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div className="h-3 bg-gray-100 rounded-full overflow-hidden">
+          <div
+            className="h-full rounded-full transition-all duration-500"
             style={{
-              color: getHouseColor(profile.house),
-              fontFamily: 'var(--font-playfair), Georgia, serif',
+              width: `${progressPercent}%`,
+              background: 'linear-gradient(90deg, #2D5016 0%, #B8860B 100%)',
             }}
-          >
+          />
+        </div>
+        {weeklyPoints >= goals.weekly && (
+          <p className="text-sm text-[#055437] font-medium mt-2 text-center">
+            Goal achieved! Great work this week!
+          </p>
+        )}
+      </div>
+
+      {/* Total Points Summary */}
+      <div className="bg-white rounded-2xl p-6 shadow-sm border border-[#B8860B]/10">
+        <div className="text-center">
+          <p className="text-sm text-[#1a1a1a]/50 mb-1">Total Points Earned</p>
+          <p className="text-4xl font-bold text-[#2D5016]" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
             {totalPoints}
           </p>
         </div>
-
-        <div className="p-6 border-b border-[#1a1a1a]/5">
-          <h3 className="text-xs font-semibold text-[#1a1a1a]/40 uppercase tracking-wider mb-3">Points by Category</h3>
-          {categoryTotals.map((item) => (
-            <div key={item.category} className="flex items-center justify-between py-2.5">
-              <div className="flex items-center gap-3">
-                <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }} />
-                <span className="text-sm text-[#1a1a1a]/70">{item.category}</span>
-              </div>
-              <span className="font-semibold" style={{ color: item.color }}>{item.points}</span>
-            </div>
-          ))}
-        </div>
-
-        <div className="p-6">
-          <h3 className="text-xs font-semibold text-[#1a1a1a]/40 uppercase tracking-wider mb-3">Recent Activity</h3>
-          {merits.length === 0 ? (
-            <p className="text-[#1a1a1a]/40 text-sm">No activity yet</p>
-          ) : (
-            <div className="space-y-3 max-h-64 overflow-y-auto">
-              {merits.slice(0, 10).map((entry, index) => (
-                <div key={index} className="flex items-center justify-between py-2.5 border-b border-[#1a1a1a]/5 last:border-0">
-                  <div>
-                    <p className="text-sm font-medium text-[#1a1a1a]">
-                      {entry.subcategory || entry.r?.split(' – ')[0]}
-                    </p>
-                    <p className="text-xs text-[#1a1a1a]/40">{entry.staffName}</p>
-                  </div>
-                  <span className="text-[#055437] font-semibold">+{entry.points}</span>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
       </div>
+
+      {/* Goal Setting Modal */}
+      {showGoalModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl p-6 w-full max-w-sm shadow-xl">
+            <h3 className="text-lg font-semibold text-[#1a1a1a] mb-4">Set Weekly Goal</h3>
+            <input
+              type="number"
+              min="1"
+              value={editingGoal}
+              onChange={(e) => setEditingGoal(e.target.value)}
+              className="w-full px-4 py-3 border border-[#1a1a1a]/10 rounded-xl focus:ring-2 focus:ring-[#B8860B]/30 focus:border-[#B8860B] outline-none mb-4"
+              placeholder="Enter weekly goal"
+            />
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowGoalModal(false)}
+                className="flex-1 py-3 px-4 border border-[#1a1a1a]/10 rounded-xl text-[#1a1a1a]/70 font-medium hover:bg-[#faf9f7] transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleSaveGoal}
+                className="flex-1 py-3 px-4 bg-gradient-to-r from-[#B8860B] to-[#8b6508] text-white rounded-xl font-medium hover:from-[#8b6508] hover:to-[#7a5f14] transition-all"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

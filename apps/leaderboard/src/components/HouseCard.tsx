@@ -1,5 +1,3 @@
-import Image from "next/image";
-
 interface House {
   rank: number;
   name: string;
@@ -9,84 +7,111 @@ interface House {
   color: string;
   bgColor: string;
   logo?: string | null;
+  todayPoints?: number;
+}
+
+interface RecentAchievement {
+  studentName: string;
+  points: number;
+  domain: string;
 }
 
 interface HouseCardProps {
   house: House;
+  maxPoints: number;
+  recentAchievement?: RecentAchievement | null;
 }
 
-export default function HouseCard({ house }: HouseCardProps) {
+export default function HouseCard({ house, maxPoints, recentAchievement }: HouseCardProps) {
+  const isFirstPlace = house.rank === 1;
+  const progressPercent = maxPoints > 0 ? Math.min(100, (house.points / maxPoints) * 100) : 0;
+  const displayName = house.name.replace("House of ", "");
+
   return (
     <div
-      className="relative rounded-lg overflow-hidden shadow-lg float-card"
-      style={{
-        borderLeft: `5px solid ${house.color}`,
-        background: house.bgColor,
-      }}
+      className={`relative rounded-2xl overflow-hidden shadow-sm bg-white ${
+        isFirstPlace ? "ring-2 ring-[#2D5016] ring-offset-2" : ""
+      }`}
     >
-      {/* Rank Badge */}
-      <div className="absolute top-3 right-3 w-7 h-7 rounded-full flex items-center justify-center text-sm badge-gold">
-        {house.rank}
-      </div>
+      <div className="p-5">
+        <div className="flex items-center gap-4">
+          {/* Rank Badge */}
+          <div
+            className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 ${
+              isFirstPlace
+                ? "text-white"
+                : "bg-white border-2 text-[#B8860B]"
+            }`}
+            style={{
+              backgroundColor: isFirstPlace ? house.color : "white",
+              borderColor: isFirstPlace ? house.color : "#B8860B",
+            }}
+          >
+            {house.rank}
+          </div>
 
-      <div className="p-4 pr-32">
-        {/* House Name */}
-        <h2
-          className="text-2xl font-bold mb-1"
-          style={{
-            color: house.color,
-            fontFamily: "var(--font-poppins), 'Poppins', sans-serif"
-          }}
-        >
-          {house.name}
-        </h2>
+          {/* House Info */}
+          <div className="flex-1 min-w-0">
+            <h2
+              className="text-lg font-bold truncate"
+              style={{
+                color: house.color,
+                fontFamily: "var(--font-poppins), 'Poppins', sans-serif",
+              }}
+            >
+              {displayName}
+            </h2>
 
-        {/* Virtue */}
-        <p
-          className="italic text-lg mb-1"
-          style={{
-            color: house.color,
-            fontFamily: "var(--font-poppins), 'Poppins', sans-serif"
-          }}
-        >
-          {house.virtue}
-        </p>
+            {/* Progress Bar */}
+            <div className="h-2.5 bg-gray-100 rounded-full overflow-hidden mt-2">
+              <div
+                className="h-full rounded-full transition-all duration-500"
+                style={{
+                  width: `${progressPercent}%`,
+                  backgroundColor: house.color,
+                }}
+              />
+            </div>
+          </div>
 
-        {/* Description */}
-        <p
-          className="text-sm mb-2"
-          style={{
-            color: "var(--color-muted)",
-            fontFamily: "var(--font-source-sans), 'Source Sans 3', sans-serif"
-          }}
-        >
-          {house.description}
-        </p>
-
-        {/* Points */}
-        <p
-          className="text-4xl font-bold"
-          style={{
-            color: "var(--color-dark)",
-            fontFamily: "var(--font-poppins), 'Poppins', sans-serif"
-          }}
-        >
-          {house.points.toLocaleString()}
-        </p>
-      </div>
-
-      {/* House Logo - Vertically Centered */}
-      {house.logo ? (
-        <div className="absolute right-4 top-1/2 -translate-y-1/2 w-28 h-28">
-          <Image
-            src={house.logo}
-            alt={`${house.name} Logo`}
-            width={112}
-            height={112}
-            className="object-contain"
-          />
+          {/* Points & Today */}
+          <div className="text-right flex-shrink-0">
+            <p
+              className="text-2xl font-bold"
+              style={{
+                color: house.color,
+                fontFamily: "var(--font-poppins), 'Poppins', sans-serif",
+              }}
+            >
+              {house.points.toLocaleString()}
+            </p>
+            {(house.todayPoints ?? 0) > 0 && (
+              <p
+                className="text-xs font-medium text-[#2D5016]"
+                style={{ fontFamily: "var(--font-source-sans), 'Source Sans 3', sans-serif" }}
+              >
+                +{house.todayPoints} today
+              </p>
+            )}
+          </div>
         </div>
-      ) : null}
+
+        {/* Recent Achievement (only for first place) */}
+        {isFirstPlace && recentAchievement && (
+          <div
+            className="mt-3 pt-3 border-t border-gray-100 flex items-center gap-2 text-sm animate-pulse"
+            style={{
+              color: house.color,
+              fontFamily: "var(--font-source-sans), 'Source Sans 3', sans-serif",
+            }}
+          >
+            <span className="text-[#B8860B]">&#10022;</span>
+            <span>
+              {recentAchievement.studentName} just earned +{recentAchievement.points} for {recentAchievement.domain}
+            </span>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
