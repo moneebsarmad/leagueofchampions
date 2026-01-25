@@ -679,68 +679,53 @@ export default function AddPointsPage() {
           </h2>
         </div>
 
-        <div className="space-y-3">
-          {rOptions.map((r) => {
-            const icon = r.toLowerCase().includes('respect') ? '🤝'
-              : r.toLowerCase().includes('responsibility') ? '✅'
-              : r.toLowerCase().includes('righteous') ? '⭐'
-              : '📌'
-            return (
-              <button
-                key={r}
-                onClick={() => {
-                  setSelectedR(r)
-                  setSelectedCategory(null)
-                }}
-                disabled={!selectedDomain}
-                className={`w-full flex items-center gap-4 p-4 rounded-xl border-2 transition-all ${
-                  selectedR === r
-                    ? 'border-[#B8860B] bg-[#B8860B]/5'
-                    : 'border-[#1a1a1a]/10 hover:border-[#B8860B]/30'
-                } ${!selectedDomain ? 'opacity-50 cursor-not-allowed' : ''}`}
-              >
-                <span className="text-2xl">{icon}</span>
-                <div className="text-left flex-1">
-                  <p className="font-medium text-[#1a1a1a]">{r}</p>
-                </div>
-                {selectedR === r && (
-                  <div className="w-6 h-6 rounded-full bg-[#B8860B] flex items-center justify-center">
-                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                  </div>
-                )}
-              </button>
-            )
-          })}
-          {isSuperAdmin && houseCompetitionEnabled && (
+        <p className="text-sm text-[#1a1a1a]/50 mb-4">Choose the type of recognition</p>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          {rOptions.map((r) => (
             <button
+              key={r}
               onClick={() => {
-                setSelectedR(HOUSE_COMPETITION_R)
+                setSelectedR(r)
                 setSelectedCategory(null)
-                setSelectedStudents([])
               }}
-              className={`w-full flex items-center gap-4 p-4 rounded-xl border-2 transition-all ${
-                selectedR === HOUSE_COMPETITION_R
-                  ? 'border-[#B8860B] bg-[#B8860B]/5'
-                  : 'border-[#1a1a1a]/10 hover:border-[#B8860B]/30'
-              }`}
+              disabled={!selectedDomain}
+              className={`px-4 py-3 rounded-xl font-medium text-sm transition-all flex items-center justify-center gap-2 ${
+                selectedR === r
+                  ? 'bg-[#2D5016] text-white border-2 border-[#2D5016]'
+                  : 'bg-white text-[#1a1a1a] border-2 border-[#1a1a1a]/10 hover:border-[#2D5016]/30'
+              } ${!selectedDomain ? 'opacity-50 cursor-not-allowed' : ''}`}
             >
-              <span className="text-2xl">🏆</span>
-              <div className="text-left flex-1">
-                <p className="font-medium text-[#1a1a1a]">House Competition</p>
-                <p className="text-xs text-[#1a1a1a]/50">Award points to a full house</p>
-              </div>
-              {selectedR === HOUSE_COMPETITION_R && (
-                <div className="w-6 h-6 rounded-full bg-[#B8860B] flex items-center justify-center">
-                  <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                </div>
+              {selectedR === r && (
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
               )}
+              {r}
             </button>
-          )}
+          ))}
         </div>
+        {isSuperAdmin && houseCompetitionEnabled && (
+          <button
+            onClick={() => {
+              setSelectedR(HOUSE_COMPETITION_R)
+              setSelectedCategory(null)
+              setSelectedStudents([])
+            }}
+            className={`mt-3 w-full px-4 py-3 rounded-xl font-medium text-sm transition-all flex items-center justify-center gap-2 ${
+              selectedR === HOUSE_COMPETITION_R
+                ? 'bg-[#2D5016] text-white border-2 border-[#2D5016]'
+                : 'bg-white text-[#1a1a1a] border-2 border-[#1a1a1a]/10 hover:border-[#2D5016]/30'
+            }`}
+          >
+            {selectedR === HOUSE_COMPETITION_R && (
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+            )}
+            House Competition
+          </button>
+        )}
       </div>
 
       {/* Step 4: Select Reason */}
@@ -751,28 +736,30 @@ export default function AddPointsPage() {
             <h2 className="text-lg font-semibold text-[#1a1a1a]">Select Reason</h2>
           </div>
 
-          <div className="space-y-2">
+          <p className="text-sm text-[#1a1a1a]/50 mb-4">What did the student do?</p>
+
+          <div className="grid grid-cols-2 gap-3">
             {subcategories.map((sub) => (
               <button
                 key={sub.id}
                 onClick={() => setSelectedCategory(sub)}
-                className={`w-full flex items-center gap-4 p-4 rounded-xl border-2 transition-all ${
+                className={`px-4 py-3 rounded-xl font-medium text-sm transition-all flex items-center justify-between gap-2 ${
                   selectedCategory?.id === sub.id
-                    ? 'border-[#B8860B] bg-[#B8860B]/5'
-                    : 'border-[#1a1a1a]/10 hover:border-[#B8860B]/30'
+                    ? 'bg-[#2D5016] text-white border-2 border-[#2D5016]'
+                    : 'bg-white text-[#1a1a1a] border-2 border-[#1a1a1a]/10 hover:border-[#2D5016]/30'
                 }`}
               >
-                <div className="text-left flex-1">
-                  <p className="font-medium text-[#1a1a1a]">{sub.subcategory}</p>
-                </div>
-                <span className="font-bold text-[#055437]">+{sub.points}</span>
-                {selectedCategory?.id === sub.id && (
-                  <div className="w-6 h-6 rounded-full bg-[#B8860B] flex items-center justify-center">
-                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <span className="flex items-center gap-2">
+                  {selectedCategory?.id === sub.id && (
+                    <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
-                  </div>
-                )}
+                  )}
+                  <span className="text-left">{sub.subcategory}</span>
+                </span>
+                <span className={`font-bold flex-shrink-0 ${selectedCategory?.id === sub.id ? 'text-white' : 'text-[#2D5016]'}`}>
+                  +{sub.points}
+                </span>
               </button>
             ))}
           </div>
