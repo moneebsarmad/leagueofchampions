@@ -1,18 +1,20 @@
 @import "tailwindcss";
 
 :root {
-  --background: #1a1a2e;
-  --foreground: #ffffff;
+  --background: #f8f9fa;
+  --foreground: #1a1a1a;
 
-  /* Regal Color Palette */
-  --royal-purple: #2f0a61;
-  --royal-purple-light: #4a1a8a;
-  --gold: #c9a227;
-  --gold-light: #e8d48b;
-  --gold-dark: #9a7b1a;
-  --cream: #faf9f7;
-  --ivory: #f5f3ef;
-  --charcoal: #1a1a2e;
+  /* Nama Systems Core Palette */
+  --color-forest: #2d5016;
+  --color-forest-light: #3d6b1e;
+  --color-forest-dark: #1e3610;
+  --color-gold: #b8860b;
+  --color-gold-light: #d4a017;
+  --color-gold-dark: #8b6508;
+  --color-soft-gray: #f8f9fa;
+  --color-muted: #6b7280;
+  --color-dark: #1a1a1a;
+  --color-white: #ffffff;
 
   /* House Colors */
   --house-abu-bakr: #2f0a61;
@@ -24,20 +26,20 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-cinzel);
-  --font-display: var(--font-playfair);
+  --font-sans: var(--font-source-sans);
+  --font-display: var(--font-poppins);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-cinzel), 'Cinzel', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--font-source-sans), 'Source Sans 3', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 /* Elegant headings */
 h1, h2, h3 {
-  font-family: var(--font-playfair), 'Playfair Display', Georgia, serif;
-  letter-spacing: -0.02em;
+  font-family: var(--font-poppins), 'Poppins', sans-serif;
+  letter-spacing: -0.01em;
 }
 
 /* Gold accent underline */
@@ -52,14 +54,14 @@ h1, h2, h3 {
   transform: translateX(-50%);
   width: 100px;
   height: 3px;
-  background: linear-gradient(90deg, var(--gold) 0%, var(--gold-light) 100%);
+  background: linear-gradient(90deg, var(--color-gold) 0%, var(--color-gold-light) 100%);
   border-radius: 2px;
 }
 
 /* Regal card styling */
 .regal-card {
-  background: linear-gradient(180deg, #ffffff 0%, #faf9f7 100%);
-  border: 1px solid rgba(201, 162, 39, 0.15);
+  background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%);
+  border: 1px solid rgba(184, 134, 11, 0.18);
   box-shadow:
     0 1px 3px rgba(0, 0, 0, 0.04),
     0 4px 12px rgba(0, 0, 0, 0.03),
@@ -93,62 +95,15 @@ h1, h2, h3 {
 }
 
 .starry-bg::before {
-  background-image:
-    radial-gradient(2px 2px at 20px 30px, white, transparent),
-    radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8), transparent),
-    radial-gradient(1px 1px at 90px 40px, white, transparent),
-    radial-gradient(2px 2px at 160px 120px, rgba(255,255,255,0.9), transparent),
-    radial-gradient(1px 1px at 230px 80px, white, transparent),
-    radial-gradient(2px 2px at 300px 150px, rgba(255,255,255,0.7), transparent),
-    radial-gradient(1px 1px at 370px 50px, white, transparent),
-    radial-gradient(2px 2px at 450px 180px, rgba(255,255,255,0.8), transparent),
-    radial-gradient(1px 1px at 520px 90px, white, transparent),
-    radial-gradient(2px 2px at 600px 130px, white, transparent),
-    radial-gradient(1px 1px at 680px 200px, rgba(255,255,255,0.9), transparent),
-    radial-gradient(2px 2px at 750px 60px, white, transparent),
-    radial-gradient(1px 1px at 820px 170px, rgba(255,255,255,0.7), transparent),
-    radial-gradient(2px 2px at 900px 100px, white, transparent),
-    radial-gradient(1px 1px at 970px 220px, rgba(255,255,255,0.8), transparent),
-    radial-gradient(2px 2px at 1050px 140px, white, transparent),
-    radial-gradient(1px 1px at 1120px 50px, rgba(255,255,255,0.9), transparent),
-    radial-gradient(2px 2px at 1200px 190px, white, transparent),
-    radial-gradient(1px 1px at 100px 250px, white, transparent),
-    radial-gradient(2px 2px at 200px 300px, rgba(255,255,255,0.7), transparent),
-    radial-gradient(1px 1px at 350px 280px, white, transparent),
-    radial-gradient(2px 2px at 500px 320px, rgba(255,255,255,0.8), transparent),
-    radial-gradient(1px 1px at 650px 260px, white, transparent),
-    radial-gradient(2px 2px at 800px 350px, rgba(255,255,255,0.9), transparent),
-    radial-gradient(1px 1px at 950px 290px, white, transparent),
-    radial-gradient(2px 2px at 1100px 340px, rgba(255,255,255,0.7), transparent);
-  background-size: 1200px 400px;
-  animation: twinkle 8s ease-in-out infinite;
+  background-image: url("data:image/svg+xml,%3Csvg width='120' height='120' viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%232d5016' fill-opacity='0.08'%3E%3Cpath d='M60 6l8 12 14 4-10 11 1 15-13-6-13 6 1-15-10-11 14-4 8-12zm0 36l6 9 10 3-7 8 1 11-10-5-10 5 1-11-7-8 10-3 6-9z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  background-size: 140px 140px;
+  opacity: 0.5;
 }
 
 .starry-bg::after {
-  background-image:
-    radial-gradient(1px 1px at 50px 100px, rgba(255,255,255,0.6), transparent),
-    radial-gradient(2px 2px at 150px 200px, rgba(255,255,255,0.5), transparent),
-    radial-gradient(1px 1px at 280px 150px, rgba(255,255,255,0.7), transparent),
-    radial-gradient(2px 2px at 400px 250px, rgba(255,255,255,0.4), transparent),
-    radial-gradient(1px 1px at 550px 180px, rgba(255,255,255,0.6), transparent),
-    radial-gradient(2px 2px at 700px 280px, rgba(255,255,255,0.5), transparent),
-    radial-gradient(1px 1px at 850px 130px, rgba(255,255,255,0.7), transparent),
-    radial-gradient(2px 2px at 1000px 230px, rgba(255,255,255,0.4), transparent),
-    radial-gradient(1px 1px at 1150px 170px, rgba(255,255,255,0.6), transparent),
-    radial-gradient(1px 1px at 70px 350px, rgba(255,255,255,0.5), transparent),
-    radial-gradient(2px 2px at 220px 400px, rgba(255,255,255,0.6), transparent),
-    radial-gradient(1px 1px at 380px 380px, rgba(255,255,255,0.4), transparent),
-    radial-gradient(2px 2px at 530px 420px, rgba(255,255,255,0.5), transparent),
-    radial-gradient(1px 1px at 680px 360px, rgba(255,255,255,0.7), transparent),
-    radial-gradient(2px 2px at 830px 440px, rgba(255,255,255,0.4), transparent),
-    radial-gradient(1px 1px at 980px 390px, rgba(255,255,255,0.6), transparent);
-  background-size: 1200px 500px;
-  animation: twinkle 12s ease-in-out infinite reverse;
-}
-
-@keyframes twinkle {
-  0%, 100% { opacity: 0.7; }
-  50% { opacity: 1; }
+  background-image: url("data:image/svg+xml,%3Csvg width='160' height='160' viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23b8860b' fill-opacity='0.08'%3E%3Cpath d='M80 12l10 16 18 5-13 14 2 19-17-8-17 8 2-19-13-14 18-5 10-16z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  background-size: 180px 180px;
+  opacity: 0.4;
 }
 
 /* Floating card animation */
@@ -193,8 +148,8 @@ h1, h2, h3 {
 
 /* Badge styling */
 .badge-gold {
-  background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 100%);
+  background: linear-gradient(135deg, var(--color-gold-light) 0%, var(--color-gold) 100%);
   color: #5c4a0f;
-  border: 1px solid rgba(201, 162, 39, 0.3);
+  border: 1px solid rgba(184, 134, 11, 0.3);
   font-weight: 700;
 }

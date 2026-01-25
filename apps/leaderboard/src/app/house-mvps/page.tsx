@@ -200,14 +200,14 @@ export default function HouseMvpsPage() {
   return (
     <div
       className="min-h-screen py-6 px-4 sm:px-6 lg:px-8 starry-bg flex flex-col"
-      style={{ background: "#1a1a2e" }}
+      style={{ background: "var(--color-soft-gray)" }}
     >
       <div className="max-w-6xl mx-auto w-full flex-1">
         <div className="absolute top-4 right-6">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 rounded-full border border-[#c9a227] px-4 py-2 text-xs uppercase tracking-[0.2em] text-[#c9a227] transition hover:bg-[#c9a227] hover:text-[#1a1a2e]"
-            style={{ fontFamily: "var(--font-cinzel), 'Cinzel', sans-serif" }}
+            className="inline-flex items-center gap-2 rounded-full border border-[#B8860B] px-4 py-2 text-xs uppercase tracking-[0.2em] text-[#B8860B] transition hover:bg-[#B8860B] hover:text-white"
+            style={{ fontFamily: "var(--font-source-sans), 'Source Sans 3', sans-serif" }}
           >
             Back to Leaderboard
           </Link>
@@ -224,18 +224,18 @@ export default function HouseMvpsPage() {
             />
           </div>
           <h1
-            className="italic text-3xl sm:text-4xl md:text-5xl text-white mb-2 gold-underline pb-1"
+            className="text-3xl sm:text-4xl md:text-5xl text-[#1a1a1a] mb-2 gold-underline pb-1"
             style={{
-              fontFamily: "var(--font-playfair), 'Playfair Display', Georgia, serif",
+              fontFamily: "var(--font-poppins), 'Poppins', sans-serif",
             }}
           >
             House MVPs
           </h1>
           <p
-            className="italic text-lg sm:text-xl mt-3"
+            className="text-lg sm:text-xl mt-3"
             style={{
-              color: "#c9a227",
-              fontFamily: "var(--font-playfair), 'Playfair Display', Georgia, serif",
+              color: "var(--color-forest)",
+              fontFamily: "var(--font-poppins), 'Poppins', sans-serif",
             }}
           >
             Top 5 students from each house
@@ -244,17 +244,17 @@ export default function HouseMvpsPage() {
 
         {loading ? (
           <div className="flex items-center justify-center py-16">
-            <p className="text-white text-lg">Loading House MVPs...</p>
+            <p className="text-[#1a1a1a] text-lg">Loading House MVPs...</p>
           </div>
         ) : errorMessage ? (
           <div className="flex items-center justify-center py-16">
-            <p className="text-white text-lg">{errorMessage}</p>
+            <p className="text-[#1a1a1a] text-lg">{errorMessage}</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {visibleHouses.length === 0 ? (
               <div className="col-span-2 flex items-center justify-center py-12">
-                <p className="text-white text-lg">No MVPs found yet.</p>
+                <p className="text-[#1a1a1a] text-lg">No MVPs found yet.</p>
               </div>
             ) : (
               visibleHouses.map((houseName) => {
@@ -280,7 +280,7 @@ export default function HouseMvpsPage() {
                       style={{
                         color: config.color,
                         fontFamily:
-                          "var(--font-playfair), 'Playfair Display', Georgia, serif",
+                          "var(--font-poppins), 'Poppins', sans-serif",
                       }}
                     >
                       {houseName}
@@ -290,9 +290,9 @@ export default function HouseMvpsPage() {
                         <li
                           className="text-sm"
                           style={{
-                            color: "#4a4a4a",
+                            color: "var(--color-muted)",
                             fontFamily:
-                              "var(--font-cinzel), 'Cinzel', sans-serif",
+                              "var(--font-source-sans), 'Source Sans 3', sans-serif",
                           }}
                         >
                           No MVPs found yet.
@@ -303,9 +303,9 @@ export default function HouseMvpsPage() {
                             key={`${houseName}-${student.studentName}-${index}`}
                             className="flex items-center justify-between text-sm"
                             style={{
-                              color: "#1a1a2e",
+                              color: "var(--color-dark)",
                               fontFamily:
-                                "var(--font-cinzel), 'Cinzel', sans-serif",
+                                "var(--font-source-sans), 'Source Sans 3', sans-serif",
                             }}
                           >
                             <span>

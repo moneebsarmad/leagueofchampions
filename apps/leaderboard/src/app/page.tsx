@@ -175,13 +175,13 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="h-screen py-4 px-4 sm:px-6 lg:px-8 starry-bg flex flex-col" style={{ background: "#1a1a2e" }}>
+    <div className="h-screen py-4 px-4 sm:px-6 lg:px-8 starry-bg flex flex-col" style={{ background: "var(--color-soft-gray)" }}>
       {/* School Branding */}
       <div
         className="absolute top-4 left-6 text-sm tracking-wide"
         style={{
-          color: "#c9a227",
-          fontFamily: "var(--font-cinzel), 'Cinzel', sans-serif"
+          color: "var(--color-forest)",
+          fontFamily: "var(--font-source-sans), 'Source Sans 3', sans-serif"
         }}
       >
         {schoolConfig.schoolName}
@@ -189,15 +189,15 @@ export default function Home() {
       <div className="absolute top-4 right-6 flex items-center gap-2">
         <Link
           href="/house-mvps"
-          className="inline-flex items-center gap-2 rounded-full border border-[#c9a227] px-4 py-2 text-xs uppercase tracking-[0.2em] text-[#c9a227] transition hover:bg-[#c9a227] hover:text-[#1a1a2e]"
-          style={{ fontFamily: "var(--font-cinzel), 'Cinzel', sans-serif" }}
+          className="inline-flex items-center gap-2 rounded-full border border-[#B8860B] px-4 py-2 text-xs uppercase tracking-[0.2em] text-[#B8860B] transition hover:bg-[#B8860B] hover:text-white"
+          style={{ fontFamily: "var(--font-source-sans), 'Source Sans 3', sans-serif" }}
         >
           House MVPs
         </Link>
         <Link
           href="/hall-of-fame"
-          className="inline-flex items-center gap-2 rounded-full border border-[#c9a227] px-4 py-2 text-xs uppercase tracking-[0.2em] text-[#c9a227] transition hover:bg-[#c9a227] hover:text-[#1a1a2e]"
-          style={{ fontFamily: "var(--font-cinzel), 'Cinzel', sans-serif" }}
+          className="inline-flex items-center gap-2 rounded-full border border-[#B8860B] px-4 py-2 text-xs uppercase tracking-[0.2em] text-[#B8860B] transition hover:bg-[#B8860B] hover:text-white"
+          style={{ fontFamily: "var(--font-source-sans), 'Source Sans 3', sans-serif" }}
         >
           Hall of Fame
         </Link>
@@ -220,18 +220,18 @@ export default function Home() {
 
           {/* Title */}
           <h1
-            className="italic text-3xl sm:text-4xl md:text-5xl text-white mb-2 gold-underline pb-1"
-            style={{ fontFamily: "var(--font-playfair), 'Playfair Display', Georgia, serif" }}
+            className="text-3xl sm:text-4xl md:text-5xl text-[#1a1a1a] mb-2 gold-underline pb-1"
+            style={{ fontFamily: "var(--font-poppins), 'Poppins', sans-serif" }}
           >
             {schoolConfig.systemName} Leaderboard
           </h1>
 
           {/* Tagline */}
           <p
-            className="italic text-lg sm:text-xl mt-3"
+            className="text-lg sm:text-xl mt-3"
             style={{
-              color: "#c9a227",
-              fontFamily: "var(--font-playfair), 'Playfair Display', Georgia, serif"
+              color: "var(--color-forest)",
+              fontFamily: "var(--font-poppins), 'Poppins', sans-serif"
             }}
           >
             {schoolConfig.tagline}
@@ -243,7 +243,7 @@ export default function Home() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
           {loading ? (
             <div className="col-span-2 flex items-center justify-center py-12">
-              <p className="text-white text-lg">Loading...</p>
+              <p className="text-[#1a1a1a] text-lg">Loading...</p>
             </div>
           ) : (
             houses.map((house) => (

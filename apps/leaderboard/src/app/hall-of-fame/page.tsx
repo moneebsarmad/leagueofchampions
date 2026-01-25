@@ -27,8 +27,8 @@ const sections: HallSection[] = [
     title: "Century Club",
     subtitle: "Students with 100+ individual points",
     view: "century_club",
-    accent: "#9a7b1a",
-    tint: "#f7f1dc",
+    accent: "#B8860B",
+    tint: "#fff6df",
     icon: "100",
   },
   {
@@ -36,8 +36,8 @@ const sections: HallSection[] = [
     title: "Badr Club",
     subtitle: "Students with 300+ individual points",
     view: "badr_club",
-    accent: "#23523b",
-    tint: "#eef7f2",
+    accent: "#2D5016",
+    tint: "#edf4ea",
     icon: "🌙",
   },
   {
@@ -45,8 +45,8 @@ const sections: HallSection[] = [
     title: "Fath Club",
     subtitle: "Students with 700+ individual points",
     view: "fath_club",
-    accent: "#3b4a6b",
-    tint: "#eef1f7",
+    accent: "#1E3610",
+    tint: "#e8efe5",
     icon: "🏆",
   },
 ];
@@ -160,21 +160,21 @@ export default function HallOfFamePage() {
   return (
     <div
       className="min-h-screen py-6 px-4 sm:px-6 lg:px-8 starry-bg flex flex-col"
-      style={{ background: "#1a1a2e" }}
+      style={{ background: "var(--color-soft-gray)" }}
     >
       <div className="max-w-6xl mx-auto w-full flex-1">
         <div className="absolute top-4 right-6 flex items-center gap-2">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 rounded-full border border-[#c9a227] px-4 py-2 text-xs uppercase tracking-[0.2em] text-[#c9a227] transition hover:bg-[#c9a227] hover:text-[#1a1a2e]"
-            style={{ fontFamily: "var(--font-cinzel), 'Cinzel', sans-serif" }}
+            className="inline-flex items-center gap-2 rounded-full border border-[#B8860B] px-4 py-2 text-xs uppercase tracking-[0.2em] text-[#B8860B] transition hover:bg-[#B8860B] hover:text-white"
+            style={{ fontFamily: "var(--font-source-sans), 'Source Sans 3', sans-serif" }}
           >
             Leaderboard
           </Link>
           <Link
             href="/house-mvps"
-            className="inline-flex items-center gap-2 rounded-full border border-[#c9a227] px-4 py-2 text-xs uppercase tracking-[0.2em] text-[#c9a227] transition hover:bg-[#c9a227] hover:text-[#1a1a2e]"
-            style={{ fontFamily: "var(--font-cinzel), 'Cinzel', sans-serif" }}
+            className="inline-flex items-center gap-2 rounded-full border border-[#B8860B] px-4 py-2 text-xs uppercase tracking-[0.2em] text-[#B8860B] transition hover:bg-[#B8860B] hover:text-white"
+            style={{ fontFamily: "var(--font-source-sans), 'Source Sans 3', sans-serif" }}
           >
             House MVPs
           </Link>
@@ -192,18 +192,18 @@ export default function HallOfFamePage() {
             />
           </div>
           <h1
-            className="italic text-3xl sm:text-4xl md:text-5xl text-white mb-2 gold-underline pb-1"
+            className="text-3xl sm:text-4xl md:text-5xl text-[#1a1a1a] mb-2 gold-underline pb-1"
             style={{
-              fontFamily: "var(--font-playfair), 'Playfair Display', Georgia, serif",
+              fontFamily: "var(--font-poppins), 'Poppins', sans-serif",
             }}
           >
             Hall of Fame
           </h1>
           <p
-            className="italic text-lg sm:text-xl mt-3"
+            className="text-lg sm:text-xl mt-3"
             style={{
-              color: "#c9a227",
-              fontFamily: "var(--font-playfair), 'Playfair Display', Georgia, serif",
+              color: "var(--color-forest)",
+              fontFamily: "var(--font-poppins), 'Poppins', sans-serif",
             }}
           >
             Milestones that celebrate student excellence
@@ -212,11 +212,11 @@ export default function HallOfFamePage() {
 
         {loading ? (
           <div className="flex items-center justify-center py-16">
-            <p className="text-white text-lg">Loading Hall of Fame...</p>
+            <p className="text-[#1a1a1a] text-lg">Loading Hall of Fame...</p>
           </div>
         ) : errorMessage ? (
           <div className="flex items-center justify-center py-16">
-            <p className="text-white text-lg">{errorMessage}</p>
+            <p className="text-[#1a1a1a] text-lg">{errorMessage}</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
@@ -239,7 +239,7 @@ export default function HallOfFamePage() {
                         style={{
                           color: section.accent,
                           fontFamily:
-                            "var(--font-playfair), 'Playfair Display', Georgia, serif",
+                            "var(--font-poppins), 'Poppins', sans-serif",
                         }}
                       >
                         {section.icon}
@@ -250,7 +250,7 @@ export default function HallOfFamePage() {
                           style={{
                             color: section.accent,
                             fontFamily:
-                              "var(--font-playfair), 'Playfair Display', Georgia, serif",
+                              "var(--font-poppins), 'Poppins', sans-serif",
                           }}
                         >
                           {section.title}
@@ -258,9 +258,9 @@ export default function HallOfFamePage() {
                         <p
                           className="text-sm"
                           style={{
-                            color: "#4a4a4a",
+                            color: "var(--color-muted)",
                             fontFamily:
-                              "var(--font-cinzel), 'Cinzel', sans-serif",
+                              "var(--font-source-sans), 'Source Sans 3', sans-serif",
                           }}
                         >
                           {section.subtitle}
@@ -272,7 +272,7 @@ export default function HallOfFamePage() {
                       style={{
                         color: section.accent,
                         fontFamily:
-                          "var(--font-cinzel), 'Cinzel', sans-serif",
+                          "var(--font-source-sans), 'Source Sans 3', sans-serif",
                       }}
                     >
                       {entries.length} Total
@@ -284,9 +284,9 @@ export default function HallOfFamePage() {
                       <p
                         className="text-sm"
                         style={{
-                          color: "#4a4a4a",
+                          color: "var(--color-muted)",
                           fontFamily:
-                            "var(--font-cinzel), 'Cinzel', sans-serif",
+                            "var(--font-source-sans), 'Source Sans 3', sans-serif",
                         }}
                       >
                         No students have reached this milestone yet.
@@ -304,9 +304,9 @@ export default function HallOfFamePage() {
                             <span
                               className="text-sm font-semibold"
                               style={{
-                                color: "#1a1a2e",
+                                color: "var(--color-dark)",
                                 fontFamily:
-                                  "var(--font-cinzel), 'Cinzel', sans-serif",
+                                  "var(--font-source-sans), 'Source Sans 3', sans-serif",
                               }}
                             >
                               {entry.studentName}
@@ -316,7 +316,7 @@ export default function HallOfFamePage() {
                               style={{
                                 color: section.accent,
                                 fontFamily:
-                                  "var(--font-playfair), 'Playfair Display', Georgia, serif",
+                                  "var(--font-poppins), 'Poppins', sans-serif",
                               }}
                             >
                               {entry.points.toLocaleString()} pts
