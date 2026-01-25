@@ -176,7 +176,7 @@ export default function ReportsPage() {
         <head>
           <title>${title}</title>
           <style>
-            body { font-family: Georgia, 'Times New Roman', serif; color: #1a1a2e; padding: 24px; background: #f7f4ee; }
+            body { font-family: Georgia, 'Times New Roman', serif; color: #1a1a1a; padding: 24px; background: #f7f4ee; }
             .report { background: #fffdf9; border: 1px solid #e7dfcf; border-radius: 16px; padding: 24px; box-shadow: 0 10px 30px rgba(20, 14, 4, 0.06); }
             .header { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
             .crest { width: 64px; height: 64px; object-fit: contain; }
@@ -260,7 +260,7 @@ export default function ReportsPage() {
       const labelValue = d.value.toLocaleString()
       return `
         <text x="0" y="${y + 13}" font-size="11" fill="#4a3b1a">${d.label}</text>
-        <rect x="140" y="${y}" width="${barWidth}" height="${barHeight}" rx="6" fill="#c9a227"></rect>
+        <rect x="140" y="${y}" width="${barWidth}" height="${barHeight}" rx="6" fill="#B8860B"></rect>
         <text x="${140 + barWidth + 6}" y="${y + 13}" font-size="11" fill="#4a3b1a">${labelValue}</text>
       `
     }).join('')
@@ -297,7 +297,7 @@ export default function ReportsPage() {
         <div class="chart-title">${title}</div>
         <svg width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
           <polyline fill="none" stroke="#6b4a1a" stroke-width="2" points="${points}" />
-          ${points.split(' ').map((p) => `<circle cx="${p.split(',')[0]}" cy="${p.split(',')[1]}" r="3" fill="#c9a227" />`).join('')}
+          ${points.split(' ').map((p) => `<circle cx="${p.split(',')[0]}" cy="${p.split(',')[1]}" r="3" fill="#B8860B" />`).join('')}
           ${labels}
         </svg>
       </div>
@@ -1089,12 +1089,12 @@ export default function ReportsPage() {
     <RequireRole roles={[ROLES.ADMIN]} fallback={<AccessDenied message="Admin access required." />}>
       <div>
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-[#1a1a2e] mb-2" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+        <h1 className="text-3xl font-bold text-[#1a1a1a] mb-2" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
           Reports
         </h1>
         <div className="flex items-center gap-3">
-          <div className="h-1 w-16 bg-gradient-to-r from-[#c9a227] to-[#e8d48b] rounded-full"></div>
-          <p className="text-[#1a1a2e]/50 text-sm font-medium">
+          <div className="h-1 w-16 bg-gradient-to-r from-[#B8860B] to-[#d4a017] rounded-full"></div>
+          <p className="text-[#1a1a1a]/50 text-sm font-medium">
             Generate exports and printable summaries
           </p>
         </div>
@@ -1103,15 +1103,15 @@ export default function ReportsPage() {
       <div className="regal-card rounded-2xl p-4 mb-6">
         <div className="flex flex-wrap items-center gap-4 justify-between">
           <div className="flex items-center gap-3">
-            <h3 className="text-sm font-semibold text-[#1a1a2e] tracking-wider">
+            <h3 className="text-sm font-semibold text-[#1a1a1a] tracking-wider">
               Report Date Range
             </h3>
-            <span className="text-xs px-2.5 py-1 rounded-full bg-[#f5f3ef] text-[#1a1a2e]/60 border border-[#c9a227]/20">
+            <span className="text-xs px-2.5 py-1 rounded-full bg-[#f5f3ef] text-[#1a1a1a]/60 border border-[#B8860B]/20">
               {rangeBadgeLabel}
             </span>
           </div>
           <div className="flex flex-wrap items-center gap-3">
-            <label className="text-xs font-semibold text-[#1a1a2e]/40 tracking-wider">
+            <label className="text-xs font-semibold text-[#1a1a1a]/40 tracking-wider">
               Start
             </label>
             <input
@@ -1120,7 +1120,7 @@ export default function ReportsPage() {
               onChange={(event) => setStartDate(event.target.value)}
               className="regal-input px-3 py-2 rounded-xl text-sm"
             />
-            <label className="text-xs font-semibold text-[#1a1a2e]/40 tracking-wider">
+            <label className="text-xs font-semibold text-[#1a1a1a]/40 tracking-wider">
               End
             </label>
             <input
@@ -1136,21 +1136,21 @@ export default function ReportsPage() {
       <div className="regal-card rounded-2xl p-6 mb-8">
         <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
           <div>
-            <h3 className="text-lg font-semibold text-[#1a1a2e]" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+            <h3 className="text-lg font-semibold text-[#1a1a1a]" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
               Student Report
             </h3>
-            <p className="text-xs text-[#1a1a2e]/50 mt-1">
+            <p className="text-xs text-[#1a1a1a]/50 mt-1">
               Generate a detailed report for a single student.
             </p>
           </div>
-          <div className="text-xs px-2.5 py-1 rounded-full bg-[#f5f3ef] text-[#1a1a2e]/60 border border-[#c9a227]/20">
+          <div className="text-xs px-2.5 py-1 rounded-full bg-[#f5f3ef] text-[#1a1a1a]/60 border border-[#B8860B]/20">
             PDF / CSV
           </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           <div className="lg:col-span-2">
-            <label className="block text-xs font-semibold text-[#1a1a2e]/40 mb-1.5 tracking-wider">
+            <label className="block text-xs font-semibold text-[#1a1a1a]/40 mb-1.5 tracking-wider">
               Student
             </label>
             <div className="relative">
@@ -1165,9 +1165,9 @@ export default function ReportsPage() {
                 className="regal-input w-full px-3 py-2.5 rounded-xl text-sm"
               />
               {studentSearch && (
-                <div className="absolute z-10 mt-2 w-full rounded-xl border border-[#c9a227]/20 bg-white shadow-lg overflow-hidden">
+                <div className="absolute z-10 mt-2 w-full rounded-xl border border-[#B8860B]/20 bg-white shadow-lg overflow-hidden">
                   {filteredStudents.length === 0 ? (
-                    <div className="px-4 py-3 text-xs text-[#1a1a2e]/40">No matches found</div>
+                    <div className="px-4 py-3 text-xs text-[#1a1a1a]/40">No matches found</div>
                   ) : (
                     filteredStudents.map((student) => (
                       <button
@@ -1179,8 +1179,8 @@ export default function ReportsPage() {
                           setStudentSearch(`${student.name} (Grade ${student.grade}${student.section})`)
                         }}
                       >
-                        <span className="font-semibold text-[#1a1a2e]">{student.name}</span>
-                        <span className="text-xs text-[#1a1a2e]/40"> • Grade {student.grade}{student.section} • {student.house}</span>
+                        <span className="font-semibold text-[#1a1a1a]">{student.name}</span>
+                        <span className="text-xs text-[#1a1a1a]/40"> • Grade {student.grade}{student.section} • {student.house}</span>
                       </button>
                     ))
                   )}
@@ -1200,7 +1200,7 @@ export default function ReportsPage() {
             <button
               onClick={() => generateStudentReport('CSV')}
               disabled={!selectedStudent || isGenerating === 'student-CSV'}
-              className="px-4 py-2 text-sm rounded-xl border border-[#c9a227]/30 text-[#1a1a2e] bg-white hover:border-[#c9a227]/60 transition disabled:opacity-60"
+              className="px-4 py-2 text-sm rounded-xl border border-[#B8860B]/30 text-[#1a1a1a] bg-white hover:border-[#B8860B]/60 transition disabled:opacity-60"
             >
               {isGenerating === 'student-CSV' ? 'Generating...' : 'CSV'}
             </button>
@@ -1212,16 +1212,16 @@ export default function ReportsPage() {
         <div className="regal-card rounded-2xl p-6">
           <div className="flex items-start justify-between mb-4">
             <div>
-              <h3 className="text-lg font-semibold text-[#1a1a2e]" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+              <h3 className="text-lg font-semibold text-[#1a1a1a]" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
                 House Report
               </h3>
-              <p className="text-xs text-[#1a1a2e]/50 mt-1">Totals and entries for a single house.</p>
+              <p className="text-xs text-[#1a1a1a]/50 mt-1">Totals and entries for a single house.</p>
             </div>
-            <span className="text-xs px-2.5 py-1 rounded-full bg-[#f5f3ef] text-[#1a1a2e]/60 border border-[#c9a227]/20">
+            <span className="text-xs px-2.5 py-1 rounded-full bg-[#f5f3ef] text-[#1a1a1a]/60 border border-[#B8860B]/20">
               PDF / CSV
             </span>
           </div>
-          <label className="block text-xs font-semibold text-[#1a1a2e]/40 mb-1.5 tracking-wider">
+          <label className="block text-xs font-semibold text-[#1a1a1a]/40 mb-1.5 tracking-wider">
             House
           </label>
           <select
@@ -1235,13 +1235,13 @@ export default function ReportsPage() {
             ))}
           </select>
           {selectedHouse && houseLogos[selectedHouse] && (
-            <div className="mb-4 flex items-center gap-3 rounded-xl border border-[#c9a227]/15 bg-[#fbf8f1] px-3 py-2">
+            <div className="mb-4 flex items-center gap-3 rounded-xl border border-[#B8860B]/15 bg-[#fbf8f1] px-3 py-2">
               <img
                 src={houseLogos[selectedHouse]}
                 alt={`${selectedHouse} logo`}
                 className="h-10 w-10 object-contain"
               />
-              <span className="text-sm font-medium text-[#1a1a2e]">{selectedHouse}</span>
+              <span className="text-sm font-medium text-[#1a1a1a]">{selectedHouse}</span>
             </div>
           )}
           <div className="flex gap-2">
@@ -1255,7 +1255,7 @@ export default function ReportsPage() {
             <button
               onClick={() => generateHouseReport('CSV')}
               disabled={!selectedHouse || isGenerating === 'house-CSV'}
-              className="px-4 py-2 text-sm rounded-xl border border-[#c9a227]/30 text-[#1a1a2e] bg-white hover:border-[#c9a227]/60 transition disabled:opacity-60"
+              className="px-4 py-2 text-sm rounded-xl border border-[#B8860B]/30 text-[#1a1a1a] bg-white hover:border-[#B8860B]/60 transition disabled:opacity-60"
             >
               {isGenerating === 'house-CSV' ? 'Generating...' : 'CSV'}
             </button>
@@ -1265,16 +1265,16 @@ export default function ReportsPage() {
         <div className="regal-card rounded-2xl p-6">
           <div className="flex items-start justify-between mb-4">
             <div>
-              <h3 className="text-lg font-semibold text-[#1a1a2e]" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+              <h3 className="text-lg font-semibold text-[#1a1a1a]" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
                 Grade Report
               </h3>
-              <p className="text-xs text-[#1a1a2e]/50 mt-1">Totals and entries for a grade.</p>
+              <p className="text-xs text-[#1a1a1a]/50 mt-1">Totals and entries for a grade.</p>
             </div>
-            <span className="text-xs px-2.5 py-1 rounded-full bg-[#f5f3ef] text-[#1a1a2e]/60 border border-[#c9a227]/20">
+            <span className="text-xs px-2.5 py-1 rounded-full bg-[#f5f3ef] text-[#1a1a1a]/60 border border-[#B8860B]/20">
               PDF / CSV
             </span>
           </div>
-          <label className="block text-xs font-semibold text-[#1a1a2e]/40 mb-1.5 tracking-wider">
+          <label className="block text-xs font-semibold text-[#1a1a1a]/40 mb-1.5 tracking-wider">
             Grade
           </label>
           <select
@@ -1301,7 +1301,7 @@ export default function ReportsPage() {
             <button
               onClick={() => generateGradeReport('CSV')}
               disabled={!selectedGrade || isGenerating === 'grade-CSV'}
-              className="px-4 py-2 text-sm rounded-xl border border-[#c9a227]/30 text-[#1a1a2e] bg-white hover:border-[#c9a227]/60 transition disabled:opacity-60"
+              className="px-4 py-2 text-sm rounded-xl border border-[#B8860B]/30 text-[#1a1a1a] bg-white hover:border-[#B8860B]/60 transition disabled:opacity-60"
             >
               {isGenerating === 'grade-CSV' ? 'Generating...' : 'CSV'}
             </button>
@@ -1311,18 +1311,18 @@ export default function ReportsPage() {
         <div className="regal-card rounded-2xl p-6">
           <div className="flex items-start justify-between mb-4">
             <div>
-              <h3 className="text-lg font-semibold text-[#1a1a2e]" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+              <h3 className="text-lg font-semibold text-[#1a1a1a]" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
                 Grade/Section Report
               </h3>
-              <p className="text-xs text-[#1a1a2e]/50 mt-1">Totals and entries for one section.</p>
+              <p className="text-xs text-[#1a1a1a]/50 mt-1">Totals and entries for one section.</p>
             </div>
-            <span className="text-xs px-2.5 py-1 rounded-full bg-[#f5f3ef] text-[#1a1a2e]/60 border border-[#c9a227]/20">
+            <span className="text-xs px-2.5 py-1 rounded-full bg-[#f5f3ef] text-[#1a1a1a]/60 border border-[#B8860B]/20">
               PDF / CSV
             </span>
           </div>
           <div className="grid grid-cols-2 gap-3 mb-4">
             <div>
-              <label className="block text-xs font-semibold text-[#1a1a2e]/40 mb-1.5 tracking-wider">
+              <label className="block text-xs font-semibold text-[#1a1a1a]/40 mb-1.5 tracking-wider">
                 Grade
               </label>
               <select
@@ -1340,7 +1340,7 @@ export default function ReportsPage() {
               </select>
             </div>
             <div>
-              <label className="block text-xs font-semibold text-[#1a1a2e]/40 mb-1.5 tracking-wider">
+              <label className="block text-xs font-semibold text-[#1a1a1a]/40 mb-1.5 tracking-wider">
                 Section
               </label>
               <select
@@ -1366,7 +1366,7 @@ export default function ReportsPage() {
             <button
               onClick={() => generateSectionReport('CSV')}
               disabled={!selectedGrade || !selectedSection || isGenerating === 'section-CSV'}
-              className="px-4 py-2 text-sm rounded-xl border border-[#c9a227]/30 text-[#1a1a2e] bg-white hover:border-[#c9a227]/60 transition disabled:opacity-60"
+              className="px-4 py-2 text-sm rounded-xl border border-[#B8860B]/30 text-[#1a1a1a] bg-white hover:border-[#B8860B]/60 transition disabled:opacity-60"
             >
               {isGenerating === 'section-CSV' ? 'Generating...' : 'CSV'}
             </button>
@@ -1379,17 +1379,17 @@ export default function ReportsPage() {
           <div key={template.id} className="regal-card rounded-2xl p-6">
             <div className="flex items-start justify-between mb-4">
               <div>
-                <h3 className="text-lg font-semibold text-[#1a1a2e]" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+                <h3 className="text-lg font-semibold text-[#1a1a1a]" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
                   {template.title}
                 </h3>
-                <p className="text-xs text-[#1a1a2e]/50 mt-1">{template.description}</p>
+                <p className="text-xs text-[#1a1a1a]/50 mt-1">{template.description}</p>
               </div>
-              <span className="text-xs px-2.5 py-1 rounded-full bg-[#f5f3ef] text-[#1a1a2e]/60 border border-[#c9a227]/20">
+              <span className="text-xs px-2.5 py-1 rounded-full bg-[#f5f3ef] text-[#1a1a1a]/60 border border-[#B8860B]/20">
                 {template.scope}
               </span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold tracking-wider text-[#1a1a2e]/40">{template.format}</span>
+              <span className="text-xs font-semibold tracking-wider text-[#1a1a1a]/40">{template.format}</span>
               <div className="flex gap-2">
                 <button
                   onClick={() => generateReport(template, 'PDF')}
@@ -1401,7 +1401,7 @@ export default function ReportsPage() {
                 <button
                   onClick={() => generateReport(template, 'CSV')}
                   disabled={isGenerating === `${template.id}-CSV`}
-                  className="px-4 py-2 text-sm rounded-xl border border-[#c9a227]/30 text-[#1a1a2e] bg-white hover:border-[#c9a227]/60 transition disabled:opacity-60"
+                  className="px-4 py-2 text-sm rounded-xl border border-[#B8860B]/30 text-[#1a1a1a] bg-white hover:border-[#B8860B]/60 transition disabled:opacity-60"
                 >
                   {isGenerating === `${template.id}-CSV` ? 'Generating...' : 'CSV'}
                 </button>
@@ -1412,10 +1412,10 @@ export default function ReportsPage() {
       </div>
 
       <div className="regal-card rounded-2xl p-6">
-        <h3 className="text-lg font-semibold text-[#1a1a2e]" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+        <h3 className="text-lg font-semibold text-[#1a1a1a]" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
           Saved Report Templates
         </h3>
-        <p className="text-xs text-[#1a1a2e]/50 mt-1">
+        <p className="text-xs text-[#1a1a1a]/50 mt-1">
           Coming next: save custom filters, schedule exports, and track history.
         </p>
       </div>

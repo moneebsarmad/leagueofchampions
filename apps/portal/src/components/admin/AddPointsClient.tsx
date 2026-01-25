@@ -435,12 +435,12 @@ export default function AddPointsClient() {
   return (
     <div className="max-w-3xl mx-auto">
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-[#1a1a2e] mb-2" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+        <h1 className="text-3xl font-bold text-[#1a1a1a] mb-2" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
           Add Points
         </h1>
         <div className="flex items-center gap-3">
-          <div className="h-1 w-16 bg-gradient-to-r from-[#c9a227] to-[#e8d48b] rounded-full"></div>
-          <p className="text-[#1a1a2e]/50 text-sm font-medium">Award merit points to students</p>
+          <div className="h-1 w-16 bg-gradient-to-r from-[#B8860B] to-[#d4a017] rounded-full"></div>
+          <p className="text-[#1a1a1a]/50 text-sm font-medium">Award merit points to students</p>
         </div>
       </div>
 
@@ -464,29 +464,29 @@ export default function AddPointsClient() {
               ? 'bg-[#055437] text-white border-[#055437]/80'
               : toast.type === 'error'
               ? 'bg-[#910000] text-white border-[#910000]/80'
-              : 'bg-[#1a1a2e] text-white border-[#1a1a2e]/80'
+              : 'bg-[#1a1a1a] text-white border-[#1a1a1a]/80'
           }`}
         >
           {toast.message}
         </div>
       )}
 
-      <div className="bg-white rounded-2xl p-6 shadow-sm border border-[#c9a227]/10 mb-6">
+      <div className="bg-white rounded-2xl p-6 shadow-sm border border-[#B8860B]/10 mb-6">
         <div className="flex items-center gap-3 mb-5">
-          <span className="w-8 h-8 bg-gradient-to-br from-[#c9a227] to-[#9a7b1a] text-white rounded-full flex items-center justify-center font-bold text-sm">1</span>
-          <h2 className="text-lg font-semibold text-[#1a1a2e]">Select Students</h2>
+          <span className="w-8 h-8 bg-gradient-to-br from-[#B8860B] to-[#8b6508] text-white rounded-full flex items-center justify-center font-bold text-sm">1</span>
+          <h2 className="text-lg font-semibold text-[#1a1a1a]">Select Students</h2>
         </div>
 
         <div>
           {selectedStudents.length > 0 && (
             <div className="mb-4">
               <div className="flex items-center justify-between mb-2">
-                <p className="text-sm font-medium text-[#1a1a2e]/70">
+                <p className="text-sm font-medium text-[#1a1a1a]/70">
                   Selected ({selectedStudents.length})
                 </p>
                 <button
                   onClick={() => setSelectedStudents([])}
-                  className="text-[#c9a227] hover:text-[#9a7b1a] font-medium text-sm transition-colors"
+                  className="text-[#B8860B] hover:text-[#8b6508] font-medium text-sm transition-colors"
                 >
                   Clear all
                 </button>
@@ -496,7 +496,7 @@ export default function AddPointsClient() {
                   <button
                     key={student.id}
                     onClick={() => handleRemoveStudent(student.id)}
-                    className="flex items-center gap-2 px-3 py-2 rounded-full bg-[#faf9f7] border border-[#c9a227]/20 text-sm text-[#1a1a2e] hover:border-[#c9a227]/50 transition-colors"
+                    className="flex items-center gap-2 px-3 py-2 rounded-full bg-[#faf9f7] border border-[#B8860B]/20 text-sm text-[#1a1a1a] hover:border-[#B8860B]/50 transition-colors"
                   >
                     <span
                       className="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold"
@@ -508,7 +508,7 @@ export default function AddPointsClient() {
                       {getInitials(student.name)}
                     </span>
                     <span>{student.name}</span>
-                    <span className="text-[#1a1a2e]/30">×</span>
+                    <span className="text-[#1a1a1a]/30">×</span>
                   </button>
                 ))}
               </div>
@@ -516,13 +516,13 @@ export default function AddPointsClient() {
           )}
 
           {/* Bulk Selection Filters */}
-          <div className="mb-4 p-4 bg-[#faf9f7] rounded-xl border border-[#1a1a2e]/5">
+          <div className="mb-4 p-4 bg-[#faf9f7] rounded-xl border border-[#1a1a1a]/5">
             <div className="flex items-center justify-between mb-3">
-              <p className="text-sm font-medium text-[#1a1a2e]/70">Bulk Select</p>
+              <p className="text-sm font-medium text-[#1a1a1a]/70">Bulk Select</p>
               {hasActiveFilters && (
                 <button
                   onClick={clearFilters}
-                  className="text-[#c9a227] hover:text-[#9a7b1a] font-medium text-xs transition-colors"
+                  className="text-[#B8860B] hover:text-[#8b6508] font-medium text-xs transition-colors"
                 >
                   Clear filters
                 </button>
@@ -535,7 +535,7 @@ export default function AddPointsClient() {
                   setFilterGrade(e.target.value)
                   setFilterSection('')
                 }}
-                className="px-3 py-2 border border-[#1a1a2e]/10 rounded-lg text-sm focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227] outline-none bg-white"
+                className="px-3 py-2 border border-[#1a1a1a]/10 rounded-lg text-sm focus:ring-2 focus:ring-[#B8860B]/30 focus:border-[#B8860B] outline-none bg-white"
               >
                 <option value="">All Grades</option>
                 {availableGrades.map((grade) => (
@@ -545,7 +545,7 @@ export default function AddPointsClient() {
               <select
                 value={filterSection}
                 onChange={(e) => setFilterSection(e.target.value)}
-                className="px-3 py-2 border border-[#1a1a2e]/10 rounded-lg text-sm focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227] outline-none bg-white"
+                className="px-3 py-2 border border-[#1a1a1a]/10 rounded-lg text-sm focus:ring-2 focus:ring-[#B8860B]/30 focus:border-[#B8860B] outline-none bg-white"
               >
                 <option value="">All Sections</option>
                 {availableSections.map((section) => (
@@ -555,7 +555,7 @@ export default function AddPointsClient() {
               <select
                 value={filterHouse}
                 onChange={(e) => setFilterHouse(e.target.value)}
-                className="px-3 py-2 border border-[#1a1a2e]/10 rounded-lg text-sm focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227] outline-none bg-white"
+                className="px-3 py-2 border border-[#1a1a1a]/10 rounded-lg text-sm focus:ring-2 focus:ring-[#B8860B]/30 focus:border-[#B8860B] outline-none bg-white"
               >
                 <option value="">All Houses</option>
                 {availableHouses.map((house) => (
@@ -567,7 +567,7 @@ export default function AddPointsClient() {
               <button
                 onClick={handleAddAllFiltered}
                 disabled={bulkFilteredStudents.length === 0}
-                className="w-full py-2 px-4 bg-[#c9a227]/10 hover:bg-[#c9a227]/20 text-[#9a7b1a] rounded-lg text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full py-2 px-4 bg-[#B8860B]/10 hover:bg-[#B8860B]/20 text-[#8b6508] rounded-lg text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Add {bulkFilteredStudents.length} student{bulkFilteredStudents.length === 1 ? '' : 's'}
               </button>
@@ -577,10 +577,10 @@ export default function AddPointsClient() {
           {/* Or search individually */}
           <div className="relative mb-3">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-[#1a1a2e]/10"></div>
+              <div className="w-full border-t border-[#1a1a1a]/10"></div>
             </div>
             <div className="relative flex justify-center text-xs">
-              <span className="px-2 bg-white text-[#1a1a2e]/40">or search individually</span>
+              <span className="px-2 bg-white text-[#1a1a1a]/40">or search individually</span>
             </div>
           </div>
 
@@ -589,16 +589,16 @@ export default function AddPointsClient() {
             placeholder="Search for a student..."
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
-            className="w-full px-4 py-3 border border-[#1a1a2e]/10 rounded-xl focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227] outline-none mb-3 transition-all"
+            className="w-full px-4 py-3 border border-[#1a1a1a]/10 rounded-xl focus:ring-2 focus:ring-[#B8860B]/30 focus:border-[#B8860B] outline-none mb-3 transition-all"
           />
           {filteredStudents.length > 0 && (
-            <div className="border border-[#1a1a2e]/10 rounded-xl overflow-hidden">
+            <div className="border border-[#1a1a1a]/10 rounded-xl overflow-hidden">
               {filteredStudents.map((student, index) => (
                 <button
                   key={student.id}
                   onClick={() => handleAddStudent(student)}
                   className={`w-full flex items-center gap-4 p-3.5 hover:bg-[#faf9f7] transition-colors ${
-                    index !== filteredStudents.length - 1 ? 'border-b border-[#1a1a2e]/5' : ''
+                    index !== filteredStudents.length - 1 ? 'border-b border-[#1a1a1a]/5' : ''
                   }`}
                 >
                   <div
@@ -611,8 +611,8 @@ export default function AddPointsClient() {
                     {getInitials(student.name)}
                   </div>
                   <div className="text-left">
-                    <p className="font-medium text-[#1a1a2e]">{student.name}</p>
-                    <p className="text-sm text-[#1a1a2e]/50">
+                    <p className="font-medium text-[#1a1a1a]">{student.name}</p>
+                    <p className="text-sm text-[#1a1a1a]/50">
                       Grade {student.grade}{student.section} • {student.house?.replace('House of ', '')}
                     </p>
                   </div>
@@ -623,10 +623,10 @@ export default function AddPointsClient() {
         </div>
       </div>
 
-      <div className="bg-white rounded-2xl p-6 shadow-sm border border-[#c9a227]/10 mb-6">
+      <div className="bg-white rounded-2xl p-6 shadow-sm border border-[#B8860B]/10 mb-6">
         <div className="flex items-center gap-3 mb-5">
-          <span className="w-8 h-8 bg-gradient-to-br from-[#c9a227] to-[#9a7b1a] text-white rounded-full flex items-center justify-center font-bold text-sm">2</span>
-          <h2 className="text-lg font-semibold text-[#1a1a2e]">Select Category</h2>
+          <span className="w-8 h-8 bg-gradient-to-br from-[#B8860B] to-[#8b6508] text-white rounded-full flex items-center justify-center font-bold text-sm">2</span>
+          <h2 className="text-lg font-semibold text-[#1a1a1a]">Select Category</h2>
         </div>
 
         <div className="space-y-3">
@@ -639,17 +639,17 @@ export default function AddPointsClient() {
               }}
               className={`w-full flex items-center gap-4 p-4 rounded-xl border-2 transition-all ${
                 selectedCategory?.id === category.id
-                  ? 'border-[#c9a227] bg-[#c9a227]/5'
-                  : 'border-[#1a1a2e]/10 hover:border-[#c9a227]/30'
+                  ? 'border-[#B8860B] bg-[#B8860B]/5'
+                  : 'border-[#1a1a1a]/10 hover:border-[#B8860B]/30'
               }`}
             >
               <span className="text-2xl">{category.icon}</span>
               <div className="text-left flex-1">
-                <p className="font-medium text-[#1a1a2e]">{category.name}</p>
-                <p className="text-sm text-[#1a1a2e]/50">{category.description}</p>
+                <p className="font-medium text-[#1a1a1a]">{category.name}</p>
+                <p className="text-sm text-[#1a1a1a]/50">{category.description}</p>
               </div>
               {selectedCategory?.id === category.id && (
-                <div className="w-6 h-6 rounded-full bg-[#c9a227] flex items-center justify-center">
+                <div className="w-6 h-6 rounded-full bg-[#B8860B] flex items-center justify-center">
                   <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
@@ -661,10 +661,10 @@ export default function AddPointsClient() {
       </div>
 
       {selectedCategory && (
-        <div className="bg-white rounded-2xl p-6 shadow-sm border border-[#c9a227]/10 mb-6">
+        <div className="bg-white rounded-2xl p-6 shadow-sm border border-[#B8860B]/10 mb-6">
           <div className="flex items-center gap-3 mb-5">
-            <span className="w-8 h-8 bg-gradient-to-br from-[#c9a227] to-[#9a7b1a] text-white rounded-full flex items-center justify-center font-bold text-sm">3</span>
-            <h2 className="text-lg font-semibold text-[#1a1a2e]">Select Reason</h2>
+            <span className="w-8 h-8 bg-gradient-to-br from-[#B8860B] to-[#8b6508] text-white rounded-full flex items-center justify-center font-bold text-sm">3</span>
+            <h2 className="text-lg font-semibold text-[#1a1a1a]">Select Reason</h2>
           </div>
 
           <div className="space-y-2">
@@ -674,17 +674,17 @@ export default function AddPointsClient() {
                 onClick={() => setSelectedSubcategory(sub)}
                 className={`w-full flex items-center gap-4 p-4 rounded-xl border-2 transition-all ${
                   selectedSubcategory?.id === sub.id
-                    ? 'border-[#c9a227] bg-[#c9a227]/5'
-                    : 'border-[#1a1a2e]/10 hover:border-[#c9a227]/30'
+                    ? 'border-[#B8860B] bg-[#B8860B]/5'
+                    : 'border-[#1a1a1a]/10 hover:border-[#B8860B]/30'
                 }`}
               >
                 <div className="text-left flex-1">
-                  <p className="font-medium text-[#1a1a2e]">{sub.name}</p>
-                  <p className="text-sm text-[#1a1a2e]/50">{sub.description}</p>
+                  <p className="font-medium text-[#1a1a1a]">{sub.name}</p>
+                  <p className="text-sm text-[#1a1a1a]/50">{sub.description}</p>
                 </div>
                 <span className="font-bold text-[#055437]">+{sub.points}</span>
                 {selectedSubcategory?.id === sub.id && (
-                  <div className="w-6 h-6 rounded-full bg-[#c9a227] flex items-center justify-center">
+                  <div className="w-6 h-6 rounded-full bg-[#B8860B] flex items-center justify-center">
                     <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
@@ -697,33 +697,33 @@ export default function AddPointsClient() {
       )}
 
       {selectedSubcategory && (
-        <div className="bg-white rounded-2xl p-6 shadow-sm border border-[#c9a227]/10 mb-6">
+        <div className="bg-white rounded-2xl p-6 shadow-sm border border-[#B8860B]/10 mb-6">
           <div className="flex items-center gap-3 mb-5">
-            <span className="w-8 h-8 bg-gradient-to-br from-[#c9a227] to-[#9a7b1a] text-white rounded-full flex items-center justify-center font-bold text-sm">4</span>
-            <h2 className="text-lg font-semibold text-[#1a1a2e]">Date of Event</h2>
+            <span className="w-8 h-8 bg-gradient-to-br from-[#B8860B] to-[#8b6508] text-white rounded-full flex items-center justify-center font-bold text-sm">4</span>
+            <h2 className="text-lg font-semibold text-[#1a1a1a]">Date of Event</h2>
           </div>
 
           <input
             type="date"
             value={eventDate}
             onChange={(e) => setEventDate(e.target.value)}
-            className="w-full px-4 py-3 border border-[#1a1a2e]/10 rounded-xl focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227] outline-none transition-all"
+            className="w-full px-4 py-3 border border-[#1a1a1a]/10 rounded-xl focus:ring-2 focus:ring-[#B8860B]/30 focus:border-[#B8860B] outline-none transition-all"
           />
         </div>
       )}
 
       {selectedSubcategory && (
-        <div className="bg-white rounded-2xl p-6 shadow-sm border border-[#c9a227]/10 mb-6">
+        <div className="bg-white rounded-2xl p-6 shadow-sm border border-[#B8860B]/10 mb-6">
           <div className="flex items-center gap-3 mb-5">
-            <span className="w-8 h-8 bg-gradient-to-br from-[#c9a227] to-[#9a7b1a] text-white rounded-full flex items-center justify-center font-bold text-sm">5</span>
-            <h2 className="text-lg font-semibold text-[#1a1a2e]">Add Notes (Optional)</h2>
+            <span className="w-8 h-8 bg-gradient-to-br from-[#B8860B] to-[#8b6508] text-white rounded-full flex items-center justify-center font-bold text-sm">5</span>
+            <h2 className="text-lg font-semibold text-[#1a1a1a]">Add Notes (Optional)</h2>
           </div>
 
           <textarea
             placeholder="Add any additional notes..."
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
-            className="w-full px-4 py-3 border border-[#1a1a2e]/10 rounded-xl focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227] outline-none resize-none transition-all"
+            className="w-full px-4 py-3 border border-[#1a1a1a]/10 rounded-xl focus:ring-2 focus:ring-[#B8860B]/30 focus:border-[#B8860B] outline-none resize-none transition-all"
             rows={3}
           />
         </div>
@@ -733,7 +733,7 @@ export default function AddPointsClient() {
         <button
           onClick={handleSubmit}
           disabled={isSubmitting}
-          className="w-full bg-gradient-to-r from-[#c9a227] to-[#9a7b1a] text-white py-4 px-6 rounded-xl font-medium hover:from-[#9a7b1a] hover:to-[#7a5f14] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 shadow-lg"
+          className="w-full bg-gradient-to-r from-[#B8860B] to-[#8b6508] text-white py-4 px-6 rounded-xl font-medium hover:from-[#8b6508] hover:to-[#7a5f14] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 shadow-lg"
         >
           {isSubmitting ? (
             <>

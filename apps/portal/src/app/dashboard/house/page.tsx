@@ -101,9 +101,9 @@ export default function MyHousePage() {
 
   if (!profile || !houseInfo) {
     return (
-      <div className="bg-white rounded-2xl p-8 shadow-sm border border-[#c9a227]/10 text-center">
-        <p className="text-[#1a1a2e]/70 font-medium">We couldn't find your house yet.</p>
-        <p className="text-sm text-[#1a1a2e]/45 mt-2">Please contact the office to link your account.</p>
+      <div className="bg-white rounded-2xl p-8 shadow-sm border border-[#B8860B]/10 text-center">
+        <p className="text-[#1a1a1a]/70 font-medium">We couldn't find your house yet.</p>
+        <p className="text-sm text-[#1a1a1a]/45 mt-2">Please contact the office to link your account.</p>
       </div>
     )
   }
@@ -111,12 +111,12 @@ export default function MyHousePage() {
   return (
     <div className="max-w-4xl mx-auto">
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-[#1a1a2e] mb-2" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+        <h1 className="text-3xl font-bold text-[#1a1a1a] mb-2" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
           My House
         </h1>
         <div className="flex items-center gap-3">
-          <div className="h-1 w-16 bg-gradient-to-r from-[#c9a227] to-[#e8d48b] rounded-full"></div>
-          <p className="text-[#1a1a2e]/50 text-sm font-medium">House standing and contribution snapshot.</p>
+          <div className="h-1 w-16 bg-gradient-to-r from-[#B8860B] to-[#d4a017] rounded-full"></div>
+          <p className="text-[#1a1a1a]/50 text-sm font-medium">House standing and contribution snapshot.</p>
         </div>
       </div>
 

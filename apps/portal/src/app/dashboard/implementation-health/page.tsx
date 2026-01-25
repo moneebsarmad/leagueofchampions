@@ -12,7 +12,7 @@ const PRESETS = [
 
 const STATUS_STYLES = {
   Green: 'bg-[#055437]/10 text-[#055437]',
-  Yellow: 'bg-[#c9a227]/15 text-[#9a7b1a]',
+  Yellow: 'bg-[#B8860B]/15 text-[#8b6508]',
   Red: 'bg-[#910000]/10 text-[#910000]',
 }
 
@@ -91,7 +91,7 @@ function ProgressBar({ value }: { value: number }) {
   const clamped = Math.max(0, Math.min(100, value))
   return (
     <div className="w-28 h-2 bg-[#e5e2db] rounded-full overflow-hidden">
-      <div className="h-full rounded-full" style={{ width: `${clamped}%`, backgroundColor: '#c9a227' }} />
+      <div className="h-full rounded-full" style={{ width: `${clamped}%`, backgroundColor: '#B8860B' }} />
     </div>
   )
 }
@@ -103,7 +103,7 @@ function DotStrip({ filled }: { filled: number }) {
         <span
           key={idx}
           className="w-2.5 h-2.5 rounded-full"
-          style={{ backgroundColor: idx < filled ? '#c9a227' : '#e5e2db' }}
+          style={{ backgroundColor: idx < filled ? '#B8860B' : '#e5e2db' }}
         />
       ))}
     </div>
@@ -237,7 +237,7 @@ export default function ImplementationHealthPage() {
       <html>
       <head>
         <style>
-          body { font-family: 'Cormorant Garamond', Georgia, serif; color: #1a1a2e; padding: 24px; }
+          body { font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, sans-serif; color: #1a1a1a; padding: 24px; }
           h1 { margin-bottom: 6px; }
           .sub { color: rgba(26,26,46,0.6); margin-bottom: 24px; }
           .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
@@ -286,7 +286,7 @@ export default function ImplementationHealthPage() {
               <div class="card">
                 <div style="display:flex;justify-content:space-between;align-items:center;">
                   <strong>${title}</strong>
-                  <span class="pill" style="background:${status === 'Green' ? 'rgba(5,84,55,0.1)' : status === 'Yellow' ? 'rgba(201,162,39,0.15)' : 'rgba(145,0,0,0.1)'}; color:${status === 'Green' ? '#055437' : status === 'Yellow' ? '#9a7b1a' : '#910000'};">${status}</span>
+                  <span class="pill" style="background:${status === 'Green' ? 'rgba(5,84,55,0.1)' : status === 'Yellow' ? 'rgba(201,162,39,0.15)' : 'rgba(145,0,0,0.1)'}; color:${status === 'Green' ? '#055437' : status === 'Yellow' ? '#8b6508' : '#910000'};">${status}</span>
                 </div>
                 ${safeRows.map((row) => `
                   <div class="metric">
@@ -393,7 +393,7 @@ export default function ImplementationHealthPage() {
           {
             label: 'Avg Active Days',
             value: formatNumber(safeMetrics.metrics.outcomeA.avgActiveDays),
-            visual: <span className="text-xs text-[#1a1a2e]/40">days</span>,
+            visual: <span className="text-xs text-[#1a1a1a]/40">days</span>,
             onClick: undefined,
           },
         ],
@@ -464,7 +464,7 @@ export default function ImplementationHealthPage() {
             label: 'Overdue Actions',
             value: String(safeMetrics.metrics.outcomeD.overdueActionsCount),
             visual: (
-              <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-[#c9a227]/15 text-[#9a7b1a]">
+              <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-[#B8860B]/15 text-[#8b6508]">
                 {safeMetrics.metrics.outcomeD.overdueActionsCount} overdue
               </span>
             ),
@@ -479,16 +479,16 @@ export default function ImplementationHealthPage() {
     <RequireRole roles={ROLES.ADMIN} fallback={<AccessDenied message="Admin access required." />}>
       <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-[#1a1a2e]" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+        <h1 className="text-3xl font-bold text-[#1a1a1a]" style={{ fontFamily: 'var(--font-playfair), Poppins, sans-serif' }}>
           Implementation Health Snapshot
         </h1>
-        <p className="text-[#1a1a2e]/50 text-sm font-medium">Are we using it? Is it consistent? Is data clean? Are we taking action?</p>
+        <p className="text-[#1a1a1a]/50 text-sm font-medium">Are we using it? Is it consistent? Is data clean? Are we taking action?</p>
         {isLoading && (
-          <p className="text-xs text-[#1a1a2e]/40 mt-2">Loading metrics...</p>
+          <p className="text-xs text-[#1a1a1a]/40 mt-2">Loading metrics...</p>
         )}
       </div>
 
-      <div className="bg-white rounded-2xl p-5 shadow-sm border border-[#c9a227]/10 flex flex-wrap items-center gap-3">
+      <div className="bg-white rounded-2xl p-5 shadow-sm border border-[#B8860B]/10 flex flex-wrap items-center gap-3">
         <div className="flex items-center gap-2">
           {PRESETS.map((item) => (
             <button
@@ -496,8 +496,8 @@ export default function ImplementationHealthPage() {
               onClick={() => setPreset(item.id)}
               className={`px-3 py-2 rounded-lg text-xs font-semibold border ${
                 preset === item.id
-                  ? 'bg-[#c9a227] text-white border-[#c9a227]'
-                  : 'bg-white text-[#1a1a2e]/60 border-[#1a1a2e]/10'
+                  ? 'bg-[#B8860B] text-white border-[#B8860B]'
+                  : 'bg-white text-[#1a1a1a]/60 border-[#1a1a1a]/10'
               }`}
             >
               {item.label}
@@ -505,33 +505,33 @@ export default function ImplementationHealthPage() {
           ))}
         </div>
         <div className="flex items-center gap-2">
-          <label className="text-xs text-[#1a1a2e]/40">Start</label>
+          <label className="text-xs text-[#1a1a1a]/40">Start</label>
           <input
             type="date"
             value={startDate}
             onChange={(e) => setStartDate(e.target.value)}
-            className="px-3 py-2 rounded-lg border border-[#1a1a2e]/10 text-xs"
+            className="px-3 py-2 rounded-lg border border-[#1a1a1a]/10 text-xs"
           />
         </div>
         <div className="flex items-center gap-2">
-          <label className="text-xs text-[#1a1a2e]/40">End</label>
+          <label className="text-xs text-[#1a1a1a]/40">End</label>
           <input
             type="date"
             value={endDate}
             onChange={(e) => setEndDate(e.target.value)}
-            className="px-3 py-2 rounded-lg border border-[#1a1a2e]/10 text-xs"
+            className="px-3 py-2 rounded-lg border border-[#1a1a1a]/10 text-xs"
           />
         </div>
         <div className="flex items-center gap-2 ml-auto">
           <button
             onClick={handleExportPdf}
-            className="px-3 py-2 rounded-lg text-xs font-semibold bg-[#1a1a2e] text-white"
+            className="px-3 py-2 rounded-lg text-xs font-semibold bg-[#1a1a1a] text-white"
           >
             Export PDF
           </button>
           <button
             onClick={handleExportCsv}
-            className="px-3 py-2 rounded-lg text-xs font-semibold bg-[#c9a227]/15 text-[#9a7b1a]"
+            className="px-3 py-2 rounded-lg text-xs font-semibold bg-[#B8860B]/15 text-[#8b6508]"
           >
             Export CSV
           </button>
@@ -540,11 +540,11 @@ export default function ImplementationHealthPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {outcomeCards.map((card) => (
-          <div key={card.id} className="bg-white rounded-2xl p-6 shadow-sm border border-[#c9a227]/10">
+          <div key={card.id} className="bg-white rounded-2xl p-6 shadow-sm border border-[#B8860B]/10">
             <div className="flex items-start justify-between gap-3">
               <div>
-                <h2 className="text-lg font-semibold text-[#1a1a2e]">{card.title}</h2>
-                <p className="text-xs text-[#1a1a2e]/40">{card.question}</p>
+                <h2 className="text-lg font-semibold text-[#1a1a1a]">{card.title}</h2>
+                <p className="text-xs text-[#1a1a1a]/40">{card.question}</p>
               </div>
               <span className={`px-3 py-1 rounded-full text-xs font-semibold ${STATUS_STYLES[card.status]}`}>
                 {card.status}
@@ -555,15 +555,15 @@ export default function ImplementationHealthPage() {
               {card.rows.map((row) => (
                 <div key={row.label} className="flex items-center justify-between gap-3">
                   <div>
-                    <p className="text-xs text-[#1a1a2e]/40">{row.label}</p>
-                    <p className="text-2xl font-semibold text-[#1a1a2e]">{row.value}</p>
+                    <p className="text-xs text-[#1a1a1a]/40">{row.label}</p>
+                    <p className="text-2xl font-semibold text-[#1a1a1a]">{row.value}</p>
                   </div>
                   <div className="flex items-center gap-2">
                     {row.visual}
                     {row.onClick && (
                       <button
                         onClick={row.onClick}
-                        className="text-xs text-[#c9a227] hover:text-[#9a7b1a]"
+                        className="text-xs text-[#B8860B] hover:text-[#8b6508]"
                       >
                         Details
                       </button>
@@ -581,11 +581,11 @@ export default function ImplementationHealthPage() {
 
             <div className="mt-4 text-xs font-semibold">
               {'href' in card.goFix ? (
-                <a href={card.goFix.href} className="text-[#c9a227] hover:text-[#9a7b1a]">
+                <a href={card.goFix.href} className="text-[#B8860B] hover:text-[#8b6508]">
                   {card.goFix.label}
                 </a>
               ) : (
-                <button onClick={card.goFix.onClick} className="text-[#c9a227] hover:text-[#9a7b1a]">
+                <button onClick={card.goFix.onClick} className="text-[#B8860B] hover:text-[#8b6508]">
                   {card.goFix.label}
                 </button>
               )}
@@ -596,7 +596,7 @@ export default function ImplementationHealthPage() {
                 <button
                   onClick={handleLogHuddle}
                   disabled={huddleSaving}
-                  className="px-3 py-2 rounded-lg text-xs font-semibold bg-[#2f0a61] text-white disabled:opacity-50"
+                  className="px-3 py-2 rounded-lg text-xs font-semibold bg-[#2D5016] text-white disabled:opacity-50"
                 >
                   {huddleSaving ? 'Logging...' : 'Log Huddle'}
                 </button>
@@ -606,15 +606,15 @@ export default function ImplementationHealthPage() {
         ))}
       </div>
 
-      <div id="decision-log" className="bg-white rounded-2xl p-6 shadow-sm border border-[#c9a227]/10">
+      <div id="decision-log" className="bg-white rounded-2xl p-6 shadow-sm border border-[#B8860B]/10">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-lg font-semibold text-[#1a1a2e]">Decision Log</h2>
-            <p className="text-xs text-[#1a1a2e]/40">Capture owners and due dates for follow-through</p>
+            <h2 className="text-lg font-semibold text-[#1a1a1a]">Decision Log</h2>
+            <p className="text-xs text-[#1a1a1a]/40">Capture owners and due dates for follow-through</p>
           </div>
           <button
             onClick={() => setDecisionModalOpen(true)}
-            className="px-3 py-2 rounded-lg text-xs font-semibold bg-[#1a1a2e] text-white"
+            className="px-3 py-2 rounded-lg text-xs font-semibold bg-[#1a1a1a] text-white"
           >
             Log Decision
           </button>
@@ -622,56 +622,56 @@ export default function ImplementationHealthPage() {
       </div>
 
       {rosterModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#1a1a2e]/40 p-6">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#1a1a1a]/40 p-6">
           <div className="bg-white rounded-2xl w-full max-w-3xl shadow-xl">
-            <div className="p-6 border-b border-[#c9a227]/10 flex items-center justify-between">
+            <div className="p-6 border-b border-[#B8860B]/10 flex items-center justify-between">
               <div>
-                <h3 className="text-lg font-semibold text-[#1a1a2e]">Roster Issues</h3>
-                <p className="text-xs text-[#1a1a2e]/40">Unknown staff and missing mappings</p>
+                <h3 className="text-lg font-semibold text-[#1a1a1a]">Roster Issues</h3>
+                <p className="text-xs text-[#1a1a1a]/40">Unknown staff and missing mappings</p>
               </div>
-              <button onClick={() => setRosterModalOpen(false)} className="text-sm text-[#1a1a2e]/50">Close</button>
+              <button onClick={() => setRosterModalOpen(false)} className="text-sm text-[#1a1a1a]/50">Close</button>
             </div>
             <div className="p-6 space-y-5 max-h-[70vh] overflow-y-auto">
               <div>
-                <h4 className="text-sm font-semibold text-[#1a1a2e]">Unknown staff entries</h4>
+                <h4 className="text-sm font-semibold text-[#1a1a1a]">Unknown staff entries</h4>
                 {(rosterDetails?.unknownStaffEntries.length || 0) === 0 ? (
-                  <p className="text-xs text-[#1a1a2e]/40">None</p>
+                  <p className="text-xs text-[#1a1a1a]/40">None</p>
                 ) : (
                   <div className="mt-2 space-y-2 text-xs">
                     {rosterDetails?.unknownStaffEntries.map((row, idx) => (
                       <div key={`${row.staff_name}-${idx}`} className="flex justify-between">
                         <span>{row.staff_name}</span>
-                        <span className="text-[#1a1a2e]/40">{row.student_name} • {row.date}</span>
+                        <span className="text-[#1a1a1a]/40">{row.student_name} • {row.date}</span>
                       </div>
                     ))}
                   </div>
                 )}
               </div>
               <div>
-                <h4 className="text-sm font-semibold text-[#1a1a2e]">Missing house</h4>
+                <h4 className="text-sm font-semibold text-[#1a1a1a]">Missing house</h4>
                 {(rosterDetails?.missingHouse.length || 0) === 0 ? (
-                  <p className="text-xs text-[#1a1a2e]/40">None</p>
+                  <p className="text-xs text-[#1a1a1a]/40">None</p>
                 ) : (
                   <div className="mt-2 space-y-2 text-xs">
                     {rosterDetails?.missingHouse.map((row, idx) => (
                       <div key={`${row.staff_name}-${idx}`} className="flex justify-between">
                         <span>{row.staff_name}</span>
-                        <span className="text-[#1a1a2e]/40">{row.email}</span>
+                        <span className="text-[#1a1a1a]/40">{row.email}</span>
                       </div>
                     ))}
                   </div>
                 )}
               </div>
               <div>
-                <h4 className="text-sm font-semibold text-[#1a1a2e]">Missing grade/department</h4>
+                <h4 className="text-sm font-semibold text-[#1a1a1a]">Missing grade/department</h4>
                 {(rosterDetails?.missingGrade.length || 0) === 0 ? (
-                  <p className="text-xs text-[#1a1a2e]/40">None</p>
+                  <p className="text-xs text-[#1a1a1a]/40">None</p>
                 ) : (
                   <div className="mt-2 space-y-2 text-xs">
                     {rosterDetails?.missingGrade.map((row, idx) => (
                       <div key={`${row.staff_name}-${idx}`} className="flex justify-between">
                         <span>{row.staff_name}</span>
-                        <span className="text-[#1a1a2e]/40">{row.email}</span>
+                        <span className="text-[#1a1a1a]/40">{row.email}</span>
                       </div>
                     ))}
                   </div>
@@ -683,28 +683,28 @@ export default function ImplementationHealthPage() {
       )}
 
       {otherModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#1a1a2e]/40 p-6">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#1a1a1a]/40 p-6">
           <div className="bg-white rounded-2xl w-full max-w-3xl shadow-xl">
-            <div className="p-6 border-b border-[#c9a227]/10 flex items-center justify-between">
+            <div className="p-6 border-b border-[#B8860B]/10 flex items-center justify-between">
               <div>
-                <h3 className="text-lg font-semibold text-[#1a1a2e]">Other Without Notes</h3>
-                <p className="text-xs text-[#1a1a2e]/40">Entries missing required notes</p>
+                <h3 className="text-lg font-semibold text-[#1a1a1a]">Other Without Notes</h3>
+                <p className="text-xs text-[#1a1a1a]/40">Entries missing required notes</p>
               </div>
-              <button onClick={() => setOtherModalOpen(false)} className="text-sm text-[#1a1a2e]/50">Close</button>
+              <button onClick={() => setOtherModalOpen(false)} className="text-sm text-[#1a1a1a]/50">Close</button>
             </div>
             <div className="p-6 space-y-3 max-h-[70vh] overflow-y-auto">
               {(otherDetails?.entries.length || 0) === 0 ? (
-                <p className="text-xs text-[#1a1a2e]/40">No missing notes in this period.</p>
+                <p className="text-xs text-[#1a1a1a]/40">No missing notes in this period.</p>
               ) : (
                 otherDetails?.entries.map((entry, idx) => (
-                  <div key={`${entry.staff_name}-${idx}`} className="border border-[#1a1a2e]/10 rounded-xl p-4 text-xs">
-                    <div className="flex justify-between text-[#1a1a2e]/60">
+                  <div key={`${entry.staff_name}-${idx}`} className="border border-[#1a1a1a]/10 rounded-xl p-4 text-xs">
+                    <div className="flex justify-between text-[#1a1a1a]/60">
                       <span>{entry.date}</span>
                       <span>{entry.staff_name}</span>
                     </div>
-                    <p className="text-sm font-semibold text-[#1a1a2e] mt-2">{entry.student_name}</p>
-                    <p className="text-[#1a1a2e]/50">{entry.category} • {entry.subcategory}</p>
-                    {entry.notes && <p className="text-[#1a1a2e]/50 mt-1">Notes: {entry.notes}</p>}
+                    <p className="text-sm font-semibold text-[#1a1a1a] mt-2">{entry.student_name}</p>
+                    <p className="text-[#1a1a1a]/50">{entry.category} • {entry.subcategory}</p>
+                    {entry.notes && <p className="text-[#1a1a1a]/50 mt-1">Notes: {entry.notes}</p>}
                   </div>
                 ))
               )}
@@ -714,14 +714,14 @@ export default function ImplementationHealthPage() {
       )}
 
       {decisionModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#1a1a2e]/40 p-6">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#1a1a1a]/40 p-6">
           <div className="bg-white rounded-2xl w-full max-w-2xl shadow-xl">
-            <div className="p-6 border-b border-[#c9a227]/10 flex items-center justify-between">
+            <div className="p-6 border-b border-[#B8860B]/10 flex items-center justify-between">
               <div>
-                <h3 className="text-lg font-semibold text-[#1a1a2e]">Log Decision</h3>
-                <p className="text-xs text-[#1a1a2e]/40">Owner + due date required</p>
+                <h3 className="text-lg font-semibold text-[#1a1a1a]">Log Decision</h3>
+                <p className="text-xs text-[#1a1a1a]/40">Owner + due date required</p>
               </div>
-              <button onClick={() => setDecisionModalOpen(false)} className="text-sm text-[#1a1a2e]/50">Close</button>
+              <button onClick={() => setDecisionModalOpen(false)} className="text-sm text-[#1a1a1a]/50">Close</button>
             </div>
             <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
               <label className="flex flex-col gap-1">
@@ -729,7 +729,7 @@ export default function ImplementationHealthPage() {
                 <input
                   value={decisionForm.owner}
                   onChange={(e) => setDecisionForm((prev) => ({ ...prev, owner: e.target.value }))}
-                  className="px-3 py-2 rounded-lg border border-[#1a1a2e]/10"
+                  className="px-3 py-2 rounded-lg border border-[#1a1a1a]/10"
                 />
               </label>
               <label className="flex flex-col gap-1">
@@ -738,7 +738,7 @@ export default function ImplementationHealthPage() {
                   type="date"
                   value={decisionForm.due_date}
                   onChange={(e) => setDecisionForm((prev) => ({ ...prev, due_date: e.target.value }))}
-                  className="px-3 py-2 rounded-lg border border-[#1a1a2e]/10"
+                  className="px-3 py-2 rounded-lg border border-[#1a1a1a]/10"
                 />
               </label>
               <label className="flex flex-col gap-1">
@@ -746,7 +746,7 @@ export default function ImplementationHealthPage() {
                 <select
                   value={decisionForm.action_type}
                   onChange={(e) => setDecisionForm((prev) => ({ ...prev, action_type: e.target.value }))}
-                  className="px-3 py-2 rounded-lg border border-[#1a1a2e]/10"
+                  className="px-3 py-2 rounded-lg border border-[#1a1a1a]/10"
                 >
                   <option value="">Select action</option>
                   {actionMenu.map((item) => (
@@ -759,7 +759,7 @@ export default function ImplementationHealthPage() {
                 <select
                   value={decisionForm.outcome_tag}
                   onChange={(e) => setDecisionForm((prev) => ({ ...prev, outcome_tag: e.target.value }))}
-                  className="px-3 py-2 rounded-lg border border-[#1a1a2e]/10"
+                  className="px-3 py-2 rounded-lg border border-[#1a1a1a]/10"
                 >
                   <option value="">Optional</option>
                   <option value="A">Outcome A</option>
@@ -773,7 +773,7 @@ export default function ImplementationHealthPage() {
                 <input
                   value={decisionForm.title}
                   onChange={(e) => setDecisionForm((prev) => ({ ...prev, title: e.target.value }))}
-                  className="px-3 py-2 rounded-lg border border-[#1a1a2e]/10"
+                  className="px-3 py-2 rounded-lg border border-[#1a1a1a]/10"
                 />
               </label>
               <label className="flex flex-col gap-1 md:col-span-2">
@@ -781,16 +781,16 @@ export default function ImplementationHealthPage() {
                 <textarea
                   value={decisionForm.notes}
                   onChange={(e) => setDecisionForm((prev) => ({ ...prev, notes: e.target.value }))}
-                  className="px-3 py-2 rounded-lg border border-[#1a1a2e]/10"
+                  className="px-3 py-2 rounded-lg border border-[#1a1a1a]/10"
                   rows={3}
                 />
               </label>
             </div>
-            <div className="p-6 border-t border-[#c9a227]/10 flex justify-end gap-3">
+            <div className="p-6 border-t border-[#B8860B]/10 flex justify-end gap-3">
               <button
                 onClick={handleDecisionSave}
                 disabled={decisionSaving}
-                className="px-4 py-2 rounded-lg text-sm font-semibold bg-[#1a1a2e] text-white disabled:opacity-50"
+                className="px-4 py-2 rounded-lg text-sm font-semibold bg-[#1a1a1a] text-white disabled:opacity-50"
               >
                 {decisionSaving ? 'Saving...' : 'Save Decision'}
               </button>

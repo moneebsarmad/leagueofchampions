@@ -180,9 +180,9 @@ export default function Sidebar() {
   }
 
   return (
-    <aside className="fixed left-0 top-0 h-screen w-72 bg-gradient-to-b from-[#1a1a2e] to-[#16162a] flex flex-col shadow-2xl">
+    <aside className="fixed left-0 top-0 h-screen w-72 bg-gradient-to-b from-[#2d5016] to-[#1e3610] flex flex-col shadow-2xl">
       {/* Decorative top border */}
-      <div className="h-1 bg-gradient-to-r from-[#c9a227] via-[#e8d48b] to-[#c9a227]"></div>
+      <div className="h-1 bg-gradient-to-r from-[#b8860b] via-[#d4a017] to-[#b8860b]"></div>
 
       {/* Logo Section */}
       <div className="p-8 border-b border-white/5">
@@ -194,13 +194,13 @@ export default function Sidebar() {
               alt={`${schoolConfig.systemName} crest`}
               className="w-12 h-12 object-contain drop-shadow-md"
             />
-            <div className="absolute inset-0 rounded-full bg-[#c9a227] blur-xl opacity-20 -z-10"></div>
+            <div className="absolute inset-0 rounded-full bg-[#b8860b] blur-xl opacity-20 -z-10"></div>
           </div>
           <div>
-            <h1 className="text-xl font-semibold text-white tracking-tight" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+            <h1 className="text-xl font-semibold text-white tracking-tight" style={{ fontFamily: 'var(--font-playfair), Poppins, sans-serif' }}>
               {schoolConfig.systemName}
             </h1>
-            <p className="text-sm text-[#c9a227]/80 font-medium tracking-wide">Admin Portal</p>
+            <p className="text-sm text-[#d4a017]/80 font-medium tracking-wide">Admin Portal</p>
           </div>
         </div>
       </div>
@@ -210,7 +210,7 @@ export default function Sidebar() {
         <p className="text-sm font-semibold text-white/30 tracking-widest mb-4 px-4">Navigation</p>
         <ul className="space-y-1">
           {groupedItems.pinned.length > 0 && (
-            <li className="px-4 py-2 text-xs font-semibold tracking-[0.2em] text-[#e8d48b]/70">
+            <li className="px-4 py-2 text-xs font-semibold tracking-[0.2em] text-[#d4a017]/70">
               Pinned
             </li>
           )}
@@ -241,7 +241,7 @@ export default function Sidebar() {
       <div className="px-6 pb-6">
         <button
           onClick={() => setCustomizeOpen((prev) => !prev)}
-          className="w-full text-sm text-[#e8d48b] font-medium py-2 rounded-xl border border-[#c9a227]/30 hover:border-[#c9a227]/60 transition"
+          className="w-full text-sm text-[#d4a017] font-medium py-2 rounded-xl border border-[#b8860b]/30 hover:border-[#b8860b]/60 transition"
         >
           {customizeOpen ? 'Close Customization' : 'Customize Sidebar'}
         </button>
@@ -260,7 +260,7 @@ export default function Sidebar() {
               </button>
               <button
                 onClick={savePreferences}
-                className="text-xs text-[#e8d48b] hover:text-[#f3e7b5] transition"
+                className="text-xs text-[#d4a017] hover:text-[#f3e7b5] transition"
               >
                 {saving ? 'Saving...' : 'Save'}
               </button>
@@ -271,7 +271,7 @@ export default function Sidebar() {
             <p className="text-xs text-white/50">Compact mode</p>
             <button
               onClick={() => setCompact((prev) => !prev)}
-              className={`w-10 h-5 rounded-full transition ${compact ? 'bg-[#c9a227]' : 'bg-white/10'}`}
+              className={`w-10 h-5 rounded-full transition ${compact ? 'bg-[#b8860b]' : 'bg-white/10'}`}
             >
               <span className={`block w-4 h-4 rounded-full bg-white transform transition ${compact ? 'translate-x-5' : 'translate-x-1'}`} />
             </button>
@@ -296,7 +296,7 @@ export default function Sidebar() {
                   <span className="flex-1">{item.name}</span>
                   <button
                     onClick={() => toggleFavorite(id)}
-                    className={`text-sm ${favorites.includes(id) ? 'text-[#e8d48b]' : 'text-white/40'}`}
+                    className={`text-sm ${favorites.includes(id) ? 'text-[#d4a017]' : 'text-white/40'}`}
                   >
                     ★
                   </button>
@@ -347,13 +347,13 @@ function NavItemRow({ item, pathname, compact }: { item: NavItem; pathname: stri
         href={item.href}
         className={`group flex items-center gap-3 ${compact ? 'px-3 py-2.5 text-sm' : 'px-4 py-3.5'} rounded-xl transition-all duration-200 ${
           isActive
-            ? 'bg-gradient-to-r from-[#c9a227]/20 to-[#c9a227]/5 text-[#e8d48b] border border-[#c9a227]/20'
-            : 'text-white/60 hover:text-white hover:bg-white/5'
+            ? 'bg-gradient-to-r from-[#b8860b]/20 to-[#b8860b]/5 text-[#f8f9fa] border border-[#b8860b]/25'
+            : 'text-white/70 hover:text-white hover:bg-white/5'
         }`}
       >
         <div className={`p-2 rounded-lg transition-all ${
           isActive
-            ? 'bg-[#c9a227]/20'
+            ? 'bg-[#b8860b]/20'
             : 'bg-white/5 group-hover:bg-white/10'
         }`}>
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -362,7 +362,7 @@ function NavItemRow({ item, pathname, compact }: { item: NavItem; pathname: stri
         </div>
         <span className="font-medium">{item.name}</span>
         {isActive && (
-          <div className="ml-auto w-1.5 h-1.5 rounded-full bg-[#c9a227]"></div>
+          <div className="ml-auto w-1.5 h-1.5 rounded-full bg-[#b8860b]"></div>
         )}
       </Link>
     </li>

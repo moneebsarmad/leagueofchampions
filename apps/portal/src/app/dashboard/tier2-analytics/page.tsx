@@ -67,7 +67,7 @@ type HealthOverview = {
 
 const STATUS_COLORS: Record<HealthStatus, { bg: string; text: string; border: string }> = {
   GREEN: { bg: 'bg-[#055437]/10', text: 'text-[#055437]', border: 'border-[#055437]/30' },
-  AMBER: { bg: 'bg-[#c9a227]/15', text: 'text-[#9a7b1a]', border: 'border-[#c9a227]/30' },
+  AMBER: { bg: 'bg-[#B8860B]/15', text: 'text-[#8b6508]', border: 'border-[#B8860B]/30' },
   RED: { bg: 'bg-[#910000]/10', text: 'text-[#910000]', border: 'border-[#910000]/30' },
 }
 
@@ -111,7 +111,7 @@ function HealthScoreGauge({ score, status }: { score: number; status: HealthStat
           cy="50"
           r="45"
           fill="none"
-          stroke={status === 'GREEN' ? '#055437' : status === 'AMBER' ? '#c9a227' : '#910000'}
+          stroke={status === 'GREEN' ? '#055437' : status === 'AMBER' ? '#B8860B' : '#910000'}
           strokeWidth="8"
           strokeLinecap="round"
           strokeDasharray={circumference}
@@ -120,7 +120,7 @@ function HealthScoreGauge({ score, status }: { score: number; status: HealthStat
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
         <span className={`text-3xl font-bold ${colors.text}`}>{score}</span>
-        <span className="text-xs text-[#1a1a2e]/50">/ 100</span>
+        <span className="text-xs text-[#1a1a1a]/50">/ 100</span>
       </div>
     </div>
   )
@@ -139,7 +139,7 @@ function ScoreBar({ label, score, color }: { label: string; score: number; color
   return (
     <div className="space-y-1">
       <div className="flex justify-between text-xs">
-        <span className="text-[#1a1a2e]/60">{label}</span>
+        <span className="text-[#1a1a1a]/60">{label}</span>
         <span className="font-semibold">{score}</span>
       </div>
       <div className="w-full h-2 bg-[#e5e2db] rounded-full overflow-hidden">
@@ -157,7 +157,7 @@ function AlertCard({ alert, onAcknowledge }: { alert: Alert; onAcknowledge: (id:
   return (
     <div
       className={`p-4 rounded-xl border ${
-        isRed ? 'bg-[#910000]/5 border-[#910000]/20' : 'bg-[#c9a227]/5 border-[#c9a227]/20'
+        isRed ? 'bg-[#910000]/5 border-[#910000]/20' : 'bg-[#B8860B]/5 border-[#B8860B]/20'
       }`}
     >
       <div className="flex items-start justify-between gap-3">
@@ -165,19 +165,19 @@ function AlertCard({ alert, onAcknowledge }: { alert: Alert; onAcknowledge: (id:
           <div className="flex items-center gap-2">
             <span
               className={`px-2 py-0.5 rounded text-xs font-semibold ${
-                isRed ? 'bg-[#910000]/10 text-[#910000]' : 'bg-[#c9a227]/15 text-[#9a7b1a]'
+                isRed ? 'bg-[#910000]/10 text-[#910000]' : 'bg-[#B8860B]/15 text-[#8b6508]'
               }`}
             >
               {alert.severity}
             </span>
-            <span className="text-xs text-[#1a1a2e]/40">
+            <span className="text-xs text-[#1a1a1a]/40">
               {new Date(alert.created_at).toLocaleDateString()}
             </span>
           </div>
-          <h4 className="font-semibold text-[#1a1a2e] mt-1">{alert.title}</h4>
-          <p className="text-sm text-[#1a1a2e]/60 mt-1">{alert.message}</p>
+          <h4 className="font-semibold text-[#1a1a1a] mt-1">{alert.title}</h4>
+          <p className="text-sm text-[#1a1a1a]/60 mt-1">{alert.message}</p>
           {alert.recommended_action && (
-            <p className="text-xs text-[#1a1a2e]/50 mt-2 italic">
+            <p className="text-xs text-[#1a1a1a]/50 mt-2 italic">
               Recommended: {alert.recommended_action}
             </p>
           )}
@@ -185,7 +185,7 @@ function AlertCard({ alert, onAcknowledge }: { alert: Alert; onAcknowledge: (id:
         {alert.status === 'ACTIVE' && (
           <button
             onClick={() => onAcknowledge(alert.id)}
-            className="px-3 py-1 text-xs font-semibold rounded-lg bg-[#1a1a2e] text-white hover:bg-[#1a1a2e]/80"
+            className="px-3 py-1 text-xs font-semibold rounded-lg bg-[#1a1a1a] text-white hover:bg-[#1a1a1a]/80"
           >
             Acknowledge
           </button>
@@ -207,28 +207,28 @@ function MetricCard({
   trend?: 'up' | 'down' | 'neutral'
 }) {
   return (
-    <div className="bg-white rounded-xl p-4 border border-[#c9a227]/10">
-      <p className="text-xs text-[#1a1a2e]/50 uppercase tracking-wide">{title}</p>
+    <div className="bg-white rounded-xl p-4 border border-[#B8860B]/10">
+      <p className="text-xs text-[#1a1a1a]/50 uppercase tracking-wide">{title}</p>
       <div className="flex items-end gap-2 mt-1">
-        <span className="text-2xl font-bold text-[#1a1a2e]">{value}</span>
+        <span className="text-2xl font-bold text-[#1a1a1a]">{value}</span>
         {trend && (
           <span
             className={`text-xs font-semibold ${
-              trend === 'up' ? 'text-[#055437]' : trend === 'down' ? 'text-[#910000]' : 'text-[#1a1a2e]/40'
+              trend === 'up' ? 'text-[#055437]' : trend === 'down' ? 'text-[#910000]' : 'text-[#1a1a1a]/40'
             }`}
           >
             {trend === 'up' ? '↑' : trend === 'down' ? '↓' : '→'}
           </span>
         )}
       </div>
-      {subtitle && <p className="text-xs text-[#1a1a2e]/40 mt-1">{subtitle}</p>}
+      {subtitle && <p className="text-xs text-[#1a1a1a]/40 mt-1">{subtitle}</p>}
     </div>
   )
 }
 
 function CategoryDistributionChart({ percentages }: { percentages: Record<string, number> }) {
   const categories = ['Respect', 'Responsibility', 'Righteousness', 'Other']
-  const colors = ['#055437', '#2f0a61', '#000068', '#c9a227']
+  const colors = ['#055437', '#2f0a61', '#000068', '#B8860B']
 
   return (
     <div className="space-y-3">
@@ -237,7 +237,7 @@ function CategoryDistributionChart({ percentages }: { percentages: Record<string
         return (
           <div key={cat} className="space-y-1">
             <div className="flex justify-between text-xs">
-              <span className="text-[#1a1a2e]/60">{cat}</span>
+              <span className="text-[#1a1a1a]/60">{cat}</span>
               <span className="font-semibold">{pct.toFixed(1)}%</span>
             </div>
             <div className="w-full h-2 bg-[#e5e2db] rounded-full overflow-hidden">
@@ -269,13 +269,13 @@ function HouseDistributionChart({ points }: { points: Record<string, number> }) 
         return (
           <div key={house} className="space-y-1">
             <div className="flex justify-between text-xs">
-              <span className="text-[#1a1a2e]/60">{house.replace('House of ', '')}</span>
+              <span className="text-[#1a1a1a]/60">{house.replace('House of ', '')}</span>
               <span className="font-semibold">{pts.toLocaleString()} pts</span>
             </div>
             <div className="w-full h-2 bg-[#e5e2db] rounded-full overflow-hidden">
               <div
                 className="h-full rounded-full transition-all duration-500"
-                style={{ width: `${pct}%`, backgroundColor: colors[house] || '#c9a227' }}
+                style={{ width: `${pct}%`, backgroundColor: colors[house] || '#B8860B' }}
               />
             </div>
           </div>
@@ -371,18 +371,18 @@ export default function Tier2AnalyticsPage() {
         {/* Header */}
         <div>
           <h1
-            className="text-3xl font-bold text-[#1a1a2e]"
+            className="text-3xl font-bold text-[#1a1a1a]"
             style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}
           >
             System Health Analytics
           </h1>
-          <p className="text-[#1a1a2e]/50 text-sm font-medium">
+          <p className="text-[#1a1a1a]/50 text-sm font-medium">
             Comprehensive health monitoring and alerts for your LOC implementation
           </p>
         </div>
 
         {/* Controls */}
-        <div className="bg-white rounded-2xl p-5 shadow-sm border border-[#c9a227]/10 flex flex-wrap items-center gap-3">
+        <div className="bg-white rounded-2xl p-5 shadow-sm border border-[#B8860B]/10 flex flex-wrap items-center gap-3">
           <div className="flex items-center gap-2">
             {PRESETS.map((item) => (
               <button
@@ -390,8 +390,8 @@ export default function Tier2AnalyticsPage() {
                 onClick={() => setPreset(item.id)}
                 className={`px-3 py-2 rounded-lg text-xs font-semibold border ${
                   preset === item.id
-                    ? 'bg-[#c9a227] text-white border-[#c9a227]'
-                    : 'bg-white text-[#1a1a2e]/60 border-[#1a1a2e]/10'
+                    ? 'bg-[#B8860B] text-white border-[#B8860B]'
+                    : 'bg-white text-[#1a1a1a]/60 border-[#1a1a1a]/10'
                 }`}
               >
                 {item.label}
@@ -399,26 +399,26 @@ export default function Tier2AnalyticsPage() {
             ))}
           </div>
           <div className="flex items-center gap-2">
-            <label className="text-xs text-[#1a1a2e]/40">Start</label>
+            <label className="text-xs text-[#1a1a1a]/40">Start</label>
             <input
               type="date"
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
-              className="px-3 py-2 rounded-lg border border-[#1a1a2e]/10 text-xs"
+              className="px-3 py-2 rounded-lg border border-[#1a1a1a]/10 text-xs"
             />
           </div>
           <div className="flex items-center gap-2">
-            <label className="text-xs text-[#1a1a2e]/40">End</label>
+            <label className="text-xs text-[#1a1a1a]/40">End</label>
             <input
               type="date"
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
-              className="px-3 py-2 rounded-lg border border-[#1a1a2e]/10 text-xs"
+              className="px-3 py-2 rounded-lg border border-[#1a1a1a]/10 text-xs"
             />
           </div>
           <button
             onClick={handleCheckThresholds}
-            className="ml-auto px-3 py-2 rounded-lg text-xs font-semibold bg-[#1a1a2e] text-white"
+            className="ml-auto px-3 py-2 rounded-lg text-xs font-semibold bg-[#1a1a1a] text-white"
           >
             Check Thresholds
           </button>
@@ -427,7 +427,7 @@ export default function Tier2AnalyticsPage() {
         {/* Loading/Error States */}
         {isLoading && (
           <div className="text-center py-12">
-            <p className="text-[#1a1a2e]/50">Loading analytics...</p>
+            <p className="text-[#1a1a1a]/50">Loading analytics...</p>
           </div>
         )}
 
@@ -444,9 +444,9 @@ export default function Tier2AnalyticsPage() {
             {/* Health Overview Section */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               {/* Health Score Card */}
-              <div className="bg-white rounded-2xl p-6 shadow-sm border border-[#c9a227]/10">
+              <div className="bg-white rounded-2xl p-6 shadow-sm border border-[#B8860B]/10">
                 <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-lg font-semibold text-[#1a1a2e]">Overall Health</h2>
+                  <h2 className="text-lg font-semibold text-[#1a1a1a]">Overall Health</h2>
                   <StatusBadge status={data.health.status} />
                 </div>
                 <div className="flex items-center justify-center mb-4">
@@ -471,14 +471,14 @@ export default function Tier2AnalyticsPage() {
                   <ScoreBar
                     label="Consistency"
                     score={data.health.consistencyScore}
-                    color="#c9a227"
+                    color="#B8860B"
                   />
                 </div>
               </div>
 
               {/* Key Metrics Card */}
-              <div className="bg-white rounded-2xl p-6 shadow-sm border border-[#c9a227]/10">
-                <h2 className="text-lg font-semibold text-[#1a1a2e] mb-4">Key Metrics</h2>
+              <div className="bg-white rounded-2xl p-6 shadow-sm border border-[#B8860B]/10">
+                <h2 className="text-lg font-semibold text-[#1a1a1a] mb-4">Key Metrics</h2>
                 <div className="grid grid-cols-2 gap-3">
                   <MetricCard
                     title="Participation"
@@ -502,9 +502,9 @@ export default function Tier2AnalyticsPage() {
               </div>
 
               {/* Alerts Summary Card */}
-              <div className="bg-white rounded-2xl p-6 shadow-sm border border-[#c9a227]/10">
+              <div className="bg-white rounded-2xl p-6 shadow-sm border border-[#B8860B]/10">
                 <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-lg font-semibold text-[#1a1a2e]">Active Alerts</h2>
+                  <h2 className="text-lg font-semibold text-[#1a1a1a]">Active Alerts</h2>
                   <div className="flex items-center gap-2">
                     {data.alerts.redCount > 0 && (
                       <span className="px-2 py-1 rounded-full text-xs font-semibold bg-[#910000]/10 text-[#910000]">
@@ -512,7 +512,7 @@ export default function Tier2AnalyticsPage() {
                       </span>
                     )}
                     {data.alerts.amberCount > 0 && (
-                      <span className="px-2 py-1 rounded-full text-xs font-semibold bg-[#c9a227]/15 text-[#9a7b1a]">
+                      <span className="px-2 py-1 rounded-full text-xs font-semibold bg-[#B8860B]/15 text-[#8b6508]">
                         {data.alerts.amberCount} AMBER
                       </span>
                     )}
@@ -521,7 +521,7 @@ export default function Tier2AnalyticsPage() {
                 {data.alerts.activeCount === 0 ? (
                   <div className="text-center py-8">
                     <p className="text-[#055437] font-semibold">All Clear!</p>
-                    <p className="text-sm text-[#1a1a2e]/50 mt-1">No active alerts</p>
+                    <p className="text-sm text-[#1a1a1a]/50 mt-1">No active alerts</p>
                   </div>
                 ) : (
                   <div className="space-y-3">
@@ -533,7 +533,7 @@ export default function Tier2AnalyticsPage() {
                       />
                     ))}
                     {data.alerts.activeCount > 3 && (
-                      <p className="text-xs text-[#1a1a2e]/50 text-center">
+                      <p className="text-xs text-[#1a1a1a]/50 text-center">
                         +{data.alerts.activeCount - 3} more alerts
                       </p>
                     )}
@@ -545,16 +545,16 @@ export default function Tier2AnalyticsPage() {
             {/* Distribution Charts */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Category Balance */}
-              <div className="bg-white rounded-2xl p-6 shadow-sm border border-[#c9a227]/10">
+              <div className="bg-white rounded-2xl p-6 shadow-sm border border-[#B8860B]/10">
                 <div className="flex items-center justify-between mb-4">
                   <div>
-                    <h2 className="text-lg font-semibold text-[#1a1a2e]">Category Balance (3Rs)</h2>
-                    <p className="text-xs text-[#1a1a2e]/50">
+                    <h2 className="text-lg font-semibold text-[#1a1a1a]">Category Balance (3Rs)</h2>
+                    <p className="text-xs text-[#1a1a1a]/50">
                       {data.metrics.categoryBalance.isBalanced ? 'Well balanced' : 'Needs attention'}
                     </p>
                   </div>
                   {data.metrics.categoryBalance.dominantCategory && (
-                    <span className="px-2 py-1 rounded-lg text-xs bg-[#c9a227]/10 text-[#9a7b1a]">
+                    <span className="px-2 py-1 rounded-lg text-xs bg-[#B8860B]/10 text-[#8b6508]">
                       Dominant: {data.metrics.categoryBalance.dominantCategory}
                     </span>
                   )}
@@ -563,11 +563,11 @@ export default function Tier2AnalyticsPage() {
               </div>
 
               {/* House Distribution */}
-              <div className="bg-white rounded-2xl p-6 shadow-sm border border-[#c9a227]/10">
+              <div className="bg-white rounded-2xl p-6 shadow-sm border border-[#B8860B]/10">
                 <div className="flex items-center justify-between mb-4">
                   <div>
-                    <h2 className="text-lg font-semibold text-[#1a1a2e]">House Distribution</h2>
-                    <p className="text-xs text-[#1a1a2e]/50">
+                    <h2 className="text-lg font-semibold text-[#1a1a1a]">House Distribution</h2>
+                    <p className="text-xs text-[#1a1a1a]/50">
                       Variance: {data.metrics.houseDistribution.variance.toFixed(1)}%
                     </p>
                   </div>
@@ -581,11 +581,11 @@ export default function Tier2AnalyticsPage() {
 
             {/* Inactive Staff Section */}
             {data.metrics.participation.inactiveStaff.length > 0 && (
-              <div className="bg-white rounded-2xl p-6 shadow-sm border border-[#c9a227]/10">
-                <h2 className="text-lg font-semibold text-[#1a1a2e] mb-4">
+              <div className="bg-white rounded-2xl p-6 shadow-sm border border-[#B8860B]/10">
+                <h2 className="text-lg font-semibold text-[#1a1a1a] mb-4">
                   Inactive Staff ({data.metrics.participation.inactiveStaff.length})
                 </h2>
-                <p className="text-sm text-[#1a1a2e]/60 mb-4">
+                <p className="text-sm text-[#1a1a1a]/60 mb-4">
                   These staff members have not given any points during the selected period.
                 </p>
                 <div className="flex flex-wrap gap-2">
@@ -598,7 +598,7 @@ export default function Tier2AnalyticsPage() {
                     </span>
                   ))}
                   {data.metrics.participation.inactiveStaff.length > 20 && (
-                    <span className="px-3 py-1 rounded-full text-xs bg-[#1a1a2e]/5 text-[#1a1a2e]/60">
+                    <span className="px-3 py-1 rounded-full text-xs bg-[#1a1a1a]/5 text-[#1a1a1a]/60">
                       +{data.metrics.participation.inactiveStaff.length - 20} more
                     </span>
                   )}

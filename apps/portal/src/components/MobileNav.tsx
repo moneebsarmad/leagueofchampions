@@ -40,7 +40,6 @@ const staffNavItems: NavItem[] = [
 ]
 
 const adminNavItems: NavItem[] = [
-  { id: 'interventions', name: 'Interventions', href: '/dashboard/interventions', icon: 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4' },
   { id: 'rewards', name: 'Rewards', href: '/dashboard/rewards', icon: 'M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z' },
   { id: 'analytics', name: 'Analytics', href: '/dashboard/analytics', icon: 'M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z' },
   { id: 'staff', name: 'Staff Engagement', href: '/dashboard/staff', icon: 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0z' },
@@ -73,8 +72,8 @@ export default function MobileNav({
         onClick={onClose}
         aria-label="Close navigation"
       />
-      <aside className="relative h-full w-72 bg-gradient-to-b from-[#1a1a2e] to-[#16162a] shadow-2xl">
-        <div className="h-1 bg-gradient-to-r from-[#c9a227] via-[#e8d48b] to-[#c9a227]"></div>
+      <aside className="relative h-full w-72 bg-gradient-to-b from-[#2d5016] to-[#1e3610] shadow-2xl">
+        <div className="h-1 bg-gradient-to-r from-[#b8860b] via-[#d4a017] to-[#b8860b]"></div>
         <div className="p-6 border-b border-white/5">
           <div className="flex items-center gap-3">
             <div className="relative w-12 h-12 flex items-center justify-center">
@@ -83,20 +82,20 @@ export default function MobileNav({
                 alt={`${schoolConfig.systemName} crest`}
                 className="w-10 h-10 object-contain drop-shadow-md"
               />
-              <div className="absolute inset-0 rounded-full bg-[#c9a227] blur-xl opacity-20 -z-10"></div>
+              <div className="absolute inset-0 rounded-full bg-[#b8860b] blur-xl opacity-20 -z-10"></div>
             </div>
             <div>
-              <h1 className="text-lg font-semibold text-white tracking-tight" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+              <h1 className="text-lg font-semibold text-white tracking-tight" style={{ fontFamily: 'var(--font-playfair), Poppins, sans-serif' }}>
                 {schoolConfig.systemName}
               </h1>
-              <p className="text-xs text-[#c9a227]/80 font-medium tracking-wide" style={{ fontFamily: 'var(--font-body), Cormorant Garamond, Georgia, serif' }}>
+              <p className="text-xs text-[#d4a017]/80 font-medium tracking-wide" style={{ fontFamily: 'var(--font-body), Source Sans 3, sans-serif' }}>
                 {portalLabel}
               </p>
             </div>
           </div>
         </div>
 
-        <nav className="p-4 overflow-y-auto" style={{ fontFamily: 'var(--font-body), Cormorant Garamond, Georgia, serif' }}>
+        <nav className="p-4 overflow-y-auto" style={{ fontFamily: 'var(--font-body), Source Sans 3, sans-serif' }}>
           <p className="text-xs font-semibold text-white/30 uppercase tracking-widest mb-4 px-2">Navigation</p>
           <ul className="space-y-1">
             {navItems.map((item) => {
@@ -114,15 +113,15 @@ export default function MobileNav({
                     onClick={onClose}
                     className={`group flex items-center gap-3 px-3 py-3 rounded-xl transition-all duration-200 ${
                       isActive
-                        ? 'bg-gradient-to-r from-[#c9a227]/20 to-[#c9a227]/5 text-[#e8d48b] border border-[#c9a227]/20'
-                        : 'text-white/60 hover:text-white hover:bg-white/5'
+                      ? 'bg-gradient-to-r from-[#b8860b]/20 to-[#b8860b]/5 text-[#f8f9fa] border border-[#b8860b]/25'
+                      : 'text-white/70 hover:text-white hover:bg-white/5'
                     }`}
                   >
                     <div className={`p-2 rounded-lg transition-all ${
                       isActive
-                        ? 'bg-[#c9a227]/20'
-                        : 'bg-white/5 group-hover:bg-white/10'
-                    }`}>
+                      ? 'bg-[#b8860b]/20'
+                      : 'bg-white/5 group-hover:bg-white/10'
+                  }`}>
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={item.icon} />
                       </svg>
@@ -147,13 +146,13 @@ export default function MobileNav({
                         onClick={onClose}
                         className={`group flex items-center gap-3 px-3 py-3 rounded-xl transition-all duration-200 ${
                           isActive
-                            ? 'bg-gradient-to-r from-[#c9a227]/20 to-[#c9a227]/5 text-[#e8d48b] border border-[#c9a227]/20'
-                            : 'text-white/60 hover:text-white hover:bg-white/5'
+                            ? 'bg-gradient-to-r from-[#b8860b]/20 to-[#b8860b]/5 text-[#f8f9fa] border border-[#b8860b]/25'
+                            : 'text-white/70 hover:text-white hover:bg-white/5'
                         }`}
                       >
                         <div className={`p-2 rounded-lg transition-all ${
                           isActive
-                            ? 'bg-[#c9a227]/20'
+                            ? 'bg-[#b8860b]/20'
                             : 'bg-white/5 group-hover:bg-white/10'
                         }`}>
                           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

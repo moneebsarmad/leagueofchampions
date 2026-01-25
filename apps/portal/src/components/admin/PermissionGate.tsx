@@ -149,7 +149,7 @@ export function AccessDenied({ message = 'You do not have permission to view thi
         />
       </svg>
       <h3 className="text-lg font-semibold text-[#910000] mb-2">Access Denied</h3>
-      <p className="text-sm text-[#1a1a2e]/60">{message}</p>
+      <p className="text-sm text-[#1a1a1a]/60">{message}</p>
     </div>
   )
 }

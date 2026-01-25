@@ -257,7 +257,7 @@ export async function queueAlertNotifications(
     for (const email of recipients) {
       const variables = {
         severity: alert.severity,
-        severity_color: alert.severity === 'RED' ? '#910000' : '#c9a227',
+        severity_color: alert.severity === 'RED' ? '#910000' : '#B8860B',
         alert_title: alert.title,
         alert_message: alert.message,
         recommended_action: alert.recommended_action || 'Review the dashboard for more details.',

@@ -79,22 +79,22 @@ const demoConfig: SchoolConfig = {
   // School Identity
   schoolName: 'Dār al-Arqam Islamic School',
   systemName: 'League of Champions',
-  tagline: 'Where champions are made',
+  tagline: 'The Operating System for Islamic School Culture',
 
   // Branding Assets
   crestLogo: '/demo-crest.svg',
   favicon: '/favicon.ico',
 
-  // Colors - Regal Purple & Gold theme
+  // Colors - Nama Systems Forest & Gold theme
   colors: {
-    primary: '#2f0a61',      // Royal Purple
-    primaryLight: '#4a1a8a',
-    accent: '#c9a227',       // Gold
-    accentLight: '#e8d48b',
-    accentDark: '#9a7b1a',
-    background: '#faf9f7',   // Cream
-    backgroundAlt: '#f5f3ef', // Ivory
-    text: '#1a1a2e',         // Charcoal
+    primary: '#2D5016',      // Forest Green
+    primaryLight: '#3d6b1e',
+    accent: '#B8860B',       // Gold
+    accentLight: '#d4a017',
+    accentDark: '#8b6508',
+    background: '#F8F9FA',   // Soft Gray
+    backgroundAlt: '#FFFFFF', // White
+    text: '#1a1a1a',         // Dark
   },
 
   // House System - 4 Houses
@@ -167,7 +167,7 @@ const bhaConfig: SchoolConfig = {
   ...demoConfig,
   schoolName: 'Dār al-Arqam Islamic School',
   systemName: 'League of Champions',
-  tagline: 'Where champions are made',
+  tagline: 'The Operating System for Islamic School Culture',
   crestLogo: '/crest.png', // BHA-specific crest
 }
 

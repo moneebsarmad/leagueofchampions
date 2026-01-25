@@ -595,37 +595,37 @@ export default function StaffPage() {
       <div className="mb-8">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-[#1a1a2e] mb-2" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+            <h1 className="text-3xl font-bold text-[#1a1a1a] mb-2" style={{ fontFamily: 'var(--font-playfair), Poppins, sans-serif' }}>
               Staff Engagement & Support
             </h1>
             <div className="flex items-center gap-3">
-              <div className="h-1 w-16 bg-gradient-to-r from-[#c9a227] to-[#e8d48b] rounded-full"></div>
-              <p className="text-[#1a1a2e]/50 text-sm font-medium">Consistency, notes quality, and engagement signals</p>
+              <div className="h-1 w-16 bg-gradient-to-r from-[#B8860B] to-[#d4a017] rounded-full"></div>
+              <p className="text-[#1a1a1a]/50 text-sm font-medium">Consistency, notes quality, and engagement signals</p>
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <span className="text-xs tracking-widest text-[#1a1a2e]/40">Date range</span>
+            <span className="text-xs tracking-widest text-[#1a1a1a]/40">Date range</span>
             <input
               type="date"
               value={startDate}
               min={calendarRange?.min_date || undefined}
               max={endDate || maxCalendarEnd || undefined}
               onChange={(e) => setDateRange((prev) => ({ ...prev, startDate: e.target.value }))}
-              className="px-3 py-2.5 border border-[#1a1a2e]/10 rounded-xl focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227] outline-none bg-white text-sm"
+              className="px-3 py-2.5 border border-[#1a1a1a]/10 rounded-xl focus:ring-2 focus:ring-[#B8860B]/30 focus:border-[#B8860B] outline-none bg-white text-sm"
             />
-            <span className="text-xs text-[#1a1a2e]/40">→</span>
+            <span className="text-xs text-[#1a1a1a]/40">→</span>
             <input
               type="date"
               value={endDate}
               min={startDate || calendarRange?.min_date || undefined}
               max={maxCalendarEnd || undefined}
               onChange={(e) => setDateRange((prev) => ({ ...prev, endDate: e.target.value }))}
-              className="px-3 py-2.5 border border-[#1a1a2e]/10 rounded-xl focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227] outline-none bg-white text-sm"
+              className="px-3 py-2.5 border border-[#1a1a1a]/10 rounded-xl focus:ring-2 focus:ring-[#B8860B]/30 focus:border-[#B8860B] outline-none bg-white text-sm"
             />
             <select
               value={filters.house}
               onChange={(e) => setFilters((prev) => ({ ...prev, house: e.target.value }))}
-              className="px-3 py-2.5 border border-[#1a1a2e]/10 rounded-xl focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227] outline-none bg-white text-sm"
+              className="px-3 py-2.5 border border-[#1a1a1a]/10 rounded-xl focus:ring-2 focus:ring-[#B8860B]/30 focus:border-[#B8860B] outline-none bg-white text-sm"
             >
               <option value="">All houses</option>
               {houseOptions.map((house) => (
@@ -635,7 +635,7 @@ export default function StaffPage() {
             <select
               value={filters.grade}
               onChange={(e) => setFilters((prev) => ({ ...prev, grade: e.target.value }))}
-              className="px-3 py-2.5 border border-[#1a1a2e]/10 rounded-xl focus:ring-2 focus:ring-[#c9a227]/30 focus:border-[#c9a227] outline-none bg-white text-sm"
+              className="px-3 py-2.5 border border-[#1a1a1a]/10 rounded-xl focus:ring-2 focus:ring-[#B8860B]/30 focus:border-[#B8860B] outline-none bg-white text-sm"
             >
               <option value="">All grades</option>
               {gradeOptions.map((grade) => (
@@ -652,10 +652,10 @@ export default function StaffPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         {/* Tier Distribution Pie Chart */}
         <div className="regal-card rounded-2xl p-6">
-          <h3 className="text-lg font-semibold text-[#1a1a2e] mb-1" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+          <h3 className="text-lg font-semibold text-[#1a1a1a] mb-1" style={{ fontFamily: 'var(--font-playfair), Poppins, sans-serif' }}>
             Engagement Tier Distribution
           </h3>
-          <p className="text-xs text-[#1a1a2e]/40 mb-6">Consistency (logging days / school days)</p>
+          <p className="text-xs text-[#1a1a1a]/40 mb-6">Consistency (logging days / school days)</p>
           <div className="h-64 flex items-center">
             <div className="w-1/2">
               <ResponsiveContainer width="100%" height={200}>
@@ -682,8 +682,8 @@ export default function StaffPage() {
                 <div key={tier.name} className="flex items-center gap-3">
                   <div className="w-4 h-4 rounded-full shadow-sm" style={{ backgroundColor: tier.color }}></div>
                   <div>
-                    <p className="text-sm font-semibold text-[#1a1a2e]">{tier.name}</p>
-                    <p className="text-xs text-[#1a1a2e]/40">{tier.value} staff members</p>
+                    <p className="text-sm font-semibold text-[#1a1a1a]">{tier.name}</p>
+                    <p className="text-xs text-[#1a1a1a]/40">{tier.value} staff members</p>
                   </div>
                 </div>
               ))}
@@ -693,18 +693,18 @@ export default function StaffPage() {
 
         {/* Consistency Leaderboard */}
         <div className="regal-card rounded-2xl p-6">
-          <h3 className="text-lg font-semibold text-[#1a1a2e] mb-1" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+          <h3 className="text-lg font-semibold text-[#1a1a1a] mb-1" style={{ fontFamily: 'var(--font-playfair), Poppins, sans-serif' }}>
             Consistency Leaderboard
           </h3>
-          <p className="text-xs text-[#1a1a2e]/40 mb-6">Top 10 most consistent staff members</p>
+          <p className="text-xs text-[#1a1a1a]/40 mb-6">Top 10 most consistent staff members</p>
           <div className="h-80">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={consistencyLeaderboard} layout="vertical" margin={{ left: 140, right: 28, top: 10, bottom: 10 }}>
                 <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} stroke="#e5e2db" />
-                <XAxis type="number" domain={[0, 100]} tickFormatter={(v) => `${v}%`} stroke="#1a1a2e" opacity={0.3} />
-                <YAxis type="category" dataKey="name" width={130} tick={{ fontSize: 12, fill: '#1a1a2e' }} />
+                <XAxis type="number" domain={[0, 100]} tickFormatter={(v) => `${v}%`} stroke="#1a1a1a" opacity={0.3} />
+                <YAxis type="category" dataKey="name" width={130} tick={{ fontSize: 12, fill: '#1a1a1a' }} />
                 <Tooltip formatter={(value: number) => [`${value}%`, 'Consistency']} />
-                <Bar dataKey="consistency" fill="#c9a227" radius={[0, 6, 6, 0]} />
+                <Bar dataKey="consistency" fill="#B8860B" radius={[0, 6, 6, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -715,69 +715,69 @@ export default function StaffPage() {
       <div className="regal-card rounded-2xl p-6 mb-8">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h3 className="text-lg font-semibold text-[#1a1a2e]" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+            <h3 className="text-lg font-semibold text-[#1a1a1a]" style={{ fontFamily: 'var(--font-playfair), Poppins, sans-serif' }}>
               Monthly Staff Rewards
             </h3>
-            <p className="text-xs text-[#1a1a2e]/40 mt-1">Recognition for {monthlyAwards.monthLabel}</p>
+            <p className="text-xs text-[#1a1a1a]/40 mt-1">Recognition for {monthlyAwards.monthLabel}</p>
           </div>
-          <div className="text-xs text-[#1a1a2e]/40">
+          <div className="text-xs text-[#1a1a1a]/40">
             Based on merit entries submitted this month
           </div>
         </div>
 
         {!isSingleMonthRange && (
-          <div className="mb-6 rounded-xl border border-[#c9a227]/20 bg-[#f5f3ef] px-4 py-3 text-sm text-[#1a1a2e]/70">
+          <div className="mb-6 rounded-xl border border-[#B8860B]/20 bg-[#f5f3ef] px-4 py-3 text-sm text-[#1a1a1a]/70">
             Monthly awards require a single-month range. Adjust the dates to a single month to view awards.
           </div>
         )}
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          <div className="p-5 rounded-xl bg-[#f5f3ef] border border-[#c9a227]/20">
-            <p className="text-xs font-semibold text-[#1a1a2e]/40 tracking-widest">House Spirit Award</p>
-            <p className="text-sm text-[#1a1a2e]/60 mt-1">House with the highest collective staff participation</p>
+          <div className="p-5 rounded-xl bg-[#f5f3ef] border border-[#B8860B]/20">
+            <p className="text-xs font-semibold text-[#1a1a1a]/40 tracking-widest">House Spirit Award</p>
+            <p className="text-sm text-[#1a1a1a]/60 mt-1">House with the highest collective staff participation</p>
             <div className="mt-4">
-              <p className="text-lg font-bold text-[#1a1a2e]">{monthlyAwards.houseSpirit?.house || 'No data'}</p>
+              <p className="text-lg font-bold text-[#1a1a1a]">{monthlyAwards.houseSpirit?.house || 'No data'}</p>
               {monthlyAwards.houseSpirit && (
-                <p className="text-xs text-[#1a1a2e]/50 mt-1">
+                <p className="text-xs text-[#1a1a1a]/50 mt-1">
                   {monthlyAwards.houseSpirit.staffCount} active staff • {monthlyAwards.houseSpirit.points.toLocaleString()} pts
                 </p>
               )}
             </div>
           </div>
 
-          <div className="p-5 rounded-xl bg-[#f5f3ef] border border-[#c9a227]/20">
-            <p className="text-xs font-semibold text-[#1a1a2e]/40 tracking-widest">3R All-Star</p>
-            <p className="text-sm text-[#1a1a2e]/60 mt-1">Most diverse merit categories</p>
+          <div className="p-5 rounded-xl bg-[#f5f3ef] border border-[#B8860B]/20">
+            <p className="text-xs font-semibold text-[#1a1a1a]/40 tracking-widest">3R All-Star</p>
+            <p className="text-sm text-[#1a1a1a]/60 mt-1">Most diverse merit categories</p>
             <div className="mt-4">
-              <p className="text-lg font-bold text-[#1a1a2e]">{monthlyAwards.allStar?.name || 'No data'}</p>
+              <p className="text-lg font-bold text-[#1a1a1a]">{monthlyAwards.allStar?.name || 'No data'}</p>
               {monthlyAwards.allStar && (
-                <p className="text-xs text-[#1a1a2e]/50 mt-1">
+                <p className="text-xs text-[#1a1a1a]/50 mt-1">
                   {monthlyAwards.allStar.categories} categories • {monthlyAwards.allStar.points.toLocaleString()} pts
                 </p>
               )}
             </div>
           </div>
 
-          <div className="p-5 rounded-xl bg-[#f5f3ef] border border-[#c9a227]/20">
-            <p className="text-xs font-semibold text-[#1a1a2e]/40 tracking-widest">The Steady Hand</p>
-            <p className="text-sm text-[#1a1a2e]/60 mt-1">Most days with point submissions</p>
+          <div className="p-5 rounded-xl bg-[#f5f3ef] border border-[#B8860B]/20">
+            <p className="text-xs font-semibold text-[#1a1a1a]/40 tracking-widest">The Steady Hand</p>
+            <p className="text-sm text-[#1a1a1a]/60 mt-1">Most days with point submissions</p>
             <div className="mt-4">
-              <p className="text-lg font-bold text-[#1a1a2e]">{monthlyAwards.steadyHand?.name || 'No data'}</p>
+              <p className="text-lg font-bold text-[#1a1a1a]">{monthlyAwards.steadyHand?.name || 'No data'}</p>
               {monthlyAwards.steadyHand && (
-                <p className="text-xs text-[#1a1a2e]/50 mt-1">
+                <p className="text-xs text-[#1a1a1a]/50 mt-1">
                   {monthlyAwards.steadyHand.days} days • {monthlyAwards.steadyHand.awards} awards
                 </p>
               )}
             </div>
           </div>
 
-          <div className="p-5 rounded-xl bg-[#f5f3ef] border border-[#c9a227]/20">
-            <p className="text-xs font-semibold text-[#1a1a2e]/40 tracking-widest">The Diamond Finder</p>
-            <p className="text-sm text-[#1a1a2e]/60 mt-1">Most unique students recognized</p>
+          <div className="p-5 rounded-xl bg-[#f5f3ef] border border-[#B8860B]/20">
+            <p className="text-xs font-semibold text-[#1a1a1a]/40 tracking-widest">The Diamond Finder</p>
+            <p className="text-sm text-[#1a1a1a]/60 mt-1">Most unique students recognized</p>
             <div className="mt-4">
-              <p className="text-lg font-bold text-[#1a1a2e]">{monthlyAwards.diamondFinder?.name || 'No data'}</p>
+              <p className="text-lg font-bold text-[#1a1a1a]">{monthlyAwards.diamondFinder?.name || 'No data'}</p>
               {monthlyAwards.diamondFinder && (
-                <p className="text-xs text-[#1a1a2e]/50 mt-1">
+                <p className="text-xs text-[#1a1a1a]/50 mt-1">
                   {monthlyAwards.diamondFinder.students} students • {monthlyAwards.diamondFinder.points.toLocaleString()} pts
                 </p>
               )}
@@ -785,27 +785,27 @@ export default function StaffPage() {
           </div>
         </div>
 
-        <div className="mt-6 p-5 rounded-xl bg-white border border-[#c9a227]/10">
+        <div className="mt-6 p-5 rounded-xl bg-white border border-[#B8860B]/10">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <p className="text-xs font-semibold text-[#1a1a2e]/40 tracking-widest">House Champion Award</p>
-              <p className="text-sm text-[#1a1a2e]/60 mt-1">Top contributor from each house</p>
+              <p className="text-xs font-semibold text-[#1a1a1a]/40 tracking-widest">House Champion Award</p>
+              <p className="text-sm text-[#1a1a1a]/60 mt-1">Top contributor from each house</p>
             </div>
-            <span className="text-xs text-[#1a1a2e]/40">4 recipients</span>
+            <span className="text-xs text-[#1a1a1a]/40">4 recipients</span>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
             {monthlyAwards.houseChampions.map((entry) => (
               <div key={entry.house} className="rounded-xl bg-[#f5f3ef] px-4 py-3">
-                <p className="text-xs font-semibold text-[#1a1a2e]/40 tracking-wider">
+                <p className="text-xs font-semibold text-[#1a1a1a]/40 tracking-wider">
                   {entry.house.replace('House of ', '')}
                 </p>
                 {entry.winner ? (
                   <>
-                    <p className="text-sm font-semibold text-[#1a1a2e] mt-1">{entry.winner.name}</p>
-                    <p className="text-xs text-[#1a1a2e]/50">{entry.winner.points.toLocaleString()} pts</p>
+                    <p className="text-sm font-semibold text-[#1a1a1a] mt-1">{entry.winner.name}</p>
+                    <p className="text-xs text-[#1a1a1a]/50">{entry.winner.points.toLocaleString()} pts</p>
                   </>
                 ) : (
-                  <p className="text-xs text-[#1a1a2e]/30 mt-1">No data</p>
+                  <p className="text-xs text-[#1a1a1a]/30 mt-1">No data</p>
                 )}
               </div>
             ))}
@@ -815,15 +815,15 @@ export default function StaffPage() {
 
       {/* Detailed Staff Table */}
       <div className="regal-card rounded-2xl overflow-hidden">
-        <div className="p-6 border-b border-[#c9a227]/10">
+        <div className="p-6 border-b border-[#B8860B]/10">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
-              <h3 className="text-lg font-semibold text-[#1a1a2e]" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+              <h3 className="text-lg font-semibold text-[#1a1a1a]" style={{ fontFamily: 'var(--font-playfair), Poppins, sans-serif' }}>
                 Detailed Staff Engagement & Support
               </h3>
-              <p className="text-xs text-[#1a1a2e]/40 mt-1">Engagement signals and support flags for each staff member</p>
+              <p className="text-xs text-[#1a1a1a]/40 mt-1">Engagement signals and support flags for each staff member</p>
             </div>
-          <span className="text-xs font-semibold tracking-wider bg-[#c9a227]/15 text-[#9a7b1a] px-3 py-1 rounded-full">
+          <span className="text-xs font-semibold tracking-wider bg-[#B8860B]/15 text-[#8b6508] px-3 py-1 rounded-full">
             {rangeLabel}
           </span>
           </div>
@@ -834,8 +834,8 @@ export default function StaffPage() {
                 onClick={() => toggleFilter(chip.id)}
                 className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition-colors ${
                   activeFilters.includes(chip.id)
-                    ? 'bg-[#c9a227] text-white border-[#c9a227]'
-                    : 'bg-white text-[#1a1a2e]/60 border-[#1a1a2e]/10 hover:border-[#c9a227]/40'
+                    ? 'bg-[#B8860B] text-white border-[#B8860B]'
+                    : 'bg-white text-[#1a1a1a]/60 border-[#1a1a1a]/10 hover:border-[#B8860B]/40'
                 }`}
               >
                 {chip.label}
@@ -882,7 +882,7 @@ export default function StaffPage() {
             <tbody>
               {sortedStaff.length === 0 ? (
                 <tr>
-                  <td colSpan={9} className="py-12 text-center text-[#1a1a2e]/40">
+                  <td colSpan={9} className="py-12 text-center text-[#1a1a1a]/40">
                     No staff activity found in this date range
                   </td>
                 </tr>
@@ -907,14 +907,14 @@ export default function StaffPage() {
                     <tr key={member.email || member.staff_name}>
                       <td className="py-4 px-4">
                         <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#2f0a61] to-[#1a0536] text-white flex items-center justify-center font-bold text-sm shadow-md">
+                          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#2D5016] to-[#1e3610] text-white flex items-center justify-center font-bold text-sm shadow-md">
                             {member.staff_name.slice(0, 2).toUpperCase()}
                           </div>
                           <div>
-                            <a href={analyticsHref} className="font-semibold text-[#1a1a2e] hover:text-[#c9a227] transition-colors">
+                            <a href={analyticsHref} className="font-semibold text-[#1a1a1a] hover:text-[#B8860B] transition-colors">
                               {member.staff_name}
                             </a>
-                            <p className="text-xs text-[#1a1a2e]/40">{member.email || '—'}</p>
+                            <p className="text-xs text-[#1a1a1a]/40">{member.email || '—'}</p>
                             {totalHousePoints > 0 ? (
                               <div className="mt-2">
                                 <div className="h-2 w-full rounded-full bg-[#e5e2db] overflow-hidden flex">
@@ -924,17 +924,17 @@ export default function StaffPage() {
                                       className="h-full"
                                       style={{
                                         width: `${entry.percent}%`,
-                                        backgroundColor: houseColors[entry.house] || '#1a1a2e',
+                                        backgroundColor: houseColors[entry.house] || '#1a1a1a',
                                       }}
                                     />
                                   ))}
                                 </div>
-                                <div className="flex flex-wrap gap-2 mt-1 text-[10px] text-[#1a1a2e]/50">
+                                <div className="flex flex-wrap gap-2 mt-1 text-[10px] text-[#1a1a1a]/50">
                                   {houseBreakdown.map((entry) => (
                                     <span key={entry.house} className="flex items-center gap-1">
                                       <span
                                         className="inline-block w-2 h-2 rounded-full"
-                                        style={{ backgroundColor: houseColors[entry.house] || '#1a1a2e' }}
+                                        style={{ backgroundColor: houseColors[entry.house] || '#1a1a1a' }}
                                       />
                                       {entry.house.replace('House of ', '')} {Math.round(entry.percent)}%
                                     </span>
@@ -942,12 +942,12 @@ export default function StaffPage() {
                                 </div>
                               </div>
                             ) : (
-                              <p className="text-[10px] text-[#1a1a2e]/30 mt-2">No house distribution yet</p>
+                              <p className="text-[10px] text-[#1a1a1a]/30 mt-2">No house distribution yet</p>
                             )}
                           </div>
                         </div>
                       </td>
-                      <td className="py-4 px-4 text-[#1a1a2e]/70 font-medium">{member.active_days}</td>
+                      <td className="py-4 px-4 text-[#1a1a1a]/70 font-medium">{member.active_days}</td>
                       <td className="py-4 px-4">
                         <div className="flex items-center gap-2">
                           <div className="w-20 h-2 bg-[#e5e2db] rounded-full overflow-hidden">
@@ -959,12 +959,12 @@ export default function StaffPage() {
                               }}
                             />
                           </div>
-                          <span className="text-sm font-medium text-[#1a1a2e]">{member.consistency_pct}%</span>
-                          <span className="text-xs text-[#1a1a2e]/40">/ {possibleSchoolDays}</span>
+                          <span className="text-sm font-medium text-[#1a1a1a]">{member.consistency_pct}%</span>
+                          <span className="text-xs text-[#1a1a1a]/40">/ {possibleSchoolDays}</span>
                         </div>
                       </td>
-                      <td className="py-4 px-4 text-[#1a1a2e]/70 font-medium">{member.entries_count}</td>
-                      <td className="py-4 px-4 text-[#1a1a2e]/70 font-medium">{notesCompliance}</td>
+                      <td className="py-4 px-4 text-[#1a1a1a]/70 font-medium">{member.entries_count}</td>
+                      <td className="py-4 px-4 text-[#1a1a1a]/70 font-medium">{notesCompliance}</td>
                       <td className="py-4 px-4">
                         {missingNotes > 0 ? (
                           <button
@@ -974,10 +974,10 @@ export default function StaffPage() {
                             {missingNotes}
                           </button>
                         ) : (
-                          <span className="text-[#1a1a2e]/30">—</span>
+                          <span className="text-[#1a1a1a]/30">—</span>
                         )}
                       </td>
-                      <td className="py-4 px-4 text-[#1a1a2e]/70 font-medium">
+                      <td className="py-4 px-4 text-[#1a1a1a]/70 font-medium">
                         {member.unique_categories_used}/3
                       </td>
                       <td className="py-4 px-4">
@@ -998,11 +998,11 @@ export default function StaffPage() {
                             </span>
                           )}
                           {!member.roster_flags.unknown_staff_record && !member.roster_flags.missing_house && !member.roster_flags.missing_grade && (
-                            <span className="text-[#1a1a2e]/30 text-xs">—</span>
+                            <span className="text-[#1a1a1a]/30 text-xs">—</span>
                           )}
                         </div>
                       </td>
-                      <td className="py-4 px-4 text-sm text-[#1a1a2e]/50">
+                      <td className="py-4 px-4 text-sm text-[#1a1a1a]/50">
                         {formatDate(member.last_active_date)}
                       </td>
                     </tr>
@@ -1016,64 +1016,64 @@ export default function StaffPage() {
       </div>
 
       {rosterModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#1a1a2e]/40 p-6">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#1a1a1a]/40 p-6">
           <div className="bg-white rounded-2xl w-full max-w-3xl shadow-xl">
-            <div className="p-6 border-b border-[#c9a227]/10 flex items-center justify-between">
+            <div className="p-6 border-b border-[#B8860B]/10 flex items-center justify-between">
               <div>
-                <h3 className="text-lg font-semibold text-[#1a1a2e]">Roster Issues</h3>
-                <p className="text-xs text-[#1a1a2e]/40">Unknown staff and missing roster fields</p>
+                <h3 className="text-lg font-semibold text-[#1a1a1a]">Roster Issues</h3>
+                <p className="text-xs text-[#1a1a1a]/40">Unknown staff and missing roster fields</p>
               </div>
               <button
                 onClick={() => setRosterModalOpen(false)}
-                className="text-sm font-semibold text-[#1a1a2e]/50 hover:text-[#1a1a2e]"
+                className="text-sm font-semibold text-[#1a1a1a]/50 hover:text-[#1a1a1a]"
               >
                 Close
               </button>
             </div>
             <div className="p-6 space-y-6 max-h-[70vh] overflow-y-auto">
-              {isRosterLoading && <p className="text-sm text-[#1a1a2e]/40">Loading roster details...</p>}
+              {isRosterLoading && <p className="text-sm text-[#1a1a1a]/40">Loading roster details...</p>}
               {!isRosterLoading && rosterDetails && (
                 <>
                   <div>
-                    <h4 className="text-sm font-semibold text-[#1a1a2e] mb-3">Unknown staff entries</h4>
+                    <h4 className="text-sm font-semibold text-[#1a1a1a] mb-3">Unknown staff entries</h4>
                     {rosterDetails.unknown_staff_entries.length === 0 ? (
-                      <p className="text-sm text-[#1a1a2e]/40">None detected</p>
+                      <p className="text-sm text-[#1a1a1a]/40">None detected</p>
                     ) : (
                       <div className="space-y-2">
                         {rosterDetails.unknown_staff_entries.map((row) => (
                           <div key={row.staff_name} className="flex items-center justify-between text-sm">
                             <span>{row.staff_name}</span>
-                            <span className="text-[#1a1a2e]/50">{row.entries_count} entries • {formatDate(row.last_active_date)}</span>
+                            <span className="text-[#1a1a1a]/50">{row.entries_count} entries • {formatDate(row.last_active_date)}</span>
                           </div>
                         ))}
                       </div>
                     )}
                   </div>
                   <div>
-                    <h4 className="text-sm font-semibold text-[#1a1a2e] mb-3">Staff missing house</h4>
+                    <h4 className="text-sm font-semibold text-[#1a1a1a] mb-3">Staff missing house</h4>
                     {rosterDetails.missing_house_staff.length === 0 ? (
-                      <p className="text-sm text-[#1a1a2e]/40">None detected</p>
+                      <p className="text-sm text-[#1a1a1a]/40">None detected</p>
                     ) : (
                       <div className="space-y-2">
                         {rosterDetails.missing_house_staff.map((row) => (
                           <div key={row.staff_name} className="flex items-center justify-between text-sm">
                             <span>{row.staff_name}</span>
-                            <span className="text-[#1a1a2e]/50">{row.email || '—'} • {formatDate(row.last_active_date)}</span>
+                            <span className="text-[#1a1a1a]/50">{row.email || '—'} • {formatDate(row.last_active_date)}</span>
                           </div>
                         ))}
                       </div>
                     )}
                   </div>
                   <div>
-                    <h4 className="text-sm font-semibold text-[#1a1a2e] mb-3">Staff missing grade</h4>
+                    <h4 className="text-sm font-semibold text-[#1a1a1a] mb-3">Staff missing grade</h4>
                     {rosterDetails.missing_grade_staff.length === 0 ? (
-                      <p className="text-sm text-[#1a1a2e]/40">None detected</p>
+                      <p className="text-sm text-[#1a1a1a]/40">None detected</p>
                     ) : (
                       <div className="space-y-2">
                         {rosterDetails.missing_grade_staff.map((row) => (
                           <div key={row.staff_name} className="flex items-center justify-between text-sm">
                             <span>{row.staff_name}</span>
-                            <span className="text-[#1a1a2e]/50">{row.email || '—'} • {formatDate(row.last_active_date)}</span>
+                            <span className="text-[#1a1a1a]/50">{row.email || '—'} • {formatDate(row.last_active_date)}</span>
                           </div>
                         ))}
                       </div>
@@ -1082,16 +1082,16 @@ export default function StaffPage() {
                 </>
               )}
             </div>
-            <div className="p-6 border-t border-[#c9a227]/10 flex items-center justify-end gap-3">
+            <div className="p-6 border-t border-[#B8860B]/10 flex items-center justify-end gap-3">
               <button
                 onClick={exportRosterCsv}
-                className="px-4 py-2 rounded-lg bg-[#c9a227]/10 text-[#9a7b1a] text-sm font-semibold hover:bg-[#c9a227]/20"
+                className="px-4 py-2 rounded-lg bg-[#B8860B]/10 text-[#8b6508] text-sm font-semibold hover:bg-[#B8860B]/20"
               >
                 Export CSV
               </button>
               <button
                 onClick={() => setRosterModalOpen(false)}
-                className="px-4 py-2 rounded-lg bg-[#1a1a2e] text-white text-sm font-semibold"
+                className="px-4 py-2 rounded-lg bg-[#1a1a1a] text-white text-sm font-semibold"
               >
                 Close
               </button>
@@ -1101,53 +1101,53 @@ export default function StaffPage() {
       )}
 
       {missingNotesModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#1a1a2e]/40 p-6">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#1a1a1a]/40 p-6">
           <div className="bg-white rounded-2xl w-full max-w-3xl shadow-xl">
-            <div className="p-6 border-b border-[#c9a227]/10 flex items-center justify-between">
+            <div className="p-6 border-b border-[#B8860B]/10 flex items-center justify-between">
               <div>
-                <h3 className="text-lg font-semibold text-[#1a1a2e]">Missing Required Notes</h3>
-                <p className="text-xs text-[#1a1a2e]/40">{missingNotesTarget || 'Staff'}</p>
+                <h3 className="text-lg font-semibold text-[#1a1a1a]">Missing Required Notes</h3>
+                <p className="text-xs text-[#1a1a1a]/40">{missingNotesTarget || 'Staff'}</p>
               </div>
               <button
                 onClick={() => setMissingNotesModalOpen(false)}
-                className="text-sm font-semibold text-[#1a1a2e]/50 hover:text-[#1a1a2e]"
+                className="text-sm font-semibold text-[#1a1a1a]/50 hover:text-[#1a1a1a]"
               >
                 Close
               </button>
             </div>
             <div className="p-6 max-h-[70vh] overflow-y-auto">
-              {isMissingNotesLoading && <p className="text-sm text-[#1a1a2e]/40">Loading missing notes...</p>}
+              {isMissingNotesLoading && <p className="text-sm text-[#1a1a1a]/40">Loading missing notes...</p>}
               {!isMissingNotesLoading && missingNotesEntries.length === 0 && (
-                <p className="text-sm text-[#1a1a2e]/40">No missing notes found.</p>
+                <p className="text-sm text-[#1a1a1a]/40">No missing notes found.</p>
               )}
               {!isMissingNotesLoading && missingNotesEntries.length > 0 && (
                 <div className="space-y-3">
                   {missingNotesEntries.map((entry, index) => (
-                    <div key={`${entry.staff_name}-${entry.date}-${index}`} className="border border-[#1a1a2e]/10 rounded-xl p-4">
-                      <div className="flex items-center justify-between text-sm text-[#1a1a2e]/60">
+                    <div key={`${entry.staff_name}-${entry.date}-${index}`} className="border border-[#1a1a1a]/10 rounded-xl p-4">
+                      <div className="flex items-center justify-between text-sm text-[#1a1a1a]/60">
                         <span>{entry.date}</span>
                         <span>{entry.points} pts</span>
                       </div>
-                      <p className="text-sm font-semibold text-[#1a1a2e] mt-2">{entry.student_name}</p>
-                      <p className="text-xs text-[#1a1a2e]/50 mt-1">{entry.r} • {entry.subcategory}</p>
+                      <p className="text-sm font-semibold text-[#1a1a1a] mt-2">{entry.student_name}</p>
+                      <p className="text-xs text-[#1a1a1a]/50 mt-1">{entry.r} • {entry.subcategory}</p>
                       {entry.notes && (
-                        <p className="text-xs text-[#1a1a2e]/50 mt-2">Notes: {entry.notes}</p>
+                        <p className="text-xs text-[#1a1a1a]/50 mt-2">Notes: {entry.notes}</p>
                       )}
                     </div>
                   ))}
                 </div>
               )}
             </div>
-            <div className="p-6 border-t border-[#c9a227]/10 flex items-center justify-end gap-3">
+            <div className="p-6 border-t border-[#B8860B]/10 flex items-center justify-end gap-3">
               <button
                 onClick={exportMissingNotesCsv}
-                className="px-4 py-2 rounded-lg bg-[#c9a227]/10 text-[#9a7b1a] text-sm font-semibold hover:bg-[#c9a227]/20"
+                className="px-4 py-2 rounded-lg bg-[#B8860B]/10 text-[#8b6508] text-sm font-semibold hover:bg-[#B8860B]/20"
               >
                 Export CSV
               </button>
               <button
                 onClick={() => setMissingNotesModalOpen(false)}
-                className="px-4 py-2 rounded-lg bg-[#1a1a2e] text-white text-sm font-semibold"
+                className="px-4 py-2 rounded-lg bg-[#1a1a1a] text-white text-sm font-semibold"
               >
                 Close
               </button>

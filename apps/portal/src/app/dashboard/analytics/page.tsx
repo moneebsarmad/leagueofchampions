@@ -38,7 +38,7 @@ const houseColors = getHouseColors()
 const HOUSE_NAMES = new Set(getHouseNames())
 
 const categoryColors = [
-  '#2f0a61', '#055437', '#000068', '#910000', '#c9a227', '#1a1a2e', '#4a1a8a', '#0a7a50'
+  '#2D5016', '#055437', '#000068', '#910000', '#B8860B', '#1a1a1a', '#3d6b1e', '#0a7a50'
 ]
 const emptyFilters: Filters = {
   house: '',
@@ -307,7 +307,7 @@ export default function AnalyticsPage() {
         <head>
           <title>${title}</title>
           <style>
-            body { font-family: Georgia, 'Times New Roman', serif; color: #1a1a2e; padding: 24px; }
+            body { font-family: Georgia, 'Times New Roman', serif; color: #1a1a1a; padding: 24px; }
             h1 { font-size: 20px; margin: 0 0 12px; }
             p { font-size: 12px; margin: 0 0 16px; color: #555; }
             table { width: 100%; border-collapse: collapse; font-size: 11px; }
@@ -358,7 +358,7 @@ export default function AnalyticsPage() {
     const y = typeof props.y === 'number' ? props.y : 0
     const width = typeof props.width === 'number' ? props.width : 0
     const height = typeof props.height === 'number' ? props.height : 0
-    const fill = typeof props.fill === 'string' ? props.fill : '#c9a227'
+    const fill = typeof props.fill === 'string' ? props.fill : '#B8860B'
     const radius = Math.min(10, width / 2)
     const taper = Math.max(6, Math.min(width * 0.22, 14))
     const bottomY = y + height
@@ -402,27 +402,27 @@ export default function AnalyticsPage() {
       <div>
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-[#1a1a2e] mb-2" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+        <h1 className="text-3xl font-bold text-[#1a1a1a] mb-2" style={{ fontFamily: 'var(--font-playfair), Poppins, sans-serif' }}>
           Advanced Analytics
         </h1>
         <div className="flex items-center gap-3">
-          <div className="h-1 w-16 bg-gradient-to-r from-[#c9a227] to-[#e8d48b] rounded-full"></div>
-          <p className="text-[#1a1a2e]/50 text-sm font-medium">Comprehensive data insights and patterns</p>
+          <div className="h-1 w-16 bg-gradient-to-r from-[#B8860B] to-[#d4a017] rounded-full"></div>
+          <p className="text-[#1a1a1a]/50 text-sm font-medium">Comprehensive data insights and patterns</p>
         </div>
       </div>
 
       {/* Filters */}
       <div className="regal-card rounded-2xl p-6 mb-8">
         <div className="flex items-center gap-2 mb-5">
-          <svg className="w-5 h-5 text-[#c9a227]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-5 h-5 text-[#B8860B]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
           </svg>
-          <h3 className="text-sm font-semibold text-[#1a1a2e] tracking-wider">Filter Data</h3>
+          <h3 className="text-sm font-semibold text-[#1a1a1a] tracking-wider">Filter Data</h3>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4 mb-5">
           {/* House Filter */}
           <div>
-            <label className="block text-xs font-semibold text-[#1a1a2e]/40 mb-1.5 tracking-wider">House</label>
+            <label className="block text-xs font-semibold text-[#1a1a1a]/40 mb-1.5 tracking-wider">House</label>
             <select
               value={filters.house}
               onChange={(e) => handleFilterChange('house', e.target.value)}
@@ -437,7 +437,7 @@ export default function AnalyticsPage() {
 
           {/* Grade Filter */}
           <div>
-            <label className="block text-xs font-semibold text-[#1a1a2e]/40 mb-1.5 tracking-wider">Grade</label>
+            <label className="block text-xs font-semibold text-[#1a1a1a]/40 mb-1.5 tracking-wider">Grade</label>
             <select
               value={filters.grade}
               onChange={(e) => handleFilterChange('grade', e.target.value)}
@@ -452,7 +452,7 @@ export default function AnalyticsPage() {
 
           {/* Section Filter */}
           <div>
-            <label className="block text-xs font-semibold text-[#1a1a2e]/40 mb-1.5 tracking-wider">Section</label>
+            <label className="block text-xs font-semibold text-[#1a1a1a]/40 mb-1.5 tracking-wider">Section</label>
             <select
               value={filters.section}
               onChange={(e) => handleFilterChange('section', e.target.value)}
@@ -467,7 +467,7 @@ export default function AnalyticsPage() {
 
           {/* Staff Filter */}
           <div>
-            <label className="block text-xs font-semibold text-[#1a1a2e]/40 mb-1.5 tracking-wider">Staff</label>
+            <label className="block text-xs font-semibold text-[#1a1a1a]/40 mb-1.5 tracking-wider">Staff</label>
             <select
               value={filters.staff}
               onChange={(e) => handleFilterChange('staff', e.target.value)}
@@ -482,7 +482,7 @@ export default function AnalyticsPage() {
 
           {/* Category Filter */}
           <div>
-            <label className="block text-xs font-semibold text-[#1a1a2e]/40 mb-1.5 tracking-wider">Category</label>
+            <label className="block text-xs font-semibold text-[#1a1a1a]/40 mb-1.5 tracking-wider">Category</label>
             <select
               value={filters.category}
               onChange={(e) => handleFilterChange('category', e.target.value)}
@@ -497,7 +497,7 @@ export default function AnalyticsPage() {
 
           {/* Subcategory Filter */}
           <div>
-            <label className="block text-xs font-semibold text-[#1a1a2e]/40 mb-1.5 tracking-wider">Subcategory</label>
+            <label className="block text-xs font-semibold text-[#1a1a1a]/40 mb-1.5 tracking-wider">Subcategory</label>
             <select
               value={filters.subcategory}
               onChange={(e) => handleFilterChange('subcategory', e.target.value)}
@@ -512,7 +512,7 @@ export default function AnalyticsPage() {
 
           {/* Start Date */}
           <div>
-            <label className="block text-xs font-semibold text-[#1a1a2e]/40 mb-1.5 tracking-wider">Start Date</label>
+            <label className="block text-xs font-semibold text-[#1a1a1a]/40 mb-1.5 tracking-wider">Start Date</label>
             <input
               type="date"
               value={filters.startDate}
@@ -523,7 +523,7 @@ export default function AnalyticsPage() {
 
           {/* End Date */}
           <div>
-            <label className="block text-xs font-semibold text-[#1a1a2e]/40 mb-1.5 tracking-wider">End Date</label>
+            <label className="block text-xs font-semibold text-[#1a1a1a]/40 mb-1.5 tracking-wider">End Date</label>
             <input
               type="date"
               value={filters.endDate}
@@ -534,10 +534,10 @@ export default function AnalyticsPage() {
         </div>
 
         {/* Filter Actions */}
-        <div className="flex flex-wrap gap-3 pt-2 border-t border-[#c9a227]/10">
+        <div className="flex flex-wrap gap-3 pt-2 border-t border-[#B8860B]/10">
           <button
             onClick={clearFilters}
-            className="px-5 py-2.5 text-sm text-[#1a1a2e]/60 hover:text-[#1a1a2e] font-medium rounded-xl hover:bg-[#1a1a2e]/5 transition"
+            className="px-5 py-2.5 text-sm text-[#1a1a1a]/60 hover:text-[#1a1a1a] font-medium rounded-xl hover:bg-[#1a1a1a]/5 transition"
           >
             Clear All
           </button>
@@ -559,7 +559,7 @@ export default function AnalyticsPage() {
             </button>
             <button
               onClick={exportPDF}
-              className="px-5 py-2.5 text-sm font-medium rounded-xl flex items-center gap-2 border border-[#c9a227]/30 text-[#1a1a2e] bg-white hover:border-[#c9a227]/60 transition"
+              className="px-5 py-2.5 text-sm font-medium rounded-xl flex items-center gap-2 border border-[#B8860B]/30 text-[#1a1a1a] bg-white hover:border-[#B8860B]/60 transition"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h10M7 11h10M7 15h6M5 3h8l4 4v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z" />
@@ -582,10 +582,10 @@ export default function AnalyticsPage() {
         ].map((stat) => (
           <div key={stat.label} className="regal-card rounded-xl p-5">
             <div className="flex items-center justify-between mb-2">
-              <p className="text-xs font-semibold text-[#1a1a2e]/40 tracking-wider">{stat.label}</p>
+              <p className="text-xs font-semibold text-[#1a1a1a]/40 tracking-wider">{stat.label}</p>
               <span className="text-lg">{stat.icon}</span>
             </div>
-            <p className="text-2xl font-bold text-[#1a1a2e]" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+            <p className="text-2xl font-bold text-[#1a1a1a]" style={{ fontFamily: 'var(--font-playfair), Poppins, sans-serif' }}>
               {stat.value}
             </p>
           </div>
@@ -596,10 +596,10 @@ export default function AnalyticsPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Points by House */}
         <div className="regal-card rounded-2xl p-6">
-          <h3 className="text-lg font-semibold text-[#1a1a2e] mb-1" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+          <h3 className="text-lg font-semibold text-[#1a1a1a] mb-1" style={{ fontFamily: 'var(--font-playfair), Poppins, sans-serif' }}>
             Points by House
           </h3>
-          <p className="text-xs text-[#1a1a2e]/40 mb-6">Distribution across all houses</p>
+          <p className="text-xs text-[#1a1a1a]/40 mb-6">Distribution across all houses</p>
           <div className="h-80">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={houseChartData} margin={{ left: 10, right: 10, top: 30, bottom: 30 }} barCategoryGap={18}>
@@ -607,11 +607,11 @@ export default function AnalyticsPage() {
                 <XAxis
                   dataKey="name"
                   tickFormatter={(value: string) => value.replace('House of ', '')}
-                  tick={{ fontSize: 12, fill: '#1a1a2e' }}
+                  tick={{ fontSize: 12, fill: '#1a1a1a' }}
                   axisLine={false}
                   tickLine={false}
                 />
-                <YAxis tickFormatter={(v) => v.toLocaleString()} tick={{ fontSize: 11, fill: '#1a1a2e' }} axisLine={false} tickLine={false} />
+                <YAxis tickFormatter={(v) => v.toLocaleString()} tick={{ fontSize: 11, fill: '#1a1a1a' }} axisLine={false} tickLine={false} />
                 <Tooltip
                   formatter={(value) => [
                     typeof value === 'number' ? value.toLocaleString() : `${value ?? 0}`,
@@ -631,21 +631,21 @@ export default function AnalyticsPage() {
 
         {/* Points by Category */}
         <div className="regal-card rounded-2xl p-6">
-          <h3 className="text-lg font-semibold text-[#1a1a2e] mb-1" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+          <h3 className="text-lg font-semibold text-[#1a1a1a] mb-1" style={{ fontFamily: 'var(--font-playfair), Poppins, sans-serif' }}>
             Points by Category
           </h3>
-          <p className="text-xs text-[#1a1a2e]/40 mb-6">Breakdown by merit categories</p>
+          <p className="text-xs text-[#1a1a1a]/40 mb-6">Breakdown by merit categories</p>
           <div className="h-80">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={categoryChartData} margin={{ left: 10, right: 10, top: 30, bottom: 30 }} barCategoryGap={18}>
                 <CartesianGrid strokeDasharray="4 6" vertical={false} stroke="#eee7d6" />
                 <XAxis
                   dataKey="name"
-                  tick={{ fontSize: 12, fill: '#1a1a2e' }}
+                  tick={{ fontSize: 12, fill: '#1a1a1a' }}
                   axisLine={false}
                   tickLine={false}
                 />
-                <YAxis tickFormatter={(v) => v.toLocaleString()} tick={{ fontSize: 11, fill: '#1a1a2e' }} axisLine={false} tickLine={false} />
+                <YAxis tickFormatter={(v) => v.toLocaleString()} tick={{ fontSize: 11, fill: '#1a1a1a' }} axisLine={false} tickLine={false} />
                 <Tooltip
                   formatter={(value) => [
                     typeof value === 'number' ? value.toLocaleString() : `${value ?? 0}`,

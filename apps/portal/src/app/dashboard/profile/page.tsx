@@ -25,7 +25,7 @@ const houseColors = getHouseColors()
 
 function getHouseColor(house: string): string {
   const canonical = canonicalHouseName(house)
-  return houseColors[canonical] || '#1a1a2e'
+  return houseColors[canonical] || '#1a1a1a'
 }
 
 function getInitials(name: string): string {
@@ -132,9 +132,9 @@ export default function MyPointsPage() {
 
   if (!profile) {
     return (
-      <div className="bg-white rounded-2xl p-8 shadow-sm border border-[#c9a227]/10 text-center">
-        <p className="text-[#1a1a2e]/70 font-medium">We couldn't find your student profile yet.</p>
-        <p className="text-sm text-[#1a1a2e]/45 mt-2">Please contact the office to link your account.</p>
+      <div className="bg-white rounded-2xl p-8 shadow-sm border border-[#B8860B]/10 text-center">
+        <p className="text-[#1a1a1a]/70 font-medium">We couldn't find your student profile yet.</p>
+        <p className="text-sm text-[#1a1a1a]/45 mt-2">Please contact the office to link your account.</p>
       </div>
     )
   }
@@ -142,17 +142,17 @@ export default function MyPointsPage() {
   return (
     <div className="max-w-4xl mx-auto">
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-[#1a1a2e] mb-2" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+        <h1 className="text-3xl font-bold text-[#1a1a1a] mb-2" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
           My Points
         </h1>
         <div className="flex items-center gap-3">
-          <div className="h-1 w-16 bg-gradient-to-r from-[#c9a227] to-[#e8d48b] rounded-full"></div>
-          <p className="text-[#1a1a2e]/50 text-sm font-medium">Your merit summary and recent activity.</p>
+          <div className="h-1 w-16 bg-gradient-to-r from-[#B8860B] to-[#d4a017] rounded-full"></div>
+          <p className="text-[#1a1a1a]/50 text-sm font-medium">Your merit summary and recent activity.</p>
         </div>
       </div>
 
-      <div className="bg-white rounded-2xl shadow-sm border border-[#c9a227]/10 overflow-hidden">
-        <div className="p-6 border-b border-[#1a1a2e]/5">
+      <div className="bg-white rounded-2xl shadow-sm border border-[#B8860B]/10 overflow-hidden">
+        <div className="p-6 border-b border-[#1a1a1a]/5">
           <div className="flex items-center gap-4">
             <div
               className="w-16 h-16 rounded-xl flex items-center justify-center text-xl font-bold"
@@ -164,20 +164,20 @@ export default function MyPointsPage() {
               {getInitials(profile.name)}
             </div>
             <div>
-              <p className="text-xl font-bold text-[#1a1a2e]" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+              <p className="text-xl font-bold text-[#1a1a1a]" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
                 {profile.name}
               </p>
-              <p className="text-[#1a1a2e]/50">
+              <p className="text-[#1a1a1a]/50">
                 Grade {profile.grade}{profile.section}
-                <span className="text-[#1a1a2e]/20"> • </span>
+                <span className="text-[#1a1a1a]/20"> • </span>
                 {canonicalHouseName(profile.house)}
               </p>
             </div>
           </div>
         </div>
 
-        <div className="p-6 border-b border-[#1a1a2e]/5 text-center bg-gradient-to-br from-[#faf9f7] to-white">
-          <p className="text-sm text-[#1a1a2e]/50 mb-1">Total Points</p>
+        <div className="p-6 border-b border-[#1a1a1a]/5 text-center bg-gradient-to-br from-[#faf9f7] to-white">
+          <p className="text-sm text-[#1a1a1a]/50 mb-1">Total Points</p>
           <p
             className="text-4xl font-bold"
             style={{
@@ -189,13 +189,13 @@ export default function MyPointsPage() {
           </p>
         </div>
 
-        <div className="p-6 border-b border-[#1a1a2e]/5">
-          <h3 className="text-xs font-semibold text-[#1a1a2e]/40 uppercase tracking-wider mb-3">Points by Category</h3>
+        <div className="p-6 border-b border-[#1a1a1a]/5">
+          <h3 className="text-xs font-semibold text-[#1a1a1a]/40 uppercase tracking-wider mb-3">Points by Category</h3>
           {categoryTotals.map((item) => (
             <div key={item.category} className="flex items-center justify-between py-2.5">
               <div className="flex items-center gap-3">
                 <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }} />
-                <span className="text-sm text-[#1a1a2e]/70">{item.category}</span>
+                <span className="text-sm text-[#1a1a1a]/70">{item.category}</span>
               </div>
               <span className="font-semibold" style={{ color: item.color }}>{item.points}</span>
             </div>
@@ -203,18 +203,18 @@ export default function MyPointsPage() {
         </div>
 
         <div className="p-6">
-          <h3 className="text-xs font-semibold text-[#1a1a2e]/40 uppercase tracking-wider mb-3">Recent Activity</h3>
+          <h3 className="text-xs font-semibold text-[#1a1a1a]/40 uppercase tracking-wider mb-3">Recent Activity</h3>
           {merits.length === 0 ? (
-            <p className="text-[#1a1a2e]/40 text-sm">No activity yet</p>
+            <p className="text-[#1a1a1a]/40 text-sm">No activity yet</p>
           ) : (
             <div className="space-y-3 max-h-64 overflow-y-auto">
               {merits.slice(0, 10).map((entry, index) => (
-                <div key={index} className="flex items-center justify-between py-2.5 border-b border-[#1a1a2e]/5 last:border-0">
+                <div key={index} className="flex items-center justify-between py-2.5 border-b border-[#1a1a1a]/5 last:border-0">
                   <div>
-                    <p className="text-sm font-medium text-[#1a1a2e]">
+                    <p className="text-sm font-medium text-[#1a1a1a]">
                       {entry.subcategory || entry.r?.split(' – ')[0]}
                     </p>
-                    <p className="text-xs text-[#1a1a2e]/40">{entry.staffName}</p>
+                    <p className="text-xs text-[#1a1a1a]/40">{entry.staffName}</p>
                   </div>
                   <span className="text-[#055437] font-semibold">+{entry.points}</span>
                 </div>

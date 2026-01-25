@@ -197,12 +197,12 @@ function AdminOverviewDashboard() {
     <div>
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-[#1a1a2e] mb-2" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+        <h1 className="text-3xl font-bold text-[#1a1a1a] mb-2" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
           Overview
         </h1>
         <div className="flex items-center gap-3">
-          <div className="h-1 w-16 bg-gradient-to-r from-[#c9a227] to-[#e8d48b] rounded-full"></div>
-          <p className="text-[#1a1a2e]/50 text-sm font-medium">House standings and top performers</p>
+          <div className="h-1 w-16 bg-gradient-to-r from-[#B8860B] to-[#d4a017] rounded-full"></div>
+          <p className="text-[#1a1a1a]/50 text-sm font-medium">House standings and top performers</p>
         </div>
       </div>
 
@@ -247,7 +247,7 @@ function AdminOverviewDashboard() {
                       className="h-full rounded-full transition-all duration-700 ease-out"
                       style={{
                         width: `${house.percentage}%`,
-                        background: 'linear-gradient(90deg, #c9a227 0%, #e8d48b 50%, #c9a227 100%)',
+                        background: 'linear-gradient(90deg, #B8860B 0%, #d4a017 50%, #B8860B 100%)',
                       }}
                     />
                   </div>
@@ -330,8 +330,8 @@ function StaffLeaderboardDashboard() {
     return leaderboard.map((entry) => {
       const canonicalName = canonicalHouseName(entry.house)
       const config = houseConfig[canonicalName] ?? {
-        color: '#1a1a2e',
-        gradient: 'linear-gradient(135deg, #2a2a4e 0%, #1a1a2e 100%)',
+        color: '#1a1a1a',
+        gradient: 'linear-gradient(135deg, #2a2a4e 0%, #1a1a1a 100%)',
         logo: '/crest.png',
       }
 
@@ -372,19 +372,19 @@ function StaffLeaderboardDashboard() {
     <div>
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-[#1a1a2e] mb-2" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+        <h1 className="text-3xl font-bold text-[#1a1a1a] mb-2" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
           House Standings
         </h1>
         <div className="flex items-center gap-3">
-          <div className="h-1 w-16 bg-gradient-to-r from-[#c9a227] to-[#e8d48b] rounded-full"></div>
-          <p className="text-[#1a1a2e]/50 text-sm font-medium">Current academic year rankings</p>
+          <div className="h-1 w-16 bg-gradient-to-r from-[#B8860B] to-[#d4a017] rounded-full"></div>
+          <p className="text-[#1a1a1a]/50 text-sm font-medium">Current academic year rankings</p>
         </div>
       </div>
 
       {/* House Podium */}
       {houses.length === 0 ? (
         <div className="regal-card rounded-2xl p-8 text-center">
-          <p className="text-[#1a1a2e]/50">No points logged yet.</p>
+          <p className="text-[#1a1a1a]/50">No points logged yet.</p>
         </div>
       ) : (
         <div className="space-y-6">
@@ -428,12 +428,12 @@ function StaffLeaderboardDashboard() {
                     className="h-full rounded-full transition-all duration-700 ease-out"
                     style={{
                       width: `${topHouse.percentage}%`,
-                      background: 'linear-gradient(90deg, #c9a227 0%, #e8d48b 50%, #c9a227 100%)',
+                      background: 'linear-gradient(90deg, #B8860B 0%, #d4a017 50%, #B8860B 100%)',
                     }}
                   />
                 </div>
               </div>
-              <div className="h-1 bg-gradient-to-r from-transparent via-[#c9a227]/60 to-transparent"></div>
+              <div className="h-1 bg-gradient-to-r from-transparent via-[#B8860B]/60 to-transparent"></div>
             </div>
           ) : null}
 
@@ -474,7 +474,7 @@ function StaffLeaderboardDashboard() {
                       className="h-full rounded-full transition-all duration-700 ease-out"
                       style={{
                         width: `${house.percentage}%`,
-                        background: 'linear-gradient(90deg, #c9a227 0%, #e8d48b 50%, #c9a227 100%)',
+                        background: 'linear-gradient(90deg, #B8860B 0%, #d4a017 50%, #B8860B 100%)',
                       }}
                     />
                   </div>
@@ -483,7 +483,7 @@ function StaffLeaderboardDashboard() {
             ))}
           </div>
 
-          <div className="bg-gradient-to-r from-[#1a1a2e] to-[#2a2a4e] px-5 py-4 rounded-2xl">
+          <div className="bg-gradient-to-r from-[#1a1a1a] to-[#2a2a4e] px-5 py-4 rounded-2xl">
             <div className="flex items-center justify-between text-white">
               <span className="text-sm font-medium text-white/60">Total Points Awarded</span>
               <span className="text-xl font-bold" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
