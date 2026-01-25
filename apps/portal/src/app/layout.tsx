@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Poppins, Source_Sans_3 } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "./providers";
+import SupabaseEnvBanner from "../components/SupabaseEnvBanner";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -30,7 +31,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${poppins.variable} ${sourceSans.variable} antialiased`}>
-        <AuthProvider>{children}</AuthProvider>
+        <AuthProvider>
+          {children}
+          <SupabaseEnvBanner />
+        </AuthProvider>
       </body>
     </html>
   );
