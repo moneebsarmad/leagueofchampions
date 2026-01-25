@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useMemo } from 'react'
+import { useEffect, useState, useMemo, useRef } from 'react'
 import { supabase } from '../../../lib/supabaseClient'
 import CrestLoader from '../../../components/CrestLoader'
 import { RequireStaff, AccessDenied } from '../../../components/PermissionGate'
@@ -29,6 +29,8 @@ interface MeritEntry {
   timestamp: string
 }
 
+type DatePreset = 'this_week' | 'last_week' | 'this_month' | 'last_month' | 'custom'
+
 function getAcademicWeek(): number {
   const now = new Date()
   const year = now.getMonth() >= 7 ? now.getFullYear() : now.getFullYear() - 1
@@ -38,16 +40,100 @@ function getAcademicWeek(): number {
   return Math.max(1, diffWeeks)
 }
 
+function getStartOfWeek(date: Date): Date {
+  const d = new Date(date)
+  const day = d.getDay()
+  const diff = d.getDate() - day + (day === 0 ? -6 : 1)
+  d.setDate(diff)
+  d.setHours(0, 0, 0, 0)
+  return d
+}
+
+function getEndOfWeek(date: Date): Date {
+  const start = getStartOfWeek(date)
+  const end = new Date(start)
+  end.setDate(end.getDate() + 6)
+  end.setHours(23, 59, 59, 999)
+  return end
+}
+
+function getStartOfMonth(date: Date): Date {
+  return new Date(date.getFullYear(), date.getMonth(), 1)
+}
+
+function getEndOfMonth(date: Date): Date {
+  return new Date(date.getFullYear(), date.getMonth() + 1, 0, 23, 59, 59, 999)
+}
+
+function formatDateRange(start: Date, end: Date): string {
+  const options: Intl.DateTimeFormatOptions = { month: 'short', day: 'numeric' }
+  return `${start.toLocaleDateString('en-US', options)} - ${end.toLocaleDateString('en-US', options)}`
+}
+
 export default function CultureHealthPage() {
   const [domains, setDomains] = useState<DomainData[]>([])
   const [domainHealth, setDomainHealth] = useState<DomainHealth[]>([])
   const [loading, setLoading] = useState(true)
+  const [datePreset, setDatePreset] = useState<DatePreset>('this_week')
+  const [customStartDate, setCustomStartDate] = useState('')
+  const [customEndDate, setCustomEndDate] = useState('')
+  const [showDatePicker, setShowDatePicker] = useState(false)
+  const fetchingRef = useRef(false)
+
+  // Calculate date range based on preset
+  const dateRange = useMemo(() => {
+    const now = new Date()
+    switch (datePreset) {
+      case 'this_week':
+        return { start: getStartOfWeek(now), end: getEndOfWeek(now) }
+      case 'last_week': {
+        const lastWeek = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000)
+        return { start: getStartOfWeek(lastWeek), end: getEndOfWeek(lastWeek) }
+      }
+      case 'this_month':
+        return { start: getStartOfMonth(now), end: getEndOfMonth(now) }
+      case 'last_month': {
+        const lastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1)
+        return { start: getStartOfMonth(lastMonth), end: getEndOfMonth(lastMonth) }
+      }
+      case 'custom':
+        if (customStartDate && customEndDate) {
+          return {
+            start: new Date(customStartDate),
+            end: new Date(customEndDate + 'T23:59:59.999'),
+          }
+        }
+        return { start: getStartOfWeek(now), end: getEndOfWeek(now) }
+      default:
+        return { start: getStartOfWeek(now), end: getEndOfWeek(now) }
+    }
+  }, [datePreset, customStartDate, customEndDate])
 
   useEffect(() => {
     fetchData()
-  }, [])
+  }, [dateRange])
+
+  // Real-time subscription
+  useEffect(() => {
+    const channel = supabase
+      .channel('culture-health-changes')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'merit_log' },
+        () => {
+          fetchData()
+        }
+      )
+      .subscribe()
+
+    return () => {
+      supabase.removeChannel(channel)
+    }
+  }, [dateRange])
 
   const fetchData = async () => {
+    if (fetchingRef.current) return
+    fetchingRef.current = true
     setLoading(true)
     try {
       // Fetch domains
@@ -65,16 +151,17 @@ export default function CultureHealthPage() {
       }))
       setDomains(allDomains)
 
-      // Calculate date ranges
-      const now = new Date()
-      const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000)
-      const fourteenDaysAgo = new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000)
+      // Calculate comparison period (same length before the selected range)
+      const rangeDuration = dateRange.end.getTime() - dateRange.start.getTime()
+      const previousStart = new Date(dateRange.start.getTime() - rangeDuration)
+      const previousEnd = new Date(dateRange.start.getTime() - 1)
 
-      // Fetch merit_log entries from last 14 days
+      // Fetch merit_log entries for both current and previous periods
       const { data: meritData } = await supabase
         .from('merit_log')
         .select('domain_id, points, timestamp')
-        .gte('timestamp', fourteenDaysAgo.toISOString())
+        .gte('timestamp', previousStart.toISOString())
+        .lte('timestamp', dateRange.end.toISOString())
 
       const entries: MeritEntry[] = (meritData || []).map((m) => ({
         domain_id: m.domain_id,
@@ -87,13 +174,16 @@ export default function CultureHealthPage() {
         const domainEntries = entries.filter((e) => e.domain_id === domain.id)
 
         const currentPoints = domainEntries
-          .filter((e) => new Date(e.timestamp) >= sevenDaysAgo)
+          .filter((e) => {
+            const ts = new Date(e.timestamp)
+            return ts >= dateRange.start && ts <= dateRange.end
+          })
           .reduce((sum, e) => sum + e.points, 0)
 
         const previousPoints = domainEntries
           .filter((e) => {
             const ts = new Date(e.timestamp)
-            return ts >= fourteenDaysAgo && ts < sevenDaysAgo
+            return ts >= previousStart && ts <= previousEnd
           })
           .reduce((sum, e) => sum + e.points, 0)
 
@@ -128,6 +218,7 @@ export default function CultureHealthPage() {
       console.error('Error fetching culture health data:', error)
     } finally {
       setLoading(false)
+      fetchingRef.current = false
     }
   }
 
@@ -179,16 +270,26 @@ export default function CultureHealthPage() {
     return <CrestLoader label="Loading culture health..." />
   }
 
+  const presetLabels: Record<DatePreset, string> = {
+    this_week: 'This Week',
+    last_week: 'Last Week',
+    this_month: 'This Month',
+    last_month: 'Last Month',
+    custom: 'Custom Range',
+  }
+
   return (
     <RequireStaff fallback={<AccessDenied message="Admin access required to view Culture Health Dashboard." />}>
       <div className="max-w-4xl mx-auto">
         {/* Header */}
-        <div className="flex items-start justify-between mb-8">
+        <div className="flex items-start justify-between mb-6">
           <div>
             <h1 className="text-3xl font-bold text-[#1a1a1a] mb-1" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
               Culture Health Dashboard
             </h1>
-            <p className="text-[#1a1a1a]/50 text-sm">Week {weekNumber} Overview - All Domains</p>
+            <p className="text-[#1a1a1a]/50 text-sm">
+              {datePreset === 'this_week' ? `Week ${weekNumber}` : presetLabels[datePreset]} - {formatDateRange(dateRange.start, dateRange.end)}
+            </p>
           </div>
           <div className="text-right">
             <p className="text-4xl font-bold text-[#2D5016]" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
@@ -196,6 +297,56 @@ export default function CultureHealthPage() {
             </p>
             <p className="text-sm text-[#1a1a1a]/50">Overall Health</p>
           </div>
+        </div>
+
+        {/* Date Range Selector */}
+        <div className="bg-white rounded-2xl p-4 shadow-sm border border-[#B8860B]/10 mb-6">
+          <div className="flex flex-wrap items-center gap-2">
+            {(['this_week', 'last_week', 'this_month', 'last_month', 'custom'] as DatePreset[]).map((preset) => (
+              <button
+                key={preset}
+                onClick={() => {
+                  setDatePreset(preset)
+                  if (preset === 'custom') {
+                    setShowDatePicker(true)
+                  } else {
+                    setShowDatePicker(false)
+                  }
+                }}
+                className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
+                  datePreset === preset
+                    ? 'bg-[#2D5016] text-white'
+                    : 'bg-gray-100 text-[#1a1a1a]/70 hover:bg-gray-200'
+                }`}
+              >
+                {presetLabels[preset]}
+              </button>
+            ))}
+          </div>
+
+          {/* Custom Date Inputs */}
+          {showDatePicker && (
+            <div className="mt-4 flex flex-wrap items-center gap-4">
+              <div className="flex items-center gap-2">
+                <label className="text-sm text-[#1a1a1a]/50">From:</label>
+                <input
+                  type="date"
+                  value={customStartDate}
+                  onChange={(e) => setCustomStartDate(e.target.value)}
+                  className="px-3 py-2 border border-[#1a1a1a]/10 rounded-xl text-sm focus:ring-2 focus:ring-[#2D5016]/30 focus:border-[#2D5016] outline-none"
+                />
+              </div>
+              <div className="flex items-center gap-2">
+                <label className="text-sm text-[#1a1a1a]/50">To:</label>
+                <input
+                  type="date"
+                  value={customEndDate}
+                  onChange={(e) => setCustomEndDate(e.target.value)}
+                  className="px-3 py-2 border border-[#1a1a1a]/10 rounded-xl text-sm focus:ring-2 focus:ring-[#2D5016]/30 focus:border-[#2D5016] outline-none"
+                />
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Domain Health Cards */}
