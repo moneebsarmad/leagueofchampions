@@ -236,6 +236,15 @@ export default function Home() {
           >
             {schoolConfig.tagline}
           </p>
+          <p
+            className="text-xs sm:text-sm mt-2"
+            style={{
+              color: "var(--color-muted)",
+              fontFamily: "var(--font-source-sans), 'Source Sans 3', sans-serif"
+            }}
+          >
+            Powered by Nama Learning Systems
+          </p>
 
         </header>
 

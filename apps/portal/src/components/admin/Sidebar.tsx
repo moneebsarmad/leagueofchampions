@@ -331,6 +331,9 @@ export default function Sidebar() {
           <p className="text-xs text-white/20 mt-1">
             {schoolConfig.tagline}
           </p>
+          <p className="text-[11px] text-white/40 mt-2">
+            Powered by Nama Learning Systems
+          </p>
         </div>
       </div>
     </aside>
